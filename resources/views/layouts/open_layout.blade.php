@@ -6,7 +6,7 @@
     <title>Bengoh Academy</title> {{-- page title --}}
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> {{-- responsive design --}}
     {{-- add manifest link --}}
-    <link rel="manifest" href="/manifest.json">
+    {{--<link rel="manifest" href="/manifest.json--">}}
     <meta name="theme-color" content="#0d6efd">
     {{-- bootstrap and font --}}
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -23,15 +23,15 @@
         <div class="collapse navbar-collapse justify-content-end">
             <ul class="navbar-nav"> {{-- navigation menu --}}
                 <li class="nav-item mx-2">
-                    <a class="nav-link active" href="{{ route('#') }}">Home</a>
+                    <a class="nav-link active" href="#">Home</a>
                 </li>
 
                 <li class="nav-item mx-2">
-                    <a class="nav-link active" href="{{ route('#') }}">Courses</a>
+                    <a class="nav-link active" href="#">Courses</a>
                 </li>
 
                 <li class="nav-item mx-2">
-                    <a class="nav-link" href="{{ route('#') }}">Community Stories</a>
+                    <a class="nav-link" href="#">Community Stories</a>
                 </li>
 
                 <li class="nav-item mx-2">
@@ -57,13 +57,13 @@
                     {{-- when user click on their own name --}}
                     <ul class="dropdown-menu dropdown-menu-end">
                         <li>
-                            <a class="dropdown-item" href="{{ route('#') }}"> {{-- redirect user to settings page --}}
+                            <a class="dropdown-item" href="#"> {{-- redirect user to settings page --}}
                                 Settings
                             </a>
                         </li>
 
                         <li>
-                            <form method="POST" action="{{ route('#') }}">
+                            <form method="POST" action="#">
                                 @csrf
                                 <button class="dropdown-item">Sign Out</button> {{-- allow user to log out --}}
                             </form>
@@ -72,9 +72,9 @@
                 </div>
 
                 @else
-                <a class="nav-link text-primary fw-bold px-1" href="{{ route('#') }}">Register</a>
+                <a class="nav-link text-primary fw-bold px-1" href="#">Register</a>
                 <span class="text-muted">|</span>
-                <a class="nav-link text-primary fw-bold px-1" href="{{ route('#') }}">Sign In</a>
+                <a class="nav-link text-primary fw-bold px-1" href="#">Sign In</a>
                 @endauth
                 </li>
             </ul>

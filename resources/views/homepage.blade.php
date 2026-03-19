@@ -51,7 +51,7 @@
 
     {{-- button --}}
     <div class="text-center mb-5">
-        <a href="{{ route('#') }}" class="btn btn-outline-secondary btn-sm">
+        <a href="#" class="btn btn-outline-secondary btn-sm">
             View All Courses
         </a>
     </div>
@@ -80,7 +80,7 @@
     </div>
     {{-- link to community stories section --}}
     <div class="text-center mb-5">
-        <a href="{{ route('#') }}" class="text-primary small text-decoration-underline">Read More Community Stories</a>
+        <a href="#" class="text-primary small text-decoration-underline">Read More Community Stories</a>
     </div>
 
     {{-- histories of the Bengoh Dam --}}

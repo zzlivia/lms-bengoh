@@ -1,0 +1,31 @@
+/* Body/Background styling */
+body {
+    background: #ffffff;
+}
+
+/* Course Image styling */
+.course-banner-img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+/* Module Styling */
+.module-number {
+    color: #6c757d;
+    font-size: 1.1rem;
+}
+
+.card {
+    transition: transform 0.2s ease-in-out;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+}
+
+/* Buttons */
+.btn-action {
+    font-weight: 500;
+}

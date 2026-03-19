@@ -10,12 +10,16 @@ use Illuminate\Database\Eloquent\Model;
 class Users extends Authenticatable 
 {
     use HasFactory, Notifiable;
-    protected $table = 'user';
+    protected $table = 'users';
     protected $primaryKey = 'userID';
     public $incrementing = true;
     protected $keyType = 'int';
-    protected $fillable = ['userName', 'userEmail', 'userPass', 'userRePass', 'authenticated', ];
-    protected $hidden = [ 'userPass', 'userRePass', ];
+    protected $fillable = ['userName', 'userEmail', 'userPass', 'authenticated', ];
+    protected $hidden = [ 'userPass', ];
+
+    public function getAuthPassword(){return $this->userPass;}
+    
+    public function getEmailAttribute(){return $this->userEmail;}
 
     public function progress()
     {
@@ -33,10 +37,5 @@ class Users extends Authenticatable
     {
         // an user has one spot in leaderboard
         return $this->hasOne(Leaderboard::class, 'userID', 'userID');
-    }
-
-    public function getAuthPass()
-    {
-        return $this->userPass;
     }
 }

@@ -38,11 +38,11 @@
                             <span>{{ $lecture->lectName }}</span>
                             <span class="text-muted small">
                                 @php
-                                    $duration = null;
+                                    $duration = null;//found the duration first if a lecture has multiple learning materials
                                     foreach($lecture->materials as $material) {
                                         if ($material->video) {
                                             $duration = $material->video->videoLearningDuration;
-                                            break; //stop loop once found
+                                            break;//stop once found
                                         }
                                     }
                                 @endphp

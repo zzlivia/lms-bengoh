@@ -1,0 +1,90 @@
+/* Center the form within the content area provided by open_layout */
+.register-wrapper {
+    min-height: 70vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden; /* Clips peeking image if necessary */
+}
+
+.registration-container {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 400px;
+    background: transparent;
+}
+
+.form-control, .form-select {
+    background: #dcd6c9;
+    border: none;
+    border-radius: 10px;
+    padding: 12px;
+}
+
+.form-control:focus, .form-select:focus {
+    background: #d2ccbf;
+    box-shadow: 0 0 0 0.25rem rgba(220, 214, 201, 0.25);
+}
+
+.btn-register {
+    background: #dcd6c9;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 20px;
+    font-weight: bold;
+    transition: background 0.3s ease;
+}
+
+.btn-register:hover {
+    background: #cec8bc;
+}
+
+/* Password Toggle Positioning */
+.password-container { 
+    position: relative; 
+}
+
+.toggle-password {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #6c757d;
+}
+
+.signin-link {
+    text-decoration: none;
+    color: #0d6efd;
+    font-weight: 600;
+}
+
+.signin-link:hover {
+    text-decoration: underline;
+}
+
+/* Illustration on the Right */
+.right-peeking-image {
+    position: absolute;
+    right: -50px; /* Slight offset for peeking effect */
+    top: 50%;
+    transform: translateY(-50%);
+    max-width: 350px;
+    height: auto;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.8;
+}
+
+/* Responsiveness */
+@media (max-width: 992px) {
+    .right-peeking-image {
+        display: none; /* Hide image on tablet/mobile to avoid overlapping form */
+    }
+    .register-wrapper {
+        min-height: auto;
+        padding: 40px 0;
+    }
+}

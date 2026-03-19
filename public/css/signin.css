@@ -1,0 +1,55 @@
+/* Container height adjustment */
+.login-section {
+    position: relative;
+    padding: 60px 0;
+}
+
+/* The Peeking Image Logic */
+.left-peeking-image {
+    position: absolute;
+    left: 0;
+    top: 20%;
+    max-width: 250px;
+    z-index: -1; /* Keeps it behind the card if they overlap */
+}
+
+/* Card Styling */
+.login-card {
+    background: #ffffff;
+    padding: 2.5rem;
+    border-radius: 15px;
+    width: 100%;
+    max-width: 400px;
+    border: 1px solid #f0f0f0;
+}
+
+/* Input Styling */
+.form-control {
+    border-radius: 8px;
+    padding: 0.6rem 0.8rem;
+    border: 1px solid #ced4da;
+}
+
+.form-control:focus {
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15);
+}
+
+/* Login Button */
+.btn-login {
+    background-color: #0d6efd;
+    color: white;
+    border-radius: 8px;
+    transition: background 0.3s ease;
+}
+
+.btn-login:hover {
+    background-color: #0b5ed7;
+    color: white;
+}
+
+/* Responsive fix */
+@media (max-width: 992px) {
+    .left-peeking-image {
+        display: none; /* Hide image on mobile for better focus */
+    }
+}

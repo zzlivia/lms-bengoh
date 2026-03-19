@@ -61,10 +61,11 @@ return [
     |
     */
 
-    'providers' => [
-        'users' => [
-            'driver' => 'eloquent',
-            'model' => env('AUTH_MODEL', User::class),
+            'providers' => [
+            'users' => [
+                'driver' => 'eloquent',
+                'model' => App\Models\Users::class,
+            ],
         ],
 
         // 'users' => [

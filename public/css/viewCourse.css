@@ -1,31 +1,21 @@
-/* Body/Background styling */
-body {
-    background: #ffffff;
-}
+/* Specific to the Course View Page */
 
-/* Course Image styling */
 .course-banner-img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 8px;
+    max-height: 400px;
+    width: 100%;
     object-fit: cover;
 }
 
-/* Module Styling */
-.module-number {
-    color: #6c757d;
-    font-size: 1.1rem;
+.module-card {
+    transition: all 0.3s ease;
+    border-left: 4px solid #0d6efd !important;
 }
 
-.card {
-    transition: transform 0.2s ease-in-out;
+.module-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
 }
 
-.card:hover {
-    transform: translateY(-3px);
-}
-
-/* Buttons */
-.btn-action {
-    font-weight: 500;
+.list-group-item {
+    border-bottom: 1px solid rgba(0,0,0,0.05);
 }

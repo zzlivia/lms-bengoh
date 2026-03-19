@@ -2,67 +2,73 @@
 
 @section('title', $course->courseName . ' - Bengoh Academy')
 
-@push('styles')
+@section('styles')
     <link rel="stylesheet" href="{{ asset('css/viewCourse.css') }}">
-@endpush
+@endsection
 
 @section('content')
 <div class="container mt-4">
     <div class="text-center mb-4">
         {{-- path to point to public/images/ --}}
-         <img src="{{ asset('images/' . $course->courseImg) }}" alt="{{ $course->courseName }}" class="course-banner-img">
+        <img src="{{ asset('images/' . $course->courseImg) }}" 
+             alt="{{ $course->courseName }}" 
+             class="course-banner-img img-fluid rounded shadow-sm">
     </div>
 
-    <div class="row mb-4">
+    <div class="row mb-4 align-items-end">
         <div class="col-md-9">
-            <h4>{{ $course->courseName }}</h4>
-            <p class="text-muted"> {{ $course->courseDesc }} </p>
+            <h2 class="fw-bold">{{ $course->courseName }}</h2>
+            <p class="text-muted lead">{{ $course->courseDesc }}</p>
         </div>
-        <div class="col-md-3 text-end">
-            <small class="text-muted"> Author: {{ $course->courseAuthor }} </small>
+        <div class="col-md-3 text-md-end">
+            <p class="mb-0 text-secondary"><i class="fa fa-user-edit me-1"></i> {{ $course->courseAuthor }}</p>
         </div>
     </div>
+
+    <hr class="my-5">
 
     <div class="row">
         @foreach($course->modules as $index => $module)
         <div class="col-md-6 mb-4">
-            <div class="card p-3 shadow-sm h-100">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h6 class="mb-0">{{ $module->moduleName }}</h6>
-                    <strong class="module-number">0{{ $index + 1 }}</strong>
-                </div>
+            <div class="card h-100 border-0 shadow-sm module-card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="card-title mb-0 fw-bold">{{ $module->moduleName }}</h5>
+                        <span class="badge bg-light text-dark border">Module {{ $index + 1 }}</span>
+                    </div>
 
-                <ul class="list-unstyled mb-0">
-                    @foreach($module->lectures as $lecture)
-                        <li class="d-flex justify-content-between align-items-center mb-2">
-                            <span>{{ $lecture->lectName }}</span>
-                            <span class="text-muted small">
-                                @php
-                                    $duration = null;//found the duration first if a lecture has multiple learning materials
-                                    foreach($lecture->materials as $material) {
-                                        if ($material->video) {
-                                            $duration = $material->video->videoLearningDuration;
-                                            break;//stop once found
+                    <ul class="list-group list-group-flush">
+                        @foreach($module->lectures as $lecture)
+                            <li class="list-group-item d-flex justify-content-between align-items-center px-0 bg-transparent">
+                                <span><i class="fa-regular fa-circle-play me-2 text-primary"></i>{{ $lecture->lectName }}</span>
+                                <span class="text-muted small">
+                                    @php
+                                        $duration = null;
+                                        foreach($lecture->materials as $material) {
+                                            if ($material->video) {
+                                                $duration = $material->video->videoLearningDuration;
+                                                break;
+                                            }
                                         }
-                                    }
-                                @endphp
-                                @if($duration)
-                                    ⏱ {{ $duration }} mins
-                                @endif
-                            </span>
-                        </li>
-                    @endforeach
-                </ul>
+                                    @endphp
+                                    {{ $duration ? $duration . ' mins' : 'Reading' }}
+                                </span>
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
             </div>
         </div>
         @endforeach
     </div>
 
-    <div class="d-flex justify-content-between mt-4 mb-5">
-        {{-- {{ route('course.feedback', $course->courseID) }} --}}
-        <a href="#" class="btn btn-outline-secondary">View Course Feedback</a>
-        {{-- {{ route('courses.learn', $course->courseID) }} --}}
-        <a href="#" class="btn btn-outline-dark btn-action px-4">Enrol</a> 
+    <div class="d-flex justify-content-between align-items-center mt-5 mb-5 p-4 bg-light rounded">
+        <a href="#" class="btn btn-link text-decoration-none"> {{--{{ route('course.feedback', $course->courseID) }}--}}
+            <i class="fa fa-comment-dots me-1"></i> View Course Feedback
+        </a>
+        <a href="#" class="btn btn-primary btn-lg px-5 shadow"> {{--{{ route('courses.learn', $course->courseID) }}--}}
+            Enrol Now
+        </a>
     </div>
 </div>
 @endsection

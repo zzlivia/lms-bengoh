@@ -1,0 +1,110 @@
+html, body {
+    height: 100%;
+}
+
+body {
+    background-color: #ffffff;
+    font-family: Arial, sans-serif;
+
+    /* Sticky footer layout */
+    display: flex;
+    flex-direction: column;
+}
+
+/* allow page content to expand and push footer down */
+.container {
+    flex: 1;
+}
+
+.hero-img {
+    width: 100%;
+    border-radius: 15px;
+}
+
+.feature-box {
+    background: #a9d3ea;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    height: 100%;
+}
+
+.course-card {
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 15px;
+    background: #fff;
+    text-align: center;
+    height: 100%;
+}
+
+.course-card img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.story-card,
+.history-card {
+    background: #fff;
+    border: 1px solid #999;
+    border-radius: 15px;
+    padding: 20px;
+    height: 100%;
+}
+
+.profile-icon {
+    font-size: 80px;
+    color: #000;
+}
+
+footer {
+    margin-top: 50px;
+    padding: 20px;
+    text-align: center;
+    background: #fff;
+    border-top: 2px solid #00aaff;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* ===== START LEARNING PAGE ===== */
+
+.sidebar {
+    background: #fff;
+    height: 100vh;
+    overflow-y: auto;
+    border-right: 1px solid #ddd;
+}
+
+.module-title {
+    font-size: 12px;
+    font-weight: bold;
+    color: #666;
+    margin-top: 20px;
+}
+
+.lecture-item {
+    font-size: 13px;
+    padding: 4px 0;
+}
+
+.video-box {
+    background: #d9d9d9;
+    height: 300px;
+    border-radius: 6px;
+}
+
+.content-section {
+    background: #fff;
+    padding: 20px;
+    border-radius: 6px;
+}
+
+.btn-nav {
+    min-width: 120px;
+}

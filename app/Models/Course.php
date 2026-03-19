@@ -20,7 +20,7 @@ class Course extends Model
         'courseImg'
     ];
 
-    public function modules()
+    public function module()
     {
         //a course has many modules
         return $this->hasMany(Module::class, 'courseID', 'courseID');
@@ -30,5 +30,10 @@ class Course extends Model
     {
         //a course has many course feedback ratings
         return $this->hasMany(Feedback::class, 'courseID', 'courseID');
+    }
+
+    public function enrolments()
+    {
+        return $this->hasMany(Enrollment::class, 'courseID', 'courseID');
     }
 }

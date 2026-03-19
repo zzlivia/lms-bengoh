@@ -25,4 +25,11 @@ class Admin extends Model
 
     protected $hidden = ['adminPass',]; //hidden attributes
     protected $casts = ['adminPass' => 'hashed',];//auto hashed
+    public function getAuthPass() { return $this->adminPass; }
+
+    public function announcements() { return $this->hasMany(Announcements::class, 'adminID', 'adminID'); }
+
+    public function reports() { return $this->hasMany(Reports::class, 'generatedBy', 'adminID'); }
+
+    public function stories() { return $this->hasMany(CommunityStory::class, 'adminID', 'adminID'); }
 }

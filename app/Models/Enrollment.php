@@ -16,4 +16,14 @@ class Enrollment extends Model
         'isCompleted',
         'inProgress'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'userID', 'userID');
+    }
+
+    public function course()
+    {
+        return $this->belongsTo(Course::class, 'courseID', 'courseID');
+    }
 }

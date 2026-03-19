@@ -12,4 +12,19 @@ class Feedback extends Model
         'courseID',
         'courseRating'
     ];
+
+    public function lecture()
+    {
+        return $this->belongsTo(Lecture::class, 'lectID', 'lectID');
+    }
+
+    public function video()
+    {
+        return $this->hasOne(VideoLearning::class, 'learningMaterialID', 'learningMaterialID');
+    }
+
+    public function pdf()
+    {
+        return $this->hasOne(PdfLearning::class, 'learningMaterialID', 'learningMaterialID');
+    }
 }

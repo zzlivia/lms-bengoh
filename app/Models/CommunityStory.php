@@ -15,4 +15,9 @@ class CommunityStory extends Model
         'community_story',
         'community_image'
     ];
+
+    public function admin()
+    {
+        return $this->belongsTo(Admin::class, 'adminID', 'adminID');
+    }
 }

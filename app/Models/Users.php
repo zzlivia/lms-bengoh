@@ -34,4 +34,9 @@ class Users extends Authenticatable
         // an user has one spot in leaderboard
         return $this->hasOne(Leaderboard::class, 'userID', 'userID');
     }
+
+    public function getAuthPass()
+    {
+        return $this->userPass;
+    }
 }

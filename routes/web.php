@@ -14,8 +14,8 @@ use App\Http\Controllers\AdminSettingsController;
 
 /* public route */
 
-Route::get('/', fn () => view('learner.homepage'));
-Route::get('/homepage', fn () => view('learner.homepage'))->name('learner.homepage');
+Route::get('/', fn () => view('homepage'));
+Route::get('/homepage', fn () => view('homepage'))->name('homepage');
 
 /* authentication */
 

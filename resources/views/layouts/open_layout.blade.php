@@ -11,7 +11,7 @@
     {{-- bootstrap and font --}}
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="{{ asset('css/learner.css') }}"> {{-- custom CSS --}}
+    <link rel="stylesheet" href="{{ asset('css/homepage.css') }}"> {{-- custom CSS --}}
     @yield('styles')
 </head>
 
@@ -23,15 +23,15 @@
         <div class="collapse navbar-collapse justify-content-end">
             <ul class="navbar-nav"> {{-- navigation menu --}}
                 <li class="nav-item mx-2">
-                    <a class="nav-link active" href="{{ route('learner.homepage') }}">Home</a>
+                    <a class="nav-link active" href="#">Home</a> {{--{{ route('learner.homepage') }}--}}
                 </li>
 
                 <li class="nav-item mx-2">
-                    <a class="nav-link active" href="{{ route('courses.index') }}">Courses</a>
+                    <a class="nav-link active" href="#">Courses</a> {{--{{ route('courses.index') }}--}}
                 </li>
 
                 <li class="nav-item mx-2">
-                    <a class="nav-link" href="{{ route('community.stories') }}">Community Stories</a>
+                    <a class="nav-link" href="#">Community Stories</a>
                 </li>
 
                 <li class="nav-item mx-2">
@@ -57,13 +57,13 @@
                     {{-- when user click on their own name --}}
                     <ul class="dropdown-menu dropdown-menu-end">
                         <li>
-                            <a class="dropdown-item" href="{{ route('settings.index') }}"> {{-- redirect user to settings page --}}
+                            <a class="dropdown-item" href="#"> {{-- {{ route('settings.index') }} --}}
                                 Settings
                             </a>
                         </li>
 
                         <li>
-                            <form method="POST" action="{{ route('logout') }}">
+                            <form method="POST" action="{{ route('logout') }}"> {{-- AuthController --}}
                                 @csrf
                                 <button class="dropdown-item">Sign Out</button> {{-- allow user to log out --}}
                             </form>
@@ -72,9 +72,9 @@
                 </div>
 
                 @else
-                <a class="nav-link text-primary fw-bold px-1" href="{{ route('register') }}">Register</a>
-                <span class="text-muted">|</span>
-                <a class="nav-link text-primary fw-bold px-1" href="{{ route('login') }}">Sign In</a>
+                    <a class="nav-link text-primary fw-bold px-1" href="{{ route('register') }}">Register</a> {{-- AuthController --}}
+                        <span class="text-muted">|</span>
+                    <a class="nav-link text-primary fw-bold px-1" href="{{ route('login') }}">Sign In</a> {{-- AuthController --}}
                 @endauth
                 </li>
             </ul>

@@ -149,11 +149,18 @@ class AdminController extends Controller
             ->groupBy('users.userID', 'users.userName', 'users.userEmail')
             ->get();
 
+        $forgotRequests = DB::table('users')->where('reset_request', 1)->count();
+        $feedbackCount = DB::table('coursefeedback')->count();
+        $announcementReview = DB::table('announcements')->where('status', 'pending')->count();
+
+        $totalNotifications = $forgotRequests + $feedbackCount + $announcementReview;
+
         return view('admin.user_management', compact(
             'users',
             'totalUsers',
             'newUsers',
-            'activeUsers'
+            'activeUsers',
+            'totalNotifications'
         ));
     }
 

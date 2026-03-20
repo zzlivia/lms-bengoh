@@ -21,7 +21,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        View::composer('layouts.admin', function ($view) {
+        View::composer('layouts.admin_layout', function ($view) {
             $forgot = DB::table('users')->where('reset_request', 1)->count();
             $feedback = DB::table('coursefeedback')->count();
             $announcements = DB::table('announcements')->where('status', 'pending')->count();

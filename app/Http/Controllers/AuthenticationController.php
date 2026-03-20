@@ -24,7 +24,7 @@ class AuthenticationController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,userEmail|unique:admin,adminEmail',
             'password' => 'required|min:6|confirmed',
-            'role' => 'required_if:is_admin,on'
+            'role' => 'required_if:is_admin,1'
         ]);
 
         if ($request->boolean('is_admin')) {

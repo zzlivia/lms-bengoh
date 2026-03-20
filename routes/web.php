@@ -174,19 +174,19 @@ Route::prefix('admin')
 
     
     Route::post('/sections/store', [LectureSectionController::class, 'storeSection'])
-        ->name('admin.sections.store');//store section
+        ->name('sections.store');//store section
 
    
     Route::get('/sections/edit/{id}', [LectureSectionController::class, 'editSection'])
-        ->name('admin.sections.edit'); //edit section
+        ->name('sections.edit'); //edit section
 
     
     Route::put('/sections/update/{id}', [LectureSectionController::class, 'updateSection'])
-        ->name('admin.sections.update');//update section
+        ->name('sections.update');//update section
 
     
     Route::delete('/sections/delete/{id}', [LectureSectionController::class, 'deleteSection'])
-        ->name('admin.sections.delete');//delete section
+        ->name('sections.delete');//delete section
 
     /* others */
 

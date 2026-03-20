@@ -172,23 +172,21 @@ Route::prefix('admin')
 
     /* lecture section management*/
 
-    Route::post('/lecture-sections/store', [LectureSectionController::class, 'store'])
-        ->name('lecture.sections.store');
+    
+    Route::post('/sections/store', [LectureSectionController::class, 'storeSection'])
+        ->name('admin.sections.store');//store section
 
-    Route::post('/sections/store', [AdminController::class, 'storeSection'])
-        ->name('sections.store');
-        
-    Route::get('/section/edit/{id}', [AdminController::class, 'editSection'])
-        ->name('section.edit');
+   
+    Route::get('/sections/edit/{id}', [LectureSectionController::class, 'editSection'])
+        ->name('admin.sections.edit'); //edit section
 
-    Route::put('/section/update/{id}', [AdminController::class, 'updateSection'])
-        ->name('section.update');
+    
+    Route::put('/sections/update/{id}', [LectureSectionController::class, 'updateSection'])
+        ->name('admin.sections.update');//update section
 
-    Route::delete('/section/delete/{id}', [AdminController::class, 'deleteSection'])
-        ->name('section.delete');
-
-    Route::post('/section/{id}/materials', [LectureSectionController::class, 'storeMaterials'])
-        ->name('section.material.store');
+    
+    Route::delete('/sections/delete/{id}', [LectureSectionController::class, 'deleteSection'])
+        ->name('admin.sections.delete');//delete section
 
     /* others */
 

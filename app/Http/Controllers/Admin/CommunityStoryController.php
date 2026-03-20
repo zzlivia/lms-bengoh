@@ -10,17 +10,17 @@ use Illuminate\Http\Request; //handles requests of HTTP
 class CommunityStoryController extends Controller
 {
     // show all stories for admin view
-    public function showAllStory()
+    public function index()
     {
         $stories = CommunityStory::latest()->get(); //get all stories from db, newest first
-        return view('admin.story_index', compact('stories')); 
+        return view('admin.story_index', compact('stories')); //send to resources/views/admin/story_index.blade.php
     }
 
-    // show create form
-    public function createStoryForm() { return view('admin.create_story'); }
+    // show create form 
+    public function create() { return view('admin.create_story'); }
 
     // store new story
-    public function storeNewStory(Request $request)
+    public function store(Request $request)
     {
         $request->validate([
             'community_name'   => 'required|string|max:255',
@@ -43,11 +43,12 @@ class CommunityStoryController extends Controller
             'community_story' => $request->community_story,
             'community_image' => $imagePath,
         ]);
+
         return redirect()->route('admin.stories.index')->with('success', 'Story added successfully!'); //redirect to list page with success message
     }
 
     // show edit form
-    public function editStory($id)
+    public function edit($id)
     {
         //find the story through ID
         $story = CommunityStory::findOrFail($id); //show 404 if none
@@ -55,7 +56,7 @@ class CommunityStoryController extends Controller
     }
 
     // update existing story
-    public function updateStory(Request $request, $id)
+    public function update(Request $request, $id)
     {
         $story = CommunityStory::findOrFail($id); //find story
         $request->validate([    //validate input
@@ -70,7 +71,6 @@ class CommunityStoryController extends Controller
             $story->community_image = $imagePath; //update image path in db
         }
 
-
         $story->update([ //update text fields
             'community_name'  => $request->community_name,
             'title'           => $request->title,
@@ -81,7 +81,7 @@ class CommunityStoryController extends Controller
     }
 
     // delete existing story
-    public function deleteStory($id)
+    public function destroy($id)
     {
         $story = CommunityStory::findOrFail($id); //find story or fail  
         $story->delete(); //delete from db

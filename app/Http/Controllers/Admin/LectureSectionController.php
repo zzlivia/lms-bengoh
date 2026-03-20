@@ -1,5 +1,6 @@
 <?php
 
+//saves lecture sections
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
@@ -7,18 +8,23 @@ use Illuminate\Http\Request;
 use App\Models\Lecture;
 use App\Models\LectureSection;
 
-
 class LectureSectionController extends Controller
 {
+
     // store lecture section with file uploaded which is optional
-    public function storeSection(Request $request)
-    {   //validate incoming request
-        $request->validate(['lectID' => 'required','section_title' => 'required','section_type' => 'required']);
+    public function store(Request $request)
+    {
+        $request->validate([ //validate incoming request
+            'lectID' => 'required',
+            'section_title' => 'required',
+            'section_type' => 'required'
+        ]);
         //initialize file path
         $filePath = null;
-        //check if user did upload any file
-        //store file in storage/app/public/lecture_sections
-        if($request->hasFile('section_file')){ $filePath = $request->file('section_file')->store('lecture_sections','public');}
+        //check if user did upload any fi;e
+        if($request->hasFile('section_file')){ //store file in storage/app/public/lecture_sections
+            $filePath = $request->file('section_file')->store('lecture_sections','public');
+        }
         //create new record in db
         LectureSection::create([
             'lectID' => $request->lectID,
@@ -33,9 +39,13 @@ class LectureSectionController extends Controller
     }
 
     // store main lecture information
-    public function storeMainLecture(Request $request)
-    {   //validate
-        $request->validate(['moduleID' => 'required','lectName' => 'required','lect_duration' => 'required']);
+    public function storeLecture(Request $request)
+    {   //validate 
+        $request->validate([
+            'moduleID' => 'required',
+            'lectName' => 'required',
+            'lect_duration' => 'required'
+        ]);
         //create new object
         $lecture = new Lecture();
         //assign values to model

@@ -1,5 +1,4 @@
-@extends('layouts.admin')
-
+@extends('layouts.admin_layout')
 @section('content')
 
 <h4 class="fw-bold mb-4">Course/Module Management</h4>

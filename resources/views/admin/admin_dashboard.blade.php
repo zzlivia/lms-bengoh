@@ -1,4 +1,4 @@
-@extends('layouts.admin') {{-- layout template of admin from admin.blade.php --}}
+@extends('layouts.admin_layout'){{-- layout template of admin from admin.blade.php --}}
 
 @section('content') {{-- content section --}}
 

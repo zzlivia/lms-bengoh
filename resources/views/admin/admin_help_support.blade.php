@@ -1,5 +1,4 @@
-@extends('layouts.admin')
-
+@extends('layouts.admin_layout')
 @section('content')
 
 <h4 class="mb-4">Help & Support</h4>

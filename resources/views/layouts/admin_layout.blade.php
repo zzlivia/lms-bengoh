@@ -1,52 +1,48 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Bengoh Academy - Admin</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <!-- manifest -->
-        <link rel="manifest" href="/manifest.json">
-        <meta name="theme-color" content="#0d6efd">
-        <!-- Bootstrap -->
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-        <!-- Custom CSS -->
-        <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
-    </head>
+<head>
+    <title>Bengoh Academy - Admin</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#0d6efd">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
+</head>
 
-    <body>
+<body>
     <div class="d-flex">
-        <!-- ================= SIDEBAR ================= -->
+        
         <div class="sidebar d-flex flex-column p-3">
-            <!-- Logo -->
             <a class="navbar-brand fw-bold d-flex align-items-center mb-4"
-            href="{{ route('admin.dashboard') }}">
+               href="{{ route('admin.dashboard') }}">
                 <img src="{{ asset('images/bengohdam-logo.png') }}" width="30" class="me-2">
                 Bengoh Academy
             </a>
-            <!-- Menu -->
+
             <div class="flex-grow-1">
                 <a href="{{ route('admin.dashboard') }}"
-                class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">Dashboard</a>
+                   class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">Dashboard</a>
 
                 <a href="{{ route('admin.user.management') }}"
-                class="{{ request()->routeIs('admin.user.management') ? 'active' : '' }}">User Management</a>
+                   class="{{ request()->routeIs('admin.user.management') ? 'active' : '' }}">User Management</a>
 
                 <a href="{{ route('admin.course.module') }}"
-                class="{{ request()->routeIs('admin.course.module') ? 'active' : '' }}">Course/Module Management</a>
+                   class="{{ request()->routeIs('admin.course.module') ? 'active' : '' }}">Course/Module Management</a>
 
                 <a href="{{ route('admin.progress') }}"
-                class="{{ request()->routeIs('admin.progress') ? 'active' : '' }}">Progress</a>
+                   class="{{ request()->routeIs('admin.progress') ? 'active' : '' }}">Progress</a>
 
                 <a href="{{ route('admin.announcements') }}"
-                class="{{ request()->routeIs('admin.announcements') ? 'active' : '' }}">Announcements</a>
+                   class="{{ request()->routeIs('admin.announcements') ? 'active' : '' }}">Announcements</a>
 
                 <a href="{{ route('admin.reports') }}"
-                class="{{ request()->routeIs('admin.reports') ? 'active' : '' }}">Reports</a>
+                   class="{{ request()->routeIs('admin.reports') ? 'active' : '' }}">Reports</a>
             </div>
-            <!-- Bottom -->
+
             <div>
                 <a href="{{ route('admin.settings') }}"
-                class="{{ request()->routeIs('admin.settings') ? 'active' : '' }}">Settings</a>
+                   class="{{ request()->routeIs('admin.settings') ? 'active' : '' }}">Settings</a>
 
                 <a href="{{ route('admin.help') }}">Help & Support</a>
 
@@ -56,17 +52,15 @@
                 </form>
             </div>
         </div>
-        <!-- ================= MAIN CONTENT ================= -->
-        <div class="flex-grow-1">
-            <!-- Topbar -->
+
+        <div class="main-content flex-grow-1 d-flex flex-column">
+            
             <div class="topbar d-flex align-items-center p-3 px-4">
                 <div class="d-flex align-items-center ms-auto gap-4">
-                    <!-- Language -->
                     <div class="d-flex align-items-center text-muted" style="cursor:pointer;">
                         <small class="me-1">Languages</small>
                         <i class="bi bi-chevron-down"></i>
                     </div>
-                    <!-- User -->
                     <div class="d-flex align-items-center">
                         <i class="bi bi-person-circle fs-4 me-2"></i>
                         <div class="lh-sm">
@@ -74,16 +68,13 @@
                             <small class="text-muted">Administrator</small>
                         </div>
                     </div>
-                    <!-- Notifications -->
                     <ul class="navbar-nav">
                         <li class="nav-item dropdown">
                             <a class="nav-link position-relative" href="#"
-                            id="notificationDropdown"
-                            role="button"
-                            data-bs-toggle="dropdown">
-
+                               id="notificationDropdown"
+                               role="button"
+                               data-bs-toggle="dropdown">
                                 <i class="bi bi-bell fs-5"></i>
-
                                 @if($totalNotifications > 0)
                                     <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                                         {{ $totalNotifications }}
@@ -94,21 +85,21 @@
                                 <li><h6 class="dropdown-header">Admin Alerts</h6></li>
                                 <li>
                                     <a class="dropdown-item d-flex justify-content-between"
-                                    href="{{ route('admin.password.requests') }}">
+                                       href="{{ route('admin.password.requests') }}">
                                         Password Reset Requests
                                         <span class="badge bg-primary">{{ $forgotRequests }}</span>
                                     </a>
                                 </li>
                                 <li>
                                     <a class="dropdown-item d-flex justify-content-between"
-                                    href="{{ route('admin.feedback') }}">
+                                       href="{{ route('admin.feedback') }}">
                                         Pending Feedback
                                         <span class="badge bg-primary">{{ $feedbackCount }}</span>
                                     </a>
                                 </li>
                                 <li>
                                     <a class="dropdown-item d-flex justify-content-between"
-                                    href="{{ route('admin.announcements') }}">
+                                       href="{{ route('admin.announcements') }}">
                                         Announcements for Review
                                         <span class="badge bg-primary">{{ $announcementReview }}</span>
                                     </a>
@@ -118,26 +109,23 @@
                     </ul>
                 </div>
             </div>
-            <!-- Page Content -->
+
             <div class="p-4">
                 @yield('content')
             </div>
         </div>
     </div>
 
-    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     @stack('scripts')
 
-    <!-- Service Worker -->
     <script>
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('/service-worker.js')
         .then(() => console.log("Service Worker Registered"));
     }
     </script>
-
 </body>
 </html>

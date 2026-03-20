@@ -1,0 +1,118 @@
+body{
+    background:#eaf1f7;
+    margin:0;
+}
+
+/* ================= SIDEBAR ================= */
+.sidebar{
+    width:250px;              /* 🔥 IMPORTANT (was missing) */
+    height:100vh;
+    background:white;
+    padding:20px;
+    border-right:1px solid #ddd;
+
+    display:flex;
+    flex-direction:column;
+}
+
+.sidebar a{
+    display:block;
+    padding:10px;
+    border-radius:8px;
+    text-decoration:none;
+    color:#333;
+    margin-bottom:6px;
+    transition:0.2s;
+}
+
+.sidebar a.active,
+.sidebar a:hover{
+    background:#d6e4f5;
+    font-weight:500;
+}
+
+/* logout button */
+.sidebar-logout{
+    display:block;
+    padding:10px;
+    border-radius:8px;
+    color:#333;
+    margin-bottom:6px;
+    width:100%;
+    background:none;
+    border:none;
+    text-align:left;
+    transition:0.2s;
+}
+
+.sidebar-logout:hover{
+    background:#d6e4f5;
+    font-weight:500;
+}
+
+/* ================= TOPBAR ================= */
+.topbar{
+    background:white;
+    border-bottom:1px solid #ddd;
+}
+
+/* ================= CARDS ================= */
+.card-box{
+    background:white;
+    border-radius:12px;
+    padding:20px;
+    box-shadow:0 3px 8px rgba(0,0,0,0.05);
+}
+
+/* ================= CHART ================= */
+.chart-container{
+    width:280px;
+    height:280px;
+    margin:auto;
+}
+
+/* ================= PROGRESS CIRCLE ================= */
+.progress-circle{
+    width:70px;
+    height:70px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:bold;
+    position:relative;
+
+    background:conic-gradient(#ddd calc(var(--value)*1%), #eee 0);
+    animation:growProgress 1s ease-out;
+}
+
+.progress-circle::before{
+    content:"";
+    position:absolute;
+    width:52px;
+    height:52px;
+    background:#fff;
+    border-radius:50%;
+}
+
+.progress-circle span{
+    position:relative;
+    font-size:14px;
+}
+
+.progress-circle.red{
+    background:conic-gradient(#ff3b3b calc(var(--value)*1%), #eee 0);
+}
+
+.progress-circle.blue{
+    background:conic-gradient(#1e90ff calc(var(--value)*1%), #eee 0);
+}
+
+.progress-circle.gray{
+    background:conic-gradient(#bfbfbf calc(var(--value)*1%), #eee 0);
+}
+
+/* animation */
+@keyframes growProgress{
+    from{ --value:0 }
+}

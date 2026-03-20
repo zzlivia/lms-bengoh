@@ -1,3 +1,5 @@
+<?php
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -20,7 +22,7 @@ class AuthenticationController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:user,userEmail|unique:admin,adminEmail',
+            'email' => 'required|email|unique:users,userEmail|unique:admin,adminEmail',
             'password' => 'required|min:6|confirmed',
             'role' => 'required_if:is_admin,on'
         ]);
@@ -30,7 +32,7 @@ class AuthenticationController extends Controller
                 'adminName'  => $request->name,
                 'adminEmail' => $request->email,
                 'adminPass'  => bcrypt($request->password),
-                'role'       => $request->role
+                'adminRole'  => $request->role
             ]);
 
             return redirect()->route('login')->with('success', 'Admin account created!');

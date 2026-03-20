@@ -30,16 +30,19 @@
                 </div>
             @endif
 
-            <form method="POST" action="#"> {{--{{ route('login') }}--}}
+            <form method="POST" action="{{ route('login') }}" autocomplete=="off"> {{--{{ route('login') }}--}}
                 @csrf
+                <!-- fake fields -->
+                <input type="text" name="fake_username" style="display:none">
+                <input type="password" name="fake_password" style="display:none">
                 <div class="mb-3"> {{-- email input --}}
                     <label class="form-label small fw-bold">Email Address</label>
                     <input type="email"
                         name="email"
                         class="form-control @error('email') is-invalid @enderror"
                         placeholder="name@example.com"
-                        value="{{ old('email') }}"
-                        autocomplete="username"
+                        value="" {{--remove {{ old('email') }}--}}
+                        autocomplete="off"
                         required>
                 </div>
                 <div class="mb-2"> {{--password input--}}
@@ -48,13 +51,13 @@
                         name="password"
                         class="form-control @error('password') is-invalid @enderror"
                         placeholder="••••••••"
-                        autocomplete="current-password"
+                        autocomplete="off"
                         required>
                 </div>
 
                 <div class="d-flex justify-content-between align-items-center mb-4 small">
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="remember" id="remember">
+                        <input class="form-check-input" type="checkbox" name="is_admin" id="remember">
                         <label class="form-check-label" for="remember">Remember me</label>
                     </div>
                     <a href="#" class="text-decoration-none">Forgot Password?</a>
@@ -64,7 +67,7 @@
 
             <div class="mt-4 text-center small-link">
                 <p class="text-muted mb-1">OR</p>
-                <a href="#" class="text-decoration-none fw-bold">Register my account</a> {{--{{ route('register') }}--}}
+                <a href="{{ route('register') }}" class="text-decoration-none fw-bold">Register my account</a> {{--{{ route('register') }}--}}
             </div>
         </div>
     </div>

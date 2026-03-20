@@ -5,7 +5,7 @@ use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\Admin\CommunityStoryController;
 use App\Http\Controllers\Admin\CommunityStoryController as AdminCommunityStoryController;
-use App\Http\Controllers\Admin\AuthController;
+//use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Admin\LectureSectionController;
 use App\Http\Controllers\Admin\ModuleController;
@@ -107,16 +107,16 @@ Route::get('/community-stories', [CommunityStoryController::class, 'index'])
 
 /* admin authentication*/
 
-Route::get('/admin/signin', [AuthController::class, 'showLogin'])
+Route::get('/admin/signin', [AuthenticationController::class, 'showLogin'])
     ->name('admin.login');
 
-Route::post('/admin/signin', [AuthController::class, 'login'])
+Route::post('/admin/signin', [AuthenticationController::class, 'login'])
     ->name('admin.login.submit');
 
-Route::post('/admin/logout', [AuthController::class, 'logout'])
+Route::post('/admin/logout', [AuthenticationController::class, 'logout'])
     ->name('admin.logout');
 
-Route::post('/request-reset', [AuthController::class, 'requestReset'])
+Route::post('/request-reset', [AuthenticationController::class, 'requestReset'])
     ->name('request.reset');
 
 /* admin's management*/

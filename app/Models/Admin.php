@@ -3,19 +3,16 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-//use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Admin extends Model
+class Admin extends Authenticatable
 {
     use HasFactory, Notifiable; //enable factory usage and notifications
 
     protected $table = 'admin'; //table name
     protected $primaryKey = 'adminID'; //custom primary key
-    public $incrementing = true; //auto increment allowed
-    protected $keyType = 'int';
-
     protected $fillable = [ //attributes
         'adminName',
         'adminEmail',
@@ -25,7 +22,8 @@ class Admin extends Model
 
     protected $hidden = ['adminPass',]; //hidden attributes
     protected $casts = ['adminPass' => 'hashed',];//auto hashed
-    public function getAuthPass() { return $this->adminPass; }
+    public function getAuthPassword() { return $this->adminPass; }
+    public function getAuthIdentifierName(){return 'adminEmail';}
 
     public function announcements() { return $this->hasMany(Announcements::class, 'adminID', 'adminID'); }
 

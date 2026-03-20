@@ -11,6 +11,13 @@ use App\Http\Controllers\AdminSettingsController;
 //127.0.0.1:8000 acts as main page
 Route::get('/', function () {return view('homepage');});
 
+//authentication
+Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+Route::post('/login', [AuthController::class, 'login']);
+
+Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
+Route::post('/register', [AuthController::class, 'register']);
+
 //admin
 Route::prefix('admin')->name('admin.')->group(function () {
 

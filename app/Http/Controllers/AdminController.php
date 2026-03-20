@@ -22,7 +22,7 @@ class AdminController extends Controller
 {
     public function admin_dashboard()
     {
-        // 1. High-Level Stats (KPIs)
+        //card status
         $stats = [
             'totalUsers'    => Users::count(),
             'totalCourses'  => Course::count(),
@@ -30,7 +30,6 @@ class AdminController extends Controller
             'totalLectures' => Lecture::count(),
         ];
 
-        // 2. Announcements & Course Popularity
         $announcements = Announcements::latest()->take(4)->get();
 
         $courseStats = DB::table('enrolmentcoursemodules')
@@ -41,10 +40,9 @@ class AdminController extends Controller
             ->take(5)
             ->get();
 
-        // 3. Resource Summary
         $recentMaterial = DB::table('learningmaterials')->latest()->first();
         
-        // Helper to avoid repeating join logic for PDFs and Videos
+        //avoid repeating join logic for PDFs and Videos
         $getLatestByType = function($table) {
             return DB::table($table)
                 ->join('learningmaterials', "$table.learningMaterialID", "=", "learningmaterials.learningMaterialID")
@@ -57,27 +55,26 @@ class AdminController extends Controller
         $recentVideo = $getLatestByType('videolearning');
         $unusedMaterials = DB::table('learningmaterials')->whereNull('lectID')->count();
 
-        // 4. Data for Charts & Notifications
+        //data for charts & notifications
         $chartData = [
             'completedModules' => DB::table('enrolmentcoursemodules')->where('isCompleted', 1)->count(),
             'pdfMaterials'     => DB::table('pdflearning')->count(),
             'videoMaterials'   => DB::table('videolearning')->count(),
         ];
 
+        /* add into AppServiceProvider.php to calculate 
         $notifications = [
             'forgotRequests'     => Users::where('reset_request', 1)->count(),
             'feedbackCount'      => DB::table('coursefeedback')->count(),
             'announcementReview' => Announcements::where('status', 'pending')->count(),
-        ];
-
-        $totalNotifications = array_sum($notifications);
+        $totalNotifications = array_sum($notifications); ];*/
 
         //merge all variables into the view
         return view('admin.admin_dashboard', array_merge(
             $stats, 
             $chartData, 
-            $notifications, 
-            compact('announcements', 'courseStats', 'recentMaterial', 'recentPdf', 'recentVideo', 'unusedMaterials', 'totalNotifications')
+            //$notifications, 
+            compact('announcements', 'courseStats', 'recentMaterial', 'recentPdf', 'recentVideo', 'unusedMaterials')//, 'totalNotifications'
         ));
     }
 }

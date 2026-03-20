@@ -1,65 +1,59 @@
-<?php
-
-//handles login and registration with two roles
-namespace App\Http\Controllers; //base controllers
+namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class AuthenticationController extends Controller
 {
-    public function showLogin() //displays login page
+    public function showLogin()
     {
-        return view('auth.signin'); // since file is signin.blade.php
+        return view('authentication.signin');
     }
 
-    // add registration functions
-    public function showRegister() //displays registration page
+    public function showRegister()
     {
-        return view('auth.register');
+        return view('authentication.register');
     }
 
     public function register(Request $request)
     {
-        $request->validate([ //validate user input
+        $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:user,userEmail|unique:admin,adminEmail',
             'password' => 'required|min:6|confirmed',
             'role' => 'required_if:is_admin,on'
         ]);
 
-        if ($request->boolean('is_admin')) { //check if the user is admin
-            //if admin checkbox ticked, save into admin table
+        if ($request->boolean('is_admin')) {
             \App\Models\Admin::create([
                 'adminName'  => $request->name,
                 'adminEmail' => $request->email,
                 'adminPass'  => bcrypt($request->password),
                 'role'       => $request->role
             ]);
-            //redirect to login page
-            return redirect()->route('login')->with('success', 'Admin account created!');
 
+            return redirect()->route('login')->with('success', 'Admin account created!');
         } else {
-            // or else save to user table
-            \App\Models\User::create([
+            \App\Models\Users::create([
                 'userName'      => $request->name,
                 'userEmail'     => $request->email,
                 'userPass'      => bcrypt($request->password),
                 'authenticated' => 1
             ]);
-            //redirect to login page
+
             return redirect()->route('login')->with('success', 'Learner account created!');
         }
     }
 
     public function login(Request $request)
     {
-        $request->validate([ //validate input
+        $request->validate([
             'email' => 'required',
             'password' => 'required'
         ]);
 
-        ///try to login as admin
+        // Try admin login
         if (Auth::guard('admin')->attempt([
             'adminEmail' => $request->email,
             'password' => $request->password
@@ -68,7 +62,7 @@ class AuthenticationController extends Controller
             return redirect()->route('admin.dashboard');
         }
 
-        //try to login as learner
+        // Try user login
         if (Auth::attempt([
             'userEmail' => $request->email,
             'password' => $request->password
@@ -82,11 +76,27 @@ class AuthenticationController extends Controller
 
     public function logout(Request $request)
     {
-        Auth::logout(); //log user out
-        //destroy session
+        // Logout both guards safely
+        Auth::guard('admin')->logout();
+        Auth::logout();
+
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        //redirect to login page
+
         return redirect('/login');
+    }
+
+    // moved from AuthController
+    public function requestReset(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email'
+        ]);
+
+        DB::table('user')
+            ->where('userEmail', $request->email)
+            ->update(['reset_request' => 1]);
+
+        return back()->with('success', 'Password reset request sent.');
     }
 }

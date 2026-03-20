@@ -3,16 +3,22 @@ body{
     margin:0;
 }
 
-/* ================= SIDEBAR ================= */
-.sidebar{
-    width:250px;              /* 🔥 IMPORTANT (was missing) */
-    height:100vh;
-    background:white;
-    padding:20px;
-    border-right:1px solid #ddd;
+/* ================= SIDEBAR (LOCKED) ================= */
+.sidebar {
+    width: 250px;
+    height: 100vh;
+    background: white;
+    padding: 20px;
+    border-right: 1px solid #ddd;
+    display: flex;
+    flex-direction: column;
 
-    display:flex;
-    flex-direction:column;
+    /* --- to lock --- */
+    position: fixed;    /* Fixes it to the screen */
+    top: 0;             /* Starts at the very top */
+    left: 0;            /* Starts at the very left */
+    z-index: 1000;      /* Keeps it on top of other elements */
+    overflow-y: auto;   /* If you have many links, the sidebar can scroll internally */
 }
 
 .sidebar a{
@@ -110,6 +116,13 @@ body{
 
 .progress-circle.gray{
     background:conic-gradient(#bfbfbf calc(var(--value)*1%), #eee 0);
+}
+
+/* ================= MAIN CONTENT OFFSET ================= */
+.main-content {
+    margin-left: 250px; /* Must match the sidebar width exactly */
+    width: calc(100% - 250px); 
+    min-height: 100vh;
 }
 
 /* animation */

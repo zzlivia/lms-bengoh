@@ -175,6 +175,9 @@ Route::prefix('admin')
     Route::post('/lecture-sections/store', [LectureSectionController::class, 'store'])
         ->name('lecture.sections.store');
 
+    Route::post('/sections/store', [AdminController::class, 'storeSection'])
+        ->name('sections.store');
+        
     Route::get('/section/edit/{id}', [AdminController::class, 'editSection'])
         ->name('section.edit');
 

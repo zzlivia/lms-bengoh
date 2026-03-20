@@ -548,7 +548,7 @@ class AdminController extends Controller
     public function passwordRequests()
     {
         $requests = DB::table('users')
-            ->where('forgot_password', 1)
+            ->where('reset_request', 1)
             ->get();
 
         return view('admin.passwordRequests', compact('requests'));

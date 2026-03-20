@@ -21,7 +21,7 @@
                 </ul>
             </div>
         @endif
-        <form method="POST" action="#" autocomplete="off"> {{--{{ route('register') }}--}}
+        <form method="POST" action="{{ route('register.submit') }}" autocomplete="off"> {{--{{ route('register') }}--}}
             @csrf
             {{-- name --}}
             <input type="text" name="name" class="form-control mb-3" placeholder="Enter your full name" value="{{ old('name') }}" required>
@@ -40,7 +40,7 @@
             {{-- checkbox if the user is an admin --}}
             <div class="mb-3 d-flex justify-content-center">
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="isAdminCheck" name="is_admin" {{ old('is_admin') ? 'checked' : '' }}>
+                    <input class="form-check-input" type="checkbox" id="isAdminCheck" name="is_admin" value="1">
                     <label class="form-check-label" for="isAdminCheck">Are you an admin?</label>
                 </div>
             </div>
@@ -56,7 +56,7 @@
             
             <div class="mt-4">
                 <p class="text-muted small">Already have an account? 
-                    <a href="#" class="signin-link">Sign in here</a> {{--{{ route('login') }}--}}
+                    <a href="{{ route('login') }}" class="signin-link">Sign in here</a> {{----}}
                 </p>
             </div>
         </form>

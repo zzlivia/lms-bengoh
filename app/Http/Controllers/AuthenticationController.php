@@ -31,7 +31,7 @@ class AuthenticationController extends Controller
             \App\Models\Admin::create([
                 'adminName'  => $request->name,
                 'adminEmail' => $request->email,
-                'adminPass'  => bcrypt($request->password),
+                //'adminPass'  => bcrypt($request->password),
                 'adminRole'  => $request->role
             ]);
 

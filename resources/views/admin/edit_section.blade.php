@@ -10,7 +10,7 @@
         </div>
     @endif
     <h4 class="mb-4">Edit Section</h4>
-    <form action="{{ route('admin.section.update', $section->sectionID) }}" method="POST">
+    <form action="{{ route('admin.sections.update', $section->sectionID) }}" method="POST">
         @csrf
         @method('PUT')
         <div class="mb-3">

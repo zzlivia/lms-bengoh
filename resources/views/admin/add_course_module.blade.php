@@ -205,7 +205,7 @@
                 </table>
             </div>
             <div class="tab-pane fade" id="section-form">
-                <form method="POST" action="{{ route('admin.section.store') }}" enctype="multipart/form-data">
+                <form method="POST" action="{{ route('admin.sections.store') }}" enctype="multipart/form-data">
                     @csrf
                     <div class="mb-3">
                         <label class="form-label">Select Lecture</label>

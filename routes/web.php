@@ -20,10 +20,10 @@ Route::get('/homepage', fn () => view('homepage'))->name('homepage');
 /* authentication */
 
 Route::get('/login', [AuthenticationController::class, 'showLogin'])->name('login');
-Route::post('/login', [AuthenticationController::class, 'login']);
+Route::post('/login', [AuthenticationController::class, 'login'])->name('login.submit');
 
 Route::get('/register', [AuthenticationController::class, 'showRegister'])->name('register');
-Route::post('/register', [AuthenticationController::class, 'register']);
+Route::post('/register', [AuthenticationController::class, 'register'])->name('register.submit');
 
 Route::post('/logout', [AuthenticationController::class, 'logout'])->name('logout');
 

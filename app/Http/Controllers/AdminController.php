@@ -319,7 +319,7 @@ class AdminController extends Controller
             $announcement->announcementTitle = $request->announcementTitle;
             $announcement->announcementDetails = $request->announcementDetails;
             $announcement->save();
-            return redirect()->route('announcements')->with('success', 'Announcement updated successfully.');
+            return redirect()->route('admin.announcements')->with('success', 'Announcement updated successfully.');
                 
         }
     

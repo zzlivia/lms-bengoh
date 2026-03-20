@@ -46,7 +46,7 @@
         <span class="input-group-text bg-white border-end-0">
             <i class="fas fa-search text-muted"></i>
         </span>
-        <input type="text" class="form-control border-start-0 ps-0" placeholder="Search Course/Modules">
+        <input type="text" class="form-control border-start-0 ps-0" placeholder="Search Courses/Modules">
     </div>
     
     <div class="dropdown">

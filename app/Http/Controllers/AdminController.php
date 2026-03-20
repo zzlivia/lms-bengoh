@@ -358,7 +358,7 @@ class AdminController extends Controller
         return view('admin.announcements', compact('announcements')); //retrieve
     }
 
-    public function createAnnouncement(){return view('admin.create_announcement'); }
+    public function createAnnouncement(){return view('admin.create_announcement'); }        
 
     public function storeAnnouncement(Request $request)
     {

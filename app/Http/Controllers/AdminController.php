@@ -284,6 +284,37 @@ class AdminController extends Controller
             ->with('success','Course deleted successfully');
     }
 
+    public function storeSection(Request $request)
+    {
+        //validate input
+        $request->validate([
+            'lectID' => 'required|exists:lecture,lectID',
+            'section_title' => 'required|string|max:255',
+            'section_type' => 'required|in:text,video,pdf,image',
+            'section_order' => 'nullable|integer',
+            'section_file' => 'nullable|file',
+        ]);
+
+        //create new section
+        $section = new LectureSection();
+        $section->lectID = $request->lectID;
+        $section->section_title = $request->section_title;
+        $section->section_type = $request->section_type;
+        $section->section_order = $request->section_order;
+
+        //handle content / file
+        if ($request->hasFile('section_file')) {
+            // store file
+            $path = $request->file('section_file')->store('sections', 'public');
+            $section->section_content = $path;
+        } else {
+            // use text content
+            $section->section_content = $request->section_content;
+        }
+        $section->save();
+        return back()->with('success', 'Section added successfully!');
+    }    
+
     public function editSection($id)
     {
         $section = LectureSection::findOrFail($id);

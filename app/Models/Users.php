@@ -38,4 +38,6 @@ class Users extends Authenticatable
         // an user has one spot in leaderboard
         return $this->hasOne(Leaderboard::class, 'userID', 'userID');
     }
+
+    public function assessmentResults(){return $this->hasMany(AssessmentResult::class, 'userID', 'userID');}
 }

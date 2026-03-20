@@ -1,65 +1,62 @@
-<?php
-
 namespace App\Http\Controllers;
 
-use App\Models\Users;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
+//handles learners authentication process
 class AuthController extends Controller
 {
-    //registration process
+    public function showLogin()
+    {
+        return view('auth.signin');
+    }
+
+    public function showRegister()
+    {
+        return view('auth.register');
+    }
+
     public function register(Request $request)
     {
         $request->validate([
-            'name'     => 'required|string|max:255',
-            'email'    => 'required|string|email|max:255|unique:users,userEmail',
-            'password' => 'required|string|min:8|confirmed',
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,userEmail',
+            'password' => 'required|min:6|confirmed',
         ]);
 
-        //create the user 
-        $user = Users::create([
-            'userName'      => $request->name,
-            'userEmail'     => $request->email,
-            'userPass'      => Hash::make($request->password),
-            'authenticated' => true, // setting the flag
+        $user = User::create([
+            'userName' => $request->name,
+            'userEmail' => $request->email,
+            'userPass' => Hash::make($request->password),
         ]);
 
         Auth::login($user);
-        //return redirect()->route('courses.index')->with('success', 'Registration successful!');
+
+        return redirect()->route('learner.homepage');
     }
 
-    //sign in process
     public function login(Request $request)
     {
-        $credentials = $request->validate([
-            'email'    => 'required|email',
-            'password' => 'required',
-        ]);
-
-        // map to recognize the userEmail and password
-        $authAttempt = [
-            'userEmail' => $credentials['email'],
-            'password'  => $credentials['password'], // looks for the hashed 'userPass' automatically through getAuthPassword()
+        $credentials = [
+            'userEmail' => $request->email,
+            'password'  => $request->password,
         ];
 
-        if (Auth::attempt($authAttempt, $request->remember)) {
+        if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->intended('/homepage');
+            return redirect()->route('learner.homepage');
         }
 
-        return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
-        ])->onlyInput('email');
+        return back()->withErrors(['email' => 'Invalid credentials']);
     }
 
-    //logout process
     public function logout(Request $request)
     {
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect('/')->with('success', 'Logged out successfully.');
+        return redirect('/login');
     }
 }

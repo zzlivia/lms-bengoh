@@ -22,7 +22,7 @@ use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
-        public function index() //admin dashboard
+        public function dashboard() //admin dashboard
         {
             //card status
             $stats = [
@@ -301,20 +301,17 @@ class AdminController extends Controller
             return view('admin.viewAnnouncement', compact('announcement'));
         }
 
-
         public function reviewAnnouncement($id)
         {
             $announcement = Announcements::where('announcementID', $id)->first();
             return view('admin.reviewAnnouncement', compact('announcement'));
         }
 
-
         public function editAnnouncement($id)
         {
             $announcement = Announcements::where('announcementID', $id)->first();
             return view('admin.editAnnouncement', compact('announcement'));
         }
-
 
         public function updateAnnouncement(Request $request, $id)
         {
@@ -354,7 +351,6 @@ class AdminController extends Controller
             return view('admin.reports', compact('totalUsers','newUsers','activeUsers','inactiveUsers','guestUsers','courseModules'));
         }
 
-
         public function reportOverview()
         {
             // total users
@@ -380,7 +376,6 @@ class AdminController extends Controller
                 ->get();
             return view('admin.reportOverview', compact('totalUsers','newUsers','activeUsers','inactiveUsers','guestUsers','courseModules'));
         }
-
 
         public function downloadReport() //download report in pdf
         {  

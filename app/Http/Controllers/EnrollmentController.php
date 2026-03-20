@@ -33,6 +33,6 @@ class EnrolmentController extends Controller
                 'updated_at'  => now(),
             ]);
         }
-        //return redirect()->route('courses.learn', $courseID)->with('success', 'Successfully enrolled! Enjoy your learning.');
+        //return redirect()->route('course.learn', $courseID)->with('success', 'Successfully enrolled! Enjoy your learning.');
     }
 }

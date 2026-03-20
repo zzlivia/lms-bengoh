@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 
 //import models
 use App\Models\LearningMaterials;
-use App\Models\User;
+use App\Models\Users;
 use App\Models\Course;
 use App\Models\Module;
 use App\Models\Lecture;
@@ -29,7 +29,7 @@ class AdminController extends Controller
     public function dashboard() //admin dashboard 
     {   
         //count total records of users, courses, modules, lectures
-        $totalUsers = User::count(); 
+        $totalUsers = Users::count(); 
         $totalCourses = Course::count();
         $totalModules = Module::count();
         $totalLectures = Lecture::count();
@@ -88,7 +88,7 @@ class AdminController extends Controller
         $videoMaterials = DB::table('videolearning')->count();
 
         //notifications of forgot requests password, feedback, announcement
-        $forgotRequests = DB::table('user')
+        $forgotRequests = DB::table('users')
             ->where('reset_request', 1)
             ->count();
         $feedbackCount = DB::table('coursefeedback')->count();
@@ -125,8 +125,8 @@ class AdminController extends Controller
         $search = $request->search;
 
         // summary cards
-        $totalUsers = DB::table('user')->count();
-        $newUsers = DB::table('user')
+        $totalUsers = DB::table('users')->count();
+        $newUsers = DB::table('users')
             ->whereDate('userID', '>=', now()->subDays(7)) // placeholder if no created_at
             ->count();
         $activeUsers = DB::table('enrolmentcoursemodules')
@@ -134,19 +134,19 @@ class AdminController extends Controller
             ->distinct('userID')
             ->count('userID');
         // user table
-        $users = DB::table('user')
-            ->leftJoin('enrolmentcoursemodules', 'user.userID', '=', 'enrolmentcoursemodules.userID')
+        $users = DB::table('users')
+            ->leftJoin('enrolmentcoursemodules', 'users.userID', '=', 'enrolmentcoursemodules.userID')
             ->when($search, function ($query, $search) {
-                return $query->where('user.userName', 'like', "%$search%");
+                return $query->where('users.userName', 'like', "%$search%");
             })
             ->select(
-                'user.userID',
-                'user.userName as name',
-                'user.userEmail as email',
+                'users.userID',
+                'users.userName as name',
+                'users.userEmail as email',
                 DB::raw('COUNT(CASE WHEN enrolmentcoursemodules.inProgress = 1 THEN 1 END) as engagement'),
                 DB::raw('COUNT(CASE WHEN enrolmentcoursemodules.isCompleted = 1 THEN 1 END) as completedCourses')
             )
-            ->groupBy('user.userID', 'user.userName', 'user.userEmail')
+            ->groupBy('users.userID', 'users.userName', 'users.userEmail')
             ->get();
 
         return view('admin.user_management', compact(
@@ -160,7 +160,7 @@ class AdminController extends Controller
     public function courseModuleManagement()
     {
         $courses = Course::with('modules.lectures.sections')->get();
-        $totalUsers = User::count();
+        $totalUsers = Users::count();
         $totalCourses = Course::count();
         $totalModules = Module::count();
         $totalLectures = Lecture::count();
@@ -168,7 +168,7 @@ class AdminController extends Controller
         $totalAssessmentsPassed = AssessmentResult::where('status', 'passed')->count();
         $totalCompleted = Progress::where('progressStatus', 'completed')->count();
 
-        $topUser = User::withSum('assessmentResults', 'score')
+        $topUser = Users::withSum('assessmentResults', 'score')
             ->orderByDesc('assessment_results_sum_score')
             ->first();
 
@@ -197,25 +197,14 @@ class AdminController extends Controller
         $lectures = Lecture::with('module')->get();
         $sections = LectureSection::with('lecture')->orderBy('section_order')->get();
 
-        return view('admin.add_course_module', compact(
-            'courses',
-            'modules',
-            'lectures',
-            'sections'
-        ));
+        return view('admin.add_course_module', compact('courses','modules','lectures','sections'));
     }
 
     public function storeCourse(Request $request)
     {
-        $request->validate([ //validate form input
-            'courseCode' => 'required',
-            'courseName' => 'required',
-            'courseAuthor' => 'required',
-            'courseLevel' => 'required'
-        ]);
-
+        //validate form input
+        $request->validate([ 'courseCode' => 'required','courseName' => 'required','courseAuthor' => 'required','courseLevel' => 'required']);
         $course = new Course(); //create new course
-
         //assign values 
         $course->courseCode = $request->courseCode;
         $course->courseName = $request->courseName;
@@ -369,10 +358,7 @@ class AdminController extends Controller
         return view('admin.announcements', compact('announcements')); //retrieve
     }
 
-    public function createAnnouncement()
-    {
-        return view('admin.create_announcement');
-    }
+    public function createAnnouncement(){return view('admin.create_announcement'); }
 
     public function storeAnnouncement(Request $request)
     {
@@ -423,20 +409,20 @@ class AdminController extends Controller
     {
 
         // total registered users
-        $totalUsers = DB::table('user')->count();
+        $totalUsers = DB::table('users')->count();
 
         // new users per month
-        $newUsers = DB::table('user')
+        $newUsers = DB::table('users')
             ->whereMonth('created_at', now()->month)
             ->count();
 
         // active users (authenticated = 1)
-        $activeUsers = DB::table('user')
+        $activeUsers = DB::table('users')
             ->where('authenticated', 1)
             ->count();
 
         // inactive users
-        $inactiveUsers = DB::table('user')
+        $inactiveUsers = DB::table('users')
             ->where('authenticated', 0)
             ->count();
 
@@ -470,16 +456,16 @@ class AdminController extends Controller
     public function reportOverview()
     {
         // total users
-        $totalUsers = User::count();
+        $totalUsers = Users::count();
 
         // new users registered in a month
-        $newUsers = User::whereMonth('created_at', now()->month)->count();
+        $newUsers = Users::whereMonth('created_at', now()->month)->count();
 
         // active users that logged in
-        $activeUsers = User::where('status', 'active')->count();
+        $activeUsers = Users::where('status', 'active')->count();
 
         // inactive users
-        $inactiveUsers = User::where('status', 'inactive')->count();
+        $inactiveUsers = Users::where('status', 'inactive')->count();
 
         // guest or unregistered users
         $guestUsers = 0;
@@ -496,31 +482,24 @@ class AdminController extends Controller
             )
             ->get();
 
-        return view('admin.reportOverview', compact(
-            'totalUsers',
-            'newUsers',
-            'activeUsers',
-            'inactiveUsers',
-            'guestUsers',
-            'courseModules'
-        ));
+        return view('admin.reportOverview', compact('totalUsers','newUsers','activeUsers','inactiveUsers','guestUsers','courseModules'));
     }
 
     public function downloadReport() //download report in pdf
     {   
         //collect statistics
-        $totalUsers = DB::table('user')->count(); 
+        $totalUsers = DB::table('users')->count(); 
         // new user recent register
-        $newUsers = DB::table('user')
+        $newUsers = DB::table('users')
             ->whereDate('created_at', today())
             ->count();
         // active user define by authenticated attribute
-        $activeUsers = DB::table('user')
+        $activeUsers = DB::table('users')
             ->where('authenticated', 1)
             ->count();
 
         // inactive users define by authenticated attribute
-        $inactiveUsers = DB::table('user')
+        $inactiveUsers = DB::table('users')
             ->where('authenticated', 0)
             ->count();
 
@@ -553,14 +532,7 @@ class AdminController extends Controller
             ->groupBy('module.moduleName')
             ->get();
 
-        $data = compact(
-            'totalUsers',
-            'newUsers',
-            'activeUsers',
-            'inactiveUsers',
-            'guestUsers',
-            'courseModules',
-            'assessmentReport'
+        $data = compact('totalUsers','newUsers','activeUsers','inactiveUsers','guestUsers','courseModules','assessmentReport'
         );
         $pdf = Pdf::loadView('admin.reportPDF',$data); //load view into pdf
         return $pdf->download('bengoh-dam_report.pdf'); //name of downloaded report pdf
@@ -575,20 +547,13 @@ class AdminController extends Controller
         return view('admin.passwordRequests', compact('requests'));
     }
 
-    public function settings()
-    {
-        return view('admin.admin_settings');
-    }
+    public function settings(){return view('admin.admin_settings');}
 
-    public function feedback()
-    {
+    public function feedback(){
+    
         $feedbacks = DB::table('coursefeedback')->get();
-
         return view('admin.feedback', compact('feedbacks'));
     }
 
-    public function helpSupport()
-    {
-        return view('admin.admin_help_support');
-    }
+    public function helpSupport(){return view('admin.admin_help_support');}
 }

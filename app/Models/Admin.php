@@ -23,7 +23,7 @@ class Admin extends Authenticatable
     protected $hidden = ['adminPass',]; //hidden attributes
     protected $casts = ['adminPass' => 'hashed',];//auto hashed
     public function getAuthPassword() { return $this->adminPass; }
-    public function getAuthIdentifierName(){return 'adminEmail';}
+    public function getAuthIdentifierName(){return 'adminID';}
 
     public function announcements() { return $this->hasMany(Announcements::class, 'adminID', 'adminID'); }
 

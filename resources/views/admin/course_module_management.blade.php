@@ -48,32 +48,43 @@
         </span>
         <input type="text" class="form-control border-start-0 ps-0" placeholder="Search Courses/Modules">
     </div>
-    
     <div class="dropdown">
         <button class="btn btn-primary dropdown-toggle" type="button" id="addDropdown" data-bs-toggle="dropdown" aria-expanded="false">
             <i class="fas fa-plus me-1"></i> Add New
         </button>
+
         <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="addDropdown">
-            {{-- passing query parameter --}}
+            {{-- Add Course --}}
             <li>
                 <a class="dropdown-item" href="{{ route('admin.course.module.create') }}?tab=course">
                     <i class="fas fa-book-open me-2"></i> Add Course
                 </a>
             </li>
             <li><hr class="dropdown-divider"></li>
-            <li>
+            {{-- Add Module --}}
                 <a class="dropdown-item py-2" href="{{ route('admin.course.module.create', ['tab' => 'module']) }}">
                     <i class="fas fa-layer-group me-2 text-success"></i> Add Module
                 </a>
             </li>
-            <li class="nav-item">
+            <li><hr class="dropdown-divider"></li>
+            {{-- Add Lecture --}}
+            <li>
                 <a class="dropdown-item py-2" href="{{ route('admin.course.module.create', ['tab' => 'lecture']) }}">
                     <i class="fas fa-chalkboard-teacher me-2 text-info"></i> Add Lecture
                 </a>
             </li>
-            <li class="nav-item">
+            <li><hr class="dropdown-divider"></li>
+            {{-- Add Section --}}
+            <li>
                 <a class="dropdown-item py-2" href="{{ route('admin.course.module.create', ['tab' => 'section']) }}">
-                    <i class="fas fa-chalkboard-teacher me-2 text-info"></i> Add Section
+                    <i class="fas fa-file-alt me-2 text-warning"></i> Add Section
+                </a>
+            </li>
+            <li><hr class="dropdown-divider"></li>
+            {{-- Add MCQs --}}
+            <li>
+                <a class="dropdown-item py-2" href="{{ route('admin.course.module.create', ['tab' => 'mcq']) }}">
+                    <i class="fas fa-question-circle me-2 text-danger"></i> Add MCQ
                 </a>
             </li>
         </ul>

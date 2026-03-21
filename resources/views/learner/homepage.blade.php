@@ -52,10 +52,7 @@
 
 {{-- button --}}
 <div class="text-center mb-5">
-    <a href="{{ route('courses.index') }}" class="btn btn-outline-secondary btn-sm">
-        View All Courses
-    </a>
-</div>
+    <a href="{{ route('courses.allCourses') }}" class="btn btn-outline-secondary btn-sm">View All Courses</a></div>
 
 {{-- community stories section --}}
 <h5 class="text-center mb-4 fw-bold">Community Story</h5>

@@ -4,7 +4,9 @@
     @foreach($course->modules as $module)
     <div class="mb-3">
         <div class="text-uppercase small text-muted fw-bold"> MODULE {{ $loop->iteration }} </div>
-        <div class="fw-semibold mb-2"> {{ $module->moduleName }} </div>
+        <a href="{{ route('module.viewModule', $module->moduleID) }}" class="fw-semibold mb-2 d-block text-decoration-none {{ request()->is('module/'.$module->moduleID) ? 'text-primary fw-bold' : '' }}">
+            {{ $module->moduleName }}
+        </a>
         {{-- Lectures --}}
         @foreach($module->lectures as $lecture)
             <div class="ms-2 mb-1">

@@ -43,7 +43,8 @@ Route::get('/module/{id}/questions', [CourseController::class, 'showModuleQuesti
     
 
 Route::post('/module/{id}/questions', [CourseController::class, 'submitModuleQuestions'])->name('module.questions.submit');
-    
+
+
 
 /* lecture section*/ 
 Route::post('/admin/section/store', [LectureSectionController::class,'store'])->name('admin.section.store');
@@ -189,6 +190,9 @@ Route::prefix('admin')
     
     Route::delete('/sections/delete/{id}', [LectureSectionController::class, 'deleteSection'])
         ->name('sections.delete');//delete section
+
+    /* mcqs */
+    Route::post('/mcq/store', [ModuleController::class, 'storeMCQ'])->name('admin.mcq.store');
 
     /* others */
 

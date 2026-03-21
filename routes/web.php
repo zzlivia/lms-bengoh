@@ -192,7 +192,7 @@ Route::prefix('admin')
         ->name('sections.delete');//delete section
 
     /* mcqs */
-    Route::post('/mcq/store', [ModuleController::class, 'storeMCQ'])->name('admin.mcq.store');
+    Route::post('/mcq/store', [ModuleController::class, 'storeMCQ'])->name('mcq.store');
 
     /* others */
 

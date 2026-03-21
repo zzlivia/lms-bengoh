@@ -150,13 +150,13 @@ Route::prefix('admin')
 
     /* module management*/
 
-    Route::post('/admin/module/store', [ModuleController::class, 'storeNewModule'])
+    Route::post('/module/store', [ModuleController::class, 'storeNewModule'])
         ->name('module.store');
 
-    Route::get('/module/edit/{id}', [ModuleController::class, 'edit'])
+    Route::get('/module/edit/{id}', [ModuleController::class, 'editModule'])
         ->name('module.edit');
 
-    Route::delete('/module/delete/{id}', [ModuleController::class, 'delete'])
+    Route::delete('/module/delete/{id}', [ModuleController::class, 'deleteModule'])
         ->name('module.delete');
 
     /* lecture management */

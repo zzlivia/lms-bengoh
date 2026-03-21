@@ -37,8 +37,11 @@
 
                     <p class="small text-muted mb-3">Refine your search:</p>
                     {{-- course category--}}
-                    <div class="mb-3">
-                        <label class="fw-bold">Subjects</label>
+                    <div class="filter-group mb-3">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <label class="fw-bold">Subjects</label>
+                            <i class="fa fa-chevron-down small"></i>
+                        </div>
                         <select name="category" class="form-select" onchange="this.form.submit()"> {{-- remove  --}}
                             <option value="">All Subjects</option>
                             @foreach($categories as $category)
@@ -99,7 +102,8 @@
                                     alt="{{ $course->courseName }}" 
                                     class="img-fluid rounded">
                             </div>
-                            <div class="col-md-8">
+                            <div class="col-md-8 position-relative">
+                                <i class="fa fa-volume-up position-absolute top-0 end-0 mt-2 me-2"></i>  {{-- audio icon --}}
                                 <h5 class="course-title">{{ $course->courseName }}</h5>
                                 <div class="meta-text mb-2">
                                     <span class="me-3">{{ $course->duration ?? '2' }} Weeks</span>

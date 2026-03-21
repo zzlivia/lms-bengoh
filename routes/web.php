@@ -29,7 +29,7 @@ Route::post('/logout', [AuthenticationController::class, 'logout'])->name('logou
 
 /* courses */
 
-Route::get('/courses', [CourseController::class, 'allCourse'])->name('courses.allCourse');
+Route::get('/courses', [CourseController::class, 'allCourses'])->name('courses.allCourses');
 Route::get('/courses/{id}', [CourseController::class, 'showCourse'])->name('courses.showCourse');
 //Route::get('/courses/{id}/learn', [CourseController::class, 'startLearning'])->name('courses.learn');
 

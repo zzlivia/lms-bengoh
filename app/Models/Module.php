@@ -2,6 +2,10 @@
 
 namespace App\Models;
 
+use App\Models\Course;
+use App\Models\Lecture;
+use App\Models\Mcqs;
+
 use Illuminate\Database\Eloquent\Model;
 
 class Module extends Model

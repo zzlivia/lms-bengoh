@@ -2,6 +2,10 @@
 
 namespace App\Models;
 
+use App\Models\Module;
+use App\Models\Feedback;
+use App\Models\Enrollment;
+
 use Illuminate\Database\Eloquent\Model;
 
 class Course extends Model
@@ -23,7 +27,7 @@ class Course extends Model
     public function modules()
     {
         //a course has many modules
-        return $this->hasMany(Module::class, 'courseID', 'courseID');
+        return $this->hasMany(Module::class, 'courseID', 'courseID'); //modules.lectures.sections
     }
 
     public function feedback()

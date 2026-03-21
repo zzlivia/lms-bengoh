@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\Module;
+
 use Illuminate\Database\Eloquent\Model;
 
 class Lecture extends Model

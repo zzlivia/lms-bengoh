@@ -64,7 +64,7 @@ class ModuleController extends Controller
     public function storeLecture(Request $request)
     {   //validate 
         $request->validate([
-            'moduleID' => 'required',
+            'moduleID' => 'required|exists:module,moduleID',
             'lectName' => 'required',
             'lect_duration' => 'required'
         ]);

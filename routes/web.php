@@ -35,39 +35,39 @@ Route::get('/courses/{id}', [CourseController::class, 'showCourse'])->name('cour
 
 /* module and mcqs*/
 
-//Route::get('/module/{id}/quiz', [CourseController::class, 'showQuiz'])->name('module.quiz');
+Route::get('/module/{id}/quiz', [CourseController::class, 'showQuiz'])->name('module.quiz');
 
-//Route::get('/module/{id}/questions', [CourseController::class, 'showModuleQuestions'])->name('module.questions');
+Route::get('/module/{id}/questions', [CourseController::class, 'showModuleQuestions'])->name('module.questions');
     
 
-//Route::post('/module/{id}/questions', [CourseController::class, 'submitModuleQuestions'])->name('module.questions.submit');
+Route::post('/module/{id}/questions', [CourseController::class, 'submitModuleQuestions'])->name('module.questions.submit');
     
 
 /* lecture section*/ 
-//Route::post('/admin/section/store', [LectureSectionController::class,'store'])->name('admin.section.store');
+Route::post('/admin/section/store', [LectureSectionController::class,'store'])->name('admin.section.store');
     
 
 /* course feedback */
 
-//Route::get('/course/{id}/feedback', [CourseController::class, 'courseFeedback'])->name('course.feedback');
+Route::get('/course/{id}/feedback', [CourseController::class, 'courseFeedback'])->name('course.feedback');
     
 
-//Route::post('/course/feedback', [CourseController::class, 'submitFeedback'])->name('course.feedback.submit');
+Route::post('/course/feedback', [CourseController::class, 'submitFeedback'])->name('course.feedback.submit');
     
 
 /* course assessment*/
 
-//Route::get('/course/{id}/assessment', [CourseController::class, 'courseAssessment'])->name('course.assessment');
+Route::get('/course/{id}/assessment', [CourseController::class, 'courseAssessment'])->name('course.assessment');
     
 
 /* course progress*/
 
-//Route::get('/course/{course}/progress', [CourseController::class, 'progress']) ->name('course.progress');
+Route::get('/course/{course}/progress', [CourseController::class, 'progress']) ->name('course.progress');
    
 
 /* leaderboard*/
 
-//Route::get('/leaderboards', [CourseController::class, 'leaderboard'])->middleware('auth')->name('leaderboards');
+Route::get('/leaderboards', [CourseController::class, 'leaderboard'])->middleware('auth')->name('leaderboards');
     
     
 
@@ -150,7 +150,7 @@ Route::prefix('admin')
 
     /* module management*/
 
-    Route::post('/module/store', [ModuleController::class, 'store'])
+    Route::post('/admin/module/store', [ModuleController::class, 'storeNewModule'])
         ->name('module.store');
 
     Route::get('/module/edit/{id}', [ModuleController::class, 'edit'])

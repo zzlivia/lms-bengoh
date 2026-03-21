@@ -4,7 +4,8 @@
     @foreach($course->modules as $module)
     <div class="mb-3">
         <div class="text-uppercase small text-muted fw-bold"> MODULE {{ $loop->iteration }} </div>
-        <a href="{{ route('module.viewModule', $module->moduleID) }}" class="fw-semibold mb-2 d-block text-decoration-none {{ request()->is('module/'.$module->moduleID) ? 'text-primary fw-bold' : '' }}">
+        <a href="{{ route('courses.startLearn', ['id' => $course->courseID, 'module' => $module->moduleID]) }}" 
+            class="fw-semibold mb-2 d-block text-decoration-none">
             {{ $module->moduleName }}
         </a>
         {{-- Lectures --}}

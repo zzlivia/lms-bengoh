@@ -70,7 +70,7 @@ class AuthenticationController extends Controller
             'password' => $request->password
         ])) {
             $request->session()->regenerate();
-            return redirect()->route('learner.homepage');
+            return redirect()->route('homepage');
         }
 
         return back()->with('error', 'Invalid credentials');

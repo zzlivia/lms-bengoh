@@ -23,15 +23,13 @@
         <div class="collapse navbar-collapse justify-content-end">
             <ul class="navbar-nav"> {{-- navigation menu --}}
                 <li class="nav-item mx-2">
-                    <a class="nav-link active" href="{{ route('homepage') }}">Home</a> {{--{{ route('learner.homepage') }}--}}
+                    <a class="nav-link active" href="{{ route('courses.allCourses') }}">Home</a> {{--{{ route('learner.homepage') }}--}}
                 </li>
 
                 <li class="nav-item mx-2">
-                    <a href="{{ route('courses.allCourses') }}">
-                        @class(['nav-link', 'active' => request()->routeIs('courses.allCourse')])>
-                        Courses
-                    </a>
+                    <a class="nav-link active" href="{{ route('courses.allCourses') }}">Courses</a> {{--{{ route('courses.index') }}--}}
                 </li>
+
                 <li class="nav-item mx-2">
                     <a class="nav-link" href="#">Community Stories</a>
                 </li>

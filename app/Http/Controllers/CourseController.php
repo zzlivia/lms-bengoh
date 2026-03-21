@@ -34,7 +34,7 @@ class CourseController extends Controller
 
         //filter by duration process
         if ($request->filled('duration')) {
-            $query->where('courseDuration', '<=', $request->duration);
+            $query->where('courseDuration', $request->duration);
         }
 
         //sorting
@@ -55,7 +55,8 @@ class CourseController extends Controller
                 $query->orderBy('created_at', 'desc');
                 break;
         }
-        $courses = $query->paginate(5)->withQueryString();
+        $perPage = $request->input('per_page', 3); // default to 3 if not selected
+        $courses = $query->paginate($perPage)->withQueryString();
         //for dropdowns
         $categories = Course::where('isAvailable', 1)
             ->whereNotNull('courseCategory')

@@ -50,13 +50,12 @@
     </div>
 
     {{-- button --}}
-    <div class="text-center mb-5">
-        <a href="/index.php/courses" class="btn btn-outline-secondary btn-sm px-4 rounded-pill">
-            View All Courses
-        </a>
+    <div style="position: relative; z-index: 9999;">
+        <button onclick="alert('clicked')" class="btn btn-danger">
+            TEST BUTTON
+        </button>
     </div>
 
-        
     {{-- community stories section --}}
     <h5 class="text-center mb-4 fw-bold">Community Story</h5>
     <div class="row mb-3 justify-content-center">

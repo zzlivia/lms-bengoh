@@ -27,7 +27,11 @@
                 </li>
 
                 <li class="nav-item mx-2">
-                    <a class="nav-link active" href="/index.php/courses">Courses</a> {{--{{ route('courses.allCourses') }}--}}
+                    @if(app()->environment('local'))
+                        <a class="nav-link active" href="/index.php/courses">Courses</a>
+                    @else
+                        <a class="nav-link active" href="{{ route('courses.allCourses') }}">Courses</a>
+                    @endif
                 </li>
 
                 <li class="nav-item mx-2">

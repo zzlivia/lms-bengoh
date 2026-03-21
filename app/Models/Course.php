@@ -20,7 +20,7 @@ class Course extends Model
         'courseImg'
     ];
 
-    public function module()
+    public function modules()
     {
         //a course has many modules
         return $this->hasMany(Module::class, 'courseID', 'courseID');

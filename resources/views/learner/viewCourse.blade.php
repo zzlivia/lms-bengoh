@@ -42,16 +42,7 @@
                             <li class="list-group-item d-flex justify-content-between align-items-center px-0 bg-transparent">
                                 <span><i class="fa-regular fa-circle-play me-2 text-primary"></i>{{ $lecture->lectName }}</span>
                                 <span class="text-muted small">
-                                    @php
-                                        $duration = null;
-                                        foreach($lecture->materials as $material) {
-                                            if ($material->video) {
-                                                $duration = $material->video->videoLearningDuration;
-                                                break;
-                                            }
-                                        }
-                                    @endphp
-                                    {{ $duration ? $duration . ' mins' : 'Reading' }}
+                                    {{ $lecture->lect_duration }} mins
                                 </span>
                             </li>
                         @endforeach

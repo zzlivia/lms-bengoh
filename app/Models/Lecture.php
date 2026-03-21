@@ -4,6 +4,8 @@ namespace App\Models;
 
 use App\Models\Module;
 use App\Models\LectureSection;
+use App\Models\LearningMaterials;
+use App\Models\Mcqs;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -26,5 +28,15 @@ class Lecture extends Model
     public function sections()
     {
         return $this->hasMany(LectureSection::class, 'lectID', 'lectID')->orderBy('section_order');
+    }
+
+        public function materials()
+    {
+        return $this->hasMany(LearningMaterials::class, 'lectID', 'lectID');
+    }
+
+    public function mcqs()
+    {
+        return $this->hasMany(Mcqs::class, 'moduleID', 'moduleID');
     }
 }

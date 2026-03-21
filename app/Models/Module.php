@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Course;
 use App\Models\Lecture;
 use App\Models\Mcqs;
+use App\Models\Enrollment;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -31,5 +32,17 @@ class Module extends Model
     public function mcqs()
     {
         return $this->hasMany(Mcqs::class, 'moduleID', 'moduleID');
+    }
+
+    // calculate total duration of module
+    public function totalDuration()
+    {
+        return $this->lectures->sum('lect_duration');
+    }
+
+    public function enrolment()
+    {
+        return $this->hasOne(Enrollment::class, 'moduleID', 'moduleID')
+                    ->where('userID', auth()->id());
     }
 }

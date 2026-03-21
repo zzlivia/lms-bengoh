@@ -400,6 +400,29 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
     <!-- JS file -->
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const tabTarget = urlParams.get('tab');
+
+        const tabMap = {
+            'course': '#course-tab',
+            'module': '#module-tab',
+            'lecture': '#lecture-tab',
+            'section': '#section-tab',
+            'mcq': '#mcq-tab'
+        };
+
+        if (tabTarget && tabMap[tabTarget]) {
+            let triggerEl = document.querySelector(tabMap[tabTarget]);
+            if (triggerEl) {
+                new bootstrap.Tab(triggerEl).show();
+            }
+        }
+
+    });
+    </script>
     <script src="{{ asset('js/admin-course-module.js') }}"></script>
 
 @endsection

@@ -14,4 +14,9 @@ class Lecture extends Model
         'lectName', 
         'lect_duration'
     ];
+
+    public function module()
+    {
+        return $this->belongsTo(Module::class, 'moduleID', 'moduleID');
+    }
 }

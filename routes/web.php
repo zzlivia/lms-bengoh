@@ -194,6 +194,8 @@ Route::prefix('admin')
     /* mcqs */
     Route::post('/mcq/store', [ModuleController::class, 'storeMCQ'])->name('mcq.store');
 
+    Route::get('/mcq/preview/{moduleID}', [ModuleController::class, 'previewMCQ'])->name('mcq.preview');
+       
     /* others */
 
     Route::get('/progress', [AdminController::class, 'progress'])

@@ -124,4 +124,10 @@ class ModuleController extends Controller
 
         return redirect()->back()->with('success', 'Lecture added successfully!');
     }
+
+    public function viewModule($id)
+    {
+        $module = Module::with('mcqs.answers')->where('moduleID', $id)->firstOrFail();
+        return view('learner.module_questions', compact('module'));
+    }
 }

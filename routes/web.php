@@ -161,7 +161,7 @@ Route::prefix('admin')
 
     /* lecture management */
 
-    Route::post('/lecture/store', [LectureSectionController::class, 'storeLecture'])
+    Route::post('/lecture/store', [ModuleController::class, 'storeLecture'])
         ->name('lecture.store');
 
     Route::get('/lecture/edit/{id}', [ModuleController::class, 'editLecture'])

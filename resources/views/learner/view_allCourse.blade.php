@@ -97,10 +97,8 @@
                     <div class="course-row shadow-sm mb-4">
                         <div class="row align-items-center">
                             <div class="col-md-4">
-                                {{-- path to point to public/images/ --}}
-                                <img src="{{ asset('images/' . $course->courseImg) }}" 
-                                    alt="{{ $course->courseName }}" 
-                                    class="img-fluid rounded">
+                                {{-- path to point to public/courses/ --}}
+                                <img src="{{ asset($course->courseImg) }}" alt="{{ $course->courseName }}" class="img-fluid rounded">  
                             </div>
                             <div class="col-md-8 position-relative">
                                 <i class="fa fa-volume-up position-absolute top-0 end-0 mt-2 me-2"></i>  {{-- audio icon --}}

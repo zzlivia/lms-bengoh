@@ -1,4 +1,4 @@
-@extends('layouts.learner')
+@extends('layouts.open_layout')
 
 <link rel="stylesheet" href="{{ asset('css/leaderboards.css') }}">
 

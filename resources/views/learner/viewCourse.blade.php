@@ -9,10 +9,8 @@
 @section('content')
 <div class="container mt-4">
     <div class="text-center mb-4">
-        {{-- path to point to public/images/ --}}
-        <img src="{{ asset('images/' . $course->courseImg) }}" 
-             alt="{{ $course->courseName }}" 
-             class="course-banner-img img-fluid rounded shadow-sm">
+        {{-- path to point to public/courses/ --}}
+        <img src="{{ asset($course->courseImg) }}"alt="{{ $course->courseName }}"class="course-banner-img img-fluid rounded shadow-sm"> 
     </div>
 
     <div class="row mb-4 align-items-end">
@@ -54,10 +52,10 @@
     </div>
 
     <div class="d-flex justify-content-between align-items-center mt-5 mb-5 p-4 bg-light rounded">
-        <a href="#" class="btn btn-link text-decoration-none"> {{--{{ route('course.feedback', $course->courseID) }}--}}
+        <a href="{{ route('course.feedback', $course->courseID) }}" class="btn btn-link text-decoration-none"> {{--{{ route('course.feedback', $course->courseID) }}--}}
             <i class="fa fa-comment-dots me-1"></i> View Course Feedback
         </a>
-        <a href="#" class="btn btn-primary btn-lg px-5 shadow"> {{--{{ route('courses.learn', $course->courseID) }}--}}
+        <a href="{{ route('courses.startLearn', $course->courseID) }}" class="btn btn-primary btn-lg px-5 shadow"> {{--{{ route('courses.learn', $course->courseID) }}--}}
             Enrol Now
         </a>
     </div>

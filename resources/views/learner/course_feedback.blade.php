@@ -1,4 +1,4 @@
-@extends('layouts.learner')
+@extends('layouts.open_layout')
 
 @section('content')
 

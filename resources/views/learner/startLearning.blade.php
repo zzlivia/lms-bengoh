@@ -33,27 +33,25 @@
                             <h5 class="text-primary fw-bold">{{ $section->section_title }}</h5>
                         </div>
 
-                        {{-- video section if any --}}
+                        {{-- video --}}
                         @if($section->section_type == 'video')
                             <div class="video-container mb-4">
-                                {{-- replace later with video --}}
                                 <div class="ratio ratio-16x9 bg-dark d-flex align-items-center justify-content-center rounded">
                                     <span class="text-white"><i class="fa fa-play-circle fa-3x"></i></span>
                                 </div>
                             </div>
                         @endif
 
-                        {{-- section --}}
+                        {{-- text --}}
                         @if($section->section_type == 'text')
                             <div class="text-content mb-4 lead-custom">
                                 {!! nl2br(e($section->section_content)) !!}
                             </div>
                         @endif
 
-                        {{-- section --}}
+                        {{-- pdf --}}
                         @if($section->section_type == 'pdf')
                             <div class="pdf-container mb-4">
-                                {{-- path to point to public/learning-materials/ --}}
                                 <iframe src="{{ asset('learning-materials/' . $section->section_file) }}#toolbar=0" 
                                         width="100%" 
                                         height="600px" 
@@ -61,9 +59,40 @@
                                 </iframe>
                             </div>
                         @endif
+
+                    @elseif($module && $module->mcqs->count())
+
+                        {{-- ✅ MCQ SECTION --}}
+                        <h5 class="fw-bold mb-3">Module Quiz: {{ $module->moduleName }}</h5>
+
+                        <form method="POST" action="{{ route('module.questions.submit', $module->moduleID) }}">
+                        @csrf
+
+                        @foreach($module->mcqs as $question)
+                            <div class="mb-4">
+                                <strong>{{ $question->moduleQs }}</strong>
+
+                                @foreach($question->answers as $answer)
+                                    <div class="form-check">
+                                        <input class="form-check-input"
+                                            type="radio"
+                                            name="answers[{{ $question->moduleQs_ID }}]"
+                                            value="{{ $answer->ansID }}">
+
+                                        <label class="form-check-label">
+                                            {{ $answer->ansID_text }}
+                                        </label>
+                                    </div>
+                                @endforeach
+                            </div>
+                        @endforeach
+
+                        <button class="btn btn-primary">Submit Quiz</button>
+                        </form>
+
                     @else
                         <div class="alert alert-info">
-                            Please select a lecture from the sidebar to begin.
+                            Please select a module or lecture from the sidebar.
                         </div>
                     @endif
 

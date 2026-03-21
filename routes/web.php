@@ -35,7 +35,7 @@ Route::get('/courses/{id}/startLearn', [CourseController::class, 'startLearning'
 
 /* module and mcqs*/
 
-Route::get('/module/{id}', [ModuleController::class, 'viewModule'])->name('module.view');
+Route::get('/module/{id}', [ModuleController::class, 'viewModule'])->name('module.viewModule');
 
 Route::get('/module/{id}/quiz', [CourseController::class, 'showQuiz'])->name('module.quiz');
 

@@ -4,8 +4,7 @@
     @foreach($course->modules as $module)
     <div class="mb-3">
         <div class="text-uppercase small text-muted fw-bold"> MODULE {{ $loop->iteration }} </div>
-        <a href="{{ route('courses.startLearn', ['id' => $course->courseID, 'module' => $module->moduleID]) }}" 
-            class="fw-semibold mb-2 d-block text-decoration-none">
+        <a href="{{ route('courses.startLearn', ['id' => $course->courseID, 'module' => $module->moduleID]) }}">
             {{ $module->moduleName }}
         </a>
         {{-- Lectures --}}

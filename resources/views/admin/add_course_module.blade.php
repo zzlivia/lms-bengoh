@@ -312,37 +312,41 @@
             </div>
             <div class="tab-pane fade" id="mcq-form">
                 <form method="POST" action="{{ route('admin.mcq.store') }}">
-                @csrf
-                <div class="mb-3">
-                    <label>Select Module</label>
-                    <select name="moduleID" class="form-control" required>
-                        @foreach($modules as $module)
-                            <option value="{{ $module->moduleID }}">
-                                {{ $module->moduleName }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <label>Question</label>
-                    <input type="text" name="question" class="form-control" required>
-                </div>
-                {{-- answers --}}
-                @for($i = 1; $i <= 4; $i++)
-                <div class="mb-2">
-                    <input type="text" name="answers[]" class="form-control" placeholder="Answer {{ $i }}" required>
-                </div>
-                @endfor
-                <div class="mb-3">
-                    <label>Correct Answer</label>
-                    <select name="correct" class="form-control" required>
-                        <option value="0">Answer 1</option>
-                        <option value="1">Answer 2</option>
-                        <option value="2">Answer 3</option>
-                        <option value="3">Answer 4</option>
-                    </select>
-                </div>
-                <button class="btn btn-success">Submit</button>
+                    @csrf
+                    <div class="mb-3">
+                        <label>Select Module</label>
+                        <select name="moduleID" class="form-control" required>
+                            @foreach($modules as $module)
+                                <option value="{{ $module->moduleID }}">
+                                    {{ $module->moduleName }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    {{-- container of questions --}}
+                    <div id="questions-container">
+                        {{-- main question display first --}}
+                        <div class="question-block border p-3 mb-3 rounded">
+                            <label>Question</label>
+                            <input type="text" name="questions[0][text]" class="form-control mb-2" required>
+
+                            {{-- list of answers --}}
+                            @for($i = 0; $i < 4; $i++)
+                                <input type="text" name="questions[0][answers][]" class="form-control mb-2" placeholder="Answer {{ $i+1 }}" required>
+                            @endfor
+                            <label>Correct Answer</label>
+                            <select name="questions[0][correct]" class="form-control">
+                                <option value="0">Answer 1</option>
+                                <option value="1">Answer 2</option>
+                                <option value="2">Answer 3</option>
+                                <option value="3">Answer 4</option>
+                            </select>
+                        </div>
+                    </div>
+                    {{-- add qs button --}}
+                    <button type="button" class="btn btn-secondary mb-3" onclick="addQuestion()">+ Add Question</button>
+                        <br>
+                    <button class="btn btn-success">Submit All</button>
                 </form>
             </div>
         </div>

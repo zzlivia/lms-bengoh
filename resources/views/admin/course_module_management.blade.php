@@ -126,9 +126,9 @@
                     @method('DELETE')
                     <button class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')"> Delete </button>
                 </form>
-                <a href="{{ route('mcq.preview', $course->courseID) }}" class="btn btn-secondary">
+                {{--<a href="{{ route('mcq.preview', $course->courseID) }}" class="btn btn-secondary">
                     Preview MCQ
-                </a>
+                </a>--}}
             </td>
         </tr>
         @endforeach

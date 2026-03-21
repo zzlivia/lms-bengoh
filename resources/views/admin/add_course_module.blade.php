@@ -26,7 +26,7 @@
                 <button class="nav-link" id="section-tab" data-bs-toggle="tab" data-bs-target="#section-form" type="button">Add Lecture Section</button>
             </li>
             <li class="nav-item">
-                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#mcq-form">Add MCQ</button>
+                <button class="nav-link" id="mcq-tab" data-bs-toggle="tab" data-bs-target="#mcq-form" type="button"></button>Add MCQ</button>
             </li>
         </ul>
         <div class="tab-content">

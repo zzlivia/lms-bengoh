@@ -354,4 +354,7 @@
             </div>
         </div>
     </div>
+
+    {{-- JS file --}}
+    <script src="{{ asset('js/admin-course-module.js') }}"></script>
 @endsection

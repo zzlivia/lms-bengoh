@@ -7,7 +7,7 @@
 @section('content')
     <div class="mt-4">
         {{-- a form for all filters and search --}}
-        <form action="#" method="GET" id="filterForm">
+        <form action="{{ route('courses.allCourses') }}" method="GET" id="filterForm">
             <div class="course-hero mb-5">
                 <p class="mb-1 fw-bold">Bengoh Academy</p>
                 <h1 class="fw-bold">Our Courses</h1>
@@ -109,8 +109,8 @@
                                     {{ Str::limit($course->courseDesc ?? 'Course description here.', 180) }}
                                 </p>
                                 <div class="d-flex justify-content-end gap-2 mt-3">
-                                    <a href="#" class="btn btn-outline-dark btn-sm px-4"> Start Learning </a>
-                                    <a href="#" class="btn btn-outline-secondary btn-sm"> View Course </a>
+                                    <a href="#" class="btn btn-outline-dark btn-sm px-4"> Start Learning </a> {{-- route('courses.learn') --}}
+                                    <a href="#" class="btn btn-outline-secondary btn-sm"> View Course </a> {{-- route('courses.show') --}}
                                 </div>
                             </div>
                         </div>

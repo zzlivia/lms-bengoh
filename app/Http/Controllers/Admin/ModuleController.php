@@ -169,4 +169,24 @@ class ModuleController extends Controller
 
         return view('admin.preview', compact('questions'));
     }
+
+    public function editMCQ($moduleID)
+    {
+        $module = Module::with('mcqs.answers')
+                    ->where('moduleID', $moduleID)
+                    ->firstOrFail();
+
+        return view('admin.edit_mcq', compact('module'));
+    }
+
+    public function toggleMCQ($moduleID)
+    {
+        $module = Module::where('moduleID', $moduleID)->firstOrFail();
+
+        // toggle (1 → 0, 0 → 1)
+        $module->mcq_enabled = $module->mcq_enabled ? 0 : 1;
+        $module->save();
+
+        return back()->with('success', 'MCQ status updated!');
+    }
 }

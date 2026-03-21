@@ -48,7 +48,7 @@ class CourseController extends Controller
                 break;
 
             case 'short':
-                $query->where('courseDuration', '<=', 4);
+                $query->whereRaw('CAST(courseDuration AS UNSIGNED) <= 4');
                 break;
 
             default:

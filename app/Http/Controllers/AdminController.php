@@ -200,7 +200,7 @@ class AdminController extends Controller
     public function createCourseModule()
     {
         $courses = Course::all();
-        $modules = Module::with('course')->get();
+        $modules = Module::with(['course','mcqs'])->get();
         $lectures = Lecture::with('module')->get();
         $sections = LectureSection::with('lecture')->orderBy('section_order')->get();
 

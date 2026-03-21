@@ -360,7 +360,8 @@
                 'course': '#course-tab',
                 'module': '#module-tab',
                 'lecture': '#lecture-tab',
-                'section': '#section-tab' // ← ADD THIS
+                'section': '#section-tab',
+                'mcq': '#mcq-tab'
             };
 
             const selector = tabMap[tabTarget];

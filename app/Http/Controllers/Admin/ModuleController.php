@@ -133,25 +133,26 @@ class ModuleController extends Controller
 
     public function storeMCQ(Request $request)
     {
-        // create question
-        $questionID = \DB::table('mcqs')->insertGetId([
-            'moduleID' => $request->moduleID,
-            'moduleQs' => $request->question,
-            'created_at' => now(),
-            'updated_at' => now()
-        ]);
+        foreach ($request->questions as $q) {
 
-        // store answers
-        foreach ($request->answers as $index => $answer) {
-            \DB::table('moduleans')->insert([
-                'moduleQs_ID' => $questionID,
-                'ansID_text' => $answer,
-                'ansCorrect' => ($index == $request->correct) ? 1 : 0,
+            $questionID = \DB::table('mcqs')->insertGetId([
+                'moduleID' => $request->moduleID,
+                'moduleQs' => $q['text'],
                 'created_at' => now(),
                 'updated_at' => now()
             ]);
+
+            foreach ($q['answers'] as $index => $answer) {
+                \DB::table('moduleans')->insert([
+                    'moduleQs_ID' => $questionID,
+                    'ansID_text' => $answer,
+                    'ansCorrect' => ($index == $q['correct']) ? 1 : 0,
+                    'created_at' => now(),
+                    'updated_at' => now()
+                ]);
+            }
         }
 
-        return back()->with('success', 'MCQ added successfully!');
+        return back()->with('success', 'All MCQs added successfully!');
     }
 }

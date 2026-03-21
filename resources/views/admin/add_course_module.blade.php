@@ -460,6 +460,7 @@
 
     });
     </script>
+
     <script>
     document.querySelectorAll('.editSectionBtn').forEach(button => {
         button.addEventListener('click', function(){
@@ -477,5 +478,38 @@
         });
     });
     </script>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+    let questionIndex = 1;
+
+    function addQuestion() {
+        let container = document.getElementById('questions-container');
+
+        let html = `
+        <div class="question-block border p-3 mb-3 rounded">
+            <label>Question</label>
+            <input type="text" name="questions[${questionIndex}][text]" class="form-control mb-2" required>
+
+            ${[1,2,3,4].map((num,i) => `
+                <input type="text" name="questions[${questionIndex}][answers][]" 
+                    class="form-control mb-2" 
+                    placeholder="Answer ${num}" required>
+            `).join('')}
+
+            <label>Correct Answer</label>
+            <select name="questions[${questionIndex}][correct]" class="form-control">
+                <option value="0">Answer 1</option>
+                <option value="1">Answer 2</option>
+                <option value="2">Answer 3</option>
+                <option value="3">Answer 4</option>
+            </select>
+        </div>
+        `;
+
+        container.insertAdjacentHTML('beforeend', html);
+        questionIndex++;
+    }
+    </script>   
 @endsection

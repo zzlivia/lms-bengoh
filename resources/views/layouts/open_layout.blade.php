@@ -72,9 +72,9 @@
                 </div>
 
                 @else
-                    <a class="nav-link text-primary fw-bold px-1" href="{{ route('register') }}">Register</a> {{-- AuthController --}}
+                    <a class="nav-link text-primary fw-bold px-1" href="{{ route('register') }}">Register</a> {{-- AuthenticationController --}}
                         <span class="text-muted">|</span>
-                    <a class="nav-link text-primary fw-bold px-1" href="{{ route('login') }}">Sign In</a> {{-- AuthController --}}
+                    <a class="nav-link text-primary fw-bold px-1" href="{{ route('login') }}">Sign In</a> {{-- AuthenticationController --}}
                 @endauth
                 </li>
             </ul>

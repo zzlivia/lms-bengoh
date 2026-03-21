@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Course;
 use App\Models\Module;
 use App\Models\Progress;
-use App\Models\Lecture;
-use App\Models\LectureSection;
+//use App\Models\Lecture;
+//use App\Models\LectureSection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -199,38 +199,5 @@ class CourseController extends Controller
             ->get();
 
         return view('courses.leaderboards', compact('learners'));
-    }
-
-    //for admin's view
-    public function showAddCourse()
-    {
-        $courses = Course::all();
-        $modules = Module::with('course')->get();
-        $lectures = Lecture::with('module')->get();
-        $sections = LectureSection::with('lecture')->orderBy('section_order')->get();
-
-        return view('admin.add_course_module', compact('courses','modules','lectures','sections'));
-    }
-
-    //handling courses
-    public function lectureStore(Request $request)
-    {
-        // 1. Validation
-        $request->validate([
-            'lectID' => 'required|unique:lectures,lectID',
-            'moduleID' => 'required|exists:modules,moduleID',
-            'lectName' => 'required|string|max:255',
-            'lect_duration' => 'required|integer',
-        ]);
-
-        // 2. Creation
-        Lecture::create([
-            'lectID'        => $request->lectID,
-            'moduleID'      => $request->moduleID,
-            'lectName'      => $request->lectName,
-            'lect_duration' => $request->lect_duration,
-        ]);
-
-        return redirect()->back()->with('success', 'Lecture added successfully!');
     }
 }

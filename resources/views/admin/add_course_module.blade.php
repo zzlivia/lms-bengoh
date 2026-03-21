@@ -426,7 +426,7 @@
                         <!-- actions -->
                         <td>
                             <!-- preview -->
-                            <a href="{{ route('mcq.preview', $module->courseID) }}" 
+                            <a href="{{ route('mcq.preview', $module->moduleID) }}" 
                             class="btn btn-secondary btn-sm">
                                 Preview
                             </a>

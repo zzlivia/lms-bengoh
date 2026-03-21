@@ -26,7 +26,7 @@
                 <button class="nav-link" id="section-tab" data-bs-toggle="tab" data-bs-target="#section-form" type="button">Add Lecture Section</button>
             </li>
             <li class="nav-item">
-                <button class="nav-link" id="mcq-tab" data-bs-toggle="tab" data-bs-target="#mcq-form" type="button"></button>Add MCQ</button>
+                <button class="nav-link" id="mcq-tab" data-bs-toggle="tab" data-bs-target="#mcq-form" type="button">Add MCQ</button> 
             </li>
         </ul>
         <div class="tab-content">
@@ -343,173 +343,15 @@
                             </select>
                         </div>
                     </div>
-                    {{-- add qs button --}}
-                    <button type="button" class="btn btn-secondary mb-3" onclick="addQuestion()">+ Add Question</button>
-                        <br>
-                    <button class="btn btn-success">Submit All</button>
+                    {{-- buttons --}}
+                    <div class="d-flex justify-content-between align-items-center mt-3">
+                        <!-- left -->
+                        <button type="button" class="btn btn-secondary" onclick="addQuestion()">+ Add Question</button>
+                        <!-- right -->
+                        <button class="btn btn-success">Submit All</button>
+                    </div>
                 </form>
             </div>
         </div>
     </div>
-
-    <script>
-    document.addEventListener("DOMContentLoaded", function() {
-
-        const urlParams = new URLSearchParams(window.location.search);
-        const tabTarget = urlParams.get('tab');
-
-        if (tabTarget) {
-
-            const tabMap = {
-                'course': '#course-tab',
-                'module': '#module-tab',
-                'lecture': '#lecture-tab',
-                'section': '#section-tab',
-                'mcq': '#mcq-tab'
-            };
-
-            const selector = tabMap[tabTarget];
-            const tabButton = document.querySelector(selector);
-
-            if (tabButton) {
-                const tab = new bootstrap.Tab(tabButton);
-                tab.show();
-            }
-        }
-
-    });
-    </script>
-    <!-- JS for live -->
-    <script>
-    document.addEventListener("DOMContentLoaded", function(){
-        const titleInput = document.querySelector('input[name="section_title"]');
-        const contentInput = document.querySelector('textarea[name="section_content"]');
-        const typeInput = document.querySelector('select[name="section_type"]');
-        const previewTitle = document.getElementById("previewTitle");
-        const previewContent = document.getElementById("previewContent");
-        function updatePreview(){
-            previewTitle.innerText = titleInput.value || "Section Title";
-            if(typeInput.value === "text"){
-                previewContent.innerText = contentInput.value || "Text content preview...";
-            }
-            if(typeInput.value === "image"){
-                previewContent.innerHTML = "Image will appear after upload.";
-            }
-            if(typeInput.value === "video"){
-                previewContent.innerHTML = "Video preview will appear here.";
-            }
-            if(typeInput.value === "pdf"){
-                previewContent.innerHTML = "PDF preview will appear here.";
-            }
-        }
-        titleInput.addEventListener("input", updatePreview);
-        contentInput.addEventListener("input", updatePreview);
-        typeInput.addEventListener("change", updatePreview);
-    });
-    </script>
-
-    <!-- preview uploaded files -->
-    <script>
-    const fileInput = document.querySelector('input[name="section_file"]');
-    fileInput.addEventListener("change", function(){
-        const file = this.files[0];
-        if(!file) return;
-        const url = URL.createObjectURL(file);
-        const previewContent = document.getElementById("previewContent");
-        if(file.type.startsWith("image")){
-            previewContent.innerHTML = `<img src="${url}" style="max-width:300px;">`;
-        }
-        if(file.type === "application/pdf"){
-            previewContent.innerHTML = `<iframe src="${url}" width="100%" height="300"></iframe>`;
-        }
-    });
-    </script>
-
-    <!-- JS for view button -->
-    <script>
-    document.querySelectorAll('.viewSectionBtn').forEach(button => {
-        button.addEventListener('click', function(){
-            let title = this.getAttribute('data-title');
-            let content = this.getAttribute('data-content');
-            document.getElementById('previewTitle').innerText = title;
-            document.getElementById('previewContent').innerHTML = content;
-            document.getElementById('sectionPreview').scrollIntoView({
-                behavior: 'smooth'
-            });
-        });
-    });
-    </script>
-
-    <script>
-    document.querySelectorAll('.viewSectionBtn').forEach(button => {
-
-        button.addEventListener('click', function(){
-
-            let title = this.getAttribute('data-title');
-            let content = this.getAttribute('data-content');
-
-            // Set modal content
-            document.getElementById('viewTitle').innerText = title;
-            document.getElementById('viewContent').innerHTML = content;
-
-            // Show modal
-            let modal = new bootstrap.Modal(document.getElementById('viewSectionModal'));
-            modal.show();
-
-        });
-
-    });
-    </script>
-
-    <script>
-    document.querySelectorAll('.editSectionBtn').forEach(button => {
-        button.addEventListener('click', function(){
-            let id = this.getAttribute('data-id');
-            let title = this.getAttribute('data-title');
-            let content = this.getAttribute('data-content');
-            let type = this.getAttribute('data-type');
-            document.getElementById('editTitle').value = title;
-            document.getElementById('editContent').value = content;
-            document.getElementById('editType').value = type;
-            document.getElementById('editSectionForm').action = 
-                `/admin/section/update/${id}`;
-            let modal = new bootstrap.Modal(document.getElementById('editSectionModal'));
-            modal.show();
-        });
-    });
-    </script>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
-    <script>
-    let questionIndex = 1;
-
-    function addQuestion() {
-        let container = document.getElementById('questions-container');
-
-        let html = `
-        <div class="question-block border p-3 mb-3 rounded">
-            <label>Question</label>
-            <input type="text" name="questions[${questionIndex}][text]" class="form-control mb-2" required>
-
-            ${[1,2,3,4].map((num,i) => `
-                <input type="text" name="questions[${questionIndex}][answers][]" 
-                    class="form-control mb-2" 
-                    placeholder="Answer ${num}" required>
-            `).join('')}
-
-            <label>Correct Answer</label>
-            <select name="questions[${questionIndex}][correct]" class="form-control">
-                <option value="0">Answer 1</option>
-                <option value="1">Answer 2</option>
-                <option value="2">Answer 3</option>
-                <option value="3">Answer 4</option>
-            </select>
-        </div>
-        `;
-
-        container.insertAdjacentHTML('beforeend', html);
-        questionIndex++;
-    }
-    </script>   
 @endsection

@@ -92,24 +92,4 @@ class LectureSectionController extends Controller
 
         return back()->with('success','Section deleted successfully');
     }
-
-    // store main lecture information
-    public function storeLecture(Request $request)
-    {   //validate 
-        $request->validate([
-            'moduleID' => 'required',
-            'lectName' => 'required',
-            'lect_duration' => 'required'
-        ]);
-        //create new object
-        $lecture = new Lecture();
-        //assign values to model
-        $lecture->moduleID = $request->moduleID;
-        $lecture->lectName = $request->lectName;
-        $lecture->lect_duration = $request->lect_duration;
-        //save to db
-        $lecture->save();
-        //redirect back
-        return redirect()->back()->with('success','Lecture saved!');
-    }
 }

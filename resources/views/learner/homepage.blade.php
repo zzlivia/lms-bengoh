@@ -51,7 +51,7 @@
 
     {{-- button --}}
     <div class="text-center mb-5">
-        <a href="{{ route('courses.allCourses') }}" class="btn btn-outline-secondary btn-sm px-4 rounded-pill">
+        <a href="{{ url('index.php/courses') }}" class="btn btn-outline-secondary btn-sm px-4 rounded-pill">
             View All Courses
         </a>
     </div>

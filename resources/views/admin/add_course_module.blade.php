@@ -13,20 +13,59 @@
         <h3 class="mb-4">Create Course or Module</h3>
         <!-- tabs  -->
         <ul class="nav nav-tabs mb-4" id="managementTab" role="tablist">
-            <li class="nav-item">
-                <button class="nav-link active" id="course-tab" data-bs-toggle="tab" data-bs-target="#course-form" type="button">Add Course</button>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active"
+                        id="course-tab"
+                        data-bs-toggle="tab"
+                        data-bs-target="#course-form"
+                        type="button"
+                        role="tab">
+                    Add Course
+                </button>
             </li>
-            <li class="nav-item">
-                <button class="nav-link" id="module-tab" data-bs-toggle="tab" data-bs-target="#module-form" type="button">Add Module</button>
+
+            <li class="nav-item" role="presentation">
+                <button class="nav-link"
+                        id="module-tab"
+                        data-bs-toggle="tab"
+                        data-bs-target="#module-form"
+                        type="button"
+                        role="tab">
+                    Add Module
+                </button>
             </li>
-            <li class="nav-item">
-                <button class="nav-link" id="lecture-tab" data-bs-toggle="tab" data-bs-target="#lecture-form" type="button">Add Lecture</button>
+
+            <li class="nav-item" role="presentation">
+                <button class="nav-link"
+                        id="lecture-tab"
+                        data-bs-toggle="tab"
+                        data-bs-target="#lecture-form"
+                        type="button"
+                        role="tab">
+                    Add Lecture
+                </button>
             </li>
-            <li class="nav-item">
-                <button class="nav-link" id="section-tab" data-bs-toggle="tab" data-bs-target="#section-form" type="button">Add Lecture Section</button>
+
+            <li class="nav-item" role="presentation">
+                <button class="nav-link"
+                        id="section-tab"
+                        data-bs-toggle="tab"
+                        data-bs-target="#section-form"
+                        type="button"
+                        role="tab">
+                    Add Lecture Section
+                </button>
             </li>
-            <li class="nav-item">
-                <button class="nav-link" id="mcq-tab" data-bs-toggle="tab" data-bs-target="#mcq-form" type="button">Add MCQ</button> 
+
+            <li class="nav-item" role="presentation">
+                <button class="nav-link"
+                        id="mcq-tab"
+                        data-bs-toggle="tab"
+                        data-bs-target="#mcq-form"
+                        type="button"
+                        role="tab">
+                    Add MCQ
+                </button>
             </li>
         </ul>
         <div class="tab-content">
@@ -207,6 +246,7 @@
                     </tbody>
                 </table>
             </div>
+            {{-- lecture section tabs--}}
             <div class="tab-pane fade" id="section-form">
                 <form method="POST" action="{{ route('admin.sections.store') }}" enctype="multipart/form-data">
                     @csrf
@@ -310,6 +350,7 @@
                     </div>
                 </div>-->
             </div>
+            {{-- MCQ tab --}}
             <div class="tab-pane fade" id="mcq-form">
                 <form method="POST" action="{{ route('admin.mcq.store') }}">
                     @csrf
@@ -355,6 +396,10 @@
         </div>
     </div>
 
-    {{-- JS file --}}
+    <!-- Bootstrap FIRST -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- JS file -->
     <script src="{{ asset('js/admin-course-module.js') }}"></script>
+
 @endsection

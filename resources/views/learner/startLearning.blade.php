@@ -12,8 +12,17 @@
                 <div class="learning-content-card p-4 shadow-sm bg-white rounded">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb small">
-                            <li class="breadcrumb-item"><a href="#">Courses</a></li> {{-- {{ route('courses.index') }} --}}
-                            <li class="breadcrumb-item active">{{ $course->courseTitle }}</li>
+                            <li class="breadcrumb-item">
+                                @if(app()->environment('local'))
+                                    <a href="/index.php/courses">Courses</a>
+                                @else
+                                    <a href="{{ route('courses.allCourses') }}">Courses</a>
+                                @endif
+                            </li>
+
+                            <li class="breadcrumb-item active">
+                                {{ $course->courseName }}
+                            </li>
                         </ol>
                     </nav>
 

@@ -68,16 +68,13 @@ class ModuleController extends Controller
             'lectName' => 'required',
             'lect_duration' => 'required'
         ]);
-        //create new object
-        $lecture = new Lecture();
-        //assign values to model
-        $lecture->moduleID = $request->moduleID;
-        $lecture->lectName = $request->lectName;
-        $lecture->lect_duration = $request->lect_duration;
-        //save to db
-        $lecture->save();
+        $module = Module::findOrFail($request->moduleID);
+        $module->lectures()->create([
+            'lectName' => $request->lectName,
+            'lect_duration' => $request->lect_duration,
+        ]);
         //redirect back
-        return redirect()->back()->with('success','Lecture saved!');
+        return redirect()->route('admin.course.module')->with('success','Lecture saved!');
     }
 
     public function editLecture($id)//edit lecture 

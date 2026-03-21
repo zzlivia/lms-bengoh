@@ -9,7 +9,7 @@ class Lecture extends Model
     protected $table = 'lecture';
     protected $primaryKey = 'lectID';
     protected $fillable = [
-        'lectID', 
+        //'lectID', 
         'moduleID', 
         'lectName', 
         'lect_duration'

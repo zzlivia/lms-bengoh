@@ -27,7 +27,7 @@
                 </li>
 
                 <li class="nav-item mx-2">
-                    <a class="nav-link active" href="{{ url('index.php/courses') }}">Courses</a> {{--{{ route('courses.allCourses') }}--}}
+                    <a class="nav-link active" href="/index.php/courses">Courses</a> {{--{{ route('courses.allCourses') }}--}}
                 </li>
 
                 <li class="nav-item mx-2">

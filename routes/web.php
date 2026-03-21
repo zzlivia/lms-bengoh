@@ -29,8 +29,8 @@ Route::post('/logout', [AuthenticationController::class, 'logout'])->name('logou
 
 /* courses */
 
-//Route::get('/courses', [CourseController::class, 'index'])->name('courses.index');
-//Route::get('/courses/{id}', [CourseController::class, 'show'])->name('courses.show');
+Route::get('/courses', [CourseController::class, 'allCourse'])->name('courses.allCourse');
+Route::get('/courses/{id}', [CourseController::class, 'showCourse'])->name('courses.showCourse');
 //Route::get('/courses/{id}/learn', [CourseController::class, 'startLearning'])->name('courses.learn');
 
 /* module and mcqs*/

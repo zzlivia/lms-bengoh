@@ -1,7 +1,7 @@
 @extends('layouts.open_layout')
 
 @section('styles')
-    <link rel="stylesheet" href="{{ asset('css/view_all_course.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/view_allCourse.css') }}">
 @endsection
 
 @section('content')
@@ -27,7 +27,7 @@
                 <div class="col-md-3 filter-section">
                     <div class="sort-box mb-4">
                         <label class="fw-bold mb-2">Sort By</label>
-                        <select name="sort" class="form-select"> {{-- remove onchange="this.form.submit()" --}}
+                        <select name="sort" class="form-select" onchange="this.form.submit()"> {{-- remove  --}}
                             <option value="">Best Match</option>
                             <option value="latest" {{ request('sort') == 'latest' ? 'selected' : '' }}>Latest Added</option>
                             <option value="short" {{ request('sort') == 'short' ? 'selected' : '' }}>Short Learning</option>
@@ -39,7 +39,7 @@
                     {{-- course category--}}
                     <div class="mb-3">
                         <label class="fw-bold">Subjects</label>
-                        <select name="category" class="form-select"> {{-- remove onchange="this.form.submit()" --}}
+                        <select name="category" class="form-select" onchange="this.form.submit()"> {{-- remove  --}}
                             <option value="">All Subjects</option>
                             @foreach($categories as $category)
                             <option value="{{ $category }}" {{ request('category') == $category ? 'selected' : '' }}>
@@ -52,7 +52,7 @@
                     {{-- course level --}}
                     <div class="mb-3">
                         <label class="fw-bold">Course Level</label>
-                        <select name="level" class="form-select">  {{-- remove onchange="this.form.submit()" --}}
+                        <select name="level" class="form-select" onchange="this.form.submit()">  {{-- remove onchange="this.form.submit()" --}}
                             <option value="">All Levels</option>
                             @foreach($levels as $level)
                             <option value="{{ $level }}" {{ request('level') == $level ? 'selected' : '' }}>
@@ -65,7 +65,7 @@
                     {{-- course duration --}}
                     <div class="mb-3">
                         <label class="fw-bold">Course Duration</label>
-                        <select name="duration" class="form-select">  {{-- remove onchange="this.form.submit()" --}}
+                        <select name="duration" class="form-select" onchange="this.form.submit()">  {{-- remove onchange="this.form.submit()" --}}
                             <option value="">Any Duration</option>
                             @foreach($durations as $duration)
                             <option value="{{ $duration }}" {{ request('duration') == $duration ? 'selected' : '' }}>
@@ -81,7 +81,7 @@
                     <div class="d-flex justify-content-end align-items-center mb-4">
                         <span class="me-2">Showing</span>
                         {{-- choose number courses to be displayed per page --}}
-                        <select name="per_page" class="form-select form-select-sm w-auto"> {{-- remove onchange="this.form.submit()" --}}
+                        <select name="per_page" class="form-select form-select-sm w-auto" onchange="this.form.submit()"> {{-- remove onchange="this.form.submit()" --}}
                             <option value="3" {{ request('per_page') == 3 ? 'selected' : '' }}>3</option>
                             <option value="5" {{ request('per_page') == 5 ? 'selected' : '' }}>5</option>
                             <option value="8" {{ request('per_page') == 8 ? 'selected' : '' }}>8</option>
@@ -122,9 +122,8 @@
                     @endforelse
 
                     {{-- pagination process --}}
-                    <div class="d-flex justify-content-center gap-3 mt-4">
-                        {{-- ensure links carry the current filter query --}}
-                        
+                    <div class="d-flex justify-content-center mt-4">
+                        {{ $courses->appends(request()->query())->links() }}
                     </div>
                 </div>
             </div>

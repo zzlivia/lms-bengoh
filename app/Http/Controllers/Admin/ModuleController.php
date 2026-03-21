@@ -10,18 +10,19 @@ use App\Http\Controllers\Controller; //base controller
 use App\Models\Course;
 use App\Models\Module;
 use App\Models\Lecture;
+use App\Models\LectureSection;
 use Illuminate\Http\Request; //handles form requests
 
 class ModuleController extends Controller
 {
-    public function create() //create module page
+    public function createModule() //create module page
     {
         //get all courses from db to be used for dropdown selection
         $courses = Course::all(); 
         return view('admin.modules.create_module', compact('courses')); //send data to view
     }
 
-    public function store(Request $request)//store new module
+    public function storeNewModule(Request $request)//store new module
     {   
         //validate input of user
         $request->validate([
@@ -89,5 +90,38 @@ class ModuleController extends Controller
     {
         Lecture::where('lectID', $id)->delete(); //delete lecture through lectID
         return redirect()->back()->with('success','Lecture deleted successfully'); //redirect back
+    }
+
+    //for admin's view
+    public function showAddCourse()
+    {
+        $courses = Course::all();
+        $modules = Module::with('course')->get();
+        $lectures = Lecture::with('module')->get();
+        $sections = LectureSection::with('lecture')->orderBy('section_order')->get();
+
+        return view('admin.add_course_module', compact('courses','modules','lectures','sections'));
+    }
+
+    //handling courses
+    public function lectureStore(Request $request)
+    {
+        // 1. Validation
+        $request->validate([
+            'lectID' => 'required|unique:lectures,lectID',
+            'moduleID' => 'required|exists:modules,moduleID',
+            'lectName' => 'required|string|max:255',
+            'lect_duration' => 'required|integer',
+        ]);
+
+        // 2. Creation
+        Lecture::create([
+            'lectID'        => $request->lectID,
+            'moduleID'      => $request->moduleID,
+            'lectName'      => $request->lectName,
+            'lect_duration' => $request->lect_duration,
+        ]);
+
+        return redirect()->back()->with('success', 'Lecture added successfully!');
     }
 }

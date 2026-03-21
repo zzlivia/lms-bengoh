@@ -82,9 +82,9 @@
     </nav>
 
     {{-- to main content --}}
-    <div class="container mt-4">
+    <main class="container mt-4">
         @yield('content')
-    </div>
+    </main>
     {{-- bottom navigation bar --}}
     <footer>
         <div class="container d-flex justify-content-start gap-4 small fw-bold">

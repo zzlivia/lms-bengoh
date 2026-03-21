@@ -12,7 +12,7 @@ body {
 }
 
 /* allow page content to expand and push footer down */
-.container {
+main {
     flex: 1;
 }
 

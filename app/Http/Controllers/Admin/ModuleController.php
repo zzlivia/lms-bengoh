@@ -130,4 +130,28 @@ class ModuleController extends Controller
         $module = Module::with('mcqs.answers')->where('moduleID', $id)->firstOrFail();
         return view('learner.module_questions', compact('module'));
     }
+
+    public function storeMCQ(Request $request)
+    {
+        // create question
+        $questionID = \DB::table('mcqs')->insertGetId([
+            'moduleID' => $request->moduleID,
+            'moduleQs' => $request->question,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+
+        // store answers
+        foreach ($request->answers as $index => $answer) {
+            \DB::table('moduleans')->insert([
+                'moduleQs_ID' => $questionID,
+                'ansID_text' => $answer,
+                'ansCorrect' => ($index == $request->correct) ? 1 : 0,
+                'created_at' => now(),
+                'updated_at' => now()
+            ]);
+        }
+
+        return back()->with('success', 'MCQ added successfully!');
+    }
 }

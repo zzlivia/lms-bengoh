@@ -423,6 +423,6 @@
 
     });
     </script>
-    <script src="{{ asset('js/admin-course-module.js') }}"></script>
+   <script src="{{ asset('js/admin-course-module.js') }}"></script>
 
 @endsection

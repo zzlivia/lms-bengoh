@@ -12,6 +12,7 @@ use App\Models\Module;
 use App\Models\Lecture;
 use App\Models\LectureSection;
 use Illuminate\Http\Request; //handles form requests
+use Illuminate\Support\Facades\DB;
 
 class ModuleController extends Controller
 {
@@ -154,5 +155,18 @@ class ModuleController extends Controller
         }
 
         return back()->with('success', 'All MCQs added successfully!');
+    }
+
+    public function previewMCQ($moduleID)
+    {
+        $questions = DB::table('mcqs as q')
+            ->join('moduleans as a', 'q.moduleQs_ID', '=', 'a.moduleQs_ID')
+            ->where('q.moduleID', $moduleID)
+            ->orderBy('q.moduleQs_ID')
+            ->orderBy('a.ansID')
+            ->get()
+            ->groupBy('moduleQs_ID');
+
+        return view('mcq.preview', compact('questions'));
     }
 }

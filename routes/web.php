@@ -43,7 +43,15 @@ Route::get('/module/{id}/questions', [CourseController::class, 'showModuleQuesti
     
 Route::post('/module/{id}/questions', [CourseController::class, 'submitModuleQuestions'])->name('module.questions.submit');
 
+//mcq preview
 Route::get('/mcq/preview/{moduleID}', [ModuleController::class, 'previewMCQ'])->name('mcq.preview');
+
+//edit mcq by module
+Route::get('/admin/mcq/edit/{moduleID}', [ModuleController::class, 'editMCQ'])->name('admin.mcq.edit');
+    
+//enable or disable mcq
+Route::post('/admin/mcq/toggle/{moduleID}', [ModuleController::class, 'toggleMCQ'])->name('admin.mcq.toggle');
+    
 
 /* lecture section*/ 
 Route::post('/admin/section/store', [LectureSectionController::class,'store'])->name('admin.section.store');

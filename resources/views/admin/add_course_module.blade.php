@@ -25,6 +25,9 @@
             <li class="nav-item">
                 <button class="nav-link" id="section-tab" data-bs-toggle="tab" data-bs-target="#section-form" type="button">Add Lecture Section</button>
             </li>
+            <li class="nav-item">
+                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#mcq-form">Add MCQ</button>
+            </li>
         </ul>
         <div class="tab-content">
             <!-- course form -->
@@ -306,6 +309,41 @@
                         Section content will appear here...
                     </div>
                 </div>-->
+            </div>
+            <div class="tab-pane fade" id="mcq-form">
+                <form method="POST" action="{{ route('admin.mcq.store') }}">
+                @csrf
+                <div class="mb-3">
+                    <label>Select Module</label>
+                    <select name="moduleID" class="form-control" required>
+                        @foreach($modules as $module)
+                            <option value="{{ $module->moduleID }}">
+                                {{ $module->moduleName }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label>Question</label>
+                    <input type="text" name="question" class="form-control" required>
+                </div>
+                {{-- answers --}}
+                @for($i = 1; $i <= 4; $i++)
+                <div class="mb-2">
+                    <input type="text" name="answers[]" class="form-control" placeholder="Answer {{ $i }}" required>
+                </div>
+                @endfor
+                <div class="mb-3">
+                    <label>Correct Answer</label>
+                    <select name="correct" class="form-control" required>
+                        <option value="0">Answer 1</option>
+                        <option value="1">Answer 2</option>
+                        <option value="2">Answer 3</option>
+                        <option value="3">Answer 4</option>
+                    </select>
+                </div>
+                <button class="btn btn-success">Submit</button>
+                </form>
             </div>
         </div>
     </div>

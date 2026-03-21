@@ -41,10 +41,9 @@ Route::get('/module/{id}/quiz', [CourseController::class, 'showQuiz'])->name('mo
 
 Route::get('/module/{id}/questions', [CourseController::class, 'showModuleQuestions'])->name('module.questions');
     
-
 Route::post('/module/{id}/questions', [CourseController::class, 'submitModuleQuestions'])->name('module.questions.submit');
 
-
+Route::get('/mcq/preview/{moduleID}', [ModuleController::class, 'previewMCQ'])->name('mcq.preview');
 
 /* lecture section*/ 
 Route::post('/admin/section/store', [LectureSectionController::class,'store'])->name('admin.section.store');
@@ -193,8 +192,6 @@ Route::prefix('admin')
 
     /* mcqs */
     Route::post('/mcq/store', [ModuleController::class, 'storeMCQ'])->name('mcq.store');
-
-    Route::get('/mcq/preview/{moduleID}', [ModuleController::class, 'previewMCQ'])->name('mcq.preview');
        
     /* others */
 

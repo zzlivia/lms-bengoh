@@ -64,7 +64,13 @@
                     <div class="d-flex align-items-center">
                         <i class="bi bi-person-circle fs-4 me-2"></i>
                         <div class="lh-sm">
-                            <div class="fw-bold">{{ auth()->user()->name }}</div>
+                            <div class="fw-bold">
+                                @if(auth()->check())
+                                    {{ auth()->user()->name }}
+                                @else
+                                    Guest
+                                @endif
+                            </div>
                             <small class="text-muted">Administrator</small>
                         </div>
                     </div>

@@ -167,6 +167,6 @@ class ModuleController extends Controller
             ->get()
             ->groupBy('moduleQs_ID');
 
-        return view('mcq.preview', compact('questions'));
+        return view('admin.preview', compact('questions'));
     }
 }

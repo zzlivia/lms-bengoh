@@ -23,7 +23,7 @@
         <div class="collapse navbar-collapse justify-content-end">
             <ul class="navbar-nav"> {{-- navigation menu --}}
                 <li class="nav-item mx-2">
-                    <a class="nav-link active" href="{{ route('courses.allCourses') }}">Home</a> {{--{{ route('learner.homepage') }}--}}
+                    <a class="nav-link active" href="{{ route('homepage') }}">Home</a> {{--{{ route('learner.homepage') }}--}}
                 </li>
 
                 <li class="nav-item mx-2">

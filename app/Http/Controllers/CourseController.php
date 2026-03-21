@@ -98,26 +98,32 @@ class CourseController extends Controller
     }
     
     //redirect user to start learning interface
-    public function startLearning($id)
+    public function startLearning($id, Request $request)
     {
         $course = Course::with([
-            'modules.mcqs',
+            'modules.mcqs.answers', 
             'modules.lectures.sections',
             'modules.lectures.materials.video',
             'modules.lectures.materials.pdf'
         ])->findOrFail($id);
 
-        // get first module
-        $module = $course->modules->first();
+        // get module from URL (?module=3)
+        $moduleID = $request->module;
 
-        // get first lecture
+        //if user clicked module → use it
+        if ($moduleID) {
+            $module = $course->modules->where('moduleID', $moduleID)->first();
+        } else {
+            // fallback (first module)
+            $module = $course->modules->first();
+        }
+
+        // lecture + section
         $lecture = $module ? $module->lectures->first() : null;
-
-        // get first section
         $section = $lecture ? $lecture->sections->first() : null;
 
         return view('learner.startlearning', compact('course','module','lecture','section'));
-    }
+}
     
     //display questions
     public function showMCQS($id)

@@ -28,13 +28,13 @@
 
                     <h3 class="fw-bold mb-4">{{ $course->courseTitle }}</h3>
                     {{-- content loading --}}
-                    @if($section)
+                    @if($current)
                         <div class="section-header mb-3">
-                            <h5 class="text-primary fw-bold">{{ $section->section_title }}</h5>
+                            <h5 class="text-primary fw-bold">{{ $current->section_title }}</h5>
                         </div>
 
                         {{-- video --}}
-                        @if($section->section_type == 'video')
+                        @if($current->section_type == 'video')
                             <div class="video-container mb-4">
                                 <div class="ratio ratio-16x9 bg-dark d-flex align-items-center justify-content-center rounded">
                                     <span class="text-white"><i class="fa fa-play-circle fa-3x"></i></span>
@@ -43,16 +43,16 @@
                         @endif
 
                         {{-- text --}}
-                        @if($section->section_type == 'text')
+                        @if($current->section_type == 'text')
                             <div class="text-content mb-4 lead-custom">
-                                {!! nl2br(e($section->section_content)) !!}
+                                {!! nl2br(e($current->section_content)) !!}
                             </div>
                         @endif
 
                         {{-- pdf --}}
-                        @if($section->section_type == 'pdf')
+                        @if($current->section_type == 'pdf')
                             <div class="pdf-container mb-4">
-                                <iframe src="{{ asset('learning-materials/' . $section->section_file) }}#toolbar=0" 
+                                <iframe src="{{ asset('learning-materials/' . $current->section_file) }}#toolbar=0" 
                                         width="100%" 
                                         height="600px" 
                                         class="rounded border">

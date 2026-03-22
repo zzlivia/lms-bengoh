@@ -114,8 +114,13 @@ class CourseController extends Controller
         $sections = $sections->sortBy('section_order')->values();
         // Get current section
         if ($sectionId) {
-            $currentIndex = $sections->search(fn($s) => $s->id == $sectionId);
-            $current = $sections[$currentIndex] ?? $sections->first();
+            $currentIndex = $sections->search(fn($s) => $s->sectionID == $sectionId);
+
+            if ($currentIndex === false) {
+                $currentIndex = 0;
+            }
+
+            $current = $sections[$currentIndex];
         } else {
             $current = $sections->first();
             $currentIndex = 0;

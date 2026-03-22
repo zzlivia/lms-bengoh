@@ -113,7 +113,9 @@ class CourseController extends Controller
         //sort by display_order
         $sections = $sections->sortBy('section_order')->values();
         $totalSections = $sections->count();
-        // Get current section
+        $completedSections = 0;
+        $isCompletedAll = $completedSections >= $totalSections;
+        //get current section
         if ($sectionId) {
             $currentIndex = $sections->search(fn($s) => $s->sectionID == $sectionId);
 
@@ -137,9 +139,7 @@ class CourseController extends Controller
                     ]
                 );
             }
-
-            // ✅ ADD THIS BLOCK HERE
-            $completedSections = 0;
+            
 
             if (Auth::check()) {
                 $completedSections = Progress::where('userID', Auth::id())
@@ -147,8 +147,7 @@ class CourseController extends Controller
                     ->where('progressName', 'like', 'SECTION_%')
                     ->count();
             }
-
-            $isCompletedAll = $completedSections >= $totalSections;
+            
         } else {
             $current = $sections->first();
             $currentIndex = 0;

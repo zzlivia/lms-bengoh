@@ -111,7 +111,7 @@
                                     {{ Str::limit($course->courseDesc ?? 'Course description here.', 180) }}
                                 </p>
                                 <div class="d-flex justify-content-end gap-2 mt-3">
-                                    <a href="{{ route('learn', $course->courseID) }}">
+                                    <a href="{{ route('learn', $course->courseID) }}" 
                                     class="btn btn-outline-dark btn-sm px-4">
                                         Start Learning
                                     </a>

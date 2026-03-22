@@ -91,13 +91,37 @@
                         </div>
                     @endif
 
+                    @php
+                        $prev = $sections[$currentIndex - 1] ?? null;
+                        $next = $sections[$currentIndex + 1] ?? null;
+                    @endphp
+
                     <div class="d-flex justify-content-between mt-5 pt-3 border-top">
-                        <button class="btn btn-outline-secondary btn-nav px-4">
-                            <i class="fa fa-chevron-left me-2"></i> Previous
-                        </button>
-                        <button class="btn btn-primary btn-nav px-4">
-                            Next <i class="fa fa-chevron-right ms-2"></i>
-                        </button>
+
+                        {{-- Previous Button --}}
+                        @if($prev)
+                            <a href="{{ route('learn', ['id' => $course->id, 'sectionId' => $prev->id]) }}"
+                            class="btn btn-outline-secondary btn-nav px-4">
+                                <i class="fa fa-chevron-left me-2"></i> Previous
+                            </a>
+                        @else
+                            <button class="btn btn-outline-secondary btn-nav px-4" disabled>
+                                <i class="fa fa-chevron-left me-2"></i> Previous
+                            </button>
+                        @endif
+
+                        {{-- Next Button --}}
+                        @if($next)
+                            <a href="{{ route('learn', ['id' => $course->id, 'sectionId' => $next->id]) }}"
+                            class="btn btn-primary btn-nav px-4">
+                                Next <i class="fa fa-chevron-right ms-2"></i>
+                            </a>
+                        @else
+                            <button class="btn btn-primary btn-nav px-4" disabled>
+                                Next <i class="fa fa-chevron-right ms-2"></i>
+                            </button>
+                        @endif
+
                     </div>
                 </div>
             </div>

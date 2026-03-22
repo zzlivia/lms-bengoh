@@ -44,6 +44,9 @@ Route::get('/module/{id}/quiz', [CourseController::class, 'showQuiz'])->name('mo
 Route::post('/module/{id}/questions', [CourseController::class, 'submitModuleQuestions'])->name('module.questions.submit');
 
 Route::get('/module/{id}/mcqs', [CourseController::class, 'showMCQS'])->name('mcq.module'); 
+
+Route::post('/module/{id}/submit', [CourseController::class, 'submitMCQS'])->name('module.submit');
+   
     
 
 //mcq preview

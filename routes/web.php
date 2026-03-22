@@ -39,7 +39,7 @@ Route::get('/module/{id}', [ModuleController::class, 'viewModule'])->name('modul
 
 Route::get('/module/{id}/quiz', [CourseController::class, 'showQuiz'])->name('module.quiz');
 
-Route::get('/module/{id}/questions', [CourseController::class, 'showModuleQuestions'])->name('module.questions');
+//Route::get('/module/{id}/questions', [CourseController::class, 'showModuleQuestions'])->name('module.questions');
     
 Route::post('/module/{id}/questions', [CourseController::class, 'submitModuleQuestions'])->name('module.questions.submit');
 
@@ -185,7 +185,6 @@ Route::prefix('admin')
 
     /* lecture section management*/
 
-    
     Route::post('/sections/store', [LectureSectionController::class, 'storeSection'])
         ->name('sections.store');//store section
 
@@ -199,7 +198,7 @@ Route::prefix('admin')
 
     
     Route::delete('/sections/delete/{id}', [LectureSectionController::class, 'deleteSection'])
-        ->name('sections.delete');//delete section
+        ->name('section.delete');//delete section
 
     /* mcqs */
     Route::post('/mcq/store', [ModuleController::class, 'storeMCQ'])->name('mcq.store');

@@ -1,5 +1,13 @@
 let selectedLang = localStorage.getItem('lang') || 'en-US';
 let selectedLangLabel = localStorage.getItem('langLabel') || 'English';
+let voices = [];
+
+function loadVoices() {
+    voices = speechSynthesis.getVoices();
+}
+
+// load voices properly
+speechSynthesis.onvoiceschanged = loadVoices;
 
 function setLanguage(lang, label) {
     selectedLang = lang;
@@ -18,13 +26,19 @@ function updateLanguageUI() {
     }
 }
 
-function speakQuestion() {
-    const text = document.getElementById("questionText")?.innerText;
+function speakQuestion(index) {
+    const text = document.getElementById("questionText" + index)?.innerText;
 
     if (!text) return;
 
     const speech = new SpeechSynthesisUtterance(text);
     speech.lang = localStorage.getItem('lang') || 'en-US';
+
+    //assign correct voice
+    const selectedVoice = voices.find(v => v.lang === speech.lang);
+    if (selectedVoice) {
+        speech.voice = selectedVoice;
+    }
 
     window.speechSynthesis.cancel();
     window.speechSynthesis.speak(speech);

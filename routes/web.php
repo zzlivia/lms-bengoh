@@ -46,8 +46,8 @@ Route::post('/module/{id}/questions', [CourseController::class, 'submitModuleQue
 Route::get('/module/{id}/mcqs', [CourseController::class, 'showMCQS'])->name('mcq.module'); 
 
 Route::post('/module/{id}/submit', [CourseController::class, 'submitMCQS'])->name('module.submit');
-   
-    
+
+Route::get('/module/{id}/start', [CourseController::class, 'startLearning'])->name('module.start');
 
 //mcq preview
 Route::get('/mcq/preview/{moduleID}', [ModuleController::class, 'previewMCQ'])->name('mcq.preview');

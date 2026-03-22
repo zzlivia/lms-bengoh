@@ -50,11 +50,9 @@
     </div>
 
     {{-- button --}}
-    <div style="position: relative; z-index: 9999;">
-        <button onclick="alert('clicked')" class="btn btn-danger">
-            TEST BUTTON
-        </button>
-    </div>
+    <a href="{{ route('courses.allCourses') }}" onclick="window.location.href='{{ route('courses.allCourses') }}'; return true;" class="btn btn-primary"></a>
+        View All Courses
+    </a>
 
     {{-- community stories section --}}
     <h5 class="text-center mb-4 fw-bold">Community Story</h5>

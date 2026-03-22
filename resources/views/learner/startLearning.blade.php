@@ -90,15 +90,13 @@
                             Please select a module or lecture from the sidebar.
                         </div>
                     @endif
-
-                    @php
+                    @php //connection to next module or section
                         $prev = $sections[$currentIndex - 1] ?? null;
                         $next = $sections[$currentIndex + 1] ?? null;
+                        $isLast = $currentIndex == count($sections) - 1;
                     @endphp
-
                     <div class="d-flex justify-content-between mt-5 pt-3 border-top">
-
-                        {{-- Previous Button --}}
+                        {{-- previous button --}}
                         @if($prev)
                             <a href="{{ route('learn', ['id' => $course->courseID, 'sectionID' => $prev->id]) }}"
                             class="btn btn-outline-secondary btn-nav px-4">
@@ -109,19 +107,20 @@
                                 <i class="fa fa-chevron-left me-2"></i> Previous
                             </button>
                         @endif
-
-                        {{-- Next Button --}}
-                        @if($next)
+                        {{-- next button --}}
+                        @if(!$isLast)
+                            {{-- next section --}}
                             <a href="{{ route('learn', ['id' => $course->getKey(), 'sectionId' => $next->sectionID]) }}"
                             class="btn btn-primary btn-nav px-4">
                                 Next <i class="fa fa-chevron-right ms-2"></i>
                             </a>
                         @else
-                            <button class="btn btn-primary btn-nav px-4" disabled>
-                                Next <i class="fa fa-chevron-right ms-2"></i>
-                            </button>
+                            {{-- go back to MCQ --}}
+                            <a href="{{ route('mcq.module', $module->moduleID ?? 1) }}"
+                            class="btn btn-success btn-nav px-4">
+                                Go to MCQ <i class="fa fa-arrow-right ms-2"></i>
+                            </a>
                         @endif
-
                     </div>
                 </div>
             </div>

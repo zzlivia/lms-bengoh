@@ -107,5 +107,7 @@
             console.log("Service Worker Registered");
         });
     }
+
+    @yield('scripts')
 </body>
 </html>

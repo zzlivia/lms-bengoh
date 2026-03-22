@@ -55,7 +55,7 @@
         <a href="{{ route('course.feedback', $course->courseID) }}" class="btn btn-link text-decoration-none"> {{--{{ route('course.feedback', $course->courseID) }}--}}
             <i class="fa fa-comment-dots me-1"></i> View Course Feedback
         </a>
-        <a href="{{ route('courses.startLearn', $course->courseID) }}" class="btn btn-primary btn-lg px-5 shadow"> {{--{{ route('courses.learn', $course->courseID) }}--}}
+        <a href="{{ route('learn', $course->courseID) }}" class="btn btn-primary btn-lg px-5 shadow"> {{--{{ route('courses.learn', $course->courseID) }}--}}
             Enrol Now
         </a>
     </div>

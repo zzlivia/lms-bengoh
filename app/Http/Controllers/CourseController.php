@@ -112,6 +112,7 @@ class CourseController extends Controller
         }
         //sort by display_order
         $sections = $sections->sortBy('section_order')->values();
+        $totalSections = $sections->count();
         // Get current section
         if ($sectionId) {
             $currentIndex = $sections->search(fn($s) => $s->sectionID == $sectionId);
@@ -121,11 +122,46 @@ class CourseController extends Controller
             }
 
             $current = $sections[$currentIndex];
+
+            //to track per section
+            if (Auth::check()) {
+                Progress::updateOrCreate(
+                    [
+                        'userID' => Auth::id(),
+                        'courseID' => $id,
+                        'progressName' => 'SECTION_' . $current->sectionID
+                    ],
+                    [
+                        'progressStatus' => 'completed',
+                        'completionProgress' => 10
+                    ]
+                );
+            }
+
+            // ✅ ADD THIS BLOCK HERE
+            $completedSections = 0;
+
+            if (Auth::check()) {
+                $completedSections = Progress::where('userID', Auth::id())
+                    ->where('courseID', $id)
+                    ->where('progressName', 'like', 'SECTION_%')
+                    ->count();
+            }
+
+            $isCompletedAll = $completedSections >= $totalSections;
         } else {
             $current = $sections->first();
             $currentIndex = 0;
         }
-        return view('learner.startlearning', ['course' => $course,'sections' => $sections,'current' => $current,'currentIndex' => $currentIndex
+        return view('learner.startlearning', [
+            'course' => $course,
+            'sections' => $sections,
+            'current' => $current,
+            'currentIndex' => $currentIndex,
+            'module' => $course->modules->first(),
+            'completedSections' => $completedSections,
+            'totalSections' => $totalSections,
+            'isCompletedAll' => $isCompletedAll
         ]);
     }
     

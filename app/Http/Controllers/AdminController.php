@@ -284,7 +284,7 @@ class AdminController extends Controller
             ->with('success','Course deleted successfully');
     }
 
-    //ignore from here
+    /*ignore from here
     public function storeSection(Request $request)
     {
         //validate input
@@ -348,7 +348,7 @@ class AdminController extends Controller
         $section->delete();
 
         return back()->with('success','Section deleted successfully');
-    }//till here
+    }till here*/
     
     public function storeMaterials(Request $request, $id) //store learning materials
     {   //loop every each of uploaded material

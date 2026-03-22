@@ -177,22 +177,50 @@ class CourseController extends Controller
         return view('learner.module_question', compact('module', 'course'));
     }
     
-    public function submitMCQS(Request $request, $id)
+    public function submitMCQS(Request $request, $id) 
     {
         $module = Module::with('mcqs.answers')->findOrFail($id);
 
-        $answers = $request->answers; // get all answers
+        $answers = $request->answers; 
         $score = 0;
         $total = $module->mcqs->count();
 
+        // calculate score
         foreach ($module->mcqs as $question) {
             $selectedAnswer = $answers[$question->moduleQs_ID] ?? null;
+
             if ($selectedAnswer) {
                 $correctAnswer = $question->answers->where('ansCorrect', 1)->first();
-                if ($correctAnswer && $correctAnswer->ansID == $selectedAnswer) {$score++;}
+
+                if ($correctAnswer && $correctAnswer->ansID == $selectedAnswer) {
+                    $score++;
+                }
             }
         }
-        return back()->with('result', "You scored $score / $total");
+
+        //find next module
+        $nextModule = Module::where('courseID', $module->courseID)
+            ->where('moduleID', '>', $module->moduleID)
+            ->orderBy('moduleID')
+            ->first();
+
+        //skip modules with NO lectures
+        while ($nextModule && $nextModule->lectures()->count() == 0) {
+            $nextModule = Module::where('courseID', $module->courseID)
+                ->where('moduleID', '>', $nextModule->moduleID)
+                ->orderBy('moduleID')
+                ->first();
+        }
+
+        //if next module exists → go there
+        if ($nextModule) {
+            return redirect()->route('module.start', $nextModule->moduleID)
+                ->with('success', "You scored $score / $total. Moving to next module.");
+        }
+
+        //if no module available
+        return redirect()->route('course.view', $module->courseID)
+            ->with('warning', "You scored $score / $total. Lectures are not yet available.");
     }
 
     //show feedback form

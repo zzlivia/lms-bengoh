@@ -108,6 +108,7 @@
         });
     }
 
+    <script src="{{ asset('js/language.js') }}"></script>
     @yield('scripts')
 </body>
 </html>

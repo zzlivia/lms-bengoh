@@ -45,9 +45,9 @@
                 <li class="nav-item dropdown mx-2">
                     <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Language</a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">English</a></li>
-                        <li><a class="dropdown-item" href="#">Bahasa Melayu</a></li>
-                        <li><a class="dropdown-item" href="#">Iban</a></li>
+                        <li><a class="dropdown-item" href="#" onclick="setLanguage('en-US', 'English')">English</a></li>
+                        <li><a class="dropdown-item" href="#" onclick="setLanguage('ms-MY', 'Bahasa Melayu')">Bahasa Melayu</a></li>
+                        <li><a class="dropdown-item" href="#" onclick="setLanguage('ms-MY', 'Iban')">Iban</a></li>
                     </ul>
                 </li>
                 {{-- authentication --}}

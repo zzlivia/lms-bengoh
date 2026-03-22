@@ -62,22 +62,17 @@
 
                     @elseif($module && $module->mcqs->count())
 
-                        {{-- ✅ MCQ SECTION --}}
+                        {{-- MCQ SECTION --}}
                         <h5 class="fw-bold mb-3">Module Quiz: {{ $module->moduleName }}</h5>
-
-                        <form method="POST" action="{{ route('module.questions.submit', $module->moduleID) }}">
+                        <form id="quizForm" method="POST" action="{{ route('module.questions.submit', $module->moduleID) }}">
                         @csrf
 
                         @foreach($module->mcqs as $question)
                             <div class="mb-4">
                                 <strong>{{ $question->moduleQs }}</strong>
-
                                 @foreach($question->answers as $answer)
                                     <div class="form-check">
-                                        <input class="form-check-input"
-                                            type="radio"
-                                            name="answers[{{ $question->moduleQs_ID }}]"
-                                            value="{{ $answer->ansID }}">
+                                        <input class="form-check-input" type="radio" name="answers[{{ $question->moduleQs_ID }}]" value="{{ $answer->ansID }}">
 
                                         <label class="form-check-label">
                                             {{ $answer->ansID_text }}
@@ -108,4 +103,32 @@
             </div>
         </div>
     </div>
+
+    <script>
+    document.getElementById('quizForm').addEventListener('submit', function(e) {
+        const questions = document.querySelectorAll('[name^="answers["]');
+        const answered = new Set();
+        questions.forEach(input => {
+            if (input.checked) {
+                const name = input.name;
+                answered.add(name);
+            }
+        });
+        const totalQuestions = new Set(
+            Array.from(questions).map(q => q.name)
+        ).size;
+        const answeredCount = answered.size;
+        if (answeredCount < totalQuestions) {
+            e.preventDefault(); // stop submit
+            const remaining = totalQuestions - answeredCount;
+            const confirmSubmit = confirm(
+                `You forgot to answer ${remaining} question(s).\n\n` +
+                `Click OK to submit anyway or Cancel to go back.`
+            );
+            if (confirmSubmit) {
+                e.target.submit(); // submit anyway
+            }
+        }
+    });
+    </script>
 @endsection

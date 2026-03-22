@@ -98,32 +98,31 @@ class CourseController extends Controller
     }
     
     //redirect user to start learning interface
-    public function startLearning($id, Request $request)
+    public function startLearning($id, Request $request, $sectionId = null)
     {
-        $course = Course::with([
-            'modules.mcqs.answers', 
-            'modules.lectures.sections',
-            'modules.lectures.materials.video',
-            'modules.lectures.materials.pdf'
-        ])->findOrFail($id);
-
-        // get module from URL (?module=3)
-        $moduleID = $request->module;
-
-        //if user clicked module → use it
-        if ($moduleID) {
-            $module = $course->modules->where('moduleID', $moduleID)->first();
-        } else {
-            // fallback (first module)
-            $module = $course->modules->first();
+        $course = Course::with(['modules.lectures.sections'])->findOrFail($id);
+        //collect all sections
+        $sections = collect();
+        foreach ($course->modules as $module) {
+            foreach ($module->lectures as $lecture) {
+                foreach ($lecture->sections as $section) {
+                    $sections->push($section);
+                }
+            }
         }
-
-        // lecture + section
-        $lecture = $module ? $module->lectures->first() : null;
-        $section = $lecture ? $lecture->sections->first() : null;
-
-        return view('learner.startlearning', compact('course','module','lecture','section'));
-}
+        //sort by display_order
+        $sections = $sections->sortBy('section_order')->values();
+        // Get current section
+        if ($sectionId) {
+            $currentIndex = $sections->search(fn($s) => $s->id == $sectionId);
+            $current = $sections[$currentIndex] ?? $sections->first();
+        } else {
+            $current = $sections->first();
+            $currentIndex = 0;
+        }
+        return view('learner.startlearning', ['course' => $course,'sections' => $sections,'current' => $current,'currentIndex' => $currentIndex
+        ]);
+    }
     
     //display questions
     public function showMCQS($id)
@@ -137,17 +136,16 @@ class CourseController extends Controller
     public function submitMCQS(Request $request, $id)
     {
         $module = Module::with('mcqs.answers')->findOrFail($id);
+
+        $answers = $request->answers; // get all answers
         $score = 0;
         $total = $module->mcqs->count();
+
         foreach ($module->mcqs as $question) {
-            $selectedAnswer = $request->input('question_' . $question->moduleQs_ID);
+            $selectedAnswer = $answers[$question->moduleQs_ID] ?? null;
             if ($selectedAnswer) {
-                $correctAnswer = $question->answers
-                    ->where('ansCorrect', 1)
-                    ->first();
-                if ($correctAnswer && $correctAnswer->ansID == $selectedAnswer) {
-                    $score++;
-                }
+                $correctAnswer = $question->answers->where('ansCorrect', 1)->first();
+                if ($correctAnswer && $correctAnswer->ansID == $selectedAnswer) {$score++;}
             }
         }
         return back()->with('result', "You scored $score / $total");

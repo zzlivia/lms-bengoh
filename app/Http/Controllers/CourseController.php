@@ -198,14 +198,14 @@ class CourseController extends Controller
             }
         }
 
-        //find next module
+        // find next module
         $nextModule = Module::where('courseID', $module->courseID)
             ->where('moduleID', '>', $module->moduleID)
             ->orderBy('moduleID')
             ->first();
 
-        dd($nextModule->lectures()->count()); //module considered empty if there is no module
-        //skip modules with NO lectures
+        //dd($nextModule->lectures()->count()); //module considered empty if there is no module
+        // skip modules with NO lectures
         while ($nextModule && $nextModule->lectures()->count() == 0) {
             $nextModule = Module::where('courseID', $module->courseID)
                 ->where('moduleID', '>', $nextModule->moduleID)

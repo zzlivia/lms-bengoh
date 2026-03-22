@@ -204,6 +204,7 @@ class CourseController extends Controller
             ->orderBy('moduleID')
             ->first();
 
+        dd($nextModule->lectures()->count()); //module considered empty if there is no module
         //skip modules with NO lectures
         while ($nextModule && $nextModule->lectures()->count() == 0) {
             $nextModule = Module::where('courseID', $module->courseID)

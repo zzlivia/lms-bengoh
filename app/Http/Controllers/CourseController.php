@@ -112,7 +112,12 @@ class CourseController extends Controller
         }
         //sort by display_order
         $sections = $sections->sortBy('section_order')->values();
+        //collection session
         $totalSections = $sections->count();
+        if ($sections->isEmpty()) { //if there is no content in the module
+            return redirect()->route('courses.showCourse', $course->courseID)
+                ->with('error', 'This module has no learning materials yet.');
+        }
         $completedSections = 0;
         $isCompletedAll = $completedSections >= $totalSections;
         //get current section

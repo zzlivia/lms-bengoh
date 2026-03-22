@@ -4,7 +4,7 @@
     <div class="mb-3">
         <div class="text-uppercase small text-muted fw-bold">MODULE {{ $loop->iteration }}</div>
         {{-- retrieve modules --}}
-        <a href="{{ route('courses.startLearn', ['id' => $course->courseID,'module' => $module->moduleID]) }}"></a>
+        <a href="{{ route('learn', ['id' => $course->getKey()]) }}"></a>
             {{ $module->moduleName }}
         </a>
         {{-- retrieve lectures --}}

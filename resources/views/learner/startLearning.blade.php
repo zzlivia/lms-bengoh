@@ -100,7 +100,7 @@
 
                         {{-- Previous Button --}}
                         @if($prev)
-                            <a href="{{ route('learn', ['id' => $course->id, 'sectionId' => $prev->id]) }}"
+                            <a href="{{ route('learn', ['id' => $course->courseID, 'sectionID' => $prev->id]) }}"
                             class="btn btn-outline-secondary btn-nav px-4">
                                 <i class="fa fa-chevron-left me-2"></i> Previous
                             </a>
@@ -112,7 +112,7 @@
 
                         {{-- Next Button --}}
                         @if($next)
-                            <a href="{{ route('learn', ['id' => $course->id, 'sectionId' => $next->id]) }}"
+                            <a href="{{ route('learn', ['id' => $course->getKey(), 'sectionId' => $next->sectionID]) }}"
                             class="btn btn-primary btn-nav px-4">
                                 Next <i class="fa fa-chevron-right ms-2"></i>
                             </a>

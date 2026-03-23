@@ -20,8 +20,8 @@
                 </p>
             </div>
 
-            <form method="POST" action="{{ route('course.feedback.submit', $course->courseID) }}">
-            @csrf
+            <form action="{{ route('course.feedback.submit', $course->courseID) }}" method="POST">
+                @csrf
                 <div class="card shadow-sm border-0 p-4">
                     <div class="mb-4">
                         <label class="form-label fw-semibold">Overall Rating</label>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Course;
 use App\Models\Module;
 use App\Models\Progress;
+use App\Models\LectureProgress;
 //use App\Models\Lecture;
 //use App\Models\LectureSection;
 use Illuminate\Support\Facades\Auth;
@@ -281,6 +282,20 @@ class CourseController extends Controller
                     ->where('courseID', $courseID)
                     ->get();
         return view('learner.course_progress', compact('progress', 'course'));
+    }
+
+    public function completeLecture($lectID)
+    {
+        LectureProgress::updateOrCreate(
+            [
+                'userID' => Auth::id(),
+                'lectID' => $lectID
+            ],
+            [
+                'completed_at' => now()
+            ]
+        );
+        return back()->with('success', 'Lecture marked as completed');
     }
     
     //only registered users can view

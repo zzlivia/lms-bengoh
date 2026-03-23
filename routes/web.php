@@ -79,7 +79,10 @@ Route::get('/course/{id}/assessment', [CourseController::class, 'courseAssessmen
 Route::get('/course/{id}/progress', [CourseController::class, 'showAllProgress'])->name('course.progress');
 
 Route::post('/lecture/{lectID}/complete', [CourseController::class, 'completeLecture'])->name('lecture.complete');    
+
+Route::post('/lecture/complete-next', [CourseController::class, 'completeAndNext'])->name('lecture.complete.and.next');
     
+
 /* leaderboard*/
 
 Route::get('/leaderboards', [CourseController::class, 'leaderboard'])->middleware('auth')->name('leaderboards');

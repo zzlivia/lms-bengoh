@@ -227,30 +227,32 @@ class CourseController extends Controller
     //show feedback form
     public function courseFeedback($id)
     {
-        $course = Course::with(['modules.lectures.mcqs'])->findOrFail($id);
+        $course = Course::with('modules')->findOrFail($id);
+
         return view('learner.course_feedback', compact('course'));
     }
 
     public function submitFeedback(Request $request, $id)
     {
-        // validate (optional but recommended)
         $request->validate([
             'clarity' => 'required',
             'understanding' => 'required',
+            'rating' => 'required|integer|min:1|max:5'
         ]);
 
-        // save feedback (example)
-        DB::table('feedback')->insert([
+        DB::table('coursefeedback')->insert([
             'courseID' => $id,
             'clarity' => $request->clarity,
             'understanding' => $request->understanding,
             'favorite_module' => $request->favorite_module,
             'enjoyed' => $request->enjoyed,
             'suggestions' => $request->suggestions,
+            'rating' => $request->rating,
             'userID' => Auth::id(),
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
 
-        //redirect to course assessment page
         return redirect()->route('course.assessment', $id);
     }
 

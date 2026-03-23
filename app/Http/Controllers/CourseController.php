@@ -276,10 +276,11 @@ class CourseController extends Controller
     //show overall percentage
     public function showAllProgress($courseID)
     {
+        $course = Course::findOrFail($courseID);
         $progress = Progress::where('userID', Auth::id())
                     ->where('courseID', $courseID)
-                    ->get(); //return all progress records
-        return view('learner.course_progress', compact('progress'));
+                    ->get();
+        return view('learner.course_progress', compact('progress', 'course'));
     }
     
     //only registered users can view

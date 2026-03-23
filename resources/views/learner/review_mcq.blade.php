@@ -34,7 +34,7 @@
                     </a>
 
                     {{-- proceed to feedback --}}
-                    <a href="{{ route('course.feedback', $module->courseID) }}" class="btn btn-primary">
+                    <a href="{{ route('course.feedback', ['id' => $module->courseID]) }}" class="btn btn-primary">
                         Proceed to Feedback
                     </a>
                 </div>

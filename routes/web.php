@@ -76,8 +76,9 @@ Route::get('/course/{id}/assessment', [CourseController::class, 'courseAssessmen
 
 /* course progress*/
 
-Route::get('/course/{id}/progress', [CourseController::class, 'progress'])->name('course.progress');
+Route::get('/course/{id}/progress', [CourseController::class, 'showAllProgress'])->name('course.progress');
 
+    
 /* leaderboard*/
 
 Route::get('/leaderboards', [CourseController::class, 'leaderboard'])->middleware('auth')->name('leaderboards');

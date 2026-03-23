@@ -212,7 +212,7 @@ class CourseController extends Controller
         ->with([
             'score' => $score,
             'total' => $total,
-            'goFeedback' => route('course.feedback', $module->courseID),
+            'goFeedback' => route('course.feedback', ['id' => $module->courseID]),
             'reviewUrl' => route('module.review', $module->moduleID)
         ]);
     }

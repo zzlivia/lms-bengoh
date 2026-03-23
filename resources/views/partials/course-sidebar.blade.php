@@ -4,7 +4,7 @@
     <div class="mb-3">
         <div class="text-uppercase small text-muted fw-bold">MODULE {{ $loop->iteration }}</div>
         {{-- retrieve modules --}}
-        <a href="{{ route('learn', ['id' => $course->getKey()]) }}"></a>
+        <a href="{{ route('learn', ['id' => $course->getKey()]) }}">
             {{ $module->moduleName }}
         </a>
         {{-- retrieve lectures --}}
@@ -20,7 +20,9 @@
         {{-- display mcqs --}}
         @if($module->mcqs->count() > 0)
             <div class="ms-2 mt-1">
-                <a href="{{ route('mcq.module', $module->moduleID) }}"class="text-decoration-none"></a>○ MCQs {{ $loop->iteration }}</a>
+                <a href="{{ route('mcq.module', $module->moduleID) }}" class="text-decoration-none">
+                    ○ MCQs {{ $loop->iteration }}
+                </a>
             </div>
         @endif
     </div>

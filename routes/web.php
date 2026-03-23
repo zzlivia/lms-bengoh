@@ -78,6 +78,7 @@ Route::get('/course/{id}/assessment', [CourseController::class, 'courseAssessmen
 
 Route::get('/course/{id}/progress', [CourseController::class, 'showAllProgress'])->name('course.progress');
 
+Route::post('/lecture/{lectID}/complete', [CourseController::class, 'completeLecture'])->name('lecture.complete');    
     
 /* leaderboard*/
 

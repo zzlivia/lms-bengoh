@@ -1,0 +1,33 @@
+/* ⭐ Star Rating */
+.star-rating {
+    direction: rtl;
+    display: inline-flex;
+}
+
+.star-rating input {
+    display: none;
+}
+
+.star-rating label {
+    font-size: 30px;
+    color: #ccc;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+/* hover effect */
+.star-rating label:hover,
+.star-rating label:hover ~ label {
+    color: gold;
+    transform: scale(1.1);
+}
+
+/* selected */
+.star-rating input:checked ~ label {
+    color: gold;
+}
+
+.star-rating label:hover,
+.star-rating input:checked ~ label {
+    text-shadow: 0 0 5px rgba(255, 215, 0, 0.8);
+}

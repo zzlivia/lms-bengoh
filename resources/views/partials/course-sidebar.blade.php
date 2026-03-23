@@ -1,3 +1,7 @@
+@section('styles')
+    <link rel="stylesheet" href="{{ asset('css/course-sidebar.css') }}">
+@endsection
+
 <div class="col-md-3 sidebar p-3">
     <h6 class="fw-bold mb-3">Course Modules</h6>
     @foreach($course->modules as $module)

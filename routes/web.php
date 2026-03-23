@@ -64,13 +64,11 @@ Route::get('/module/{id}/review', [CourseController::class, 'reviewMCQ'])->name(
 /* lecture section*/ 
 Route::post('/admin/section/store', [LectureSectionController::class,'store'])->name('admin.section.store');
     
-
 /* course feedback */
 
 Route::get('/course/{id}/feedback', [CourseController::class, 'courseFeedback'])->name('course.feedback');
 
-Route::post('/course/feedback', [CourseController::class, 'submitFeedback'])->name('course.feedback.submit');
-
+Route::post('/course/{id}/feedback', [CourseController::class, 'submitFeedback'])->name('course.feedback.submit');
 
 /* course assessment*/
 

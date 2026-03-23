@@ -221,10 +221,7 @@ class CourseController extends Controller
     {
         $module = Module::with('mcqs.answers', 'course')->findOrFail($id);
 
-        return view('module.review', [
-            'module' => $module,
-            'course' => $module->course
-        ]);
+        return view('learner.review_mcq', ['module' => $module,'course' => $module->course]);
     }
 
     //show feedback form
@@ -234,9 +231,27 @@ class CourseController extends Controller
         return view('learner.course_feedback', compact('course'));
     }
 
-    public function submitFeedback(Request $request)
+    public function submitFeedback(Request $request, $id)
     {
-        return redirect()->back()->with('success','Thank you for your feedback!');
+        // validate (optional but recommended)
+        $request->validate([
+            'clarity' => 'required',
+            'understanding' => 'required',
+        ]);
+
+        // save feedback (example)
+        DB::table('feedback')->insert([
+            'courseID' => $id,
+            'clarity' => $request->clarity,
+            'understanding' => $request->understanding,
+            'favorite_module' => $request->favorite_module,
+            'enjoyed' => $request->enjoyed,
+            'suggestions' => $request->suggestions,
+            'userID' => Auth::id(),
+        ]);
+
+        //redirect to course assessment page
+        return redirect()->route('course.assessment', $id);
     }
 
     public function courseAssessment($id)

@@ -8,8 +8,11 @@
     <div class="container-fluid mt-3">
         <div class="row">
             @include('partials.course-sidebar')
+
             <div class="col-md-9 px-md-4">
                 <div class="learning-content-card p-4 shadow-sm bg-white rounded">
+
+                    {{-- Breadcrumb --}}
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb small">
                             <li class="breadcrumb-item">
@@ -19,7 +22,6 @@
                                     <a href="{{ route('courses.allCourses') }}">Courses</a>
                                 @endif
                             </li>
-
                             <li class="breadcrumb-item active">
                                 {{ $course->courseName }}
                             </li>
@@ -27,131 +29,173 @@
                     </nav>
 
                     <h3 class="fw-bold mb-4">{{ $course->courseTitle }}</h3>
-                    {{-- content loading --}}
+
+                    {{-- ================= CONTENT ================= --}}
                     @if($current)
+
                         <div class="section-header mb-3">
                             <h5 class="text-primary fw-bold">{{ $current->section_title }}</h5>
                         </div>
 
-                        {{-- video --}}
+                        {{-- VIDEO --}}
                         @if($current->section_type == 'video')
                             <div class="video-container mb-4">
                                 <div class="ratio ratio-16x9 bg-dark d-flex align-items-center justify-content-center rounded">
-                                    <span class="text-white"><i class="fa fa-play-circle fa-3x"></i></span>
+                                    <span class="text-white">
+                                        <i class="fa fa-play-circle fa-3x"></i>
+                                    </span>
                                 </div>
                             </div>
                         @endif
 
-                        {{-- text --}}
+                        {{-- TEXT --}}
                         @if($current->section_type == 'text')
                             <div class="text-content mb-4 lead-custom">
                                 {!! nl2br(e($current->section_content)) !!}
                             </div>
                         @endif
 
-                        {{-- pdf --}}
+                        {{-- PDF --}}
                         @if($current->section_type == 'pdf')
                             <div class="pdf-container mb-4">
-                                <iframe src="{{ asset('learning-materials/' . $current->section_file) }}#toolbar=0" 
-                                        width="100%" 
-                                        height="600px" 
+                                <iframe src="{{ asset('learning-materials/' . $current->section_file) }}#toolbar=0"
+                                        width="100%"
+                                        height="600px"
                                         class="rounded border">
                                 </iframe>
                             </div>
                         @endif
 
+                    {{-- ================= MCQ ================= --}}
                     @elseif($module && $module->mcqs->count())
 
-                        {{-- MCQ SECTION --}}
                         <h5 class="fw-bold mb-3">Module Quiz: {{ $module->moduleName }}</h5>
+
                         <form id="quizForm" method="POST" action="{{ route('module.questions.submit', $module->moduleID) }}">
-                        @csrf
+                            @csrf
 
-                        @foreach($module->mcqs as $question)
-                            <div class="mb-4">
-                                <strong>{{ $question->moduleQs }}</strong>
-                                @foreach($question->answers as $answer)
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="answers[{{ $question->moduleQs_ID }}]" value="{{ $answer->ansID }}">
+                            @foreach($module->mcqs as $question)
+                                <div class="mb-4">
+                                    <strong>{{ $question->moduleQs }}</strong>
 
-                                        <label class="form-check-label">
-                                            {{ $answer->ansID_text }}
-                                        </label>
-                                    </div>
-                                @endforeach
-                            </div>
-                        @endforeach
+                                    @foreach($question->answers as $answer)
+                                        <div class="form-check">
+                                            <input class="form-check-input"
+                                                type="radio"
+                                                name="answers[{{ $question->moduleQs_ID }}]"
+                                                value="{{ $answer->ansID }}">
 
-                        <button class="btn btn-primary">Submit Quiz</button>
+                                            <label class="form-check-label">
+                                                {{ $answer->ansID_text }}
+                                            </label>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            @endforeach
+
+                            <button class="btn btn-primary">Submit Quiz</button>
                         </form>
 
+                    {{-- ================= EMPTY ================= --}}
                     @else
                         <div class="alert alert-info">
                             Please select a module or lecture from the sidebar.
                         </div>
                     @endif
-                    @php //connection to next module or section
+
+
+                    {{-- ================= NAVIGATION ================= --}}
+                    @php
                         $prev = $sections[$currentIndex - 1] ?? null;
                         $next = $sections[$currentIndex + 1] ?? null;
                         $isLast = $currentIndex == count($sections) - 1;
                     @endphp
-                    <div class="d-flex justify-content-between mt-5 pt-3 border-top">
-                        {{-- previous button --}}
+
+                    <div class="d-flex justify-content-between align-items-center mt-5 pt-3 border-top">
+
+                        {{-- PREVIOUS --}}
                         @if($prev)
-                            <a href="{{ route('learn', ['id' => $course->courseID, 'sectionID' => $prev->id]) }}"
-                            class="btn btn-outline-secondary btn-nav px-4">
+                            <a href="{{ route('learn', ['id' => $course->courseID, 'sectionID' => $prev->sectionID]) }}"
+                            class="btn btn-outline-secondary px-4">
                                 <i class="fa fa-chevron-left me-2"></i> Previous
                             </a>
                         @else
-                            <button class="btn btn-outline-secondary btn-nav px-4" disabled>
+                            <button class="btn btn-outline-secondary px-4" disabled>
                                 <i class="fa fa-chevron-left me-2"></i> Previous
                             </button>
                         @endif
-                        {{-- next button --}}
+
+
+                        {{-- ===== MARK LECTURE COMPLETE ===== --}}
+                        @if($current)
+                            @php
+                                $completed = \App\Models\LectureProgress::where('userID', Auth::id())
+                                    ->where('lectID', $current->lectID)
+                                    ->exists();
+                            @endphp
+
+                            <div>
+                                @if(!$completed)
+                                    <form action="{{ route('lecture.complete', $current->lectID) }}" method="POST">
+                                        @csrf
+                                        <button type="submit" class="btn btn-success">
+                                            Mark Lecture as Completed
+                                        </button>
+                                    </form>
+                                @else
+                                    <button class="btn btn-success" disabled>
+                                        ✅ Completed
+                                    </button>
+                                @endif
+                            </div>
+                        @endif
+
+
+                        {{-- NEXT --}}
                         @if(!$isLast)
-                            {{-- next section --}}
-                            <a href="{{ route('learn', ['id' => $course->getKey(), 'sectionId' => $next->sectionID]) }}"
-                            class="btn btn-primary btn-nav px-4">
+                            <a href="{{ route('learn', ['id' => $course->courseID, 'sectionID' => $next->sectionID]) }}"
+                            class="btn btn-primary px-4">
                                 Next <i class="fa fa-chevron-right ms-2"></i>
                             </a>
                         @else
-                            {{-- go back to MCQ --}}
                             <a href="{{ route('mcq.module', $module->moduleID ?? 1) }}"
-                            class="btn btn-success btn-nav px-4">
+                            class="btn btn-success px-4">
                                 Go to MCQ <i class="fa fa-arrow-right ms-2"></i>
                             </a>
                         @endif
+
                     </div>
+
                 </div>
             </div>
         </div>
     </div>
 
+
+    {{-- ================= SCRIPT ================= --}}
     <script>
-    document.getElementById('quizForm').addEventListener('submit', function(e) {
+    document.getElementById('quizForm')?.addEventListener('submit', function(e) {
         const questions = document.querySelectorAll('[name^="answers["]');
         const answered = new Set();
+
         questions.forEach(input => {
             if (input.checked) {
-                const name = input.name;
-                answered.add(name);
+                answered.add(input.name);
             }
         });
-        const totalQuestions = new Set(
-            Array.from(questions).map(q => q.name)
-        ).size;
+
+        const totalQuestions = new Set(Array.from(questions).map(q => q.name)).size;
         const answeredCount = answered.size;
+
         if (answeredCount < totalQuestions) {
-            e.preventDefault(); // stop submit
+            e.preventDefault();
             const remaining = totalQuestions - answeredCount;
-            const confirmSubmit = confirm(
-                `You forgot to answer ${remaining} question(s).\n\n` +
-                `Click OK to submit anyway or Cancel to go back.`
-            );
-            if (confirmSubmit) {
-                e.target.submit(); // submit anyway
+
+            if (confirm(`You forgot ${remaining} question(s). Submit anyway?`)) {
+                e.target.submit();
             }
         }
     });
     </script>
+
 @endsection

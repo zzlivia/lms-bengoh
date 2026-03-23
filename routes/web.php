@@ -69,6 +69,9 @@ Route::post('/admin/section/store', [LectureSectionController::class,'store'])->
 
 Route::get('/course/{id}/feedback', [CourseController::class, 'courseFeedback'])->name('course.feedback');
 
+Route::post('/course/feedback', [CourseController::class, 'submitFeedback'])->name('course.feedback.submit');
+
+
 /* course assessment*/
 
 Route::get('/course/{id}/assessment', [CourseController::class, 'courseAssessment'])->name('course.assessment');

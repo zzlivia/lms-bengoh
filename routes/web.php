@@ -57,7 +57,9 @@ Route::get('/admin/mcq/edit/{moduleID}', [ModuleController::class, 'editMCQ'])->
     
 //enable or disable mcq
 Route::post('/admin/mcq/toggle/{moduleID}', [ModuleController::class, 'toggleMCQ'])->name('admin.mcq.toggle');
-    
+
+//review answer
+Route::get('/module/{id}/review', [CourseController::class, 'reviewMCQ'])->name('module.review');
 
 /* lecture section*/ 
 Route::post('/admin/section/store', [LectureSectionController::class,'store'])->name('admin.section.store');
@@ -69,23 +71,21 @@ Route::get('/course/{id}/feedback', [CourseController::class, 'courseFeedback'])
     
 
 Route::post('/course/feedback', [CourseController::class, 'submitFeedback'])->name('course.feedback.submit');
-    
+
 
 /* course assessment*/
 
 Route::get('/course/{id}/assessment', [CourseController::class, 'courseAssessment'])->name('course.assessment');
-    
 
 /* course progress*/
 
-Route::get('/course/{course}/progress', [CourseController::class, 'progress']) ->name('course.progress');
-   
+Route::get('/course/{id}/progress', [CourseController::class, 'progress'])->name('course.progress');
 
 /* leaderboard*/
 
 Route::get('/leaderboards', [CourseController::class, 'leaderboard'])->middleware('auth')->name('leaderboards');
     
-    
+Route::get('/course/{id}/leaderboard', [CourseController::class, 'leaderboard'])->name('course.leaderboard');    
 
 /* learner's settings*/
 

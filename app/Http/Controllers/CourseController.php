@@ -181,11 +181,20 @@ class CourseController extends Controller
     {
         $module = Module::with('mcqs.answers')->findOrFail($id);
 
-        $answers = $request->answers; 
-        $score = 0;
+        $answers = $request->input('answers', []);
         $total = $module->mcqs->count();
+        $answered = count($answers);
+
+        // block if not skip
+        if ($answered < $total && $request->input('force_submit') != '1') {
+            return redirect()->back()
+                ->withInput()
+                ->with('warning', "You answered $answered out of $total questions. Please complete all or skip.");
+        }
 
         // calculate score
+        $score = 0;
+
         foreach ($module->mcqs as $question) {
             $selectedAnswer = $answers[$question->moduleQs_ID] ?? null;
 
@@ -198,30 +207,24 @@ class CourseController extends Controller
             }
         }
 
-        // find next module
-        $nextModule = Module::where('courseID', $module->courseID)
-            ->where('moduleID', '>', $module->moduleID)
-            ->orderBy('moduleID')
-            ->first();
+        return redirect()->route('mcq.module', ['id' => $module->moduleID])
+        ->withInput($request->all())
+        ->with([
+            'score' => $score,
+            'total' => $total,
+            'goFeedback' => route('course.feedback', $module->courseID),
+            'reviewUrl' => route('module.review', $module->moduleID)
+        ]);
+    }
 
-        //dd($nextModule->lectures()->count()); //module considered empty if there is no module
-        // skip modules with NO lectures
-        while ($nextModule && $nextModule->lectures()->count() == 0) {
-            $nextModule = Module::where('courseID', $module->courseID)
-                ->where('moduleID', '>', $nextModule->moduleID)
-                ->orderBy('moduleID')
-                ->first();
-        }
+    public function reviewMCQ($id)
+    {
+        $module = Module::with('mcqs.answers', 'course')->findOrFail($id);
 
-        //if next module exists → go there
-        if ($nextModule) {
-            return redirect()->route('module.start', $nextModule->moduleID)
-                ->with('success', "You scored $score / $total. Moving to next module.");
-        }
-
-        //if no module available
-        return redirect()->route('course.view', $module->courseID)
-            ->with('warning', "You scored $score / $total. Lectures are not yet available.");
+        return view('module.review', [
+            'module' => $module,
+            'course' => $module->course
+        ]);
     }
 
     //show feedback form

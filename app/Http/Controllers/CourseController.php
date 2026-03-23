@@ -302,7 +302,7 @@ class CourseController extends Controller
     {
         $userID = Auth::id();
 
-        // ✅ Mark lecture complete
+        //mark lecture complete
         LectureProgress::updateOrCreate(
             [
                 'userID' => $userID,
@@ -313,7 +313,7 @@ class CourseController extends Controller
             ]
         );
 
-        // ✅ OPTIONAL: update module completion
+        //update module completion
         $lecture = Lecture::find($request->lectID);
         $moduleID = $lecture->moduleID;
 
@@ -332,7 +332,7 @@ class CourseController extends Controller
                 ]);
         }
 
-        // ✅ Redirect to next section
+        //redirect to next section
         return redirect()->route('learn', [
             'id' => $request->courseID,
             'sectionID' => $request->nextSectionID

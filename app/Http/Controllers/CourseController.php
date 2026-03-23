@@ -6,8 +6,8 @@ use App\Models\Course;
 use App\Models\Module;
 use App\Models\Progress;
 use App\Models\LectureProgress;
-//use App\Models\Lecture;
-//use App\Models\LectureSection;
+use App\Models\Lecture;
+use App\Models\Enrollment;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -296,6 +296,47 @@ class CourseController extends Controller
             ]
         );
         return back()->with('success', 'Lecture marked as completed');
+    }
+
+    public function completeAndNext(Request $request)
+    {
+        $userID = Auth::id();
+
+        // ✅ Mark lecture complete
+        LectureProgress::updateOrCreate(
+            [
+                'userID' => $userID,
+                'lectID' => $request->lectID
+            ],
+            [
+                'completed_at' => now()
+            ]
+        );
+
+        // ✅ OPTIONAL: update module completion
+        $lecture = Lecture::find($request->lectID);
+        $moduleID = $lecture->moduleID;
+
+        $totalLectures = Lecture::where('moduleID', $moduleID)->count();
+
+        $completedLectures = LectureProgress::where('userID', $userID)
+            ->whereIn('lectID', Lecture::where('moduleID', $moduleID)->pluck('lectID'))
+            ->count();
+
+        if ($completedLectures == $totalLectures) {
+            Enrollment::where('userID', $userID)
+                ->where('moduleID', $moduleID)
+                ->update([
+                    'isCompleted' => 1,
+                    'inProgress' => 0
+                ]);
+        }
+
+        // ✅ Redirect to next section
+        return redirect()->route('learn', [
+            'id' => $request->courseID,
+            'sectionID' => $request->nextSectionID
+        ]);
     }
     
     //only registered users can view

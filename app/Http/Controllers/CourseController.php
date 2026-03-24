@@ -8,6 +8,7 @@ use App\Models\Progress;
 use App\Models\LectureProgress;
 use App\Models\Lecture;
 use App\Models\Enrollment;
+use App\Models\Users;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -361,17 +362,21 @@ class CourseController extends Controller
     //only registered users can view
     public function leaderboard()
     {
+        //count completed courses per user
         $learners = DB::table('userprogress')
-            ->join('users', 'userprogress.userID', '=', 'users.id')
-            ->select(
-                'users.name',
-                DB::raw('COUNT(DISTINCT userprogress.courseID) as completed_courses')
-            )
-            ->where('userprogress.progressStatus', 'completed')
-            ->groupBy('users.id', 'users.name')
+            ->select('userID', DB::raw('COUNT(DISTINCT courseID) as completed_courses'))
+            ->where('progressStatus', 'completed')
+            ->groupBy('userID')
             ->orderByDesc('completed_courses')
             ->get();
 
-        return view('courses.leaderboards', compact('learners'));
+        //join with users table to get names
+        $learners = $learners->map(function ($item) {
+            $user = Users::find($item->userID);
+            $item->name = $user->name ?? 'Unknown';
+            return $item;
+        });
+
+        return view('leaderboards', compact('learners'));
     }
 }

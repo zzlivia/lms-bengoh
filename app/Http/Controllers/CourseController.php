@@ -123,8 +123,7 @@ class CourseController extends Controller
         $isCompletedAll = $completedSections >= $totalSections;
         //get current section
         if ($sectionId) {
-            $currentIndex = $sections->search(fn($s) => $s->sectionID == $sectionId);
-
+            $currentIndex = $sections->search(fn($s) => (int)$s->sectionID === (int)$sectionId);
             if ($currentIndex === false) {
                 $currentIndex = 0;
             }

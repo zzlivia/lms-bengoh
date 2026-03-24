@@ -108,29 +108,30 @@
                         $next = $sections[$currentIndex + 1] ?? null;
                         $isLast = $currentIndex == count($sections) - 1;
                     @endphp
-
-                    <div class="d-flex justify-content-between align-items-center mt-5 pt-3 border-top">
-                        {{-- PREVIOUS --}}
-                        @if($prev)
-                            <a href="{{ route('learn', ['id' => $course->courseID, 'sectionId' => $prev->sectionID]) }}"
-                            class="btn btn-outline-secondary px-4">
-                                <i class="fa fa-chevron-left me-2"></i> Previous
-                            </a>
-                        @else
-                            <button class="btn btn-outline-secondary px-4" disabled>
-                                <i class="fa fa-chevron-left me-2"></i> Previous
-                            </button>
-                        @endif
-                        {{-- NEXT --}}
-                        @if(!$isLast)
-                            <a href="{{ route('learn', ['id' => $course->courseID, 'sectionId' => $next->sectionID]) }}" class="btn btn-primary px-4">
-                                Next <i class="fa fa-chevron-right ms-2"></i>
-                            </a>
-                        @else
-                            <a href="{{ route('mcq.module', $module->moduleID ?? 1) }}" class="btn btn-success px-4"></a>
-                                Go to MCQ <i class="fa fa-arrow-right ms-2"></i>
-                            </a>
-                        @endif
+                    <div class="d-flex justify-content-between mt-5 pt-3 border-top">
+                        {{-- LEFT SIDE --}}
+                        <div>
+                            @if($prev)
+                                <a href="{{ route('learn', [
+                                    'id' => $course->courseID,
+                                    'sectionId' => $prev->sectionID
+                                ]) }}" class="btn btn-outline-secondary">
+                                    ← Previous
+                                </a>
+                            @endif
+                        </div>
+                        {{-- RIGHT SIDE --}}
+                        <div>
+                            @if(!$isLast)
+                                <a href="{{ route('learn', ['id' => $course->courseID, 'sectionId' => $next->sectionID]) }}" class="btn btn-primary">
+                                    Next →
+                                </a>
+                            @else
+                                <a href="{{ route('mcq.module', $module->moduleID ?? 1) }}" class="btn btn-success text-white">
+                                    Go to MCQ →
+                                </a>
+                            @endif
+                        </div>
                     </div>
                 </div>
             </div>

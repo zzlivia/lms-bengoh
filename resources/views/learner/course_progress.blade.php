@@ -44,31 +44,14 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>MCQ 1</td>
-                                    <td>80%</td>
-                                    <td>{{ $grades['mcq1'] ?? '0%' }}</td>
-                                </tr>
-                                <tr>
-                                    <td>MCQ 2</td>
-                                    <td>80%</td>
-                                    <td>{{ $grades['mcq2'] ?? '0%' }}</td>
-                                </tr>
-                                <tr>
-                                    <td>MCQ 3</td>
-                                    <td>80%</td>
-                                    <td>{{ $grades['mcq3'] ?? '0%' }}</td>
-                                </tr>
-                                <tr>
-                                    <td>MCQ 4</td>
-                                    <td>80%</td>
-                                    <td>{{ $grades['mcq4'] ?? '0%' }}</td>
-                                </tr>
-                                <tr>
-                                    <td>Course Assessment</td>
-                                    <td>80%</td>
-                                    <td>{{ $grades['assessment'] ?? '0%' }}</td>
-                                </tr>
+                                @foreach($grades as $grade)
+                                    <tr>
+                                        <td>{{ $grade['name'] }}</td>
+                                        <td>80%</td>
+                                        <td>{{ $grade['score'] }}</td>
+                                    </tr>
+                                @endforeach
+
                                 <tr class="fw-bold">
                                     <td>Total Grade</td>
                                     <td></td>

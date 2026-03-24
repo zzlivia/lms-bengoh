@@ -31,8 +31,7 @@ Route::post('/logout', [AuthenticationController::class, 'logout'])->name('logou
 
 Route::get('/courses', [CourseController::class, 'allCourses'])->name('courses.allCourses');
 Route::get('/courses/{id}', [CourseController::class, 'showCourse'])->name('courses.showCourse');
-Route::get('/learn/{id}/{sectionID?}', [CourseController::class, 'startLearning'])->name('learn');
-    
+Route::get('/courses/{id}/startLearn/{sectionId?}', [CourseController::class, 'startLearning'])->name('learn');
 
 /* module and mcqs*/
 

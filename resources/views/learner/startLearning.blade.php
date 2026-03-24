@@ -115,7 +115,7 @@
 
                         {{-- PREVIOUS --}}
                         @if($prev)
-                            <a href="{{ route('learn', ['id' => $course->courseID, 'sectionID' => $prev->sectionID]) }}"
+                            <a href="{{ route('learn', ['id' => $course->courseID, 'sectionId' => $prev->sectionID]) }}"
                             class="btn btn-outline-secondary px-4">
                                 <i class="fa fa-chevron-left me-2"></i> Previous
                             </a>

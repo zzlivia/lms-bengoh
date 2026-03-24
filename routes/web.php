@@ -85,7 +85,7 @@ Route::post('/lecture/complete-next', [CourseController::class, 'completeAndNext
 
 /* leaderboard*/
 
-Route::get('/leaderboards', [CourseController::class, 'leaderboard'])->middleware('auth')->name('leaderboards');
+Route::get('/leaderboards', [CourseController::class, 'leaderboard'])->middleware('auth')->name('leaderboards'); //access to all courses
     
 Route::get('/course/{id}/leaderboard', [CourseController::class, 'leaderboard'])->name('course.leaderboard');    
 

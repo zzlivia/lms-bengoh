@@ -153,10 +153,6 @@
 
                         {{-- NEXT --}}
                         @if(!$isLast)
-                            {{-- <a href="{{ route('learn', ['id' => $course->courseID, 'sectionID' => $next->sectionID]) }}"
-                            class="btn btn-primary px-4">
-                                Next <i class="fa fa-chevron-right ms-2"></i>
-                            </a>--}}
                             <a href="{{ route('learn', ['id' => $course->courseID, 'sectionID' => $next->sectionID]) }}"
                             class="btn btn-primary px-4">
                                 Next <i class="fa fa-chevron-right ms-2"></i>

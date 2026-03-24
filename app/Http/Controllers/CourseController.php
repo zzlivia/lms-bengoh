@@ -208,13 +208,14 @@ class CourseController extends Controller
         }
 
         return redirect()->route('mcq.module', ['id' => $module->moduleID])
-        ->withInput($request->all())
-        ->with([
-            'score' => $score,
-            'total' => $total,
-            'goFeedback' => route('course.feedback', ['id' => $module->courseID]),
-            'reviewUrl' => route('module.review', $module->moduleID)
-        ]);
+            ->withInput($request->all())
+            ->with([
+                'score' => $score,
+                'total' => $total,
+                'completed' => true,
+                'goFeedback' => route('course.feedback', ['id' => $module->courseID]),
+                'reviewUrl' => route('module.review', $module->moduleID)
+            ]);
     }
 
     public function reviewMCQ($id)

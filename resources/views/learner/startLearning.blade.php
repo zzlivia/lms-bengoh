@@ -102,8 +102,6 @@
                             Please select a module or lecture from the sidebar.
                         </div>
                     @endif
-
-
                     {{-- ================= NAVIGATION ================= --}}
                     @php
                         $prev = $sections[$currentIndex - 1] ?? null;
@@ -112,7 +110,6 @@
                     @endphp
 
                     <div class="d-flex justify-content-between align-items-center mt-5 pt-3 border-top">
-
                         {{-- PREVIOUS --}}
                         @if($prev)
                             <a href="{{ route('learn', ['id' => $course->courseID, 'sectionId' => $prev->sectionID]) }}"
@@ -124,53 +121,21 @@
                                 <i class="fa fa-chevron-left me-2"></i> Previous
                             </button>
                         @endif
-
-
-                        {{-- ===== MARK LECTURE COMPLETE ===== 
-                        @if($current)
-                            @php
-                                $completed = \App\Models\LectureProgress::where('userID', Auth::id())
-                                    ->where('lectID', $current->lectID)
-                                    ->exists();
-                            @endphp
-
-                            <div>
-                                @if(!$completed)
-                                    <form action="{{ route('lecture.complete', $current->lectID) }}" method="POST">
-                                        @csrf
-                                        <button type="submit" class="btn btn-success">
-                                            Mark Lecture as Completed
-                                        </button>
-                                    </form>
-                                @else
-                                    <button class="btn btn-success" disabled>
-                                        ✅ Completed
-                                    </button>
-                                @endif
-                            </div>
-                        @endif--}}
-
-
                         {{-- NEXT --}}
                         @if(!$isLast)
-                            <a href="{{ route('learn', ['id' => $course->courseID, 'sectionID' => $next->sectionID]) }}"
-                            class="btn btn-primary px-4">
+                            <a href="{{ route('learn', ['id' => $course->courseID, 'sectionId' => $next->sectionID]) }}" class="btn btn-primary px-4">
                                 Next <i class="fa fa-chevron-right ms-2"></i>
                             </a>
                         @else
-                            <a href="{{ route('mcq.module', $module->moduleID ?? 1) }}"
-                            class="btn btn-success px-4">
+                            <a href="{{ route('mcq.module', $module->moduleID ?? 1) }}" class="btn btn-success px-4"></a>
                                 Go to MCQ <i class="fa fa-arrow-right ms-2"></i>
                             </a>
                         @endif
-
                     </div>
-
                 </div>
             </div>
         </div>
     </div>
-
 
     {{-- ================= SCRIPT ================= --}}
     <script>

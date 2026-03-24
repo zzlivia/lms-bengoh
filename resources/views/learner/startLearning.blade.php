@@ -126,7 +126,7 @@
                         @endif
 
 
-                        {{-- ===== MARK LECTURE COMPLETE ===== --}}
+                        {{-- ===== MARK LECTURE COMPLETE ===== 
                         @if($current)
                             @php
                                 $completed = \App\Models\LectureProgress::where('userID', Auth::id())
@@ -148,7 +148,7 @@
                                     </button>
                                 @endif
                             </div>
-                        @endif
+                        @endif--}}
 
 
                         {{-- NEXT --}}
@@ -157,16 +157,10 @@
                             class="btn btn-primary px-4">
                                 Next <i class="fa fa-chevron-right ms-2"></i>
                             </a>--}}
-                            <form action="{{ route('lecture.complete.and.next') }}" method="POST">
-                                @csrf
-                                <input type="hidden" name="lectID" value="{{ $current->lectID }}">
-                                <input type="hidden" name="nextSectionID" value="{{ $next->sectionID }}">
-                                <input type="hidden" name="courseID" value="{{ $course->courseID }}">
-
-                                <button type="submit" class="btn btn-primary px-4">
-                                    Next <i class="fa fa-chevron-right ms-2"></i>
-                                </button>
-                            </form>
+                            <a href="{{ route('learn', ['id' => $course->courseID, 'sectionID' => $next->sectionID]) }}"
+                            class="btn btn-primary px-4">
+                                Next <i class="fa fa-chevron-right ms-2"></i>
+                            </a>
                         @else
                             <a href="{{ route('mcq.module', $module->moduleID ?? 1) }}"
                             class="btn btn-success px-4">

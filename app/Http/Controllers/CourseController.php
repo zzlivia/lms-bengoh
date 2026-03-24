@@ -362,21 +362,17 @@ class CourseController extends Controller
     //only registered users can view
     public function leaderboard()
     {
-        //count completed courses per user
         $learners = DB::table('userprogress')
-            ->select('userID', DB::raw('COUNT(DISTINCT courseID) as completed_courses'))
-            ->where('progressStatus', 'completed')
-            ->groupBy('userID')
+            ->join('users', 'userprogress.userID', '=', 'users.userID')
+            ->select(
+                'users.userName as name',
+                DB::raw('COUNT(DISTINCT userprogress.courseID) as completed_courses')
+            )
+            ->where('userprogress.progressStatus', 'completed')
+            ->groupBy('userprogress.userID', 'users.userName')
             ->orderByDesc('completed_courses')
             ->get();
 
-        //join with users table to get names
-        $learners = $learners->map(function ($item) {
-            $user = Users::find($item->userID);
-            $item->name = $user->name ?? 'Unknown';
-            return $item;
-        });
-
-        return view('leaderboards', compact('learners'));
+        return view('learner.leaderboards', compact('learners'));
     }
 }

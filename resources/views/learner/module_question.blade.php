@@ -53,7 +53,7 @@
                             @endforeach
                         </div>
                     @endforeach
-                    <button class="btn btn-dark">NEXT</button>
+                    <button class="btn btn-dark">Submit Answers</button>
                 </form>
                 @if(session('score'))
                     <script>

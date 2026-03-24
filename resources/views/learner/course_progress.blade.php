@@ -24,7 +24,8 @@
                     </div>
                     <!-- right side - progress circle -->
                     <div class="col-md-4 text-center">
-                        <div class="progress-circle">
+                        <div class="progress-circle"
+                            style="background: conic-gradient(#4caf50 {{ $totalProgress }}%, #e0e0e0 {{ $totalProgress }}%);">
                             <span>{{ $totalProgress ?? 0 }}%</span>
                             <small class="d-block text-muted">completed</small>
                         </div>

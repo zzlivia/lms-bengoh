@@ -99,7 +99,7 @@ class CourseController extends Controller
     }
     
     //redirect user to start learning interface
-    public function startLearning($id, $sectionId = null, Request $request)
+    public function startLearning(Request $request, $id, $sectionId = null)
     {
         $course = Course::with(['modules.lectures.sections'])->findOrFail($id);
         //collect all sections
@@ -333,10 +333,7 @@ class CourseController extends Controller
         }
 
         //redirect to next section
-        return redirect()->route('learn', [
-            'id' => $request->courseID,
-            'sectionID' => $request->nextSectionID
-        ]);
+        return redirect()->route('learn', ['id' => $request->courseID,'sectionId' => $request->nextSectionID]);
     }
     
     //only registered users can view

@@ -162,7 +162,7 @@ class CourseController extends Controller
             'sections' => $sections,
             'current' => $current,
             'currentIndex' => $currentIndex,
-            'module' => $course->modules->first(),
+            'module' => $course->modules->firstWhere('moduleID', $current->moduleID ?? null), //fetch module with current section
             'completedSections' => $completedSections,
             'totalSections' => $totalSections,
             'isCompletedAll' => $isCompletedAll

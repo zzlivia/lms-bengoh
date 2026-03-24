@@ -278,10 +278,32 @@ class CourseController extends Controller
     public function showAllProgress($courseID)
     {
         $course = Course::findOrFail($courseID);
+
         $progress = Progress::where('userID', Auth::id())
                     ->where('courseID', $courseID)
                     ->get();
-        return view('learner.course_progress', compact('progress', 'course'));
+
+        //total progress
+        $totalProgress = $progress->avg('completionProgress') ?? 0;
+
+        //mcqs grades only
+        $grades = $progress
+            ->filter(function ($item) {
+                return str_contains($item->progressName, 'MCQ');
+            })
+            ->map(function ($item) {
+                return [
+                    'name' => $item->progressName,
+                    'score' => $item->completionProgress . '%'
+                ];
+            });
+
+        return view('learner.course_progress', compact(
+            'course',
+            'progress',
+            'totalProgress',
+            'grades'
+        ));
     }
 
     public function completeLecture($lectID)

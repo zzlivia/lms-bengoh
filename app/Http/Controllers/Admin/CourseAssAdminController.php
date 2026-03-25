@@ -62,4 +62,23 @@ class CourseAssAdminController extends Controller
             ->with('questions.options')
             ->get();
     }
+
+    public function saveAssessment(Request $request)
+    {
+        $request->validate([
+            'courseID' => 'required|exists:course,courseID',
+            'title' => 'required|string|max:255',
+            'desc' => 'nullable|string',
+        ]);
+
+        $assessment = CourseAssessment::create([
+            'courseID' => $request->courseID,
+            'courseAssTitle' => $request->title,
+            'courseAssDesc' => $request->desc
+        ]);
+
+        //redirect to add questions page
+        return redirect()->route('admin.assessment.questions', $assessment->courseAssID)
+            ->with('success', 'Assessment created! Now add questions.');
+    }
 }

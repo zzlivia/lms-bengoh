@@ -591,6 +591,9 @@ class AdminController extends Controller
 
     public function feedbackList()
     {
+        //mark all unread feedback as reviewed
+        Feedback::where('is_reviewed', false)->update(['is_reviewed' => true]);
+        //fetch data
         $feedbacks = Feedback::with(['user', 'course'])->get();
         return view('admin.feedback', compact('feedbacks'));
     }

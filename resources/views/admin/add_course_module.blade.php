@@ -510,7 +510,8 @@
             'module': '#module-tab',
             'lecture': '#lecture-tab',
             'section': '#section-tab',
-            'mcq': '#mcq-tab'
+            'mcq': '#mcq-tab',
+            'assessment': '#assessment-tab'
         };
 
         if (tabTarget && tabMap[tabTarget]) {

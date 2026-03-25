@@ -23,9 +23,9 @@
                     <td>
                         @for ($i = 1; $i <= 5; $i++)
                             @if ($i <= $feedback->rating)
-                                ⭐
+                                <i class="fas fa-star text-warning"></i>
                             @else
-                                ☆
+                                <i class="far fa-star text-secondary"></i>
                             @endif
                         @endfor
                     </td>

@@ -91,13 +91,15 @@ class AdminController extends Controller
         $forgotRequests = DB::table('users')
             ->where('reset_request', 1)
             ->count();
-        $feedbackCount = DB::table('coursefeedback')->count();
+        $pendingFeedbackCount = DB::table('coursefeedback')
+            ->where('is_reviewed', 0)
+            ->count();
         $announcementReview = DB::table('announcements')
             ->where('status', 'pending')
             ->count();
 
         //total notifications
-        $totalNotifications = $forgotRequests + $feedbackCount + $announcementReview;
+        $totalNotifications = $forgotRequests + $pendingFeedbackCount + $announcementReview;
 
         return view('admin.admin_dashboard', compact( //send data back to dashboard
             'totalUsers',

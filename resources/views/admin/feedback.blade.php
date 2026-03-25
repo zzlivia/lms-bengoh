@@ -18,8 +18,8 @@
             <tbody>
                 @foreach($feedbacks as $feedback)
                 <tr>
-                    <td>{{ $feedback->user->name ?? 'N/A' }}</td>
-                    <td>{{ $feedback->course->title ?? 'N/A' }}</td>
+                    <td>{{ $feedback->user->userName ?? 'N/A' }}</td>
+                    <td>{{ $feedback->course->courseName ?? 'N/A' }}</td>
                     <td>
                         @for ($i = 1; $i <= 5; $i++)
                             @if ($i <= $feedback->rating)

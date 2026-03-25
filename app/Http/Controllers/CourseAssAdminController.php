@@ -11,11 +11,26 @@ class CourseAssAdminController extends Controller
 {
     public function storeAssessment(Request $request)
     {
+        //validation
+        $request->validate([
+        'courseID' => 'required|exists:course,courseID',
+        'title' => 'required|string|max:255',
+        'desc' => 'nullable|string',
+        'questions' => 'required|array|min:1',
+
+        'questions.*.question' => 'required|string',
+        'questions.*.type' => 'required|in:MCQ,SHORT_ANSWER,LONG_ANSWER',
+
+        // only for MCQ
+        'questions.*.options' => 'required_if:questions.*.type,MCQ|array',
+        'questions.*.options.*.text' => 'required|string',
+        'questions.*.options.*.is_correct' => 'required|boolean',]);
+    
+        //logics
         $assessment = CourseAssessment::create([
             'courseID' => $request->courseID,
             'courseAssTitle' => $request->title,
-            'courseAssDesc' => $request->desc
-        ]);
+            'courseAssDesc' => $request->desc]);
 
         foreach ($request->questions as $q) {
             $question = AssessmentQuestion::create([
@@ -24,7 +39,7 @@ class CourseAssAdminController extends Controller
                 'courseAssType' => $q['type']
             ]);
 
-            // Only MCQ
+            //only MCQ
             if ($q['type'] === 'MCQ') {
                 foreach ($q['options'] as $opt) {
                     AssessmentMcqOption::create([

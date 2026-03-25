@@ -13,6 +13,16 @@ class Feedback extends Model
         'courseRating'
     ];
 
+    public function user()
+    {
+        return $this->belongsTo(Users::class, 'userID');
+    }
+
+    public function course()
+    {
+        return $this->belongsTo(Course::class, 'courseID');
+    }
+
     public function lecture()
     {
         return $this->belongsTo(Lecture::class, 'lectID', 'lectID');

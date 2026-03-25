@@ -258,9 +258,9 @@ Route::prefix('admin')
     Route::get('/password-requests', [AdminController::class, 'passwordRequests'])
         ->name('password.requests');
 
+    /* feedback */
     
-    Route::get('/feedback', [AdminController::class, 'feedback'])
-        ->name('feedback');
+    Route::get('/feedback', [AdminController::class, 'feedbackList'])->name('feedback');
 
     /* community stories that controlled by admin*/
     Route::get('/stories', [AdminCommunityStoryController::class, 'index'])->name('stories.index');

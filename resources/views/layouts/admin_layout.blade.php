@@ -100,7 +100,7 @@
                                     <a class="dropdown-item d-flex justify-content-between"
                                        href="{{ route('admin.feedback') }}">
                                         Pending Feedback
-                                        <span class="badge bg-primary">{{ $feedbackCount }}</span>
+                                        <span class="badge bg-primary">{{ $pendingFeedbackCount ?? 0 }}</span>
                                     </a>
                                 </li>
                                 <li>

@@ -14,9 +14,13 @@
             <tbody>
                 @foreach($feedbacks as $feedback)
                 <tr>
-                    <td>{{ $feedback->userID }}</td>
-                    <td>{{ $feedback->courseID }}</td>
-                    <td>{{ $feedback->feedback }}</td>
+                    <td>{{ $feedback->user->name ?? 'N/A' }}</td>
+                    <td>{{ $feedback->course->title ?? 'N/A' }}</td>
+                    <td>{{ $feedback->rating }}</td>
+                    <td>{{ $feedback->clarity }}</td>
+                    <td>{{ $feedback->understanding }}</td>
+                    <td>{{ $feedback->enjoyed }}</td>
+                    <td>{{ $feedback->suggestions }}</td>
                 </tr>
                 @endforeach
             </tbody>

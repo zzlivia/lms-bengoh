@@ -9,8 +9,14 @@ class Feedback extends Model
     protected $table = 'coursefeedback';
     protected $primaryKey = 'feedbackID';
     protected $fillable = [
+        'userID',
         'courseID',
-        'courseRating'
+        'rating',
+        'clarity',
+        'understanding',
+        'favorite_module',
+        'enjoyed',
+        'suggestions'
     ];
 
     public function user()

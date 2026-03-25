@@ -87,6 +87,7 @@
                     <i class="fas fa-question-circle me-2 text-danger"></i> Add MCQ
                 </a>
             </li>
+            <li><hr class="dropdown-divider"></li>
             {{-- Add Course Assessment --}}
             <li>
                 <a class="dropdown-item py-2" href="{{ route('admin.course.module.create', ['tab' => 'assessment']) }}">

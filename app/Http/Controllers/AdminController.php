@@ -591,7 +591,7 @@ class AdminController extends Controller
 
     public function feedbackList()
     {
-        $feedbacks = Feedback::with(['users', 'course'])->get();
+        $feedbacks = Feedback::with(['user', 'course'])->get();
         return view('admin.feedback', compact('feedbacks'));
     }
 

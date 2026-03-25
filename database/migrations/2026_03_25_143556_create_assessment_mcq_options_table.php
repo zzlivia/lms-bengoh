@@ -21,7 +21,7 @@ return new class extends Migration
             $table->timestamps();
 
             //the foreign key
-            $table->foreign('assQsID')->references('assQsID')->on('assessment_questions')->onDelete('cascade');
+            $table->foreign('assQsID')->references('assQsID')->on('assessment_qs')->onDelete('cascade');
         });
     }
 

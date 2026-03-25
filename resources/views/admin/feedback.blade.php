@@ -8,7 +8,11 @@
                 <tr>
                     <th>User</th>
                     <th>Course</th>
-                    <th>Feedback</th>
+                    <th>Rating</th>
+                    <th>Clarity</th>
+                    <th>Understanding</th>
+                    <th>Enjoyment</th>
+                    <th>Suggestions</th>
                 </tr>
             </thead>
             <tbody>
@@ -16,7 +20,15 @@
                 <tr>
                     <td>{{ $feedback->user->name ?? 'N/A' }}</td>
                     <td>{{ $feedback->course->title ?? 'N/A' }}</td>
-                    <td>{{ $feedback->rating }}</td>
+                    <td>
+                        @for ($i = 1; $i <= 5; $i++)
+                            @if ($i <= $feedback->rating)
+                                ⭐
+                            @else
+                                ☆
+                            @endif
+                        @endfor
+                    </td>
                     <td>{{ $feedback->clarity }}</td>
                     <td>{{ $feedback->understanding }}</td>
                     <td>{{ $feedback->enjoyed }}</td>

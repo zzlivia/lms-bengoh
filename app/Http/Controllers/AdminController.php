@@ -589,9 +589,9 @@ class AdminController extends Controller
 
     public function settings(){return view('admin.admin_settings');}
 
-    public function feedback(){
-    
-        $feedbacks = DB::table('coursefeedback')->get();
+    public function feedbackList()
+    {
+        $feedbacks = Feedback::with(['users', 'course'])->get();
         return view('admin.feedback', compact('feedbacks'));
     }
 

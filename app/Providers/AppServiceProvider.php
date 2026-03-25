@@ -23,8 +23,14 @@ class AppServiceProvider extends ServiceProvider
     {
         View::composer('layouts.admin_layout', function ($view) {
             $forgot = DB::table('users')->where('reset_request', 1)->count();
-            $feedback = DB::table('coursefeedback')->count();
-            $announcements = DB::table('announcements')->where('status', 'pending')->count();
+
+            $feedback = DB::table('coursefeedback')
+                ->where('is_reviewed', 0)
+                ->count();
+
+            $announcements = DB::table('announcements')
+                ->where('status', 'pending')
+                ->count();
 
             $view->with([
                 'forgotRequests' => $forgot,

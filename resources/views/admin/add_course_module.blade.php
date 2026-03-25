@@ -67,6 +67,17 @@
                     Add MCQ
                 </button>
             </li>
+
+            <li class="nav-item" role="presentation">
+                <button class="nav-link"
+                        id="assessment-tab"
+                        data-bs-toggle="tab"
+                        data-bs-target="#assessment-form"
+                        type="button"
+                        role="tab">
+                    Add Course Assessment
+                </button>
+            </li>
         </ul>
         <div class="tab-content">
             <!-- course form -->

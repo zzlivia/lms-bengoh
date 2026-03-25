@@ -211,10 +211,10 @@ Route::prefix('admin')
     /* course assessment */
 
     Route::post('/assessment/store', [CourseAssAdminController::class, 'storeAssessment'])
-        ->name('admin.assessment.storeAss');
+        ->name('assessment.storeAss');
 
     Route::get('/assessment/{courseID}', [CourseAssAdminController::class, 'displayAssessment'])
-        ->name('admin.assessment.displayAss');
+        ->name('assessment.displayAss');
        
     /* others */
 

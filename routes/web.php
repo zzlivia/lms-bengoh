@@ -215,7 +215,13 @@ Route::prefix('admin')
 
     Route::get('/assessment/{courseID}', [CourseAssAdminController::class, 'displayAssessment'])
         ->name('assessment.displayAss');
-       
+    
+    Route::get('/assessment/{id}/questions', [CourseAssAdminController::class, 'addQuestionsPage'])
+        ->name('assessment.questions');
+
+    Route::post('/assessment/questions/store', [CourseAssAdminController::class, 'storeQuestions'])
+        ->name('assessment.questions.store');
+
     /* others */
 
     Route::get('/progress', [AdminController::class, 'progress'])

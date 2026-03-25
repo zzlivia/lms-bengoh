@@ -116,7 +116,7 @@ class AdminController extends Controller
             'recentVideo',
             'unusedMaterials',
             'forgotRequests',
-            'feedbackCount',
+            'pendingFeedbackCount',
             'announcementReview',
             'totalNotifications'
         ));

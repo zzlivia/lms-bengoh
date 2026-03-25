@@ -478,13 +478,33 @@
                     <!-- state title -->
                     <div class="mb-3">
                         <label class="form-label">Assessment Title</label>
-                        <input type="text" name="title" class="form-control" required>
+                        <input 
+                            type="text" 
+                            name="title" 
+                            class="form-control @error('title') is-invalid @enderror"
+                            value="{{ old('title') }}"
+                            placeholder="Enter assessment title (e.g. Final Exam)"
+                            required
+                        >
+
+                        @error('title')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
 
                     <!-- fill description -->
                     <div class="mb-3">
                         <label class="form-label">Assessment Description</label>
-                        <textarea name="desc" class="form-control" rows="4"></textarea>
+                        <textarea 
+                            name="desc" 
+                            class="form-control @error('desc') is-invalid @enderror"
+                            rows="4"
+                            placeholder="Enter description (optional)"
+                        >{{ old('desc') }}</textarea>
+
+                        @error('desc')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
 
                     <!-- submit the form -->

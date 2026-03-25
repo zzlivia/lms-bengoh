@@ -3,7 +3,15 @@
 @section('content')
     <div class="container">
     <h4>Course Feedback</h4>
-        <table class="table table-bordered">
+        <div class="mb-3"> {{-- add filter function --}}
+            <select id="courseFilter" class="form-control">
+                <option value="">All Courses</option>
+                @foreach($feedbacks->pluck('course.courseName')->unique() as $courseName)
+                    <option value="{{ $courseName }}">{{ $courseName }}</option>
+                @endforeach
+            </select>
+        </div>
+        <table class="table table-bordered" id="feedbackTable"> {{-- add ID to the table--}}
             <thead>
                 <tr>
                     <th>User</th>
@@ -39,3 +47,16 @@
         </table>
     </div>
 @endsection
+
+@push('scripts')
+    <script>
+    $(document).ready(function() {
+        let table = $('#feedbackTable').DataTable();
+
+        //filter logics
+        $('#courseFilter').on('change', function() {
+            table.column(1).search(this.value).draw();
+        });
+    });
+    </script>
+@endpush

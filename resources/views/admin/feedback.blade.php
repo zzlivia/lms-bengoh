@@ -45,6 +45,11 @@
                 @endforeach
             </tbody>
         </table>
+        <div class="text-center mt-4">
+            <a href="{{ route('admin.dashboard') }}" class="btn btn-light px-4">
+                HOME
+            </a>
+        </div>
     </div>
 @endsection
 

@@ -5,7 +5,7 @@ use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\Admin\CommunityStoryController;
 use App\Http\Controllers\Admin\CommunityStoryController as AdminCommunityStoryController;
-//use App\Http\Controllers\Admin\AuthController;
+use App\Http\Controllers\CourseAssAdminController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Admin\LectureSectionController;
 use App\Http\Controllers\Admin\ModuleController;
@@ -207,6 +207,12 @@ Route::prefix('admin')
 
     /* mcqs */
     Route::post('/mcq/store', [ModuleController::class, 'storeMCQ'])->name('mcq.store');
+
+    /* course assessment */
+
+    Route::post('/assessment/store', [CourseAssAdminController::class, 'storeAssessment']);
+
+    Route::get('/assessment/{courseID}', [CourseAssAdminController::class, 'displayAssessment']);
        
     /* others */
 

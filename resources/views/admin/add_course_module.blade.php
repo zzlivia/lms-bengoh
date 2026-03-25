@@ -351,15 +351,6 @@
                             </div>
                         </div>
                     </div>
-                <!-- live preview of the lecture section
-                <hr class="my-4">
-                <h5>Preview</h5>
-                <div id="sectionPreview" class="border rounded p-3 bg-light">
-                    <h6 id="previewTitle">Section Title</h6>
-                    <div id="previewContent">
-                        Section content will appear here...
-                    </div>
-                </div>-->
             </div>
             {{-- MCQ tab --}}
             <div class="tab-pane fade" id="mcq-form">
@@ -466,6 +457,41 @@
                     @endforelse
                 </tbody>
             </table>
+            {{-- Course Assessment Tab --}}
+            <div class="tab-pane fade" id="assessment-form">
+                <form method="POST" action="{{ route('admin.assessment.storeAss') }}">
+                    @csrf
+                    <!-- select course -->
+                    <div class="mb-3">
+                        <label class="form-label">Select Course</label>
+                        <select name="courseID" class="form-control" required>
+                            <option value="">-- Choose Course --</option>
+                            @foreach($courses as $course)
+                                <option value="{{ $course->courseID }}">
+                                    {{ $course->courseName }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <!-- state title -->
+                    <div class="mb-3">
+                        <label class="form-label">Assessment Title</label>
+                        <input type="text" name="title" class="form-control" required>
+                    </div>
+
+                    <!-- fill description -->
+                    <div class="mb-3">
+                        <label class="form-label">Assessment Description</label>
+                        <textarea name="desc" class="form-control" rows="4"></textarea>
+                    </div>
+
+                    <!-- submit the form -->
+                    <div class="text-end">
+                        <button type="submit" class="btn btn-primary">Create Assessment</button>
+                    </div>
+                </form>
+            </div>            
         </div>
     </div>
 

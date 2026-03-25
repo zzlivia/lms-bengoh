@@ -78,7 +78,37 @@ class CourseAssAdminController extends Controller
         ]);
 
         //redirect to add questions page
-        return redirect()->route('admin.assessment.questions', $assessment->courseAssID)
-            ->with('success', 'Assessment created! Now add questions.');
+        return redirect()->route('admin.assessment.addQs', $assessment->courseAssID)->with('success', 'Assessment created! Now add questions.');
+    }
+
+    //display questions page
+    public function addQuestionsPage($id)
+    {
+        $assessment = CourseAssessment::findOrFail($id);
+        return view('admin.addAssessmentQuestions', compact('assessment'));
+    }
+
+    public function storeQuestions(Request $request)
+    {
+        foreach ($request->questions as $q) {
+
+            $question = AssessmentQuestion::create([
+                'courseAssID' => $request->courseAssID,
+                'courseAssQs' => $q['text'],
+                'courseAssType' => $q['type']
+            ]);
+
+            if ($q['type'] === 'MCQ') {
+                foreach ($q['options'] as $index => $opt) {
+                    AssessmentMcqOption::create([
+                        'assQsID' => $question->assQsID,
+                        'optionText' => $opt,
+                        'is_correct' => ($index == $q['correct'])
+                    ]);
+                }
+            }
+        }
+
+        return redirect()->back()->with('success', 'Questions saved successfully!');
     }
 }

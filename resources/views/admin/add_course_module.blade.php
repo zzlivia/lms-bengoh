@@ -394,69 +394,70 @@
                         <button class="btn btn-success">Submit All</button>
                     </div>
                 </form>
+                {{-- list of mcq --}}
+                <hr class="my-4">
+                <h5 class="mb-3">MCQ Overview</h5>
+                <table class="table table-bordered table-striped">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>#</th>
+                            <th>Module</th>
+                            <th>Total Questions</th>
+                            <th>Status</th>
+                            <th width="250">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($modules as $index => $module)
+                        <tr>
+                            <td>{{ $index + 1 }}</td>
+                            <td>{{ $module->moduleName }}</td>
+
+                            <!-- count questions -->
+                            <td>{{ $module->mcqs->count() ?? 0 }}</td>
+
+                            <!-- status -->
+                            <td>
+                                @if($module->mcqs->count() > 0)
+                                    <span class="badge bg-success">Available</span>
+                                @else
+                                    <span class="badge bg-secondary">No MCQ</span>
+                                @endif
+                            </td>
+
+                            <!-- actions -->
+                            <td>
+                                <!-- preview -->
+                                <a href="{{ route('mcq.preview', $module->moduleID) }}" 
+                                class="btn btn-secondary btn-sm">
+                                    Preview
+                                </a>
+
+                                <!-- edit -->
+                                <a href="{{ route('admin.mcq.edit', $module->moduleID) }}" 
+                                class="btn btn-warning btn-sm">
+                                    Edit
+                                </a>
+
+                                <!-- enable/disable -->
+                                <form action="{{ route('admin.mcq.toggle', $module->moduleID) }}" 
+                                    method="POST" 
+                                    class="d-inline">
+                                    @csrf
+                                    <button class="btn btn-danger btn-sm">
+                                        Disable
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="5" class="text-center">No modules found</td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+                </table>
             </div>
-            <hr class="my-4">
-            <h5 class="mb-3">MCQ Overview</h5>
-            <table class="table table-bordered table-striped">
-                <thead class="table-dark">
-                    <tr>
-                        <th>#</th>
-                        <th>Module</th>
-                        <th>Total Questions</th>
-                        <th>Status</th>
-                        <th width="250">Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse($modules as $index => $module)
-                    <tr>
-                        <td>{{ $index + 1 }}</td>
-                        <td>{{ $module->moduleName }}</td>
-
-                        <!-- count questions -->
-                        <td>{{ $module->mcqs->count() ?? 0 }}</td>
-
-                        <!-- status -->
-                        <td>
-                            @if($module->mcqs->count() > 0)
-                                <span class="badge bg-success">Available</span>
-                            @else
-                                <span class="badge bg-secondary">No MCQ</span>
-                            @endif
-                        </td>
-
-                        <!-- actions -->
-                        <td>
-                            <!-- preview -->
-                            <a href="{{ route('mcq.preview', $module->moduleID) }}" 
-                            class="btn btn-secondary btn-sm">
-                                Preview
-                            </a>
-
-                            <!-- edit -->
-                            <a href="{{ route('admin.mcq.edit', $module->moduleID) }}" 
-                            class="btn btn-warning btn-sm">
-                                Edit
-                            </a>
-
-                            <!-- enable/disable -->
-                            <form action="{{ route('admin.mcq.toggle', $module->moduleID) }}" 
-                                method="POST" 
-                                class="d-inline">
-                                @csrf
-                                <button class="btn btn-danger btn-sm">
-                                    Disable
-                                </button>
-                            </form>
-                        </td>
-                    </tr>
-                    @empty
-                    <tr>
-                        <td colspan="5" class="text-center">No modules found</td>
-                    </tr>
-                    @endforelse
-                </tbody>
-            </table>
             {{-- Course Assessment Tab --}}
             <div class="tab-pane fade" id="assessment-form">
                 <form method="POST" action="{{ route('admin.assessment.storeAss') }}">

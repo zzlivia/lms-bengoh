@@ -234,6 +234,9 @@ Route::prefix('admin')
     Route::get('/assessments', [CourseAssAdminController::class, 'manageAss'])
         ->name('assessment.manageCourseAss');
 
+    Route::get('/assessments/{id}/add-questions', [CourseAssAdminController::class, 'addQuestionsPage'])
+        ->name('assessment.addQs');
+
     Route::delete('/assessment/{id}', [CourseAssAdminController::class, 'deleteAss'])
         ->name('assessment.deleteCourseAss');
 

@@ -50,9 +50,8 @@
                     <td>
                         <div class="d-flex align-items-center gap-2 flex-wrap">
                             <!-- add question route -->
-                            <a href="{{ route('admin.assessment.addQs', $ass->courseAssID) }}" 
-                            class="btn btn-success btn-sm">
-                                <i class="bi bi-plus-circle"></i>
+                            <a href="{{ route('admin.assessment.addQs', $ass->courseAssID) }}" class="btn btn-success btn-sm me-1">
+                                <i class="bi bi-plus-circle me-1"></i> Add Questions
                             </a>
                             <!-- edit assessment -->
                             <a href="{{ route('admin.assessment.editAss', $ass->courseAssID) }}" 

@@ -242,7 +242,19 @@ Route::prefix('admin')
 
     Route::put('/assessment/{id}', [CourseAssAdminController::class, 'updateAss'])
         ->name('assessment.updateAss');
-    
+
+    Route::get('/assessment/{id}/questions', [CourseAssAdminController::class, 'showQuestions'])
+        ->name('assessment.viewQuestions');
+
+    Route::get('/assessment/{id}/edit-questions', [CourseAssAdminController::class, 'editQuestions'])
+        ->name('assessment.editQuestions');
+
+    Route::delete('/question/{id}', [CourseAssAdminController::class, 'deleteQuestion'])
+        ->name('assessment.deleteQuestion');
+
+    Route::get('/assessment/{id}/questions', [CourseAssAdminController::class, 'addQuestions'])
+        ->name('assessment.addQuestions');
+
     /* others */
 
     Route::get('/progress', [AdminController::class, 'progress'])

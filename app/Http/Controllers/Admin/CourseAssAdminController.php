@@ -164,5 +164,41 @@ class CourseAssAdminController extends Controller
         return redirect()
             ->route('admin.assessment.manageCourseAss')
             ->with('success', 'Assessment updated successfully');
-    }   
+    }
+    
+    public function showQuestions($id)
+    {
+        $assessment = CourseAssessment::with('questions.options')
+            ->findOrFail($id);
+
+        return view('admin.viewQuestions', compact('assessment'));
+    }
+
+    public function addQuestions($id)
+    {
+        $assessment = CourseAssessment::with('questions.options')
+            ->findOrFail($id);
+
+        return view('admin.addAssessmentQuestions', compact('assessment'));
+    }
+
+    public function editQuestions($id)
+    {
+        $assessment = CourseAssessment::with('questions.options')
+            ->findOrFail($id);
+
+        return view('admin.editQuestions', compact('assessment'));
+    }
+
+    public function deleteQuestion($id)
+    {
+        $question = AssessmentQuestion::findOrFail($id);
+
+        // delete options first
+        AssessmentMcqOption::where('assQsID', $id)->delete();
+
+        $question->delete();
+
+        return back()->with('success', 'Question deleted successfully!');
+    }
 }

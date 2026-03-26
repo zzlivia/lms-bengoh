@@ -9,6 +9,40 @@
     @endif
     <div class="container">
         <h3>Add Questions: {{ $assessment->courseAssTitle }}</h3>
+        @if($assessment->questions->count() > 0)
+            <div class="mb-4">
+                <h5>Existing Questions</h5>
+                @foreach($assessment->questions as $q)
+                    <div class="card p-3 mb-3">
+                        <b>{{ $q->courseAssQs }}</b><br>
+                        @if($q->courseAssType == 'MCQ')
+                            @foreach($q->options as $index => $opt)
+                                {{ chr(65 + $index) }}. {{ $opt->optionText }} <br>
+                            @endforeach
+                        @endif
+                        <div class="mt-2">
+                            <!-- edit question button -->
+                            <a href="{{ route('admin.assessment.editQuestions', $assessment->courseAssID) }}" 
+                            class="btn btn-primary btn-sm">
+                                Edit
+                            </a>
+
+                            <!-- delete question button -->
+                            <form action="{{ route('admin.assessment.deleteQuestion', $q->assQsID) }}" 
+                                method="POST" style="display:inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button class="btn btn-danger btn-sm"
+                                    onclick="return confirm('Delete this question?')">
+                                    Delete
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                @endforeach
+                <hr>
+            </div>
+        @endif
         <form method="POST" action="{{ route('admin.assessment.addQs.storeQs') }}">
             @csrf
             <input type="hidden" name="courseAssID" value="{{ $assessment->courseAssID }}">

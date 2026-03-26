@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\ModuleController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\AdminSettingsController;
 use App\Http\Controllers\Admin\CourseAssAdminController;
+use App\Http\Controllers\AssessmentController;
 
 /* public route */
 
@@ -32,6 +33,7 @@ Route::post('/logout', [AuthenticationController::class, 'logout'])->name('logou
 Route::get('/courses', [CourseController::class, 'allCourses'])->name('courses.allCourses');
 Route::get('/courses/{id}', [CourseController::class, 'showCourse'])->name('courses.showCourse');
 Route::get('/courses/{id}/startLearn/{sectionId?}', [CourseController::class, 'startLearning'])->name('learn');
+Route::get('/course/{id}/assessment', [AssessmentController::class, 'showAssessment'])->name('course.showAssessment');
 
 /* module and mcqs*/
 
@@ -72,7 +74,9 @@ Route::post('/course/{id}/feedback', [CourseController::class, 'submitFeedback']
 
 /* course assessment*/
 
-Route::get('/course/{id}/assessment', [CourseController::class, 'courseAssessment'])->name('course.assessment');
+//Route::get('/course/{id}/assessment', [CourseController::class, 'courseAssessment'])->name('course.assessment');
+
+Route::post('/assessment/submit', [AssessmentController::class, 'submitAssessment'])->name('assessment.submitAssessment');
 
 /* course progress*/
 
@@ -257,6 +261,8 @@ Route::prefix('admin')
 
     Route::get('/assessment/{id}/questions', [CourseAssAdminController::class, 'addQuestions'])
         ->name('assessment.addQuestions');
+
+    Route::get('/assessment/{id}/results', [AssessmentController::class, 'viewResults'])->name('assessment.viewResults');
 
     /* others */
 

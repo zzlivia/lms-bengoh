@@ -19,4 +19,9 @@ class CourseAssessment extends Model
     {
         return $this->hasMany(AssessmentQuestion::class, 'courseAssID');
     }
+
+    public function course()
+    {
+        return $this->belongsTo(\App\Models\Course::class, 'courseID');
+    }
 }

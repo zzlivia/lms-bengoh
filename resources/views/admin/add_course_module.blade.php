@@ -460,7 +460,7 @@
             </div>
             {{-- Course Assessment Tab --}}
             <div class="tab-pane fade" id="assessment-form">
-                <form method="POST" action="{{ route('admin.assessment.storeAss') }}">
+                <form method="POST" action="{{ route('admin.assessment.saveAss') }}">
                     @csrf
                     <!-- select course -->
                     <div class="mb-3">
@@ -512,7 +512,12 @@
                         <button type="submit" class="btn btn-primary">Create Assessment</button>
                     </div>
                 </form>
-            </div>            
+            </div>
+            <hr class="my-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5>Course Assessments</h5>
+                <a href="{{ route('admin.assessment.manageCourseAss') }}" class="btn btn-outline-primary">View All Assessments</a>
+            </div>
         </div>
     </div>
 

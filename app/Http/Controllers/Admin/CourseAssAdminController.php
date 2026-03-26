@@ -112,4 +112,57 @@ class CourseAssAdminController extends Controller
 
         return redirect()->back()->with('success', 'Questions saved successfully!');
     }
+
+    public function manageAss(Request $request)
+    {
+        $query = CourseAssessment::with('course');
+
+        // filter by course
+        if ($request->courseID) {
+            $query->where('courseID', $request->courseID);
+        }
+
+        // sorting
+        $assessments = $query->orderBy('created_at', 'desc')->get();
+
+        $courses = \App\Models\Course::all();
+
+        return view('admin.viewAssessments', compact('assessments', 'courses'));
+    }
+
+    public function deleteAss($id)
+    {
+        $assessment = CourseAssessment::findOrFail($id);
+        $assessment->delete();
+        return redirect()->back()->with('success', 'Assessment deleted successfully');
+    }
+
+    public function editAss($id)
+    {
+        $assessment = CourseAssessment::findOrFail($id);
+        $courses = \App\Models\Course::all();
+
+        return view('admin.editAss', compact('assessment', 'courses'));
+    }
+
+    public function updateAss(Request $request, $id)
+    {
+        $request->validate([
+            'courseID' => 'required|exists:course,courseID',
+            'title' => 'required|string|max:255',
+            'desc' => 'nullable|string',
+        ]);
+
+        $assessment = CourseAssessment::findOrFail($id);
+
+        $assessment->update([
+            'courseID' => $request->courseID,
+            'courseAssTitle' => $request->title,
+            'courseAssDesc' => $request->desc,
+        ]);
+
+        return redirect()
+            ->route('admin.assessment.manageCourseAss')
+            ->with('success', 'Assessment updated successfully');
+    }   
 }

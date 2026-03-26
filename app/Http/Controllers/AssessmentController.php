@@ -35,6 +35,16 @@ class AssessmentController extends Controller
     //learner submit answers processes
     public function submitAssessment(Request $request)
     {
+        //prevent multiple submissions
+        $existingAttempt = DB::table('course_ass_attempts')
+            ->where('userID', Auth::id())
+            ->where('courseAssID', $request->courseAssID)
+            ->first();
+
+        if ($existingAttempt) {
+            return back()->with('error', 'You have already submitted this assessment.');
+        }
+
         $attemptID = DB::table('course_ass_attempts')->insertGetId([
             'userID' => Auth::id(),
             'courseAssID' => $request->courseAssID,
@@ -50,8 +60,6 @@ class AssessmentController extends Controller
                 ->first();
 
             if ($question->courseAssType == 'MCQ') {
-
-                // ✅ DEFINE OPTION HERE
                 $option = DB::table('assessment_mcq_options')
                     ->where('id', $answer)
                     ->first();

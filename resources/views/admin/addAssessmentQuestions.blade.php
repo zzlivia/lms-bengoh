@@ -14,7 +14,7 @@
                 <h5>Existing Questions</h5>
                 @foreach($assessment->questions as $q)
                     <div class="card p-3 mb-3">
-                        <b>{{ $q->courseAssQs }}</b><br>
+                        <b>Question {{ $loop->iteration }}:</b> {{ $q->courseAssQs }} <br>
                         @if($q->courseAssType == 'MCQ')
                             @foreach($q->options as $index => $opt)
                                 {{ chr(65 + $index) }}. {{ $opt->optionText }} <br>
@@ -77,6 +77,9 @@
                             <option value="3">D</option>
                         </select>
                     </div>
+                <button type="button" class="btn btn-danger btn-sm mt-2" onclick="removeQuestion(this)">
+                    Remove
+                </button>
                 </div>
             </div>
             <!-- buttons -->
@@ -126,12 +129,26 @@
                     <option value="2">C</option>
                     <option value="3">D</option>
                 </select>
+
+            <button type="button" class="btn btn-danger btn-sm mt-2" onclick="removeQuestion(this)">
+                Remove
+            </button>
             </div>
         </div>
         `;
 
         container.insertAdjacentHTML('beforeend', html);
         index++;
+    }
+
+    function removeQuestion(button) {
+        let blocks = document.querySelectorAll('.question-block');
+
+        if (blocks.length > 1) {
+            button.closest('.question-block').remove();
+        } else {
+            alert("At least one question is required.");
+        }
     }
 
     function toggleOptions(select) {

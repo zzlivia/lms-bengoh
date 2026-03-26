@@ -46,8 +46,18 @@
                 </div>
             </div>
             <!-- buttons -->
-            <button type="button" onclick="addQuestion()" class="btn btn-secondary">+ Add Question</button>
-            <button type="submit" class="btn btn-success">Save Questions</button>
+            <div class="d-flex justify-content-between align-items-center mt-3">
+                <!-- left -->
+                <div>
+                    <button type="button" onclick="addQuestion()" class="btn btn-secondary">+ Add Question</button>
+                    <button type="submit" class="btn btn-success">Save Questions</button>
+                </div>
+
+                <!-- right -->
+                <div>
+                    <a href="{{ route('admin.course.module.create', ['tab' => 'assessment']) }}" class="btn btn-outline-primary">Back</a>
+                </div>
+            </div>
         </form>
     </div>
 

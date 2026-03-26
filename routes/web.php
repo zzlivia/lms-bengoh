@@ -5,12 +5,12 @@ use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\Admin\CommunityStoryController;
 use App\Http\Controllers\Admin\CommunityStoryController as AdminCommunityStoryController;
-use App\Http\Controllers\CourseAssAdminController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Admin\LectureSectionController;
 use App\Http\Controllers\Admin\ModuleController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\AdminSettingsController;
+use App\Http\Controllers\Admin\CourseAssAdminController;
 
 /* public route */
 

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class CourseAssessment extends Model
 {
+    protected $table = 'course_assessments';
     protected $primaryKey = 'courseAssID';
 
     protected $fillable = [

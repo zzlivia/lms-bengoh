@@ -41,40 +41,28 @@
                             Learners may complete the assessment at their own pace.
                         </p>
                         <hr>
-                        <form>
+                        <form method="POST" action="{{ route('assessment.submit') }}">
+                            @csrf
 
-                            <p><b>Question 1</b><br>
-                            What is the main purpose of a dam?</p>
-                            <input type="radio" name="q1"> A. xxx <br>
-                            <input type="radio" name="q1"> B. xxx <br>
-                            <input type="radio" name="q1"> C. xxx <br>
-                            <input type="radio" name="q1"> D. xxx <br>
-                            <br>
-                            <p><b>Question 2</b><br>
-                            One benefit of a dam to the community is:</p>
-                            <input type="radio" name="q2"> A. xxx <br>
-                            <input type="radio" name="q2"> B. xxx <br>
-                            <input type="radio" name="q2"> C. xxx <br>
-                            <input type="radio" name="q2"> D. xxx <br>
-                            <br>
-                            <p><b>Question 3</b><br>
-                            Why is the dam important to local history?</p>
-                            <input type="radio" name="q3"> A. xxx <br>
-                            <input type="radio" name="q3"> B. xxx <br>
-                            <input type="radio" name="q3"> C. xxx <br>
-                            <input type="radio" name="q3"> D. xxx <br>
-                            <br>
-                            <p><b>Question 4</b></p>
-                            <textarea class="form-control mb-3" rows="3"
-                            placeholder="In your own words, why was the dam built?"></textarea>
-                            <p><b>Question 5</b></p>
+                            <input type="hidden" name="courseAssID" value="{{ $assessment->courseAssID }}">
 
-                            <textarea class="form-control mb-3" rows="3"
-                            placeholder="Do you remember life before the dam, or stories told by others?"></textarea>
+                            @foreach($questions as $index => $q)
+                                <p><b>Question {{ $index+1 }}</b><br>
+                                {{ $q->courseAssQs }}</p>
 
-                            <div class="text-end">
-                                <button class="btn btn-success px-4">Submit</button>
-                            </div>
+                                @if($q->courseAssType == 'MCQ')
+                                    @foreach($q->options as $opt)
+                                        <input type="radio"
+                                            name="answers[{{ $q->assQsID }}]"
+                                            value="{{ $opt->id }}">
+                                        {{ $opt->optionText }} <br>
+                                    @endforeach
+                                @else
+                                    <textarea name="answers[{{ $q->assQsID }}]" class="form-control mb-3"></textarea>
+                                @endif
+                            @endforeach
+
+                            <button class="btn btn-success">Submit</button>
                         </form>
                     </div>
                 @endauth

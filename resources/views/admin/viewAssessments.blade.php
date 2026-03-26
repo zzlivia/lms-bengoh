@@ -47,22 +47,29 @@
                     <td>{{ $ass->course->courseName ?? 'N/A' }}</td>
                     <td>{{ $ass->courseAssTitle }}</td>
                     <td>{{ $ass->courseAssDesc }}</td>
-
                     <td>
-                        <!-- edit -->
-                        <a href="{{ route('admin.assessment.editAss', $ass->courseAssID) }}" class="btn btn-warning btn-sm">Edit</a>
-
-                        <!-- delete -->
-                        <form action="{{ route('admin.assessment.deleteCourseAss', $ass->courseAssID) }}" 
-                            method="POST" 
-                            class="d-inline">
-                            @csrf
-                            @method('DELETE')
-                            <button class="btn btn-danger btn-sm"
-                                onclick="return confirm('Delete this assessment?')">
-                                Delete
-                            </button>
-                        </form>
+                        <div class="d-flex align-items-center gap-2 flex-wrap">
+                            <!-- add question route -->
+                            <a href="{{ route('admin.assessment.addQs', $ass->courseAssID) }}" 
+                            class="btn btn-success btn-sm">
+                                <i class="bi bi-plus-circle"></i>
+                            </a>
+                            <!-- edit assessment -->
+                            <a href="{{ route('admin.assessment.editAss', $ass->courseAssID) }}" 
+                            class="btn btn-warning btn-sm">
+                                Edit
+                            </a>
+                            <!-- delete assessment -->
+                            <form action="{{ route('admin.assessment.deleteCourseAss', $ass->courseAssID) }}" 
+                                method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button class="btn btn-danger btn-sm"
+                                    onclick="return confirm('Delete this assessment?')">
+                                    Delete
+                                </button>
+                            </form>
+                        </div>
                     </td>
                 </tr>
                 @empty
@@ -72,5 +79,8 @@
                 @endforelse
             </tbody>
         </table>
+    </div>
+    <div class="mb-3">
+        <button onclick="history.back()" class="btn btn-secondary"><i class="bi bi-arrow-left"></i> Back</button>
     </div>
 @endsection

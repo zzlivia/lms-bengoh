@@ -222,6 +222,27 @@ Route::prefix('admin')
     Route::post('/assessment/questions/store', [CourseAssAdminController::class, 'storeQuestions'])
         ->name('assessment.questions.store');
 
+    Route::post('/assessment/store', [CourseAssAdminController::class, 'saveAssessment'])
+        ->name('assessment.saveAss');
+    
+    Route::get('/assessment/{id}/questions', [CourseAssAdminController::class, 'addQuestionsPage'])
+        ->name('assessment.addQs');
+
+    Route::post('/assessment/questions/store', [CourseAssAdminController::class, 'storeQuestions']) 
+        ->name('assessment.addQs.storeQs');
+
+    Route::get('/assessments', [CourseAssAdminController::class, 'manageAss'])
+        ->name('assessment.manageCourseAss');
+
+    Route::delete('/assessment/{id}', [CourseAssAdminController::class, 'deleteAss'])
+        ->name('assessment.deleteCourseAss');
+
+    Route::get('/assessment/{id}/edit', [CourseAssAdminController::class, 'editAss'])
+        ->name('assessment.editAss');
+
+    Route::put('/assessment/{id}', [CourseAssAdminController::class, 'updateAss'])
+        ->name('assessment.updateAss');
+    
     /* others */
 
     Route::get('/progress', [AdminController::class, 'progress'])

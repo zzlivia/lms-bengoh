@@ -31,7 +31,7 @@ Route::post('/logout', [AuthenticationController::class, 'logout'])->name('logou
 Route::get('/forgot-password', [AuthenticationController::class, 'showForgotPassword'])
     ->name('password.request');
 
-Route::post('/forgot-password', [AuthenticationController::class, 'sendTempPassword'])
+Route::post('/forgot-password', [AuthenticationController::class, 'requestReset'])
     ->name('password.sendTemp');
 
 /* courses */

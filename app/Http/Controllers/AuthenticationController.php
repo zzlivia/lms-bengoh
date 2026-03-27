@@ -26,23 +26,28 @@ class AuthenticationController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,userEmail|unique:admin,adminEmail',
+            'phone' => 'required|string|max:20|unique:users,phone', // 👈 ADD THIS
             'password' => 'required|min:6|confirmed',
             'role' => 'required_if:is_admin,1'
         ]);
 
         if ($request->boolean('is_admin')) {
+
             \App\Models\Admin::create([
                 'adminName'  => $request->name,
                 'adminEmail' => $request->email,
-                'adminPass' => bcrypt($request->password),
+                'adminPass'  => bcrypt($request->password),
                 'adminRole'  => $request->role
             ]);
 
             return redirect()->route('login')->with('success', 'Admin account created!');
+
         } else {
+
             \App\Models\Users::create([
                 'userName'      => $request->name,
                 'userEmail'     => $request->email,
+                'phone'         => $request->phone, // 👈 ADD THIS
                 'userPass'      => bcrypt($request->password),
                 'authenticated' => 1
             ]);
@@ -58,23 +63,39 @@ class AuthenticationController extends Controller
             'password' => 'required'
         ]);
 
-        // Try admin login
+        //get remember value
+        $remember = $request->filled('remember');
+
+        //admin login
         if (Auth::guard('admin')->attempt([
             'adminEmail' => $request->email,
             'password' => $request->password
-        ])) {
+        ], $remember)) {
+
             $request->session()->regenerate();
+
             return redirect()->route('admin.dashboard');
         }
 
-        // Try user login
+        // Determine if input is email or phone
+        $loginField = filter_var($request->email, FILTER_VALIDATE_EMAIL) 
+            ? 'userEmail' 
+            : 'phone';
+
+        // user login
         if (Auth::attempt([
-            'userEmail' => $request->email,
+            $loginField => $request->email,
             'password' => $request->password
-        ])) {
+        ], $remember)) {
+
             $request->session()->regenerate();
 
             $user = Auth::user();
+
+            // record remember state
+            $user->update([
+                'authenticated' => $remember ? 1 : 0
+            ]);
 
             if ($user->must_change_password) {
                 return redirect()->route('password.change');

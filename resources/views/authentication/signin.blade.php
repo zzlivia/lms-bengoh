@@ -57,7 +57,7 @@
 
                 <div class="d-flex justify-content-between align-items-center mb-4 small">
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="is_admin" id="remember">
+                        <input class="form-check-input" type="checkbox" name="remember" id="remember">
                         <label class="form-check-label" for="remember">Remember me</label>
                     </div>
                     <a href="{{ route('password.request') }}" class="text-decoration-none">Forgot Password?</a>

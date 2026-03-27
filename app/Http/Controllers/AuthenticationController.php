@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -31,7 +34,7 @@ class AuthenticationController extends Controller
             \App\Models\Admin::create([
                 'adminName'  => $request->name,
                 'adminEmail' => $request->email,
-                'adminPass'  => $request->password,
+                'adminPass' => bcrypt($request->password),
                 'adminRole'  => $request->role
             ]);
 
@@ -70,6 +73,13 @@ class AuthenticationController extends Controller
             'password' => $request->password
         ])) {
             $request->session()->regenerate();
+
+            $user = Auth::user();
+
+            if ($user->must_change_password) {
+                return redirect()->route('password.change');
+            }
+
             return redirect()->route('homepage');
         }
 
@@ -92,13 +102,48 @@ class AuthenticationController extends Controller
     public function requestReset(Request $request)
     {
         $request->validate([
-            'email' => 'required|email'
+            'login' => 'required'
         ]);
 
-        DB::table('user')
-            ->where('userEmail', $request->email)
-            ->update(['reset_request' => 1]);
+        $login = $request->login;
 
-        return back()->with('success', 'Password reset request sent.');
+        // detect email or phone
+        if (filter_var($login, FILTER_VALIDATE_EMAIL)) {
+            $user = DB::table('users')->where('userEmail', $login)->first();
+        } else {
+            $user = DB::table('users')
+                ->where('userEmail', $login)
+                ->orWhere('phone', $login)
+                ->first();
+        }
+
+        if (!$user) {
+            return back()->withErrors(['login' => 'User not found']);
+        }
+
+        // generate temp password
+        $tempPassword = Str::random(8);
+
+        // update password
+        DB::table('users')
+            ->where('userID', $user->userID)
+            ->update([
+                'userPass' => Hash::make($tempPassword),
+                'must_change_password' => 1,
+                'updated_at' => now()
+            ]);
+
+        // send email
+        Mail::raw("Your temporary password is: $tempPassword", function ($message) use ($user) {
+            $message->to($user->userEmail)
+                    ->subject('Temporary Password');
+        });
+
+        return back()->with('success', 'Temporary password sent to your email.');
+    }
+
+    public function showForgotPassword()
+    {
+        return view('authentication.forgot_password');
     }
 }

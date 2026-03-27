@@ -27,6 +27,10 @@
             <input type="text" name="name" class="form-control mb-3" placeholder="Enter your full name" value="{{ old('name') }}" required>
             {{-- email --}}
             <input type="email" name="email" class="form-control mb-3" placeholder="Enter your email" value="{{ old('email') }}" required>
+            {{-- phone number --}}
+            <div class="mb-3">
+                <input type="text" name="phone" class="form-control" placeholder="Enter your phone number (e.g. 0123456789)" value="{{ old('phone') }}"required>
+            </div>
             {{-- password first enter --}}
             <div class="password-container mb-3"> 
                 <input type="password" name="password" id="password" class="form-control" placeholder="Enter your password" required autocomplete="new-password">

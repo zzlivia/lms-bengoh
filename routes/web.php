@@ -28,6 +28,12 @@ Route::post('/register', [AuthenticationController::class, 'register'])->name('r
 
 Route::post('/logout', [AuthenticationController::class, 'logout'])->name('logout');
 
+Route::get('/forgot-password', [AuthenticationController::class, 'showForgotPassword'])
+    ->name('password.request');
+
+Route::post('/forgot-password', [AuthenticationController::class, 'sendTempPassword'])
+    ->name('password.sendTemp');
+
 /* courses */
 
 Route::get('/courses', [CourseController::class, 'allCourses'])->name('courses.allCourses');

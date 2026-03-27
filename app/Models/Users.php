@@ -14,7 +14,7 @@ class Users extends Authenticatable
     protected $primaryKey = 'userID';
     public $incrementing = true;
     protected $keyType = 'int';
-    protected $fillable = ['userName', 'userEmail', 'userPass', 'authenticated', ];
+    protected $fillable = ['userName', 'userEmail', 'phone', 'userPass', 'authenticated', ];
     protected $hidden = [ 'userPass', ];
 
     public function getAuthPassword(){return $this->userPass;}

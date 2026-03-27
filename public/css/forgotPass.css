@@ -1,0 +1,110 @@
+/* Full page minus navbar/footer */
+.login-section {
+    height: calc(100vh - 100px);
+    display: flex;
+    justify-content: center;
+    align-items: center; /* THIS centers vertically */
+}
+
+/* Center form area */
+.content-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+/* Image stays visible */
+.forgot-image-wrapper {
+    text-align: center;
+    padding-bottom: 5px;
+}
+
+/* Card styling */
+.login-card {
+    max-width: 340px;  /* smaller */
+    width: 100%;
+    border-radius: 12px;
+    background: #ffffff;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    transition: 0.3s ease;
+    padding: 18px; /* reduce height */
+}
+
+.login-card {
+    margin: 0 auto;  /* force center */
+}
+
+.login-card:hover {
+    transform: translateY(-3px);
+}
+
+.login-card h3 {
+    font-size: 22px;
+    margin-bottom: 10px;
+}
+
+.login-card p {
+    font-size: 13px;
+    margin-bottom: 12px;
+}
+
+/* Title */
+.title {
+    font-size: 24px;
+    color: #1a1a1a;
+}
+
+/* Input */
+.modern-input {
+    height: 40px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    padding-left: 12px;
+    transition: 0.2s;
+    font-size: 14px;
+}
+
+.modern-input:focus {
+    border-color: #4a90e2;
+    box-shadow: 0 0 6px rgba(74,144,226,0.3);
+}
+
+/* Button */
+.btn-modern {
+    height: 40px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #4a90e2, #007bff);
+    color: white;
+    font-weight: 600;
+    font-size: 14px;
+    border: none;
+    transition: 0.3s ease;
+}
+
+.btn-modern:hover {
+    background: linear-gradient(135deg, #357abd, #0056b3);
+    transform: translateY(-1px);
+}
+
+/* Back link */
+.back-link {
+    text-decoration: none;
+    color: #555;
+    transition: 0.2s;
+}
+
+.back-link:hover {
+    color: #007bff;
+}
+
+/* Responsive image sizing */
+.forgot-image {
+    max-height: 110px;   /* smaller so it fits */
+    width: auto;
+}
+
+.forgot-image-wrapper {
+    text-align: center;
+    margin-top: 8px;
+}

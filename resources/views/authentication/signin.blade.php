@@ -60,7 +60,7 @@
                         <input class="form-check-input" type="checkbox" name="is_admin" id="remember">
                         <label class="form-check-label" for="remember">Remember me</label>
                     </div>
-                    <a href="#" class="text-decoration-none">Forgot Password?</a>
+                    <a href="{{ route('password.request') }}" class="text-decoration-none">Forgot Password?</a>
                 </div>
                 <button type="submit" class="btn btn-login w-100 py-2 fw-bold">SIGN IN</button>
             </form>

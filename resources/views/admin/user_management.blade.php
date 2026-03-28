@@ -43,7 +43,7 @@
         @if(session('error'))
             <div class="alert alert-danger">{{ session('error') }}</div>
         @endif
-        <table class="table">
+        <table id="userTable" class="table">
             <thead>
                 <tr>
                     <th>Name</th>
@@ -51,37 +51,40 @@
                     <th>Engagement</th>
                     <th>Rank</th>
                     <th>Completed Courses</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
-            @forelse($users as $user)
-                <tr>
-                    <td>{{ $user->name }}</td>
-                    <td>{{ $user->email }}</td>
-                    <td>{{ $user->engagement }}</td>
-                    <td>
-                        @if($user->completedCourses >= 10)
-                            Expert
-                        @elseif($user->completedCourses >= 5)
-                            Intermediate
-                        @else
-                            Beginner
-                        @endif
-                    </td>
-                    <td>{{ $user->completedCourses }}</td>
-                    <td>
-                        <form action="{{ route('admin.user.delete', $user->userID) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this user?');">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                        </form>
-                    </td>
-                </tr>
-                @empty
+            @if($users->count() > 0)
+                @foreach($users as $user)
+                    <tr>
+                        <td>{{ $user->name }}</td>
+                        <td>{{ $user->email }}</td>
+                        <td>{{ $user->engagement }}</td>
+                        <td>
+                            @if($user->completedCourses >= 10)
+                                Expert
+                            @elseif($user->completedCourses >= 5)
+                                Intermediate
+                            @else
+                                Beginner
+                            @endif
+                        </td>
+                        <td>{{ $user->completedCourses }}</td>
+                        <td>
+                            <form action="{{ route('admin.user.delete', $user->userID) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                @endforeach
+            @else
                 <tr>
                     <td colspan="6" class="text-center">No users found</td>
                 </tr>
-                @endforelse
+            @endif
             </tbody>
         </table>
     </div>

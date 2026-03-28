@@ -56,12 +56,12 @@
 @push('scripts')
     <script>
     $(document).ready(function() {
-        let table = $('#feedbackTable').DataTable();
-
-        //filter logics
-        $('#courseFilter').on('change', function() {
-            table.column(1).search(this.value).draw();
-        });
+        if ($('#feedbackTable').length) {
+            let table = $('#feedbackTable').DataTable();
+            $('#courseFilter').on('change', function() {
+                table.column(1).search(this.value).draw();
+            });
+        }
     });
     </script>
 @endpush

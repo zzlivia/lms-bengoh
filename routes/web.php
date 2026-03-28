@@ -12,6 +12,7 @@ use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\AdminSettingsController;
 use App\Http\Controllers\Admin\CourseAssAdminController;
 use App\Http\Controllers\AssessmentController;
+use Illuminate\Support\Facades\Mail;
 
 /* public route */
 
@@ -34,6 +35,18 @@ Route::get('/forgot-password', [AuthenticationController::class, 'showForgotPass
 Route::post('/forgot-password', [AuthenticationController::class, 'requestReset'])
     ->name('password.sendTemp');
 
+Route::get('/test-mail', function () {
+    Mail::raw('Test email from Laravel', function ($message) {
+        $message->to('geemajovinus@gmail.com')
+                ->subject('Test Email');
+    });
+
+    return 'Email sent!';
+});
+
+Route::get('/check-mail', function () {
+    return config('mail.mailers.smtp.password');
+});
 /* courses */
 
 Route::get('/courses', [CourseController::class, 'allCourses'])->name('courses.allCourses');

@@ -34,10 +34,8 @@ class AdminController extends Controller
         $totalModules = Module::count();
         $totalLectures = Lecture::count();
 
-        //get latest announcements
-        $announcements = Announcements::orderBy('created_at', 'desc')
-                        ->take(4) //4 announcements
-                        ->get();
+        //get latest announcements, 4 announcements
+        $announcements = Announcements::orderBy('created_at', 'desc')->take(4)->get();
 
         //get most taken courses
         $courseStats = DB::table('enrolmentcoursemodules')
@@ -51,9 +49,7 @@ class AdminController extends Controller
                                                             /* summary of resources */
 
         //get recent uploaded material
-        $recentMaterial = DB::table('learningmaterials')
-            ->orderByDesc('created_at')
-            ->first();
+        $recentMaterial = DB::table('learningmaterials')->orderByDesc('created_at')->first();
 
         //get latest uploaded PDF
         $recentPdf = DB::table('pdflearning')
@@ -70,55 +66,30 @@ class AdminController extends Controller
             ->first();
 
         //count no lecture assigned
-        $unusedMaterials = DB::table('learningmaterials')
-            ->whereNull('lectID')
-            ->count();
-
+        $unusedMaterials = DB::table('learningmaterials')->whereNull('lectID')->count();
                                                                                         /* pie chart */
 
         //count completed modules
-        $completedModules = DB::table('enrolmentcoursemodules')
-            ->where('isCompleted', 1)
-            ->count();
+        $completedModules = DB::table('enrolmentcoursemodules')->where('isCompleted', 1)->count();
 
         //count resources
         // total pdf learning materials
         $pdfMaterials = DB::table('pdflearning')->count();
+
         // total video learning materials
         $videoMaterials = DB::table('videolearning')->count();
 
         //notifications of forgot requests password, feedback, announcement
-        $forgotRequests = DB::table('users')
-            ->where('must_change_password', 1)
-            ->count();
-        $pendingFeedbackCount = DB::table('coursefeedback')
-            ->where('is_reviewed', 0)
-            ->count();
-        $announcementReview = DB::table('announcements')
-            ->where('status', 'pending')
-            ->count();
+        $forgotRequests = DB::table('users')->where('must_change_password', 1)->count();
+        $pendingFeedbackCount = DB::table('coursefeedback')->where('is_reviewed', 0)->count();
+        $announcementReview = DB::table('announcements')->where('status', 'pending')->count();
 
         //total notifications
         $totalNotifications = $forgotRequests + $pendingFeedbackCount + $announcementReview;
 
         return view('admin.admin_dashboard', compact( //send data back to dashboard
-            'totalUsers',
-            'totalCourses',
-            'totalModules',
-            'totalLectures',
-            'announcements',
-            'courseStats',
-            'completedModules',
-            'pdfMaterials',
-            'videoMaterials',
-            'recentMaterial',
-            'recentPdf',
-            'recentVideo',
-            'unusedMaterials',
-            'forgotRequests',
-            'pendingFeedbackCount',
-            'announcementReview',
-            'totalNotifications'
+            'totalUsers','totalCourses','totalModules','totalLectures','announcements','courseStats','completedModules','pdfMaterials','videoMaterials',
+            'recentMaterial','recentPdf','recentVideo','unusedMaterials','forgotRequests','pendingFeedbackCount','announcementReview','totalNotifications'
         ));
     }
 
@@ -128,13 +99,9 @@ class AdminController extends Controller
 
         // summary cards
         $totalUsers = DB::table('users')->count();
-        $newUsers = DB::table('users')
-            ->whereDate('userID', '>=', now()->subDays(7)) // placeholder if no created_at
-            ->count();
-        $activeUsers = DB::table('enrolmentcoursemodules')
-            ->where('inProgress', 1)
-            ->distinct('userID')
-            ->count('userID');
+        $newUsers = DB::table('users')->whereDate('created_at', '>=', now()->subDays(7))->count();
+        $activeUsers = DB::table('enrolmentcoursemodules')->where('inProgress', 1)->distinct('userID')->count('userID');
+
         // user table
         $users = DB::table('users')
             ->leftJoin('enrolmentcoursemodules', 'users.userID', '=', 'enrolmentcoursemodules.userID')
@@ -142,33 +109,35 @@ class AdminController extends Controller
                 return $query->where('users.userName', 'like', "%$search%");
             })
             ->select(
-                'users.userID',
-                'users.userName as name',
-                'users.userEmail as email',
+                'users.userID', 'users.userName as name', 'users.userEmail as email',
                 DB::raw('COUNT(CASE WHEN enrolmentcoursemodules.inProgress = 1 THEN 1 END) as engagement'),
                 DB::raw('COUNT(CASE WHEN enrolmentcoursemodules.isCompleted = 1 THEN 1 END) as completedCourses')
             )
-            ->groupBy('users.userID', 'users.userName', 'users.userEmail')
-            ->get();
+            ->groupBy('users.userID', 'users.userName', 'users.userEmail')->get();
 
+        // search engine function
+        $error = null;
+        if ($search && $users->isEmpty()) {
+            $error = 'User does not exist.';
+        }
+
+        // notifications count
         $forgotRequests = DB::table('users')->where('must_change_password', 1)->count();
-        $pendingFeedbackCount = DB::table('coursefeedback')
-            ->where('is_reviewed', 0)
-            ->count();
+        $pendingFeedbackCount = DB::table('coursefeedback')->where('is_reviewed', 0)->count();
         $announcementReview = DB::table('announcements')->where('status', 'pending')->count();
-
         $totalNotifications = $forgotRequests + $pendingFeedbackCount + $announcementReview;
 
         return view('admin.user_management', compact(
-            'users',
-            'totalUsers',
-            'newUsers',
-            'activeUsers',
-            'totalNotifications',
-            'pendingFeedbackCount',
-            'forgotRequests',
-            'announcementReview',
+            'users','totalUsers','newUsers','activeUsers','totalNotifications','pendingFeedbackCount','forgotRequests','announcementReview','error'
         ));
+    }
+
+    public function deleteUser($id)
+    {
+        $user = DB::table('users')->where('userID', $id)->first();
+        if (!$user) {return redirect()->back()->with('error', 'User does not exist.');}
+         DB::table('users')->where('userID', $id)->delete();
+        return redirect()->back()->with('success', 'User deleted successfully.');
     }
 
     public function courseModuleManagement()
@@ -182,25 +151,12 @@ class AdminController extends Controller
         $totalAssessmentsPassed = AssessmentResult::where('status', 'passed')->count();
         $totalCompleted = Progress::where('progressStatus', 'completed')->count();
 
-        $topUser = Users::withSum('assessmentResults', 'score')
-            ->orderByDesc('assessment_results_sum_score')
-            ->first();
-
-        $announcements = Announcements::orderBy('created_at', 'desc')
-            ->take(4)
-            ->get();
+        $topUser = Users::withSum('assessmentResults', 'score')->orderByDesc('assessment_results_sum_score')->first();
+        $announcements = Announcements::orderBy('created_at', 'desc')->take(4)->get();
 
         return view('admin.course_module_management', compact(
-            'courses',
-            'totalUsers',
-            'totalCourses',
-            'totalModules',
-            'totalLectures',
-            'totalFeedback',
-            'totalAssessmentsPassed',
-            'totalCompleted',
-            'topUser',
-            'announcements'
+            'courses','totalUsers','totalCourses','totalModules','totalLectures','totalFeedback','totalAssessmentsPassed',
+            'totalCompleted','topUser','announcements'
         ));
     }
 
@@ -286,9 +242,7 @@ class AdminController extends Controller
     {
         $course = Course::findOrFail($id);
         $course->delete();
-
-        return redirect()->route('admin.course.module')
-            ->with('success','Course deleted successfully');
+        return redirect()->route('admin.course.module')->with('success','Course deleted successfully');
     }
 
     /*ignore from here
@@ -388,20 +342,14 @@ class AdminController extends Controller
         $inProgressPercent = $totalProgress > 0 ? round(($inProgress / $totalProgress) * 100) : 0;
         $completedPercent = $totalProgress > 0 ? round(($completed / $totalProgress) * 100) : 0;
 
-        return view('admin.progress', compact(
-            'notStartedPercent',
-            'inProgressPercent',
-            'completedPercent'
+        return view('admin.progress', compact('notStartedPercent','inProgressPercent','completedPercent'
         ));
     }
 
     public function announcements()
     {
         //newest announcements always appear first
-        $announcements = DB::table('announcements')
-            ->orderByDesc('created_at')
-            ->get();
-
+        $announcements = DB::table('announcements')->orderByDesc('created_at')->get();
         return view('admin.announcements', compact('announcements')); //retrieve
     }
 
@@ -417,8 +365,7 @@ class AdminController extends Controller
             'updated_at' => now()
         ]);
 
-        return redirect()->route('admin.announcements')
-            ->with('success', 'Announcement added successfully!');
+        return redirect()->route('admin.announcements')->with('success', 'Announcement added successfully!');
     }
 
     public function viewAnnouncement($id)
@@ -442,14 +389,11 @@ class AdminController extends Controller
     public function updateAnnouncement(Request $request, $id)
     {
         $announcement = Announcements::findOrFail($id);
-
         $announcement->announcementTitle = $request->announcementTitle;
         $announcement->announcementDetails = $request->announcementDetails;
-
         $announcement->save();
 
-        return redirect()->route('announcements')
-            ->with('success', 'Announcement updated successfully.');
+        return redirect()->route('announcements')->with('success', 'Announcement updated successfully.');
     }
     
     public function reports()
@@ -457,28 +401,17 @@ class AdminController extends Controller
 
         // total registered users
         $totalUsers = DB::table('users')->count();
-
         // new users per month
-        $newUsers = DB::table('users')
-            ->whereMonth('created_at', now()->month)
-            ->count();
-
+        $newUsers = DB::table('users')->whereMonth('created_at', now()->month)->count();
         // active users (authenticated = 1)
-        $activeUsers = DB::table('users')
-            ->where('authenticated', 1)
-            ->count();
-
+        $activeUsers = DB::table('users')->where('authenticated', 1)->count();
         // inactive users
-        $inactiveUsers = DB::table('users')
-            ->where('authenticated', 0)
-            ->count();
-
+        $inactiveUsers = DB::table('users')->where('authenticated', 0)->count();
         // guest users by session
         $guestUsers = 0;
 
         // course & module
-        $courseModules = DB::table('course')
-            ->join('module', 'course.courseID', '=', 'module.courseID')
+        $courseModules = DB::table('course')->join('module', 'course.courseID', '=', 'module.courseID')
             ->select(
                 'course.courseName',
                 'module.moduleName',
@@ -490,13 +423,7 @@ class AdminController extends Controller
             ->groupBy('course.courseName','module.moduleName')
             ->get();
 
-        return view('admin.reports', compact(
-            'totalUsers',
-            'newUsers',
-            'activeUsers',
-            'inactiveUsers',
-            'guestUsers',
-            'courseModules'
+        return view('admin.reports', compact('totalUsers','newUsers','activeUsers','inactiveUsers','guestUsers','courseModules'
         ));
     }
 
@@ -504,29 +431,17 @@ class AdminController extends Controller
     {
         // total users
         $totalUsers = Users::count();
-
         // new users registered in a month
         $newUsers = Users::whereMonth('created_at', now()->month)->count();
-
         // active users that logged in
         $activeUsers = Users::where('status', 'active')->count();
-
         // inactive users
         $inactiveUsers = Users::where('status', 'inactive')->count();
-
         // guest or unregistered users
         $guestUsers = 0;
-
         // course and module performance
-        $courseModules = DB::table('course')
-            ->join('module', 'course.courseID', '=', 'module.courseID')
-            ->select(
-                'course.courseName',
-                'module.moduleName',
-                DB::raw('0 as enrolled'),
-                DB::raw('0 as completed'),
-                DB::raw('0 as in_progress')
-            )
+        $courseModules = DB::table('course')->join('module', 'course.courseID', '=', 'module.courseID')
+            ->select('course.courseName','module.moduleName',DB::raw('0 as enrolled'),DB::raw('0 as completed'),DB::raw('0 as in_progress'))
             ->get();
 
         return view('admin.reportOverview', compact('totalUsers','newUsers','activeUsers','inactiveUsers','guestUsers','courseModules'));
@@ -537,19 +452,11 @@ class AdminController extends Controller
         //collect statistics
         $totalUsers = DB::table('users')->count(); 
         // new user recent register
-        $newUsers = DB::table('users')
-            ->whereDate('created_at', today())
-            ->count();
+        $newUsers = DB::table('users')->whereDate('created_at', today())->count();
         // active user define by authenticated attribute
-        $activeUsers = DB::table('users')
-            ->where('authenticated', 1)
-            ->count();
-
+        $activeUsers = DB::table('users')->where('authenticated', 1)->count();
         // inactive users define by authenticated attribute
-        $inactiveUsers = DB::table('users')
-            ->where('authenticated', 0)
-            ->count();
-
+        $inactiveUsers = DB::table('users')->where('authenticated', 0)->count();
         // guest users store by session
         $guestUsers = 0;
 
@@ -560,11 +467,8 @@ class AdminController extends Controller
             ->select(
                 'course.courseName',
                 'module.moduleName',
-
                 DB::raw('COUNT(enrolmentcoursemodules.userID) as enrolled'),
-
                 DB::raw('SUM(enrolmentcoursemodules.isCompleted = 1) as completed'),
-
                 DB::raw('SUM(enrolmentcoursemodules.inProgress = 1) as in_progress')
             )
             ->groupBy('module.moduleID','course.courseName','module.moduleName')
@@ -572,25 +476,19 @@ class AdminController extends Controller
 
         $assessmentReport = DB::table('mcqs')
             ->join('module','mcqs.moduleID','=','module.moduleID')
-            ->select(
-                'module.moduleName',
-                DB::raw('COUNT(mcqs.moduleQs_ID) as totalAssessment')
-            )
+            ->select('module.moduleName',DB::raw('COUNT(mcqs.moduleQs_ID) as totalAssessment'))
             ->groupBy('module.moduleName')
             ->get();
 
-        $data = compact('totalUsers','newUsers','activeUsers','inactiveUsers','guestUsers','courseModules','assessmentReport'
-        );
+        $data = compact('totalUsers','newUsers','activeUsers','inactiveUsers','guestUsers','courseModules','assessmentReport');
+        
         $pdf = Pdf::loadView('admin.reportPDF',$data); //load view into pdf
         return $pdf->download('bengoh-dam_report.pdf'); //name of downloaded report pdf
     }
 
     public function passwordRequests()
     {
-        $requests = DB::table('users')
-            ->where('reset_request', 1)
-            ->get();
-
+        $requests = DB::table('users')->where('reset_request', 1)->get();
         return view('admin.passwordRequests', compact('requests'));
     }
 

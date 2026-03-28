@@ -170,6 +170,8 @@ Route::prefix('admin')
 
     Route::get('/user-management', [AdminController::class, 'userManagement'])
         ->name('user.management');
+    
+    Route::delete('/user/{id}', [AdminController::class, 'deleteUser'])->name('user.delete');
 
     Route::get('/course-module-management', [AdminController::class, 'courseModuleManagement'])
         ->name('course.module');

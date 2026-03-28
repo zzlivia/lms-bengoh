@@ -89,7 +89,7 @@ class AdminController extends Controller
 
         //notifications of forgot requests password, feedback, announcement
         $forgotRequests = DB::table('users')
-            ->where('reset_request', 1)
+            ->where('must_change_password', 1)
             ->count();
         $pendingFeedbackCount = DB::table('coursefeedback')
             ->where('is_reviewed', 0)
@@ -151,7 +151,7 @@ class AdminController extends Controller
             ->groupBy('users.userID', 'users.userName', 'users.userEmail')
             ->get();
 
-        $forgotRequests = DB::table('users')->where('reset_request', 1)->count();
+        $forgotRequests = DB::table('users')->where('must_change_password', 1)->count();
         $pendingFeedbackCount = DB::table('coursefeedback')
             ->where('is_reviewed', 0)
             ->count();
@@ -412,7 +412,7 @@ class AdminController extends Controller
         DB::table('announcements')->insert([
             'announcementTitle' => $request->announcementTitle,
             'announcementDetails' => $request->announcementDetails,
-            'adminID' => Auth::id(),   // get logged in admin ID
+            'adminID' => Auth::id(),
             'created_at' => now(),
             'updated_at' => now()
         ]);

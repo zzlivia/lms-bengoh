@@ -138,7 +138,16 @@
     </script>
     <script>
         $(document).ready(function() {
-            $('.table').DataTable();
+
+            if ($('#userTable').length) {
+
+                if ($.fn.DataTable.isDataTable('#userTable')) {
+                    $('#userTable').DataTable().destroy();
+                }
+
+                $('#userTable').DataTable();
+            }
+
         });
     </script>
 </body>

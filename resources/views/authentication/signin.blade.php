@@ -30,7 +30,7 @@
                     </div>
                 @endif
 
-                <form method="POST" action="{{ route('login') }}" autocomplete=="off"> {{--{{ route('login') }}--}}
+                <form method="POST" action="{{ route('login') }}" autocomplete="off"> {{--{{ route('login') }}--}}
                     @csrf
                     <!-- fake fields -->
                     <input type="text" name="fake_username" style="display:none">

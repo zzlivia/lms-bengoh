@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Course;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -11,6 +13,11 @@ class AssessmentController extends Controller
     //show assessment to learners
     public function showAssessment($id)
     {
+        $course = Course::with([
+            'modules.lectures.sections',
+            'modules.mcqs'
+        ])->findOrFail($id);
+
         $assessment = DB::table('course_assessments')
             ->where('courseID', $id)
             ->first();
@@ -29,7 +36,7 @@ class AssessmentController extends Controller
                 ->get();
         }
 
-        return view('learner.courseAssessment', compact('assessment', 'questions'));
+        return view('learner.courseAssessment', compact('assessment', 'questions', 'course'));
     }
 
     //learner submit answers processes

@@ -12,14 +12,10 @@ use Illuminate\Support\Facades\DB;
 class AuthenticationController extends Controller
 {
     public function showLogin()
-    {
-        return view('authentication.signin');
-    }
+    { return view('authentication.signin'); }
 
     public function showRegister()
-    {
-        return view('authentication.register');
-    }
+    { return view('authentication.register'); }
 
     public function register(Request $request)
     {
@@ -32,79 +28,53 @@ class AuthenticationController extends Controller
         ]);
 
         if ($request->boolean('is_admin')) {
-
             \App\Models\Admin::create([
-                'adminName'  => $request->name,
-                'adminEmail' => $request->email,
-                'adminPass'  => bcrypt($request->password),
-                'adminRole'  => $request->role
+                'adminName' => $request->name,'adminEmail' => $request->email,'adminPass' => bcrypt($request->password),'adminRole' => $request->role
             ]);
-
             return redirect()->route('login')->with('success', 'Admin account created!');
-
         } else {
 
             \App\Models\Users::create([
-                'userName'      => $request->name,
-                'userEmail'     => $request->email,
-                'phone'         => $request->phone, // 👈 ADD THIS
-                'userPass'      => bcrypt($request->password),
-                'authenticated' => 1
+                'userName'  => $request->name,'userEmail' => $request->email,'phone' => $request->phone,'userPass' => bcrypt($request->password),'authenticated' => 1
             ]);
-
             return redirect()->route('login')->with('success', 'Learner account created!');
         }
     }
 
     public function login(Request $request)
     {
-        $request->validate([
-            'email' => 'required',
-            'password' => 'required'
-        ]);
-
+        $request->validate(['email' => 'required','password' => 'required']);
         //get remember value
         $remember = $request->filled('remember');
 
         //admin login
-        if (Auth::guard('admin')->attempt([
-            'adminEmail' => $request->email,
-            'password' => $request->password
+        if (Auth::guard('admin')->attempt(['adminEmail' => $request->email,'password' => $request->password
         ], $remember)) {
-
             $request->session()->regenerate();
-
             return redirect()->route('admin.dashboard');
         }
 
-        // Determine if input is email or phone
+        //determine if input is email or phone
         $loginField = filter_var($request->email, FILTER_VALIDATE_EMAIL) 
             ? 'userEmail' 
             : 'phone';
 
         // user login
         if (Auth::attempt([
-            $loginField => $request->email,
-            'password' => $request->password
+            $loginField => $request->email,'password' => $request->password
         ], $remember)) {
-
             $request->session()->regenerate();
-
             $user = Auth::user();
-
             // record remember state
             $user->update([
                 'authenticated' => $remember ? 1 : 0
             ]);
-
             if ($user->must_change_password) {
                 return redirect()->route('password.change');
             }
-
             return redirect()->route('homepage');
         }
-
-        return back()->with('error', 'Invalid credentials');
+        return back()->withErrors(['email' => 'Invalid email or password.']);
     }
 
     public function logout(Request $request)
@@ -112,7 +82,6 @@ class AuthenticationController extends Controller
         // Logout both guards safely
         Auth::guard('admin')->logout();
         Auth::logout();
-
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
@@ -125,9 +94,7 @@ class AuthenticationController extends Controller
         $request->validate([
             'login' => 'required'
         ]);
-
         $login = $request->login;
-
         // detect email or phone
         if (filter_var($login, FILTER_VALIDATE_EMAIL)) {
             $user = DB::table('users')->where('userEmail', $login)->first();
@@ -137,7 +104,6 @@ class AuthenticationController extends Controller
                 ->orWhere('phone', $login)
                 ->first();
         }
-
         if (!$user) {
             return back()->withErrors(['login' => 'User not found']);
         }

@@ -14,24 +14,26 @@ class CourseAssAdminController extends Controller
     {
         //validation
         $request->validate([
-        'courseID' => 'required|exists:course,courseID',
-        'title' => 'required|string|max:255',
-        'desc' => 'nullable|string',
-        'questions' => 'required|array|min:1',
+            'courseID' => 'required|exists:course,courseID',
+            'title' => 'required|string|max:255',
+            'desc' => 'nullable|string',
+            'questions' => 'required|array|min:1',
 
-        'questions.*.question' => 'required|string',
-        'questions.*.type' => 'required|in:MCQ,SHORT_ANSWER,LONG_ANSWER',
+            'questions.*.question' => 'required|string',
+            'questions.*.type' => 'required|in:MCQ,SHORT_ANSWER,LONG_ANSWER',
 
-        // only for MCQ
-        'questions.*.options' => 'required_if:questions.*.type,MCQ|array',
-        'questions.*.options.*.text' => 'required|string',
-        'questions.*.options.*.is_correct' => 'required|boolean',]);
-    
-        //logics
+            //MCQ only
+            'questions.*.options' => 'required_if:questions.*.type,MCQ|array',
+            'questions.*.options.*' => 'required|string',
+            'questions.*.correct' => 'required_if:questions.*.type,MCQ|integer',
+        ]);
+
+        //logic
         $assessment = CourseAssessment::create([
             'courseID' => $request->courseID,
             'courseAssTitle' => $request->title,
-            'courseAssDesc' => $request->desc]);
+            'courseAssDesc' => $request->desc
+        ]);
 
         foreach ($request->questions as $q) {
             $question = AssessmentQuestion::create([
@@ -42,12 +44,15 @@ class CourseAssAdminController extends Controller
 
             //only MCQ
             if ($q['type'] === 'MCQ') {
-                foreach ($q['options'] as $opt) {
-                    AssessmentMcqOption::create([
-                        'assQsID' => $question->assQsID,
-                        'optionText' => $opt['text'],
-                        'is_correct' => $opt['is_correct']
-                    ]);
+                foreach ($q['options'] as $index => $opt) {
+                    // skip empty (extra safety)
+                    if (!empty($opt)) {
+                        AssessmentMcqOption::create([
+                            'assQsID' => $question->assQsID,
+                            'optionText' => $opt,
+                            'is_correct' => ($index == $q['correct'])
+                        ]);
+                    }
                 }
             }
         }
@@ -101,11 +106,13 @@ class CourseAssAdminController extends Controller
 
             if ($q['type'] === 'MCQ') {
                 foreach ($q['options'] as $index => $opt) {
-                    AssessmentMcqOption::create([
-                        'assQsID' => $question->assQsID,
-                        'optionText' => $opt,
-                        'is_correct' => ($index == $q['correct'])
-                    ]);
+                    if (!empty($opt)) {
+                        AssessmentMcqOption::create([
+                            'assQsID' => $question->assQsID,
+                            'optionText' => $opt, //string
+                            'is_correct' => ($index == $q['correct']) //use index
+                        ]);
+                    }
                 }
             }
         }

@@ -223,7 +223,6 @@ class CourseController extends Controller
     public function reviewMCQ($id)
     {
         $module = Module::with('mcqs.answers', 'course')->findOrFail($id);
-
         return view('learner.review_mcq', ['module' => $module,'course' => $module->course]);
     }
 
@@ -231,17 +230,12 @@ class CourseController extends Controller
     public function courseFeedback($id)
     {
         $course = Course::with('modules')->findOrFail($id);
-
         return view('learner.course_feedback', compact('course'));
     }
 
     public function submitFeedback(Request $request, $id)
     {
-        $request->validate([
-            'clarity' => 'required',
-            'understanding' => 'required',
-            'rating' => 'required|integer|min:1|max:5'
-        ]);
+        $request->validate(['clarity' => 'required','understanding' => 'required','rating' => 'required|integer|min:1|max:5']);
 
         DB::table('coursefeedback')->insert([
             'courseID' => $id,
@@ -263,6 +257,7 @@ class CourseController extends Controller
     {
         $userID = Auth::id();
 
+        //relation of course
         $course = Course::with('modules.lectures.sections', 'modules.mcqs')->findOrFail($id);
 
         //total sections
@@ -274,10 +269,7 @@ class CourseController extends Controller
         }
 
         //completed sections
-        $completedSections = Progress::where('courseID', $id)
-            ->where('userID', $userID)
-            ->where('progressName', 'like', 'SECTION_%')
-            ->count();
+        $completedSections = Progress::where('courseID', $id)->where('userID', $userID)->where('progressName', 'like', 'SECTION_%')->count();
 
         //total MCQs
         $totalMcqs = 0;
@@ -286,20 +278,22 @@ class CourseController extends Controller
         }
 
         //completed MCQs
-        $mcqsCompleted = Progress::where('courseID', $id)
-            ->where('userID', $userID)
-            ->where('progressName', 'like', 'MCQ%')
-            ->count();
+        $mcqsCompleted = Progress::where('courseID', $id)->where('userID', $userID)->where('progressName', 'like', 'MCQ%')->count();
 
-        //final check
-        if ($completedSections < $totalSections || $mcqsCompleted < $totalMcqs) {
+        //access control, learner need to finish the sections and mcqs given
+        if (
+            $totalSections == 0 || 
+            $completedSections < $totalSections || 
+            $mcqsCompleted < $totalMcqs
+        ) {
             return redirect()->route('learn', $id)
                 ->with('error', 'Please complete all modules and quizzes first.');
         }
 
+        //allow the access
         return view('learner.courseAssessment', compact('course'));
     }
-
+    
     //update progress auto when a user finishes MCQ or assessment given
     public function updateProgress($courseID, $activity)
     {
@@ -321,9 +315,7 @@ class CourseController extends Controller
     {
         $course = Course::findOrFail($courseID);
 
-        $progress = Progress::where('userID', Auth::id())
-                    ->where('courseID', $courseID)
-                    ->get();
+        $progress = Progress::where('userID', Auth::id())->where('courseID', $courseID)->get();
 
         //total progress
         $totalProgress = $progress->avg('completionProgress') ?? 0;

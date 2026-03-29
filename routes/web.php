@@ -95,7 +95,7 @@ Route::post('/course/{id}/feedback', [CourseController::class, 'submitFeedback']
 
 //Route::get('/course/{id}/assessment', [CourseController::class, 'courseAssessment'])->name('course.assessment');
 
-Route::post('/assessment/submit', [AssessmentController::class, 'submitAssessment'])->name('assessment.submitAssessment');
+Route::post('/assessment/submit', [AssessmentController::class, 'submitAssessment'])->name('assessment.submit');
 
 /* course progress*/
 

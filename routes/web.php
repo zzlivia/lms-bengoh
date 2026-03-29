@@ -52,7 +52,8 @@ Route::get('/check-mail', function () {
 Route::get('/courses', [CourseController::class, 'allCourses'])->name('courses.allCourses');
 Route::get('/courses/{id}', [CourseController::class, 'showCourse'])->name('courses.showCourse');
 Route::get('/courses/{id}/startLearn/{sectionId?}', [CourseController::class, 'startLearning'])->name('learn');
-Route::get('/course/{id}/assessment', [AssessmentController::class, 'showAssessment'])->name('course.showAssessment');
+Route::get('/course/{id}/assessment', [CourseController::class, 'courseAssessment'])
+    ->name('course.assessment');
 
 /* module and mcqs*/
 

@@ -11,8 +11,12 @@
 
             <div class="col-md-9 px-md-4">
                 <div class="learning-content-card p-4 shadow-sm bg-white rounded">
-
-                    {{-- Breadcrumb --}}
+                    @if(session('error'))
+                        <div class="alert alert-danger">
+                            {{ session('error') }}
+                        </div>
+                    @endif
+                    
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb small">
                             <li class="breadcrumb-item">
@@ -37,7 +41,6 @@
                             <h5 class="text-primary fw-bold">{{ $current->section_title }}</h5>
                         </div>
 
-                        {{-- VIDEO --}}
                         @if($current->section_type == 'video')
                             <div class="video-container mb-4">
                                 <div class="ratio ratio-16x9 bg-dark d-flex align-items-center justify-content-center rounded">
@@ -48,14 +51,12 @@
                             </div>
                         @endif
 
-                        {{-- TEXT --}}
                         @if($current->section_type == 'text')
                             <div class="text-content mb-4 lead-custom">
                                 {!! nl2br(e($current->section_content)) !!}
                             </div>
                         @endif
 
-                        {{-- PDF --}}
                         @if($current->section_type == 'pdf')
                             <div class="pdf-container mb-4">
                                 <iframe src="{{ asset('learning-materials/' . $current->section_file) }}#toolbar=0"
@@ -109,7 +110,6 @@
                         $isLast = $currentIndex == count($sections) - 1;
                     @endphp
                     <div class="d-flex justify-content-between mt-5 pt-3 border-top">
-                        {{-- LEFT SIDE --}}
                         <div>
                             @if($prev)
                                 <a href="{{ route('learn', [
@@ -120,7 +120,6 @@
                                 </a>
                             @endif
                         </div>
-                        {{-- RIGHT SIDE --}}
                         <div>
                             @if(!$isLast)
                                 <a href="{{ route('learn', ['id' => $course->courseID, 'sectionId' => $next->sectionID]) }}" class="btn btn-primary">
@@ -138,7 +137,7 @@
         </div>
     </div>
 
-    {{-- ================= SCRIPT ================= --}}
+    {{-- ================= SCRIPTS ================= --}}
     <script>
     document.getElementById('quizForm')?.addEventListener('submit', function(e) {
         const questions = document.querySelectorAll('[name^="answers["]');

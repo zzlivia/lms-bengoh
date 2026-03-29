@@ -207,6 +207,7 @@ class CourseController extends Controller
                 }
             }
         }
+        $this->updateProgress($module->courseID, 'MCQ' . $module->moduleID);
 
         return redirect()->route('mcq.module', ['id' => $module->moduleID])
             ->withInput($request->all())
@@ -260,18 +261,58 @@ class CourseController extends Controller
 
     public function courseAssessment($id)
     {
-        $course = Course::findOrFail($id);
+        $userID = Auth::id();
+
+        $course = Course::with('modules.lectures.sections', 'modules.mcqs')->findOrFail($id);
+
+        //total sections
+        $totalSections = 0;
+        foreach ($course->modules as $module) {
+            foreach ($module->lectures as $lecture) {
+                $totalSections += $lecture->sections->count();
+            }
+        }
+
+        //completed sections
+        $completedSections = Progress::where('courseID', $id)
+            ->where('userID', $userID)
+            ->where('progressName', 'like', 'SECTION_%')
+            ->count();
+
+        //total MCQs
+        $totalMcqs = 0;
+        foreach ($course->modules as $module) {
+            $totalMcqs += $module->mcqs->count();
+        }
+
+        //completed MCQs
+        $mcqsCompleted = Progress::where('courseID', $id)
+            ->where('userID', $userID)
+            ->where('progressName', 'like', 'MCQ%')
+            ->count();
+
+        //final check
+        if ($completedSections < $totalSections || $mcqsCompleted < $totalMcqs) {
+            return redirect()->route('learn', $id)
+                ->with('error', 'Please complete all modules and quizzes first.');
+        }
+
         return view('learner.courseAssessment', compact('course'));
     }
 
     //update progress auto when a user finishes MCQ or assessment given
     public function updateProgress($courseID, $activity)
     {
-        $progressMap = ['MCQ1' => 20,'MCQ2' => 40,'MCQ3' => 60,'MCQ4' => 80,'ASSESSMENT' => 100];
-        $percentage = $progressMap[$activity] ?? 0;
         Progress::updateOrCreate(
-            ['userID' => Auth::id(),'courseID' => $courseID,'progressName' => $activity],
-            ['progressStatus' => 'completed','completionProgress' => $percentage]
+            [
+                'userID' => Auth::id(),
+                'courseID' => $courseID,
+                'progressName' => $activity
+            ],
+            [
+                'progressStatus' => 'completed',
+                'completionProgress' => 100
+            ]
         );
     }
 

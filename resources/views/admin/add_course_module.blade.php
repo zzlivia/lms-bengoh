@@ -119,7 +119,7 @@
                             </select>
                         </div>
                         <div class="col-md-4 mb-3">
-                            <label class="form-label">Duration (Hours)</label>
+                            <label class="form-label">Duration (Weeks)</label>
                             <input type="number" class="form-control" name="courseDuration" required>
                         </div>
                         <div class="col-md-4 mb-3">

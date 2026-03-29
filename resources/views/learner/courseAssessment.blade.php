@@ -8,7 +8,7 @@
     <div class="container-fluid">
         <div class="row">
             <!-- Sidebar -->
-            @include('partials.course-sidebar')
+            @include('partials.course-sidebar', ['course' => $course])
             <!-- Main Content -->
             <div class="col-md-9 p-4">
                 <div class="text-center mb-4">

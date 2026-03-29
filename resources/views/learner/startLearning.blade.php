@@ -7,7 +7,7 @@
 @section('content')
     <div class="container-fluid mt-3">
         <div class="row">
-            @include('partials.course-sidebar')
+            @include('partials.course-sidebar', ['course' => $course])
 
             <div class="col-md-9 px-md-4">
                 <div class="learning-content-card p-4 shadow-sm bg-white rounded">

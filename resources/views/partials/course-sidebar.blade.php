@@ -33,7 +33,7 @@
     @endforeach
     {{-- others --}}
     <a class="sidebar-link d-block mb-2" href="{{ route('course.feedback', $course->courseID) }}">Course Feedback</a>
-    <a class="sidebar-link d-block mb-2" href="{{ route('course.assessment', $course->courseID) }}">Course Assessment</a>
+    <a class="sidebar-link d-block mb-2" href="{{ route('course.showAssessment', $course->courseID) }}">Course Assessment</a>
     <a class="sidebar-link d-block mb-2" href="{{ route('course.progress', $course->courseID) }}">Progress</a>
     <a class="sidebar-link d-block" href="{{ route('leaderboards') }}">Leaderboards</a>
 </div>

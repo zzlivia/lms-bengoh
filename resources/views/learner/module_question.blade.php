@@ -4,7 +4,7 @@
     <div class="container-fluid mt-3">
         <div class="row">
             {{-- include sidebar of courses --}}
-            @include('partials.course-sidebar')
+            @include('partials.course-sidebar', ['course' => $course])
             {{-- main content --}}
             <div class="col-md-9 px-md-4">
                 <h5 class="mb-4">

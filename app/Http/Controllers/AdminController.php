@@ -183,7 +183,7 @@ class AdminController extends Controller
         $course->courseCategory = $request->courseCategory;
         $course->courseLevel = $request->courseLevel;
         $course->courseDuration = $request->courseDuration;
-        $course->isAvailable = $request->isAvailable;
+        $course->isAvailable = $request->input('isAvailable', 0); //available is 1, not available is 0
         //handle image upload
         if ($request->hasFile('courseImg')) {
             // delete old image if exists

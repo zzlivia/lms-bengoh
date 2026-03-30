@@ -7,12 +7,19 @@ use App\Http\Controllers\Admin\CommunityStoryController;
 use App\Http\Controllers\Admin\CommunityStoryController as AdminCommunityStoryController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Admin\LectureSectionController;
+use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\Admin\ModuleController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\AdminSettingsController;
 use App\Http\Controllers\Admin\CourseAssAdminController;
 use App\Http\Controllers\AssessmentController;
 use Illuminate\Support\Facades\Mail;
+
+
+Route::get('/run-migrate', function () {
+    Artisan::call('migrate', ['--force' => true]);
+    return 'Migrations executed!';
+});
 
 /* public route */
 

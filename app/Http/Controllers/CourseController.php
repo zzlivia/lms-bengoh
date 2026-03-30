@@ -260,11 +260,15 @@ class CourseController extends Controller
         //relation of course
         $course = Course::with('modules.lectures.sections', 'modules.mcqs')->findOrFail($id);
 
-        //total sections
+        //check modules with content only, ignore that does not have any content
         $totalSections = 0;
         foreach ($course->modules as $module) {
             foreach ($module->lectures as $lecture) {
-                $totalSections += $lecture->sections->count();
+                $sectionCount = $lecture->sections->count();
+
+                if ($sectionCount > 0) {
+                    $totalSections += $sectionCount;
+                }
             }
         }
 
@@ -272,22 +276,24 @@ class CourseController extends Controller
         $completedSections = Progress::where('courseID', $id)->where('userID', $userID)->where('progressName', 'like', 'SECTION_%')->count();
 
         //total MCQs
-        $totalMcqs = 0;
-        foreach ($course->modules as $module) {
-            $totalMcqs += $module->mcqs->count();
-        }
+        $totalMcqModules = $course->modules->filter(function ($module) {
+            return $module->mcqs->count() > 0;
+        })->count();
 
-        //completed MCQs
-        $mcqsCompleted = Progress::where('courseID', $id)->where('userID', $userID)->where('progressName', 'like', 'MCQ%')->count();
+        //keep progress checking
+        $mcqsCompleted = Progress::where('courseID', $id)
+            ->where('userID', $userID)
+            ->where('progressName', 'like', 'MCQ%')
+            ->count();
 
         //access control, learner need to finish the sections and mcqs given
         if (
             $totalSections == 0 || 
             $completedSections < $totalSections || 
-            $mcqsCompleted < $totalMcqs
+            $mcqsCompleted < $totalMcqModules
         ) {
             return redirect()->route('learn', ['id' => $id])
-                ->with('error', 'Please complete all modules and quizzes first.');
+                ->with('error', 'Please complete all available modules and quizzes first.');
         }
 
         //allow the access

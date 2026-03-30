@@ -109,10 +109,6 @@ Route::post('/admin/mcq/toggle/{moduleID}', [ModuleController::class, 'toggleMCQ
 /* lecture section*/ 
 Route::post('/admin/section/store', [LectureSectionController::class,'store'])->name('admin.section.store');
 
-/* course assessment*/
-
-Route::post('/assessment/submit', [AssessmentController::class, 'submitAssessment'])->name('assessment.submit');
-
 /* leaderboard*/
 
 Route::get('/leaderboards', [CourseController::class, 'leaderboard'])->middleware('auth')->name('leaderboards'); //access to all courses

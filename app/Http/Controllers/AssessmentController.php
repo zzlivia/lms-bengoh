@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Course;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -46,55 +45,69 @@ class AssessmentController extends Controller
             return redirect()->route('login');
         }
 
-        //prevent multiple submissions
+        // prevent multiple submissions
         $existingAttempt = DB::table('courseassattempts')
-            ->where('userID', Auth::id())
+            ->where('userID', Auth::user()->userID)
             ->where('courseAssID', $request->courseAssID)
             ->first();
 
         if ($existingAttempt) {
-            return back()->with('error', 'You have already submitted this assessment.');
+            return redirect()->route('course.progress', [
+                'id' => $request->courseID
+            ])->with('info', 'You already completed this assessment.');
         }
 
-        //initialize
+        // get questions
+        $questions = DB::table('assessment_qs')
+            ->where('courseAssID', $request->courseAssID)
+            ->get();
+
+        $answers = $request->input('answers', []);
+
+        // OPTIONAL: allow empty but prevent totally empty submission
+        if (empty($answers)) {
+            return back()->with('error', 'Please answer at least one question.');
+        }
+
+        // initialize
         $score = 0;
         $total = 0;
 
+        // ✅ CREATE attempt ONCE
         $attemptID = DB::table('courseassattempts')->insertGetId([
-            'userID' => Auth::id(),
+            'userID' => Auth::user()->userID,
             'courseAssID' => $request->courseAssID,
             'submitted_at' => now(),
             'created_at' => now(),
             'updated_at' => now()
         ]);
 
-        foreach ($request->answers as $questionID => $answer) {
+        // ✅ SINGLE LOOP ONLY
+        foreach ($questions as $q) {
 
-            $question = DB::table('assessment_qs')
-                ->where('assQsID', $questionID)
-                ->first();
+            $answer = $answers[$q->assQsID] ?? null;
 
-            if (!$question) continue;
+            // skip empty answers
+            if (!$answer || trim($answer) === '') {
+                continue;
+            }
 
-            if ($question->courseAssType == 'MCQ') {
+            if ($q->courseAssType == 'MCQ') {
 
                 $option = DB::table('assessment_mcq_options')
                     ->where('id', $answer)
                     ->first();
 
                 if ($option) {
-
-                    //count total MCQ
                     $total++;
 
-                    //check for correctness
                     if ($option->is_correct) {
                         $score++;
                     }
 
                     DB::table('courseassanswers')->insert([
                         'attemptID' => $attemptID,
-                        'assQsID' => $questionID,
+                        'assQsID' => $q->assQsID,
                         'selected_option_id' => $option->id,
                         'is_correct' => $option->is_correct,
                         'created_at' => now(),
@@ -106,25 +119,25 @@ class AssessmentController extends Controller
 
                 DB::table('courseassanswers')->insert([
                     'attemptID' => $attemptID,
-                    'assQsID' => $questionID,
-                    'answer_text' => $answer,
+                    'assQsID' => $q->assQsID,
+                    'answer_text' => trim($answer),
                     'created_at' => now(),
                     'updated_at' => now()
                 ]);
             }
         }
 
-        //save the score
+        // save score
         DB::table('courseassattempts')
             ->where('attemptID', $attemptID)
             ->update([
                 'score' => $score
             ]);
 
-        //store latest result summary
-        DB::table('assessment_results')->updateOrInsert( //first attempt will be inserted first but next attempt will be updated
+        // save result
+        DB::table('assessment_results')->updateOrInsert(
             [
-                'userID' => Auth::id(),
+                'userID' => Auth::user()->userID,
                 'courseID' => $request->courseID
             ],
             [
@@ -135,13 +148,14 @@ class AssessmentController extends Controller
             ]
         );
 
-        //redirect to progress page
-        return redirect()->route('course.progress', $request->courseID)
-            ->with([
-                'assessment_completed' => true,
-                'score' => $score,
-                'total' => $total
-            ]);
+        // ✅ REDIRECT WORKS HERE
+        return redirect()->route('course.progress', [
+            'id' => $request->courseID
+        ])->with([
+            'assessment_completed' => true,
+            'score' => $score,
+            'total' => $total
+        ]);
     }
 
     //allow admin to view the results of course assessment

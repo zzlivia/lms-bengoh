@@ -13,6 +13,21 @@
             @include('partials.course-sidebar', ['course' => $course])
             <!-- main content-->
             <div class="col-md-9">
+                @if(session('assessment_completed'))
+                    <div class="alert alert-success text-center">
+                        🎉 Congratulations! You have completed the course.<br>
+                        Would you like to:
+                        <br><br>
+
+                        <a href="{{ route('courses.index') }}" class="btn btn-primary">
+                            Choose Another Course
+                        </a>
+
+                        <a href="{{ route('course.progress', $course->courseID) }}" class="btn btn-success">
+                            View Your Progress
+                        </a>
+                    </div>
+                @endif
                 <div class="row">
                     <!-- left side -->
                     <div class="col-md-8">

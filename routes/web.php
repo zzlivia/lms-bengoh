@@ -73,6 +73,8 @@ Route::middleware(['auth'])->group(function () {
         
     Route::post('/assessment/submit', [AssessmentController::class, 'submitAssessment'])->name('assessment.submit');
 
+    Route::post('/course/{id}/final-submit', [CourseController::class, 'submitFinalAssessment'])->name('final.assessment.submit');
+
     /* progress */
     Route::get('/course/{id}/progress', [CourseController::class, 'showAllProgress'])->name('course.progress');
 

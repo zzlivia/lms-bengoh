@@ -42,14 +42,12 @@
                 </p>
 
                 <hr>
-
-                <!-- ✅ FORM START -->
-                <form id="assessmentForm" method="POST" action="{{ route('assessment.submit') }}">
+                <form id="assessmentForm" method="POST" action="{{ route('final.assessment.submit', $course->courseID) }}">
                     @csrf
 
                     <input type="hidden" name="courseAssID" value="{{ $assessment->courseAssID }}">
                     <input type="hidden" name="courseID" value="{{ $course->courseID }}">
-
+                    <input type="hidden" name="score" value="80">
                     @foreach($questions as $index => $q)
                         <p><b>Question {{ $index+1 }}</b><br>
                         {{ $q->courseAssQs }}</p>
@@ -104,10 +102,7 @@
                             </div>
                         </div>
                     </div>
-
                 </form>
-                <!-- ✅ FORM END -->
-
             </div>
             @endauth
 
@@ -124,7 +119,13 @@
     </div>
 </div>
 
-    <!-- ✅ SCRIPT -->
+    <!-- SCRIPT -->
+    <script>
+        document.getElementById('confirmSubmitBtn').addEventListener('click', function () {
+            document.getElementById('assessmentForm').submit();
+        });
+    </script>
+
     <script>
     document.addEventListener('DOMContentLoaded', function () {
 

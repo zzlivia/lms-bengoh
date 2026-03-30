@@ -188,18 +188,10 @@ class CourseController extends Controller
 
         $answers = $request->input('answers', []);
         $total = $module->mcqs->count();
-        $answered = count($answers);
 
-        // block if not skip
-        /*if ($answered < $total && $request->input('force_submit') != '1') {
-            return redirect()->back()
-                ->withInput()
-                ->with('warning', "You answered $answered out of $total questions. Please complete all or skip.");
-        }*/
-
-        // calculate score
         $score = 0;
 
+        // ✅ Calculate score FIRST
         foreach ($module->mcqs as $question) {
             $selectedAnswer = $answers[$question->moduleQs_ID] ?? null;
 
@@ -211,7 +203,29 @@ class CourseController extends Controller
                 }
             }
         }
-        $this->updateProgress($module->courseID, 'MCQ' . $module->moduleID);
+
+        // ✅ Avoid division by zero
+        $percentage = $total > 0 ? ($score / $total) * 100 : 0;
+
+        // ✅ Save into assessment_results
+        DB::table('assessment_results')->updateOrInsert(
+            [
+                'userID' => Auth::id(),
+                'moduleID' => $module->moduleID,
+                'courseID' => $module->courseID,
+                'type' => 'mcq'
+            ],
+            [
+                'score' => $percentage,
+                'status' => $percentage >= 80 ? 'pass' : 'fail',
+                'type' => 'mcq', 
+                'updated_at' => now(),
+                'created_at' => now(),
+            ]
+        );
+
+        // ✅ Update progress with REAL score
+        $this->updateProgress($module->courseID, 'MCQ' . $module->moduleID, $percentage);
 
         return redirect()->route('course.assessment', ['id' => $module->courseID])
             ->with([
@@ -305,11 +319,41 @@ class CourseController extends Controller
             ->with('success', 'Assessment unlocked!');
     }
     
-    //update progress auto when a user finishes MCQ or assessment given
-    public function updateProgress($courseID, $activity)
+    public function submitFinalAssessment(Request $request, $courseID)
     {
         if (!Auth::check()) {
-            return; // prevents crash
+            return redirect()->route('login');
+        }
+
+        $score = $request->score; // however you calculate it
+
+        DB::table('assessment_results')->updateOrInsert(
+            [
+                'userID' => Auth::id(),
+                'courseID' => $courseID,
+                'type' => 'final'
+            ],
+            [
+                'moduleID' => null,
+                'score' => $score,
+                'status' => $score >= 80 ? 'pass' : 'fail',
+                'type' => 'final',
+                'updated_at' => now(),
+                'created_at' => now(),
+            ]
+        );
+
+        // also update progress
+        $this->updateProgress($courseID, 'FINAL_ASSESSMENT', $score);
+
+        return redirect()->route('course.progress', $courseID);
+    }
+
+    //update progress auto when a user finishes MCQ or assessment given
+    public function updateProgress($courseID, $activity, $percentage = 100)
+    {
+        if (!Auth::check()) {
+            return;
         }
 
         Progress::updateOrCreate(
@@ -320,7 +364,7 @@ class CourseController extends Controller
             ],
             [
                 'progressStatus' => 'completed',
-                'completionProgress' => 100
+                'completionProgress' => $percentage
             ]
         );
     }
@@ -330,20 +374,28 @@ class CourseController extends Controller
     {
         $course = Course::findOrFail($courseID);
 
-        $progress = Progress::where('userID', Auth::id())->where('courseID', $courseID)->get();
+        $progress = Progress::where('userID', Auth::id())
+            ->where('courseID', $courseID)
+            ->get();
 
-        //total progress
+        // total progress (still from progress table)
         $totalProgress = $progress->avg('completionProgress') ?? 0;
 
-        //mcqs grades only
-        $grades = $progress
-            ->filter(function ($item) {
-                return str_contains($item->progressName, 'MCQ');
-            })
+        // ✅ get REAL MCQ grades from assessment_results
+        $grades = DB::table('assessment_results')
+            ->where('userID', Auth::id())
+            ->where('courseID', $courseID)
+            ->get()
             ->map(function ($item) {
+
+                $name = $item->moduleID 
+                    ? 'MCQ ' . $item->moduleID 
+                    : 'Final Assessment';
+
                 return [
-                    'name' => $item->progressName,
-                    'score' => $item->completionProgress . '%'
+                    'name' => $name,
+                    'score' => round($item->score, 2) . '%',
+                    'status' => ucfirst($item->status),
                 ];
             });
 

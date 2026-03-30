@@ -286,7 +286,7 @@ class CourseController extends Controller
             $completedSections < $totalSections || 
             $mcqsCompleted < $totalMcqs
         ) {
-            return redirect()->route('learn', $id)
+            return redirect()->route('learn', ['id' => $id])
                 ->with('error', 'Please complete all modules and quizzes first.');
         }
 

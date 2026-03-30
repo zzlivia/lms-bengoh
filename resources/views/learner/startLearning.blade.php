@@ -12,8 +12,10 @@
             <div class="col-md-9 px-md-4">
                 <div class="learning-content-card p-4 shadow-sm bg-white rounded">
                     @if(session('error'))
-                        <div class="alert alert-danger">
-                            {{ session('error') }}
+                        <div id="accessModal" class="custom-modal">
+                            <div class="custom-modal-content">
+                                <p>{{ session('error') }}</p>
+                            </div>
                         </div>
                     @endif
                     
@@ -161,6 +163,20 @@
             }
         }
     });
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const modal = document.getElementById('accessModal');
+
+            if (modal) {
+                modal.style.display = 'flex';
+
+                setTimeout(() => {
+                    modal.style.display = 'none';
+                }, 10000);
+            }
+        });
     </script>
 
 @endsection

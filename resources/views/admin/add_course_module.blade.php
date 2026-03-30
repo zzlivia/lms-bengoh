@@ -423,10 +423,10 @@
 
                             <!-- status -->
                             <td>
-                                @if($module->mcqs->count() > 0)
+                                @if($module->is_active)
                                     <span class="badge bg-success">Available</span>
                                 @else
-                                    <span class="badge bg-secondary">No MCQ</span>
+                                    <span class="badge bg-danger">Disabled</span>
                                 @endif
                             </td>
 
@@ -445,7 +445,7 @@
                                 </a>
 
                                 <!-- enable/disable -->
-                                <form action="{{ route('admin.mcq.toggle', $module->moduleID) }}" 
+                                <form action="{{ route('admin.module.toggle', $module->moduleID) }}" 
                                     method="POST" 
                                     class="d-inline">
                                     @csrf

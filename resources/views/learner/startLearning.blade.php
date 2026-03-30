@@ -14,6 +14,7 @@
                     @if(session('error'))
                         <div id="accessModal" class="custom-modal">
                             <div class="custom-modal-content">
+                                <span id="closeModal" style="cursor:pointer; float:right;">&times;</span>
                                 <p>{{ session('error') }}</p>
                             </div>
                         </div>
@@ -165,16 +166,31 @@
     });
     </script>
 
+    {{-- pop up alert modal --}}
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const modal = document.getElementById('accessModal');
+            const closeBtn = document.getElementById('closeModal');
 
             if (modal) {
                 modal.style.display = 'flex';
 
+                // auto close after 5s
                 setTimeout(() => {
                     modal.style.display = 'none';
-                }, 10000);
+                }, 5000);
+
+                // close button
+                closeBtn?.addEventListener('click', () => {
+                    modal.style.display = 'none';
+                });
+
+                // click outside
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) {
+                        modal.style.display = 'none';
+                    }
+                });
             }
         });
     </script>

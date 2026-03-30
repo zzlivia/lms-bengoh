@@ -65,8 +65,12 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/course/{id}/feedback', [CourseController::class, 'submitFeedback'])->name('course.feedback.submit');
 
     /* course assessment */
+    //checks progress
     Route::get('/course/{id}/assessment', [CourseController::class, 'courseAssessment'])->name('course.assessment');
-    Route::get('/course/{id}/assessment', [AssessmentController::class, 'showAssessment'])->name('assessment.show');
+        
+    //actual assessment page
+    Route::get('/course/{id}/assessment/view', [AssessmentController::class, 'showAssessment'])->name('assessment.show');
+        
     Route::post('/assessment/submit', [AssessmentController::class, 'submitAssessment'])->name('assessment.submit');
 
     /* progress */
@@ -84,6 +88,8 @@ Route::middleware(['auth'])->group(function () {
 Route::get('/module/{id}', [ModuleController::class, 'viewModule'])->name('module.viewModule');
 
 Route::get('/module/{id}/quiz', [CourseController::class, 'showQuiz'])->name('module.quiz');
+
+Route::post('/admin/module/toggle/{id}', [CourseAssAdminController::class, 'toggleModule'])->name('admin.module.toggle');
 
 //Route::get('/module/{id}/questions', [CourseController::class, 'showModuleQuestions'])->name('module.questions');
     

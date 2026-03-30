@@ -13,6 +13,8 @@ class AssessmentController extends Controller
     //show assessment to learners
     public function showAssessment($id)
     {
+        dd('ASSESSMENT PAGE LOADED');
+        
         $course = Course::with([
             'modules.lectures.sections',
             'modules.mcqs'
@@ -42,6 +44,10 @@ class AssessmentController extends Controller
     //learner submit answers processes
     public function submitAssessment(Request $request)
     {
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
+
         //prevent multiple submissions
         $existingAttempt = DB::table('course_ass_attempts')
             ->where('userID', Auth::id())

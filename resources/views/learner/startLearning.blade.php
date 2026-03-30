@@ -11,7 +11,7 @@
 
             <div class="col-md-9 px-md-4">
                 <div class="learning-content-card p-4 shadow-sm bg-white rounded">
-                    @if(session('error'))
+                    @if(session()->has('error'))
                         <div id="accessModal" class="custom-modal">
                             <div class="custom-modal-content">
                                 <span id="closeModal" style="cursor:pointer; float:right;">&times;</span>

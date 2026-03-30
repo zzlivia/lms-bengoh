@@ -261,63 +261,53 @@ class CourseController extends Controller
     public function courseAssessment($id)
     {
         $userID = Auth::id();
-
-        //relation of course
         $course = Course::with('modules.lectures.sections', 'modules.mcqs')->findOrFail($id);
 
-        //check modules with content only, ignore that does not have any content
+        // total sections
         $totalSections = 0;
         foreach ($course->modules as $module) {
             foreach ($module->lectures as $lecture) {
                 $sectionCount = $lecture->sections->count();
-
                 if ($sectionCount > 0) {
                     $totalSections += $sectionCount;
                 }
             }
         }
 
-        //completed sections
+        // completed sections
         $completedSections = Progress::where('courseID', $id)
             ->where('userID', $userID)
             ->where('progressName', 'like', 'SECTION_%')
-            ->distinct('progressName')
             ->count();
 
-        //total MCQs will be filter out the not available
+        // total MCQ modules
         $totalMcqModules = $course->modules->filter(function ($module) {
-            return $module->mcqs->filter(function ($mcq) {
-                return !empty($mcq->moduleQs);
-            })->count() > 0;
+            return $module->mcqs->count() > 0;
         })->count();
 
-        //keep progress checking
+        // completed MCQs
         $mcqsCompleted = Progress::where('courseID', $id)
             ->where('userID', $userID)
             ->where('progressName', 'like', 'MCQ%')
             ->count();
 
-        /*dd([
-            'totalSections' => $totalSections,
-            'completedSections' => $completedSections,
-            'totalMcqModules' => $totalMcqModules,
-            'mcqsCompleted' => $mcqsCompleted
-        ]);*/
-
-        //access control, learner need to finish the sections and mcqs given
-        $needsSections = $totalSections > 0;
         $needsMCQ = $totalMcqModules > 0;
+        dd([
+            'auth_user' => Auth::id(),
+            'mcqsCompleted' => $mcqsCompleted,
+            'totalMcqModules' => $totalMcqModules
+        ]);
 
-        if (
-            ($needsSections && $completedSections < $totalSections) ||
-            ($needsMCQ && $mcqsCompleted < $totalMcqModules)
-        ) {
+        //only check MCQ
+        if ($needsMCQ && $mcqsCompleted < $totalMcqModules) {
             return redirect()->route('learn', ['id' => $id])
-                ->with('error', 'Please complete all available modules and multiple choice questions first.');
+                ->with('error', 'Please complete all MCQs first.');
         }
 
-        //if completed
-        return app(\App\Http\Controllers\AssessmentController::class)->showAssessment($id);
+        //redirect to real assessment page
+        return redirect()
+            ->route('assessment.show', $id)
+            ->with('success', 'Assessment unlocked!');
     }
     
     //update progress auto when a user finishes MCQ or assessment given

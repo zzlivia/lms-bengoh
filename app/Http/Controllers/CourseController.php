@@ -292,11 +292,6 @@ class CourseController extends Controller
             ->count();
 
         $needsMCQ = $totalMcqModules > 0;
-        dd([
-            'auth_user' => Auth::id(),
-            'mcqsCompleted' => $mcqsCompleted,
-            'totalMcqModules' => $totalMcqModules
-        ]);
 
         //only check MCQ
         if ($needsMCQ && $mcqsCompleted < $totalMcqModules) {

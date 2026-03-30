@@ -13,8 +13,6 @@ class AssessmentController extends Controller
     //show assessment to learners
     public function showAssessment($id)
     {
-        dd('ASSESSMENT PAGE LOADED');
-        
         $course = Course::with([
             'modules.lectures.sections',
             'modules.mcqs'
@@ -49,7 +47,7 @@ class AssessmentController extends Controller
         }
 
         //prevent multiple submissions
-        $existingAttempt = DB::table('course_ass_attempts')
+        $existingAttempt = DB::table('courseassattempts')
             ->where('userID', Auth::id())
             ->where('courseAssID', $request->courseAssID)
             ->first();
@@ -62,7 +60,7 @@ class AssessmentController extends Controller
         $score = 0;
         $total = 0;
 
-        $attemptID = DB::table('course_ass_attempts')->insertGetId([
+        $attemptID = DB::table('courseassattempts')->insertGetId([
             'userID' => Auth::id(),
             'courseAssID' => $request->courseAssID,
             'submitted_at' => now(),
@@ -94,7 +92,7 @@ class AssessmentController extends Controller
                         $score++;
                     }
 
-                    DB::table('course_ass_answers')->insert([
+                    DB::table('courseassanswers')->insert([
                         'attemptID' => $attemptID,
                         'assQsID' => $questionID,
                         'selected_option_id' => $option->id,
@@ -106,7 +104,7 @@ class AssessmentController extends Controller
 
             } else {
 
-                DB::table('course_ass_answers')->insert([
+                DB::table('courseassanswers')->insert([
                     'attemptID' => $attemptID,
                     'assQsID' => $questionID,
                     'answer_text' => $answer,
@@ -117,7 +115,7 @@ class AssessmentController extends Controller
         }
 
         //save the score
-        DB::table('course_ass_attempts')
+        DB::table('courseassattempts')
             ->where('attemptID', $attemptID)
             ->update([
                 'score' => $score
@@ -156,7 +154,7 @@ class AssessmentController extends Controller
             ->get();
 
         foreach ($attempts as $attempt) {
-            $attempt->answers = DB::table('course_ass_answers')
+            $attempt->answers = DB::table('courseassanswers')
                 ->where('attemptID', $attempt->attemptID)
                 ->get();
         }

@@ -66,6 +66,7 @@ Route::middleware(['auth'])->group(function () {
 
     /* course assessment */
     Route::get('/course/{id}/assessment', [CourseController::class, 'courseAssessment'])->name('course.assessment');
+    Route::get('/course/{id}/assessment', [AssessmentController::class, 'showAssessment'])->name('assessment.show');
     Route::post('/assessment/submit', [AssessmentController::class, 'submitAssessment'])->name('assessment.submit');
 
     /* progress */

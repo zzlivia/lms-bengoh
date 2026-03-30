@@ -47,13 +47,36 @@ Route::get('/test-mail', function () {
 Route::get('/check-mail', function () {
     return config('mail.mailers.smtp.password');
 });
-/* courses */
 
-Route::get('/courses', [CourseController::class, 'allCourses'])->name('courses.allCourses');
-Route::get('/courses/{id}', [CourseController::class, 'showCourse'])->name('courses.showCourse');
-Route::get('/courses/{id}/startLearn/{sectionId?}', [CourseController::class, 'startLearning'])->name('learn');
-Route::get('/course/{id}/assessment', [CourseController::class, 'courseAssessment'])
-    ->name('course.assessment');
+Route::middleware(['auth'])->group(function () {
+
+    /* courses */
+    Route::get('/courses', [CourseController::class, 'allCourses'])->name('courses.allCourses');
+    Route::get('/courses/{id}', [CourseController::class, 'showCourse'])->name('courses.showCourse');
+    Route::get('/courses/{id}/startLearn/{sectionId?}', [CourseController::class, 'startLearning'])->name('learn');
+
+    /* MCQs */
+    Route::get('/module/{id}/mcqs', [CourseController::class, 'showMCQS'])->name('mcq.module'); 
+    Route::post('/module/{id}/submit', [CourseController::class, 'submitMCQS'])->name('module.submit');
+    Route::get('/module/{id}/review', [CourseController::class, 'reviewMCQ'])->name('module.review');
+
+    /* feedback */
+    Route::get('/course/{id}/feedback', [CourseController::class, 'courseFeedback'])->name('course.feedback');
+    Route::post('/course/{id}/feedback', [CourseController::class, 'submitFeedback'])->name('course.feedback.submit');
+
+    /* course assessment */
+    Route::get('/course/{id}/assessment', [CourseController::class, 'courseAssessment'])->name('course.assessment');
+    Route::post('/assessment/submit', [AssessmentController::class, 'submitAssessment'])->name('assessment.submit');
+
+    /* progress */
+    Route::get('/course/{id}/progress', [CourseController::class, 'showAllProgress'])->name('course.progress');
+
+    /* lecture */
+    Route::post('/lecture/{lectID}/complete', [CourseController::class, 'completeLecture'])->name('lecture.complete');    
+    Route::post('/lecture/complete-next', [CourseController::class, 'completeAndNext'])->name('lecture.complete.and.next');
+
+});
+    
 
 /* module and mcqs*/
 
@@ -64,10 +87,6 @@ Route::get('/module/{id}/quiz', [CourseController::class, 'showQuiz'])->name('mo
 //Route::get('/module/{id}/questions', [CourseController::class, 'showModuleQuestions'])->name('module.questions');
     
 Route::post('/module/{id}/questions', [CourseController::class, 'submitModuleQuestions'])->name('module.questions.submit');
-
-Route::get('/module/{id}/mcqs', [CourseController::class, 'showMCQS'])->name('mcq.module'); 
-
-Route::post('/module/{id}/submit', [CourseController::class, 'submitMCQS'])->name('module.submit');
 
 Route::get('/module/{id}/start', [CourseController::class, 'startLearning'])->name('module.start');
 
@@ -80,32 +99,12 @@ Route::get('/admin/mcq/edit/{moduleID}', [ModuleController::class, 'editMCQ'])->
 //enable or disable mcq
 Route::post('/admin/mcq/toggle/{moduleID}', [ModuleController::class, 'toggleMCQ'])->name('admin.mcq.toggle');
 
-//review answer
-Route::get('/module/{id}/review', [CourseController::class, 'reviewMCQ'])->name('module.review');
-
 /* lecture section*/ 
 Route::post('/admin/section/store', [LectureSectionController::class,'store'])->name('admin.section.store');
-    
-/* course feedback */
-
-Route::get('/course/{id}/feedback', [CourseController::class, 'courseFeedback'])->name('course.feedback');
-
-Route::post('/course/{id}/feedback', [CourseController::class, 'submitFeedback'])->name('course.feedback.submit');
 
 /* course assessment*/
 
-//Route::get('/course/{id}/assessment', [CourseController::class, 'courseAssessment'])->name('course.assessment');
-
 Route::post('/assessment/submit', [AssessmentController::class, 'submitAssessment'])->name('assessment.submit');
-
-/* course progress*/
-
-Route::get('/course/{id}/progress', [CourseController::class, 'showAllProgress'])->name('course.progress');
-
-Route::post('/lecture/{lectID}/complete', [CourseController::class, 'completeLecture'])->name('lecture.complete');    
-
-Route::post('/lecture/complete-next', [CourseController::class, 'completeAndNext'])->name('lecture.complete.and.next');
-    
 
 /* leaderboard*/
 

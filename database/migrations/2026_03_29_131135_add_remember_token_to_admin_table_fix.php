@@ -11,9 +11,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('admin', function (Blueprint $table) {
-            $table->rememberToken();
-        });
+        if (Schema::hasTable('admin')) {
+            Schema::table('admin', function (Blueprint $table) {
+                if (!Schema::hasColumn('admin', 'remember_token')) {
+                    $table->rememberToken();
+                }
+            });
+        }
     }
 
     /**

@@ -120,6 +120,15 @@ class CourseAssAdminController extends Controller
         return redirect()->back()->with('success', 'Questions saved successfully!');
     }
 
+    public function toggleModule($id)
+    {
+        $module = \App\Models\Module::findOrFail($id);
+
+        $module->is_active = !$module->is_active;
+        $module->save();
+
+        return redirect()->back()->with('success', 'Module status updated!');
+    }
     public function manageAss(Request $request)
     {
         $query = CourseAssessment::with('course');

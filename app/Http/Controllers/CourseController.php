@@ -180,6 +180,10 @@ class CourseController extends Controller
     
     public function submitMCQS(Request $request, $id) 
     {
+        if (!Auth::check()) {
+            return redirect()->route('login')->with('error', 'Please login first.');
+        }
+
         $module = Module::with('mcqs.answers')->findOrFail($id);
 
         $answers = $request->input('answers', []);
@@ -187,11 +191,11 @@ class CourseController extends Controller
         $answered = count($answers);
 
         // block if not skip
-        if ($answered < $total && $request->input('force_submit') != '1') {
+        /*if ($answered < $total && $request->input('force_submit') != '1') {
             return redirect()->back()
                 ->withInput()
                 ->with('warning', "You answered $answered out of $total questions. Please complete all or skip.");
-        }
+        }*/
 
         // calculate score
         $score = 0;
@@ -209,14 +213,11 @@ class CourseController extends Controller
         }
         $this->updateProgress($module->courseID, 'MCQ' . $module->moduleID);
 
-        return redirect()->route('mcq.module', ['id' => $module->moduleID])
-            ->withInput($request->all())
+        return redirect()->route('course.assessment', ['id' => $module->courseID])
             ->with([
                 'score' => $score,
                 'total' => $total,
-                'completed' => true,
-                'goFeedback' => route('course.feedback', ['id' => $module->courseID]),
-                'reviewUrl' => route('module.review', $module->moduleID)
+                'completed' => true
             ]);
     }
 
@@ -235,8 +236,12 @@ class CourseController extends Controller
 
     public function submitFeedback(Request $request, $id)
     {
-        $request->validate(['clarity' => 'required','understanding' => 'required','rating' => 'required|integer|min:1|max:5']);
+        if (!Auth::check()) {
+            return redirect()->route('login')->with('error', 'Please login first.');
+        }
 
+        $request->validate(['clarity' => 'required','understanding' => 'required','rating' => 'required|integer|min:1|max:5']);
+        
         DB::table('coursefeedback')->insert([
             'courseID' => $id,
             'clarity' => $request->clarity,
@@ -273,11 +278,17 @@ class CourseController extends Controller
         }
 
         //completed sections
-        $completedSections = Progress::where('courseID', $id)->where('userID', $userID)->where('progressName', 'like', 'SECTION_%')->count();
+        $completedSections = Progress::where('courseID', $id)
+            ->where('userID', $userID)
+            ->where('progressName', 'like', 'SECTION_%')
+            ->distinct('progressName')
+            ->count();
 
-        //total MCQs
+        //total MCQs will be filter out the not available
         $totalMcqModules = $course->modules->filter(function ($module) {
-            return $module->mcqs->count() > 0;
+            return $module->mcqs->filter(function ($mcq) {
+                return !empty($mcq->moduleQs);
+            })->count() > 0;
         })->count();
 
         //keep progress checking
@@ -286,23 +297,36 @@ class CourseController extends Controller
             ->where('progressName', 'like', 'MCQ%')
             ->count();
 
+        /*dd([
+            'totalSections' => $totalSections,
+            'completedSections' => $completedSections,
+            'totalMcqModules' => $totalMcqModules,
+            'mcqsCompleted' => $mcqsCompleted
+        ]);*/
+
         //access control, learner need to finish the sections and mcqs given
+        $needsSections = $totalSections > 0;
+        $needsMCQ = $totalMcqModules > 0;
+
         if (
-            $totalSections == 0 || 
-            $completedSections < $totalSections || 
-            $mcqsCompleted < $totalMcqModules
+            ($needsSections && $completedSections < $totalSections) ||
+            ($needsMCQ && $mcqsCompleted < $totalMcqModules)
         ) {
             return redirect()->route('learn', ['id' => $id])
-                ->with('error', 'Please complete all available modules and quizzes first.');
+                ->with('error', 'Please complete all available modules and multiple choice questions first.');
         }
 
-        //allow the access
-        return view('learner.courseAssessment', compact('course'));
+        //if completed
+        return app(\App\Http\Controllers\AssessmentController::class)->showAssessment($id);
     }
     
     //update progress auto when a user finishes MCQ or assessment given
     public function updateProgress($courseID, $activity)
     {
+        if (!Auth::check()) {
+            return; // prevents crash
+        }
+
         Progress::updateOrCreate(
             [
                 'userID' => Auth::id(),

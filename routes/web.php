@@ -59,6 +59,9 @@ Route::get('/check-mail', function () {
     return config('mail.mailers.smtp.password');
 });
 
+Route::get('/courses', [CourseController::class, 'allCourses'])->name('courses.allCourses');
+Route::get('/courses/{id}', [CourseController::class, 'showCourse'])->name('courses.showCourse');
+
 Route::middleware(['auth'])->group(function () {
 
     /* courses */

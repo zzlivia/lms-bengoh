@@ -102,7 +102,11 @@ class CourseController extends Controller
     //redirect user to start learning interface
     public function startLearning(Request $request, $id, $sectionId = null)
     {
-        $course = Course::with(['modules.lectures.sections'])->findOrFail($id);
+        $course = Course::with([
+            'modules.lectures.sections',
+            'modules.mcqs'
+        ])->findOrFail($id);
+        
         //collect all sections
         $sections = collect();
         foreach ($course->modules as $module) {

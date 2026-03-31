@@ -22,7 +22,7 @@
             @endforeach
         @endforeach
         {{-- display mcqs --}}
-        @if($module->mcqs->count() > 0)
+        @if($module->mcqs && $module->mcqs->count() > 0)
             <div class="ms-2 mt-1">
                 <a href="{{ route('mcq.module', $module->moduleID) }}" class="text-decoration-none">
                     ○ MCQs {{ $loop->iteration }}

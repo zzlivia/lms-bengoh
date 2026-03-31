@@ -371,6 +371,7 @@ class CourseController extends Controller
             [
                 'progressStatus' => 'completed',
                 'completionProgress' => $percentage,
+                'lastAccessed' => now(),
             ]
         );
     }

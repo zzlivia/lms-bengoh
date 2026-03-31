@@ -331,7 +331,16 @@ class CourseController extends Controller
             return redirect()->route('login');
         }
 
-        $score = $request->score; // however you calculate it
+        $score = $request->score;
+
+        // ✅ Get module safely
+        $module = Module::where('courseID', $courseID)->first();
+
+        if (!$module) {
+            return back()->with('error', 'No module found for this course.');
+        }
+
+        $moduleID = $module->moduleID;
 
         DB::table('assessment_results')->updateOrInsert(
             [
@@ -340,21 +349,19 @@ class CourseController extends Controller
                 'type' => 'final'
             ],
             [
-                'moduleID' => null,
+                'moduleID' => $moduleID, // ✅ now not null
                 'score' => $score,
                 'status' => $score >= 80 ? 'pass' : 'fail',
-                'type' => 'final',
                 'updated_at' => now(),
                 'created_at' => now(),
             ]
         );
 
-        // also update progress
         $this->updateProgress($courseID, 'FINAL_ASSESSMENT', $score);
 
         return redirect()->route('course.progress', $courseID);
     }
-
+    
     //update progress auto when a user finishes MCQ or assessment given
     public function updateProgress($courseID, $activity, $percentage = 100)
     {

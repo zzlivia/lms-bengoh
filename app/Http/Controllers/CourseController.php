@@ -145,7 +145,8 @@ class CourseController extends Controller
                     ],
                     [
                         'progressStatus' => 'completed',
-                        'completionProgress' => 10
+                        'completionProgress' => 10,
+                        'lastAccessed' => now(),
                     ]
                 );
             }
@@ -369,7 +370,7 @@ class CourseController extends Controller
             ],
             [
                 'progressStatus' => 'completed',
-                'completionProgress' => $percentage
+                'completionProgress' => $percentage,
             ]
         );
     }

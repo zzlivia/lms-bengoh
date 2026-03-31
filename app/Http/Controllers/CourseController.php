@@ -106,7 +106,7 @@ class CourseController extends Controller
             'modules.lectures.sections',
             'modules.mcqs'
         ])->findOrFail($id);
-        
+
         //collect all sections
         $sections = collect();
         foreach ($course->modules as $module) {
@@ -162,7 +162,7 @@ class CourseController extends Controller
             $current = $sections->first();
             $currentIndex = 0;
         }
-        return view('learner.startlearning', [
+        return view('learner.startLearning', [
             'course' => $course,
             'sections' => $sections,
             'current' => $current,

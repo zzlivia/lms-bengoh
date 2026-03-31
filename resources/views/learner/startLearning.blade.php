@@ -24,7 +24,7 @@
                         <ol class="breadcrumb small">
                             <li class="breadcrumb-item">
                                 @if(app()->environment('local'))
-                                    <a href="/index.php/courses">Courses</a>
+                                    <a href="{{ route('courses.allCourses') }}">Courses</a>
                                 @else
                                     <a href="{{ route('courses.allCourses') }}">Courses</a>
                                 @endif

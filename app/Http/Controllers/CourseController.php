@@ -133,7 +133,7 @@ class CourseController extends Controller
                 $currentIndex = 0;
             }
 
-            $current = $sections[$currentIndex];
+            $current = $sections->get($currentIndex);
 
             //to track per section
             if (Auth::check()) {
@@ -304,9 +304,10 @@ class CourseController extends Controller
         })->count();
 
         // completed MCQs
-        $mcqsCompleted = Progress::where('courseID', $id)
+        $mcqsCompleted = DB::table('assessment_results')
+            ->where('courseID', $id)
             ->where('userID', $userID)
-            ->where('progressName', 'like', 'MCQ%')
+            ->where('type', 'mcq')
             ->count();
 
         $needsMCQ = $totalMcqModules > 0;

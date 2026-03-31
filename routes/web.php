@@ -65,12 +65,6 @@ Route::get('/courses/{id}', [CourseController::class, 'showCourse'])->name('cour
 Route::middleware(['auth'])->group(function () {
 
     /* courses */
-    Route::get('/courses', [CourseController::class, 'allCourses'])->name('courses.allCourses');
-
-    Route::get('/courses/', function () {
-        return redirect('/courses');
-    });
-    Route::get('/courses/{id}', [CourseController::class, 'showCourse'])->name('courses.showCourse');
     Route::get('/courses/{id}/startLearn/{sectionId?}', [CourseController::class, 'startLearning'])->name('learn');
 
     /* MCQs */

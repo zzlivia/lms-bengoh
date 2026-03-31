@@ -13,6 +13,7 @@ class Progress extends Model
         'courseID',
         'progressName',
         'progressStatus',
-        'completionProgress'
+        'completionProgress',
+        'lastAccessed' 
     ];
 }

@@ -63,6 +63,7 @@ Route::middleware(['auth'])->group(function () {
 
     /* courses */
     Route::get('/courses', [CourseController::class, 'allCourses'])->name('courses.allCourses');
+
     Route::get('/courses/', function () {
         return redirect('/courses');
     });

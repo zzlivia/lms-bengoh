@@ -21,6 +21,10 @@ Route::get('/run-migrate', function () {
     return 'Migrations executed!';
 });
 
+Route::get('/test-auth', function () {
+    return auth()->check() ? 'LOGGED IN' : 'NOT LOGGED IN';
+});
+
 /* public route */
 
 Route::get('/', fn () => view('homepage'));

@@ -125,9 +125,7 @@ Route::post('/admin/section/store', [LectureSectionController::class,'store'])->
 
 /* leaderboard*/
 
-Route::get('/leaderboards', [CourseController::class, 'leaderboard'])->middleware('auth')->name('leaderboards'); //access to all courses
-    
-Route::get('/course/{id}/leaderboard', [CourseController::class, 'leaderboard'])->name('course.leaderboard');    
+Route::get('/leaderboards', [CourseController::class, 'leaderboard'])->middleware('auth')->name('course.leaderboard');
 
 /* learner's settings*/
 

@@ -196,7 +196,7 @@ class CourseController extends Controller
 
         $score = 0;
 
-        // ✅ Calculate score FIRST
+        //calculate score first
         foreach ($module->mcqs as $question) {
             $selectedAnswer = $answers[$question->moduleQs_ID] ?? null;
 
@@ -209,10 +209,10 @@ class CourseController extends Controller
             }
         }
 
-        // ✅ Avoid division by zero
+        //avoid division by zero
         $percentage = $total > 0 ? ($score / $total) * 100 : 0;
 
-        // ✅ Save into assessment_results
+        //save into assessment_results
         DB::table('assessment_results')->updateOrInsert(
             [
                 'userID' => Auth::id(),
@@ -229,7 +229,7 @@ class CourseController extends Controller
             ]
         );
 
-        // ✅ Update progress with REAL score
+        //update progress with REAL score
         $this->updateProgress($module->courseID, 'MCQ' . $module->moduleID, $percentage);
 
         return redirect()->route('course.assessment', ['id' => $module->courseID])
@@ -333,7 +333,7 @@ class CourseController extends Controller
 
         $score = $request->score;
 
-        // ✅ Get module safely
+        //get module safely
         $module = Module::where('courseID', $courseID)->first();
 
         if (!$module) {
@@ -349,7 +349,7 @@ class CourseController extends Controller
                 'type' => 'final'
             ],
             [
-                'moduleID' => $moduleID, // ✅ now not null
+                'moduleID' => $moduleID,
                 'score' => $score,
                 'status' => $score >= 80 ? 'pass' : 'fail',
                 'updated_at' => now(),
@@ -395,7 +395,7 @@ class CourseController extends Controller
         // total progress (still from progress table)
         $totalProgress = $progress->avg('completionProgress') ?? 0;
 
-        // ✅ get REAL MCQ grades from assessment_results
+        // get MCQ grades from assessment_results
         $grades = DB::table('assessment_results')
             ->where('userID', Auth::id())
             ->where('courseID', $courseID)

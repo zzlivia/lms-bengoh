@@ -59,19 +59,21 @@ Route::get('/check-mail', function () {
     return config('mail.mailers.smtp.password');
 });
 
+/* courses */
 Route::get('/courses', [CourseController::class, 'allCourses'])->name('courses.allCourses');
 Route::get('/courses/{id}', [CourseController::class, 'showCourse'])->name('courses.showCourse');
+Route::get('/courses/{id}/startLearn/{sectionId?}', [CourseController::class, 'startLearning'])->name('learn');
+
+/* MCQs */
+Route::get('/module/{id}/mcqs', [CourseController::class, 'showMCQS'])->name('mcq.module'); 
+Route::post('/module/{id}/submit', [CourseController::class, 'submitMCQS'])->name('module.submit');
+Route::get('/module/{id}/review', [CourseController::class, 'reviewMCQ'])->name('module.review');
+
+/* lecture */
+Route::post('/lecture/{lectID}/complete', [CourseController::class, 'completeLecture'])->name('lecture.complete');    
+Route::post('/lecture/complete-next', [CourseController::class, 'completeAndNext'])->name('lecture.complete.and.next');
 
 Route::middleware(['auth'])->group(function () {
-
-    /* courses */
-    Route::get('/courses/{id}/startLearn/{sectionId?}', [CourseController::class, 'startLearning'])->name('learn');
-
-    /* MCQs */
-    Route::get('/module/{id}/mcqs', [CourseController::class, 'showMCQS'])->name('mcq.module'); 
-    Route::post('/module/{id}/submit', [CourseController::class, 'submitMCQS'])->name('module.submit');
-    Route::get('/module/{id}/review', [CourseController::class, 'reviewMCQ'])->name('module.review');
-
     /* feedback */
     Route::get('/course/{id}/feedback', [CourseController::class, 'courseFeedback'])->name('course.feedback');
     Route::post('/course/{id}/feedback', [CourseController::class, 'submitFeedback'])->name('course.feedback.submit');
@@ -89,11 +91,6 @@ Route::middleware(['auth'])->group(function () {
 
     /* progress */
     Route::get('/course/{id}/progress', [CourseController::class, 'showAllProgress'])->name('course.progress');
-
-    /* lecture */
-    Route::post('/lecture/{lectID}/complete', [CourseController::class, 'completeLecture'])->name('lecture.complete');    
-    Route::post('/lecture/complete-next', [CourseController::class, 'completeAndNext'])->name('lecture.complete.and.next');
-
 });
     
 

@@ -8,7 +8,7 @@
         {{-- add manifest link --}}
         <link rel="manifest" href="/manifest.json">
         <meta name="theme-color" content="#0d6efd">
-        <link rel="apple-touch-icon" href="/images/icon192.png">
+        <link rel="apple-touch-icon" href="/images/icon-192.png">
         {{-- bootstrap and font --}}
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">

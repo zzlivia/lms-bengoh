@@ -14,6 +14,7 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
         <link rel="stylesheet" href="{{ asset('css/homepage.css') }}"> {{-- custom CSS --}}
+        <link rel="stylesheet" href="{{ asset('css/settings.css') }}">
         @yield('styles')
     </head>
 
@@ -63,7 +64,7 @@
                         {{-- when user click on their own name --}}
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li>
-                                <a class="dropdown-item" href="#"> {{-- {{ route('settings.index') }} --}}
+                                <a class="dropdown-item" href="{{ route('settings.index') }}"> {{-- {{ route('settings.index') }} --}}
                                     Settings
                                 </a>
                             </li>

@@ -128,7 +128,7 @@ Route::get('/leaderboards', [CourseController::class, 'leaderboard'])->middlewar
 
 Route::prefix('settings')->name('settings.')->group(function () {
 
-    Route::get('/', fn () => view('settings.settings'))->name('index');
+    Route::get('/', function () {return redirect()->route('settings.profile');})->name('index');
 
     Route::get('/notifications', [SettingsController::class, 'notifications'])
         ->name('notifications');

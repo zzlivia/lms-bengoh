@@ -11,10 +11,7 @@ class SettingsController extends Controller
 {
     //profile setting section
     public function profile()   //show the profile settings page
-    {   //check if user is not log in yet
-        if(!Auth::check()){ 
-            return redirect('/login');  //redirect to login if not authenticated
-        }
+    {   
         $user = Auth::user(); //get current authenticated user
         return view('settings.profile', compact('user')); //allow the profile settings
     }
@@ -42,9 +39,9 @@ class SettingsController extends Controller
     }
     public function saveNotifications(Request $request) //save notification preferences
     {
-        session([ //store by session
-            'notify_mcq' => $request->notify_mcq,
-            'notify_grades' => $request->notify_grades
+        session([
+            'notify_mcq' => $request->has('notify_mcq'),
+            'notify_grades' => $request->has('notify_grades')
         ]);
         return back()->with('success','Notification settings saved');
     }
@@ -57,9 +54,9 @@ class SettingsController extends Controller
 
     public function savePreferences(Request $request) //save preferences
     {
-        session([ //store by session
-            'listening_mode' => $request->listening_mode,
-            'sound_effects' => $request->sound_effects
+        session([
+            'listening_mode' => $request->has('listening_mode'),
+            'sound_effects' => $request->has('sound_effects')
         ]);
         return back()->with('success','Preferences saved');
     }

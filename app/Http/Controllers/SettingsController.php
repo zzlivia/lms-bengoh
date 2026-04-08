@@ -16,20 +16,25 @@ class SettingsController extends Controller
         return view('settings.profile', compact('user')); //allow the profile settings
     }
 
-    public function updateProfile(Request $request) //handle profile update form submission
+    public function updateProfile(Request $request)
     {
-        $user = Auth::user();   //get current authenticated user
-        $request->validate([ //validate incoming request data
+        $user = Auth::user();
+
+        $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email'
         ]);
-        $user->name = $request->name; //update userName 
-        $user->email = $request->email; //update userEmails
-        if($request->filled('new_password')){ //check if user entered a new password
-            $user->password = bcrypt($request->new_password); //hash and update entered password
+
+        $user->userName = $request->name;
+        $user->userEmail = $request->email;
+
+        if ($request->filled('new_password')) {
+            $user->userPass = bcrypt($request->new_password);
         }
-        $user->save(); //save update user data to db
-        return back()->with('success','Profile updated successfully');
+
+        $user->save();
+
+        return back()->with('success', 'Profile updated successfully');
     }
 
     //notification section

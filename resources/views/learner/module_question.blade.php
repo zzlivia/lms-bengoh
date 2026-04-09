@@ -10,15 +10,14 @@
                 <h5 class="mb-4">
                     Multiple Choice Questions of Module {{ $module->moduleID }} : {{ $module->moduleName }}
                 </h5>
-                <form method="POST" action="{{ route('module.submit', $module->moduleID) }}">
+                <form id="quizForm" method="POST" action="{{ route('module.submit', $module->moduleID) }}">
                     @csrf
-                    {{-- skip and continue button --}}
+
                     @if(session('warning'))
                         <div class="alert alert-warning">
                             {{ session('warning') }}
 
                             <div class="mt-2">
-                                {{-- preserve previous answers --}}
                                 @foreach(old('answers', []) as $qID => $ansID)
                                     <input type="hidden" name="answers[{{ $qID }}]" value="{{ $ansID }}">
                                 @endforeach
@@ -29,31 +28,46 @@
                             </div>
                         </div>
                     @endif
+
                     @foreach($module->mcqs as $index => $question)
                         @php
-                            $selected = old('answers.' . $question->moduleQs_ID); //check if user have selected answer
+                            $selected = old('answers.' . $question->moduleQs_ID);
                         @endphp
+
                         <div class="card mb-3 p-3 shadow-sm">
-                            {{-- if the question is not being answer, it will trigger warning --}}
                             @if(!$selected && session('warning'))
-                                <div class="text-danger mt-2"><i class="fas fa-exclamation-circle me-1"></i>You did not answer this question</div>
+                                <div class="text-danger mt-2">
+                                    <i class="fas fa-exclamation-circle me-1"></i>
+                                    You did not answer this question
+                                </div>
                             @endif 
+
                             <div class="d-flex justify-content-between align-items-start">
-                                <strong id="questionText{{ $index }}">{{ $index+1 }}. {{ $question->moduleQs }}</strong>
+                                <strong id="questionText{{ $index }}">
+                                    {{ $index+1 }}. {{ $question->moduleQs }}
+                                </strong>
+
                                 <button type="button" class="btn btn-sm btn-primary ms-2" onclick="speakQuestion({{ $index }})">
                                     <i class="fas fa-volume-up"></i> Listen
                                 </button>
                             </div>
+
                             @foreach($question->answers as $answer)
                                 <div class="form-check mt-2">
-                                    <input class="form-check-input" type="radio" name="answers[{{ $question->moduleQs_ID }}]" value="{{ $answer->ansID }}"
+                                    <input class="form-check-input" type="radio"
+                                        name="answers[{{ $question->moduleQs_ID }}]"
+                                        value="{{ $answer->ansID }}"
                                         {{ old('answers.' . $question->moduleQs_ID) == $answer->ansID ? 'checked' : '' }}>
-                                    <label class="form-check-label">{{ $answer->ansID_text }}</label>
+
+                                    <label class="form-check-label">
+                                        {{ $answer->ansID_text }}
+                                    </label>
                                 </div>
                             @endforeach
                         </div>
                     @endforeach
-                    <button class="btn btn-dark">Submit Answers</button>
+
+                    <button type="submit" class="btn btn-dark">Submit Answers</button>
                 </form>
                 @if(session('score'))
                     <script>
@@ -80,8 +94,52 @@
     </div>
 
     <script src="{{ asset('js/language.js') }}"></script>
-    {{-- installed alert
+    {{-- installed alert --}}
     
-    --}}
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const form = document.getElementById("quizForm");
+            let allowSubmit = false; // ✅ flag
+
+            form.addEventListener("submit", function(e) {
+
+                if (allowSubmit) {
+                    return; //skip validation second time
+                }
+
+                let totalQuestions = {{ count($module->mcqs) }};
+                let answered = document.querySelectorAll('input[type="radio"]:checked').length;
+                let unanswered = totalQuestions - answered;
+
+                if (answered < totalQuestions) {
+                    e.preventDefault();
+
+                    Swal.fire({
+                        title: 'Incomplete!',
+                        html: `You skipped <b>${unanswered}</b> question(s).<br>Do you want to continue?`,
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Yes, continue',
+                        cancelButtonText: 'Go back'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+
+                            allowSubmit = true;
+                            let input = document.createElement("input");
+                            input.type = "hidden";
+                            input.name = "force_submit";
+                            input.value = "1";
+                            form.appendChild(input);
+
+                            form.requestSubmit(); // submit again WITHOUT triggering popup
+                        }
+                    });
+                }
+            });
+        });
+    </script>
 @endsection

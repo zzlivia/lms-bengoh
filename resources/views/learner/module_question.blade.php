@@ -69,24 +69,24 @@
 
                     <button type="submit" class="btn btn-dark">Submit Answers</button>
                 </form>
-                @if(session('score'))
+                @if(session()->has('score'))
                     <script>
-                    document.addEventListener("DOMContentLoaded", function () {
-                        Swal.fire({
-                            title: 'Quiz Completed 🎉',
-                            text: 'You scored {{ session('score') }} / {{ session('total') }}',
-                            icon: '{{ session('score') == session('total') ? "success" : "info" }}',
-                            showCancelButton: true,
-                            confirmButtonText: 'Proceed to Feedback',
-                            cancelButtonText: 'View Answers'
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                window.location.href = "{{ session('goFeedback') }}";
-                            } else {
-                                window.location.href = "{{ session('reviewUrl') }}";
-                            }
+                        document.addEventListener("DOMContentLoaded", function () {
+                            Swal.fire({
+                                title: 'Quiz Completed 🎉',
+                                text: 'You scored {{ session('score') }} / {{ session('total') }}',
+                                icon: '{{ session('score') == session('total') ? "success" : "info" }}',
+                                showCancelButton: true,
+                                confirmButtonText: 'Proceed to Feedback',
+                                cancelButtonText: 'View Answers'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = "{{ session('goFeedback') }}";
+                                } else {
+                                    window.location.href = "{{ session('reviewUrl') }}";
+                                }
+                            });
                         });
-                    });
                     </script>
                 @endif
             </div>
@@ -98,12 +98,10 @@
     
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const form = document.getElementById("quizForm");
-            let allowSubmit = false; // ✅ flag
+            let allowSubmit = false;
 
             form.addEventListener("submit", function(e) {
 

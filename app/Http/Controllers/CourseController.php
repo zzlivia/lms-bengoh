@@ -182,7 +182,8 @@ class CourseController extends Controller
     {
         $userID = auth()->id();
 
-        \DB::table('lectureprogress')->updateOrInsert(
+        //save lecture completion
+        DB::table('lectureprogress')->updateOrInsert(
             [
                 'userID' => $userID,
                 'lectID' => $lectID
@@ -191,6 +192,36 @@ class CourseController extends Controller
                 'completed_at' => now()
             ]
         );
+
+        //get module ID of this lecture
+        $moduleID = DB::table('lecture')
+            ->where('lectID', $lectID)
+            ->value('moduleID');
+
+        //get all lectures in this module
+        $moduleLectures = DB::table('lecture')
+            ->where('moduleID', $moduleID)
+            ->pluck('lectID');
+
+        //count completed lectures
+        $completedLectures = DB::table('lectureprogress')
+            ->where('userID', $userID)
+            ->whereIn('lectID', $moduleLectures)
+            ->count();
+
+        $totalLectures = $moduleLectures->count();
+
+        //check if module completed
+        if ($completedLectures === $totalLectures) {
+            DB::table('enrolmentcoursemodules')
+                ->where('userID', $userID)
+                ->where('moduleID', $moduleID)
+                ->update([
+                    'isCompleted' => 1,
+                    'inProgress' => 0
+                ]);
+        }
+
         return response()->json(['status' => 'saved']);
     }
 

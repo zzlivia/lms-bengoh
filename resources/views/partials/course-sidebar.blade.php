@@ -14,24 +14,38 @@
     <div class="mb-3">
         <div class="text-uppercase small text-muted fw-bold">MODULE {{ $loop->iteration }}</div>
         {{-- retrieve modules --}}
-        <a href="{{ route('learn', ['id' => $course->getKey()]) }}">
+        @php
+            $moduleLectureIds = $module->lectures->pluck('lectID')->toArray();
+            $isModuleCompleted = count(array_diff($moduleLectureIds, $completedLectures)) === 0;
+        @endphp
+
+        <a href="{{ route('learn', ['id' => $course->getKey()]) }}"class="{{ $isModuleCompleted ? 'text-success fw-bold' : '' }}">
+            @if($isModuleCompleted)
+                <i class="fa fa-circle text-success me-1"></i>
+            @else
+                <i class="fa fa-circle text-muted me-1"></i>
+            @endif
+
             {{ $module->moduleName }}
         </a>
         {{-- retrieve lectures --}}
         @foreach($module->lectures as $lecture)
             <div class="ms-2 mb-1">
-                ○ {{ $lecture->lectName }}
+                <div class="ms-2 mb-1">
+                    @if(in_array($lecture->lectID, $completedLectures))
+                        <i class="fa fa-circle text-success me-1"></i>
+                    @else
+                        <i class="fa fa-circle text-muted me-1"></i>
+                    @endif
 
-                @if(in_array($lecture->lectID, $completedLectures))
-                    <span style="color: green;">✔</span>
-                @endif
+                    {{ $lecture->lectName }}
+                </div>
             </div>
             {{-- display sections --}}
             @foreach($lecture->sections as $section)
                 <a href="{{ route('learn', ['id' => $course->courseID, 'sectionId' => $section->sectionID]) }}"
                 class="ms-4 small d-block sidebar-section 
                 {{ isset($current) && $current->sectionID == $section->sectionID ? 'active-section' : '' }}">
-                
                     • {{ $section->section_title }}
                 </a>
             @endforeach

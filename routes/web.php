@@ -72,6 +72,7 @@ Route::get('/module/{id}/review', [CourseController::class, 'reviewMCQ'])->name(
 /* lecture */
 Route::post('/lecture/{lectID}/complete', [CourseController::class, 'completeLecture'])->name('lecture.complete');    
 Route::post('/lecture/complete-next', [CourseController::class, 'completeAndNext'])->name('lecture.complete.and.next');
+Route::post('/lecture/complete/{lectID}', [CourseController::class, 'markComplete']);
 
 Route::middleware(['auth'])->group(function () {
     /* feedback */

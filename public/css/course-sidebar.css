@@ -27,3 +27,7 @@
     color: #0d6efd !important;
     font-weight: 600;
 }
+
+.sidebar {
+    scroll-behavior: smooth;
+}

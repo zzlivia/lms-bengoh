@@ -3,6 +3,12 @@
 @endsection
 
 <div class="col-md-3 sidebar p-3">
+    @php //check completion at lecture level
+        $completedLectures = DB::table('lectureprogress')
+            ->where('userID', auth()->id())
+            ->pluck('lectID')
+            ->toArray();
+    @endphp
     <h6 class="fw-bold mb-3">Course Modules</h6>
     @foreach($course->modules as $module)
     <div class="mb-3">
@@ -13,7 +19,13 @@
         </a>
         {{-- retrieve lectures --}}
         @foreach($module->lectures as $lecture)
-            <div class="ms-2 mb-1">○ {{ $lecture->lectName }}</div>
+            <div class="ms-2 mb-1">
+                ○ {{ $lecture->lectName }}
+
+                @if(in_array($lecture->lectID, $completedLectures))
+                    <span style="color: green;">✔</span>
+                @endif
+            </div>
             {{-- display sections --}}
             @foreach($lecture->sections as $section)
                 <a href="{{ route('learn', ['id' => $course->courseID, 'sectionId' => $section->sectionID]) }}"

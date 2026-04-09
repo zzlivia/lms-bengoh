@@ -134,7 +134,8 @@ class CourseController extends Controller
             }
 
             $current = $sections->get($currentIndex);
-
+            $lecture = Lecture::find($current->lectID);
+            
             //to track per section
             if (Auth::check()) {
                 Progress::updateOrCreate(

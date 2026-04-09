@@ -36,17 +36,22 @@
     {{-- featured courses - fetch top 4 courses from database --}}
     <h5 class="mb-3 fw-bold">Featured Courses</h5>
 
+    {{-- featured courses --}}
     <div class="row">
-    @foreach(\App\Models\Course::where('isAvailable', 1)->take(4)->get() as $course)
+        @forelse(\App\Models\Course::where('isAvailable', 1)->take(4)->get() as $course)
 
-    <div class="col-md-3 mb-3">
-        <div class="course-card">
-            <img src="{{ asset($course->courseImg) }}" alt="{{ $course->courseName }}">
-            <h6 class="mt-2 fw-bold">{{ $course->courseName }}</h6>
-        </div>
-    </div>
+            <div class="col-md-3 mb-3">
+                <div class="course-card">
+                    <img src="{{ asset($course->courseImg) }}" alt="{{ $course->courseName }}">
+                    <h6 class="mt-2 fw-bold">{{ $course->courseName }}</h6>
+                </div>
+            </div>
 
-    @endforeach
+        @empty
+            <div class="col-12 text-center">
+                <p class="text-muted">No courses available for now.</p>
+            </div>
+        @endforelse
     </div>
 
     {{-- button --}}
@@ -85,23 +90,32 @@
     <h5 class="mb-3 fw-bold">The Bengoh Dam Histories</h5>
     <div class="row g-3">
         <div class="col-md-4">
-            <div class="history-card">
+            <div class="history-card p-3 h-100">
                 <h6 class="small fw-bold">Function & Usage</h6>
-                <div style="height:150px;"></div>
+                <p class="small text-muted mb-0">
+                    Bengoh Dam serves as a primary water supply source for Kuching, ensuring clean and sustainable water
+                    for thousands of residents. It also helps regulate water flow and supports surrounding ecosystems.
+                </p>
             </div>
         </div>
 
         <div class="col-md-4">
-            <div class="history-card">
+            <div class="history-card p-3 h-100">
                 <h6 class="small fw-bold">Impact on the Community</h6>
-                <div style="height:150px;"></div>
+                <p class="small text-muted mb-0">
+                    The construction of Bengoh Dam led to the relocation of local communities, but it also opened
+                    opportunities for eco-tourism, new livelihoods, and improved infrastructure in the area.
+                </p>
             </div>
         </div>
 
         <div class="col-md-4">
-            <div class="history-card">
+            <div class="history-card p-3 h-100">
                 <h6 class="small fw-bold">Nature Tourism Attraction</h6>
-                <div style="height:150px;"></div>
+                <p class="small text-muted mb-0">
+                    Surrounded by lush rainforest, Bengoh Dam is now a popular destination for hiking, waterfalls,
+                    and cultural experiences, attracting both local and international visitors.
+                </p>
             </div>
         </div>
     </div>

@@ -221,10 +221,9 @@ class AdminController extends Controller
             }
             // generate filename
             $filename = time() . '.' . $request->file('courseImg')->extension();
-            // move file to public/courses
-            $request->file('courseImg')->move(public_path('courses'), $filename);
-            // save path in DB
-            $course->courseImg = 'courses/' . $filename;
+            // move file to public/courses-assets
+            $request->file('courseImg')->move(public_path('courses-assets'), $filename);
+            $course->courseImg = 'courses-assets/' . $filename;
         }
         $course->save();
 

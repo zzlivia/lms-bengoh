@@ -163,6 +163,7 @@ class CourseController extends Controller
         } else {
             $current = $sections->first();
             $currentIndex = 0;
+            $lecture = Lecture::find($current->lectID);
         }
         return view('learner.startLearning', [
             'course' => $course,

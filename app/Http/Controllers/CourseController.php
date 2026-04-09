@@ -177,7 +177,23 @@ class CourseController extends Controller
             'isCompletedAll' => $isCompletedAll
         ]);
     }
-    
+
+    public function markComplete($lectID)
+    {
+        $userID = auth()->id();
+
+        \DB::table('lectureprogress')->updateOrInsert(
+            [
+                'userID' => $userID,
+                'lectID' => $lectID
+            ],
+            [
+                'completed_at' => now()
+            ]
+        );
+        return response()->json(['status' => 'saved']);
+    }
+
     //display questions
     public function showMCQS($id)
     {

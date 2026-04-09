@@ -16,9 +16,12 @@
             <div class="ms-2 mb-1">○ {{ $lecture->lectName }}</div>
             {{-- display sections --}}
             @foreach($lecture->sections as $section)
-                <div class="ms-4 small text-muted">
+                <a href="{{ route('learn', ['id' => $course->courseID, 'sectionId' => $section->sectionID]) }}"
+                class="ms-4 small d-block sidebar-section 
+                {{ isset($current) && $current->sectionID == $section->sectionID ? 'active-section' : '' }}">
+                
                     • {{ $section->section_title }}
-                </div>
+                </a>
             @endforeach
         @endforeach
         {{-- display mcqs --}}

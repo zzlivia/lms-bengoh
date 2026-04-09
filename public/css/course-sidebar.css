@@ -31,3 +31,7 @@
 .sidebar {
     scroll-behavior: smooth;
 }
+
+.sidebar a {
+    text-decoration: none;
+}

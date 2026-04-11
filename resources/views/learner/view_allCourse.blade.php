@@ -83,13 +83,13 @@
                 <div class="col-md-9">
                     <div class="d-flex justify-content-end align-items-center mb-4">
                         <span class="me-2">Showing</span>
-                        {{-- choose number courses to be displayed per page --}}
-                        <select name="per_page" class="form-select form-select-sm w-auto" onchange="this.form.submit()"> {{-- remove onchange="this.form.submit()" --}}
-                            <option value="3" {{ request('per_page') == 3 ? 'selected' : '' }}>3</option>
-                            <option value="5" {{ request('per_page') == 5 ? 'selected' : '' }}>5</option>
-                            <option value="8" {{ request('per_page') == 8 ? 'selected' : '' }}>8</option>
-                            <option value="10" {{ request('per_page') == 10 ? 'selected' : '' }}>10</option>
-                        </select>
+                            {{-- choose number courses to be displayed per page --}}
+                            <select name="per_page" class="form-select form-select-sm w-auto" onchange="this.form.submit()"> {{-- remove onchange="this.form.submit()" --}}
+                                <option value="3" {{ request('per_page') == 3 ? 'selected' : '' }}>3</option>
+                                <option value="5" {{ request('per_page') == 5 ? 'selected' : '' }}>5</option>
+                                <option value="8" {{ request('per_page') == 8 ? 'selected' : '' }}>8</option>
+                                <option value="10" {{ request('per_page') == 10 ? 'selected' : '' }}>10</option>
+                            </select>
                         <span class="ms-2">Courses Per Page</span>
                     </div>            
                     
@@ -100,8 +100,10 @@
                                 {{-- path to point to public/courses/ --}}
                                 <img src="{{ asset($course->courseImg) }}" alt="{{ $course->courseName }}" class="img-fluid rounded">  
                             </div>
-                            <div class="col-md-8 position-relative">
-                                <i class="fa fa-volume-up position-absolute top-0 end-0 mt-2 me-2"></i>  {{-- audio icon --}}
+                            <div class="col-md-8 position-relative">  
+                                {{-- audio icon --}}
+                                <i class="fa fa-volume-up position-absolute top-0 end-0 mt-2 me-2" style="cursor:pointer"
+                                    onclick="readCourseName('{{ $course->courseName }}')"></i>
                                 <h5 class="course-title">{{ $course->courseName }}</h5>
                                 <div class="meta-text mb-2">
                                     <span class="me-3">{{ $course->duration ?? '2' }} Weeks</span>
@@ -137,4 +139,18 @@
             </div>
         </form>
     </div>
+
+    <script>
+        function readCourseName(courseName) {
+            //stop any current speech first (optional but recommended)
+            window.speechSynthesis.cancel();
+            const speech = new SpeechSynthesisUtterance(courseName);
+            //optional settings
+            speech.lang = 'en-US';   // change if needed
+            speech.rate = 1;        // speed (0.5 - 2)
+            speech.pitch = 1;       // voice pitch
+
+            window.speechSynthesis.speak(speech);
+        }
+    </script>
 @endsection

@@ -81,8 +81,9 @@
                         Swal.fire({
                             title: 'MCQS Completed 🎉',
                             html: `
-                                You scored <b>{{ session('score') }} / {{ session('total') }}</b><br><br>
-                                Redirecting to assessment in <b><span id="countdown">10</span></b> seconds...
+                                You scored <b>{{ session('score') }} / {{ session('total') }}</b><br>
+                                Attempt: <b>{{ session('attempts') }}</b><br><br>
+                                Redirecting in <b><span id="countdown">10</span></b> seconds...
                             `,
                             icon: '{{ session('score') == session('total') ? "success" : "info" }}',
                             timer: 10000,

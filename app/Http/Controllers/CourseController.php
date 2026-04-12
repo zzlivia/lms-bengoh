@@ -465,6 +465,10 @@ class CourseController extends Controller
     //show overall percentage
     public function showAllProgress($courseID)
     {
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
+
         $course = Course::findOrFail($courseID);
 
         $progress = Progress::where('userID', Auth::id())
@@ -475,22 +479,22 @@ class CourseController extends Controller
         $totalProgress = $progress->avg('completionProgress') ?? 0;
 
         // get MCQ grades from assessment_results
-        $grades = DB::table('assessment_results')
-            ->where('userID', Auth::id())
-            ->where('courseID', $courseID)
-            ->get()
-            ->map(function ($item) {
+        $grades = DB::table('assessment_results')->where('userID', Auth::id())->where('courseID', $courseID)->get()->map(function ($item) use ($course) {
+            //if moduleID exists → it's MCQ
+            if ($item->type === 'mcq') {
+                $name = 'MCQ ' . $item->moduleID;
+            } 
+            //else, final assessment
+            else {
+                $name = 'Course Assessment of ' . $course->courseName;
+            }
 
-                $name = $item->moduleID 
-                    ? 'MCQ ' . $item->moduleID 
-                    : 'Final Assessment';
-
-                return [
-                    'name' => $name,
-                    'score' => round($item->score, 2) . '%',
-                    'status' => ucfirst($item->status),
-                ];
-            });
+            return [
+                'name' => $name,
+                'score' => round($item->score, 2) . '%',
+                'status' => ucfirst($item->status),
+            ];
+        });
 
         return view('learner.course_progress', compact(
             'course',

@@ -324,7 +324,7 @@ class AdminController extends Controller
                 return response()->json(['error' => 'No content found'], 400);
             }
 
-            $questions = $this->mockAI($contents);
+            $questions = $this->generateWithAI($contents);
 
             //get existing MCQs for this module
             $existingMcqs = Mcqs::where('moduleID', $moduleID)

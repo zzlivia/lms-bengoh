@@ -318,6 +318,12 @@ class CourseController extends Controller
         return view('learner.course_feedback', compact('course'));
     }
 
+    public function showFeedback($id)
+    {
+        $module = Module::findOrFail($id);
+        return view('learner.course_feedback', compact('module'));
+    }
+
     public function submitFeedback(Request $request, $id)
     {
         if (!Auth::check()) {

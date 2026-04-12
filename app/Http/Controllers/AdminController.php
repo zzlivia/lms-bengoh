@@ -20,6 +20,7 @@ use App\Models\Mcqs;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
 
 //pdf generator
@@ -262,6 +263,51 @@ class AdminController extends Controller
                 'correct' => 0
             ];
         }
+        return $questions;
+    }
+
+    private function generateWithAI($content)
+    {
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer ' . env('OPENAI_API_KEY'),
+            'Content-Type' => 'application/json',
+        ])->post('https://api.openai.com/v1/chat/completions', [
+            'model' => 'gpt-4.1-mini',
+            'messages' => [
+                [
+                    'role' => 'system',
+                    'content' => 'You generate multiple choice questions.'
+                ],
+                [
+                    'role' => 'user',
+                    'content' => "Generate 3 MCQ questions based on this content.
+
+    Return ONLY JSON like:
+    [
+    {
+        \"question\": \"...\",
+        \"answers\": [\"...\",\"...\",\"...\",\"...\"],
+        \"correct\": 0
+    }
+    ]
+
+    Content:
+    " . substr($content, 0, 1500)
+                ]
+            ],
+            'temperature' => 0.7,
+        ]);
+
+        $data = $response->json();
+
+        $aiText = $data['choices'][0]['message']['content'] ?? '';
+
+        $questions = json_decode($aiText, true);
+
+        if (!$questions) {
+            throw new \Exception("Invalid AI response: " . $aiText);
+        }
+
         return $questions;
     }
 

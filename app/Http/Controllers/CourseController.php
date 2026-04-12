@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
+use Barryvdh\DomPDF\Facade\Pdf;
+
 class CourseController extends Controller
 {
     // display all courses
@@ -510,6 +512,19 @@ class CourseController extends Controller
             'grades',
             'isCompletedAll'
         ));
+    }
+
+    public function generateCertificate($courseID)
+    {
+        $user = auth()->user();
+        $course = Course::findOrFail($courseID);
+
+        $pdf = Pdf::loadView('learner.certificate', [
+            'user' => $user,
+            'course' => $course
+        ]);
+
+        return $pdf->download('certificate.pdf');
     }
 
     public function completeLecture($lectID)

@@ -262,6 +262,18 @@ class CourseController extends Controller
         //avoid division by zero
         $percentage = $total > 0 ? ($score / $total) * 100 : 0;
 
+        $existing = DB::table('assessment_results')
+            ->where('userID', Auth::id())
+            ->where('moduleID', $module->moduleID)
+            ->where('type', 'mcq')
+            ->first();
+
+        $attempts = $existing ? $existing->attempts + 1 : 1;
+        //limit attempts
+        if ($attempts > 3) {
+            return redirect()->back()->with('error', 'You have reached the maximum number of attempts.');
+        }
+        
         //save into assessment_results
         DB::table('assessment_results')->updateOrInsert(
             [
@@ -273,7 +285,7 @@ class CourseController extends Controller
             [
                 'score' => $percentage,
                 'status' => $percentage >= 80 ? 'pass' : 'fail',
-                'type' => 'mcq', 
+                'attempts' => $attempts,
                 'updated_at' => now(),
                 'created_at' => now(),
             ]

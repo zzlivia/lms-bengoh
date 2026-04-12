@@ -553,6 +553,24 @@
 
     });
     </script>
-   <script src="{{ asset('js/admin-course-module.js') }}"></script>
 
+    <script src="{{ asset('js/admin-course-module.js') }}"></script>
+
+    <script>
+        function generateAIQuestions() {
+            let content = document.querySelector('textarea[name="section_content"]');
+
+            if (!content || !content.value.trim()) {
+                alert("Please enter section content first!");
+                return;
+            }
+
+            console.log("Content sent to AI:", content.value);
+
+            // TEMP: just test first
+            alert("AI button clicked! Next step we connect to backend.");
+        }
+    </script>
+    
+    @stack('scripts')
 @endsection

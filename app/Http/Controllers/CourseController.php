@@ -282,12 +282,11 @@ class CourseController extends Controller
         //update progress with REAL score
         $this->updateProgress($module->courseID, 'MCQ' . $module->moduleID, $percentage);
 
-        return redirect()->route('course.assessment', ['id' => $module->courseID])
-            ->with([
-                'score' => $score,
-                'total' => $total,
-                'completed' => true
-            ]);
+        return redirect()->back()->with([
+            'score' => $score,
+            'total' => $total,
+            'courseID' => $module->courseID
+        ]);
     }
 
     public function reviewMCQ($id)

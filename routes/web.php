@@ -252,6 +252,8 @@ Route::prefix('admin')
     /* mcqs */
     Route::post('/mcq/store', [ModuleController::class, 'storeMCQ'])->name('mcq.store');
 
+    Route::get('/generate-ai-mcq/{moduleID}', [AdminController::class, 'generateAI']);
+
     /* course assessment */
 
     Route::post('/assessment/store', [CourseAssAdminController::class, 'storeAssessment'])

@@ -9,7 +9,14 @@ class Mcqs extends Model
     protected $table = 'mcqs';
     protected $primaryKey = 'moduleQs_ID';
     protected $fillable = [
-        'moduleID'
+        'moduleID',
+        'moduleQs',     // manual
+        'question',     // AI
+        'answer1',
+        'answer2',
+        'answer3',
+        'answer4',
+        'correct_answer'
     ];
     public function module()
     {

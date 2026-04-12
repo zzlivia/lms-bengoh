@@ -496,11 +496,14 @@ class CourseController extends Controller
             ];
         });
 
+        $isCompletedAll = $totalProgress >= 100;
+
         return view('learner.course_progress', compact(
             'course',
             'progress',
             'totalProgress',
-            'grades'
+            'grades',
+            'isCompletedAll'
         ));
     }
 

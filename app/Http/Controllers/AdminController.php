@@ -14,7 +14,7 @@ use App\Models\Progress;
 use App\Models\Announcements;
 use App\Models\Feedback;
 use App\Models\AssessmentResult;
-use App\Models\MCQ;
+use App\Models\Mcqs;
 
 //laravel utilities
 use Illuminate\Support\Facades\DB;
@@ -247,28 +247,23 @@ class AdminController extends Controller
 
     private function mockAI($content)
     {
-        return [
-            [
-                'question' => 'What is a dam?',
+        $questions = [];
+
+        // Example: generate 3 questions dynamically
+        for ($i = 1; $i <= 3; $i++) {
+            $questions[] = [
+                'question' => "Sample AI Question $i based on content",
                 'answers' => [
-                    'A wall built across a river',
-                    'A type of bridge',
-                    'A water pipe',
-                    'A mountain'
+                    "Correct Answer $i",
+                    "Wrong Answer A$i",
+                    "Wrong Answer B$i",
+                    "Wrong Answer C$i"
                 ],
                 'correct' => 0
-            ],
-            [
-                'question' => 'Why are dams built?',
-                'answers' => [
-                    'To store water',
-                    'To stop rain',
-                    'To create roads',
-                    'To grow trees'
-                ],
-                'correct' => 0
-            ]
-        ];
+            ];
+        }
+
+        return $questions;
     }
 
     public function generateAI($moduleID)
@@ -286,21 +281,42 @@ class AdminController extends Controller
 
             $questions = $this->mockAI($contents);
 
-            foreach ($questions as $q) {
-                MCQ::create([
-                    'moduleID' => $moduleID,
-                    'question' => $q['question'],
-                    'answer1' => $q['answers'][0],
-                    'answer2' => $q['answers'][1],
-                    'answer3' => $q['answers'][2],
-                    'answer4' => $q['answers'][3],
-                    'correct_answer' => $q['correct'],
-                ]);
+            //get existing MCQs for this module
+            $existingMcqs = Mcqs::where('moduleID', $moduleID)
+                ->orderBy('moduleQs_ID') // or your primary key
+                ->get()
+                ->values();
+
+            foreach ($existingMcqs as $index => $mcq) {
+                if (isset($questions[$index])) {
+                    $q = $questions[$index];
+                    $mcq->update([
+                        'question' => $q['question'],
+                        'answer1' => $q['answers'][0],
+                        'answer2' => $q['answers'][1],
+                        'answer3' => $q['answers'][2],
+                        'answer4' => $q['answers'][3],
+                        'correct_answer' => $q['correct'],
+                    ]);
+                }
             }
 
-            return response()->json([
-                'success' => true
-            ]);
+            //handle extra AI questions (if AI returns more than existing rows)
+            if (count($questions) > $existingMcqs->count()) {
+                for ($i = $existingMcqs->count(); $i < count($questions); $i++) {
+                    $q = $questions[$i];
+                    Mcqs::create([
+                        'moduleID' => $moduleID,
+                        'question' => $q['question'],
+                        'answer1' => $q['answers'][0],
+                        'answer2' => $q['answers'][1],
+                        'answer3' => $q['answers'][2],
+                        'answer4' => $q['answers'][3],
+                        'correct_answer' => $q['correct'],
+                    ]);
+                }
+            }
+            return response()->json(['success' => true]);
 
         } catch (\Exception $e) {
             return response()->json([

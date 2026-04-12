@@ -25,18 +25,21 @@
             <a class="navbar-brand fw-bold d-flex align-items-center" href="/"> {{-- logo --}}
                 <img src="{{ asset('images/bengohdam-logo.png') }}" width="30" class="me-2"> Bengoh Academy
             </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
             <div class="collapse navbar-collapse justify-content-end">
                 <ul class="navbar-nav"> {{-- navigation menu --}}
                     <li class="nav-item mx-2">
-                        <a class="nav-link active" href="{{ route('homepage') }}">{{ __('messages.nav.home') }}</a> {{--{{ route('learner.homepage') }}--}}
+                        <a class="nav-link {{ request()->routeIs('homepage') ? 'active' : '' }}" href="{{ route('homepage') }}">
+                            {{ __('messages.nav.home') }} {{-- highlights the page --}}
+                        </a>
                     </li>
 
                     <li class="nav-item mx-2">
-                        @if(app()->environment('local'))
-                            <a class="nav-link active" href="{{ route('courses.allCourses') }}">{{ __('messages.nav.courses') }}</a>
-                        @else
-                            <a class="nav-link active" href="{{ route('courses.allCourses') }}">{{ __('messages.nav.courses') }}</a>
-                        @endif
+                        <a class="nav-link {{ request()->routeIs('courses.*') ? 'active' : '' }}" href="{{ route('courses.allCourses') }}">
+                            {{ __('messages.nav.courses') }}
+                        </a>
                     </li>
 
                     <li class="nav-item mx-2">
@@ -64,6 +67,15 @@
                             </li>
                         </ul>
                     </li>
+
+                    <li class="nav-item mx-2" x-data="{ open: false }">
+                        <i class="bi bi-bell nav-link" @click="open = !open" style="cursor:pointer;"></i>
+
+                        <div x-show="open" @click.outside="open = false" class="dropdown-menu show position-absolute">
+                            <p class="px-3 mb-0">No new notifications</p>
+                        </div>
+                    </li>
+
                     {{-- authentication --}}
                     <li class="nav-item mx-2 d-flex align-items-center">
                     @auth
@@ -111,18 +123,24 @@
                 <a href="#">Contact</a>
             </div>
         </footer>
+
+        {{-- alpine load --}}
+        <script src="//unpkg.com/alpinejs" defer></script>
+
         {{-- JS for dropdowns --}}
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
         {{-- add service worker --}}
         <script>
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/service-worker.js')
-            .then(function() {
-                console.log("Service Worker Registered");
-            });
-        }
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('/service-worker.js')
+                .then(() => console.log("Service Worker Registered"))
+                .catch(err => console.error("SW failed:", err));
+            }   
         </script>
+
         <script src="{{ asset('js/language.js') }}"></script>
+
         @yield('scripts')
 
         @stack('scripts')

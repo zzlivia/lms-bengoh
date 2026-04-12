@@ -2,6 +2,11 @@
 
 @section('content')
 <div class="container">
+    <div class="mb-3">
+        <a href="{{ url()->previous() }}" class="btn btn-secondary">
+            ← Back
+        </a>
+    </div>
     <h3>MCQ Preview</h3>
 
     @foreach($questions as $qID => $answers)

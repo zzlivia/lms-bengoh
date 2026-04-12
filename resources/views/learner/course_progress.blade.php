@@ -47,6 +47,13 @@
                     </div>
                 </div>
                 <hr>
+                @if($isCompletedAll)
+                    <div class="alert alert-success text-center shadow-sm">
+                        <h4 class="fw-bold">🎉 Congratulations!</h4>
+                        <p class="mb-1">You have successfully completed this course.</p>
+                        <p class="mb-0">Name: <strong>{{ auth()->user()->userName }}</strong></p>
+                    </div>
+                @endif
                 <!-- grades -->
                 <h5 class="fw-bold mb-3">Your Grades</h5>
                 <div class="card shadow-sm">

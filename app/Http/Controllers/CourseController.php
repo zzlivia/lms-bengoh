@@ -285,7 +285,9 @@ class CourseController extends Controller
         return redirect()->back()->with([
             'score' => $score,
             'total' => $total,
-            'courseID' => $module->courseID
+            'courseID' => $module->courseID,
+            'goFeedback' => route('feedback.page', $module->moduleID),
+            'reviewUrl' => route('review.mcq', $module->moduleID)
         ]);
     }
 

@@ -476,7 +476,7 @@ class CourseController extends Controller
             ->get();
 
         // total progress (still from progress table)
-        $totalProgress = $progress->avg('completionProgress') ?? 0;
+        $totalProgress = round($progress->avg('completionProgress') ?? 0, 1);
 
         // get MCQ grades from assessment_results
         $grades = DB::table('assessment_results')->where('userID', Auth::id())->where('courseID', $courseID)->get()->map(function ($item) use ($course) {

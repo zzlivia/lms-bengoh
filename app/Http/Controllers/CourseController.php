@@ -496,7 +496,12 @@ class CourseController extends Controller
             ];
         });
 
-        $isCompletedAll = $totalProgress >= 100;
+        $isCompletedAll = DB::table('assessment_results')
+            ->where('userID', Auth::id())
+            ->where('courseID', $courseID)
+            ->where('type', 'final')
+            ->where('status', 'pass')
+            ->exists();
 
         return view('learner.course_progress', compact(
             'course',

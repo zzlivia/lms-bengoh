@@ -14,6 +14,7 @@ use App\Models\Progress;
 use App\Models\Announcements;
 use App\Models\Feedback;
 use App\Models\AssessmentResult;
+use App\Models\MCQ;
 
 //laravel utilities
 use Illuminate\Support\Facades\DB;
@@ -244,71 +245,69 @@ class AdminController extends Controller
         return redirect()->route('admin.course.module')->with('success','Course deleted successfully');
     }
 
-    /*ignore from here
-    public function storeSection(Request $request)
+    private function mockAI($content)
     {
-        //validate input
-        $request->validate([
-            'lectID' => 'required|exists:lecture,lectID',
-            'section_title' => 'required|string|max:255',
-            'section_type' => 'required|in:text,video,pdf,image',
-            'section_order' => 'nullable|integer',
-            'section_file' => 'nullable|file',
-        ]);
+        return [
+            [
+                'question' => 'What is a dam?',
+                'answers' => [
+                    'A wall built across a river',
+                    'A type of bridge',
+                    'A water pipe',
+                    'A mountain'
+                ],
+                'correct' => 0
+            ],
+            [
+                'question' => 'Why are dams built?',
+                'answers' => [
+                    'To store water',
+                    'To stop rain',
+                    'To create roads',
+                    'To grow trees'
+                ],
+                'correct' => 0
+            ]
+        ];
+    }
 
-        //create new section
-        $section = new LectureSection();
-        $section->lectID = $request->lectID;
-        $section->section_title = $request->section_title;
-        $section->section_type = $request->section_type;
-        $section->section_order = $request->section_order;
+    public function generateAI($moduleID)
+    {
+        try {
+            $lectures = Lecture::where('moduleID', $moduleID)->pluck('lectID');
 
-        //handle content / file
-        if ($request->hasFile('section_file')) {
-            // store file
-            $path = $request->file('section_file')->store('sections', 'public');
-            $section->section_content = $path;
-        } else {
-            // use text content
-            $section->section_content = $request->section_content;
+            $contents = LectureSection::whereIn('lectID', $lectures)
+                ->pluck('section_content')
+                ->implode("\n");
+
+            if (!$contents) {
+                return response()->json(['error' => 'No content found'], 400);
+            }
+
+            $questions = $this->mockAI($contents);
+
+            foreach ($questions as $q) {
+                MCQ::create([
+                    'moduleID' => $moduleID,
+                    'question' => $q['question'],
+                    'answer1' => $q['answers'][0],
+                    'answer2' => $q['answers'][1],
+                    'answer3' => $q['answers'][2],
+                    'answer4' => $q['answers'][3],
+                    'correct_answer' => $q['correct'],
+                ]);
+            }
+
+            return response()->json([
+                'success' => true
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => $e->getMessage()
+            ], 500);
         }
-        $section->save();
-        return back()->with('success', 'Section added successfully!');
-    }    
-
-    public function editSection($id)
-    {
-        $section = LectureSection::findOrFail($id);
-
-        return view('admin.edit_section', compact('section'));
     }
-
-    public function updateSection(Request $request, $id)
-    {
-        $request->validate([
-            'section_title' => 'required',
-            'section_content' => 'required',
-            'section_type' => 'required'
-        ]);
-
-        $section = LectureSection::findOrFail($id);
-
-        $section->section_title = $request->section_title;
-        $section->section_content = $request->section_content;
-        $section->section_type = $request->section_type;
-
-        $section->save();
-
-        return back()->with('success', 'Section updated successfully');
-    }
-
-    public function deleteSection($id)
-    {
-        $section = LectureSection::findOrFail($id);
-        $section->delete();
-
-        return back()->with('success','Section deleted successfully');
-    }till here*/
     
     public function storeMaterials(Request $request, $id) //store learning materials
     {   //loop every each of uploaded material

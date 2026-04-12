@@ -52,6 +52,8 @@
                         <h4 class="fw-bold">🎉 Congratulations!</h4>
                         <p class="mb-1">You have successfully completed this course.</p>
                         <p class="mb-0">Name: <strong>{{ auth()->user()->userName }}</strong></p>
+
+                        <a href="{{ route('course.certificate', $course->courseID) }}" class="btn btn-success mt-3">🎓 Download Certificate</a>
                     </div>
                 @endif
                 <!-- grades -->

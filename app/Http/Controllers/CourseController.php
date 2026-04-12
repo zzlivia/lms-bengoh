@@ -524,7 +524,12 @@ class CourseController extends Controller
             'course' => $course
         ]);
 
-        return $pdf->download('certificate.pdf');
+        $studentName = str_replace(' ', '_', $user->userName);
+        $courseName = str_replace(' ', '_', $course->courseName);
+
+        $fileName = $studentName . '_' . $courseName . '_Certificate.pdf';
+
+        return $pdf->download($fileName);
     }
 
     public function completeLecture($lectID)

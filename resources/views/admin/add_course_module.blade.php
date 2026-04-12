@@ -558,7 +558,8 @@
 
     <script>
         function generateAIQuestions() {
-            let moduleID = document.querySelector('select[name="moduleID"]').value;
+            let moduleSelect = document.querySelector('#mcq-form select[name="moduleID"]');
+            let moduleID = moduleSelect ? moduleSelect.value : '';
 
             if (!moduleID) {
                 alert("Please select a module first!");

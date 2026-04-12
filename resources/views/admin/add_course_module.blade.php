@@ -395,6 +395,10 @@
                     <div class="d-flex justify-content-between align-items-center mt-3">
                         <!-- left -->
                         <button type="button" class="btn btn-secondary" onclick="addQuestion()">+ Add Question</button>
+                        <!-- AI generate MCQS button -->
+                        <button type="button" class="btn btn-primary ms-2" onclick="generateAIQuestions()">
+                            ? Generate AI Questions
+                        </button>
                         <!-- right -->
                         <button class="btn btn-success">Submit All</button>
                     </div>

@@ -248,21 +248,20 @@ class AdminController extends Controller
     private function mockAI($content)
     {
         $questions = [];
-
-        // Example: generate 3 questions dynamically
         for ($i = 1; $i <= 3; $i++) {
+            $answers = [
+                "Correct Answer $i",
+                "Wrong Answer A$i",
+                "Wrong Answer B$i",
+                "Wrong Answer C$i"
+            ];
+
             $questions[] = [
-                'question' => "Sample AI Question $i based on content",
-                'answers' => [
-                    "Correct Answer $i",
-                    "Wrong Answer A$i",
-                    "Wrong Answer B$i",
-                    "Wrong Answer C$i"
-                ],
+                'question' => "AI Question $i based on: " . substr($content, 0, 50),
+                'answers' => $answers,
                 'correct' => 0
             ];
         }
-
         return $questions;
     }
 

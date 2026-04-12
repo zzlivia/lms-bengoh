@@ -69,24 +69,56 @@
 
                     <button type="submit" class="btn btn-dark">Submit Answers</button>
                 </form>
+
+                <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
                 @if(session()->has('score'))
                     <script>
-                        document.addEventListener("DOMContentLoaded", function () {
-                            Swal.fire({
-                                title: 'Quiz Completed 🎉',
-                                text: 'You scored {{ session('score') }} / {{ session('total') }}',
-                                icon: '{{ session('score') == session('total') ? "success" : "info" }}',
-                                showCancelButton: true,
-                                confirmButtonText: 'Proceed to Feedback',
-                                cancelButtonText: 'View Answers'
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    window.location.href = "{{ session('goFeedback') }}";
-                                } else {
-                                    window.location.href = "{{ session('reviewUrl') }}";
-                                }
-                            });
+                    document.addEventListener("DOMContentLoaded", function () {
+                        let feedbackUrl = "{{ session('goFeedback') }}";
+                        let reviewUrl = "{{ session('reviewUrl') }}";
+                        let assessmentUrl = "{{ route('course.assessment', ['id' => session('courseID')]) }}";
+                        let timerInterval;
+                        Swal.fire({
+                            title: 'MCQS Completed 🎉',
+                            html: `
+                                You scored <b>{{ session('score') }} / {{ session('total') }}</b><br><br>
+                                Redirecting to assessment in <b><span id="countdown">10</span></b> seconds...
+                            `,
+                            icon: '{{ session('score') == session('total') ? "success" : "info" }}',
+                            timer: 10000,
+                            timerProgressBar: true,
+                            showConfirmButton: true,
+                            showCancelButton: true,
+                            showCloseButton: true,
+                            confirmButtonText: 'Proceed to Feedback',
+                            cancelButtonText: 'Review Answers',
+                            didOpen: () => {
+                                const countdownEl = document.getElementById('countdown');
+                                let timeLeft = 10;
+
+                                timerInterval = setInterval(() => {
+                                    timeLeft--;
+                                    if (countdownEl) countdownEl.textContent = timeLeft;
+                                }, 1000);
+                            },
+                            willClose: () => {
+                                clearInterval(timerInterval);
+                            }
+                        }).then((result) => {
+
+                            if (result.isConfirmed) {
+                                window.location.href = feedbackUrl;
+                            } 
+                            else if (result.dismiss === Swal.DismissReason.cancel) {
+                                window.location.href = reviewUrl;
+                            } 
+                            else {
+                                // ⏱ Timer finished OR ❌ clicked
+                                window.location.href = assessmentUrl;
+                            }
                         });
+
+                    });
                     </script>
                 @endif
             </div>
@@ -95,8 +127,6 @@
 
     <script src="{{ asset('js/language.js') }}"></script>
     {{-- installed alert --}}
-    
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {

@@ -14,6 +14,7 @@ use App\Http\Controllers\AdminSettingsController;
 use App\Http\Controllers\Admin\CourseAssAdminController;
 use App\Http\Controllers\AssessmentController;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Http;
 
 
 Route::get('/run-migrate', function () {
@@ -23,6 +24,25 @@ Route::get('/run-migrate', function () {
 
 Route::get('/test-auth', function () {
     return auth()->check() ? 'LOGGED IN' : 'NOT LOGGED IN';
+});
+
+//to test AI 
+Route::get('/test-ai', function () {
+
+    $response = Http::withHeaders([
+        'Authorization' => 'Bearer ' . env('OPENAI_API_KEY'),
+        'Content-Type' => 'application/json',
+    ])->post('https://api.openai.com/v1/chat/completions', [
+        'model' => 'gpt-4.1-mini',
+        'messages' => [
+            [
+                'role' => 'user',
+                'content' => 'Say hello'
+            ]
+        ],
+    ]);
+
+    return $response->json();
 });
 
 /* public route */

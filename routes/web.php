@@ -118,6 +118,10 @@ Route::middleware(['auth'])->group(function () {
 
     /* progress */
     Route::get('/course/{id}/progress', [CourseController::class, 'showAllProgress'])->name('course.progress');
+    
+    /* certificate */
+    Route::get('/course/{id}/certificate', [CourseController::class, 'generateCertificate'])
+    ->name('course.certificate');
 });
     
 

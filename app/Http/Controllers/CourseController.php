@@ -518,17 +518,13 @@ class CourseController extends Controller
     {
         $user = auth()->user();
         $course = Course::findOrFail($courseID);
-
         $pdf = Pdf::loadView('learner.certificate', [
             'user' => $user,
             'course' => $course
-        ]);
-
+        ])->setPaper('A4', 'portrait');
         $studentName = str_replace(' ', '_', $user->userName);
         $courseName = str_replace(' ', '_', $course->courseName);
-
         $fileName = $studentName . '_' . $courseName . '_Certificate.pdf';
-
         return $pdf->download($fileName);
     }
 

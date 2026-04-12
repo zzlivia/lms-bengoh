@@ -12,11 +12,21 @@
                 {{ $answers[0]->question ?? $answers[0]->moduleQs }} {{-- either manual question or AI generated question --}}
             </h5>
 
-            @foreach($answers as $ans)
+            @php
+                $q = $answers[0];
+                $options = [
+                    $q->answer1,
+                    $q->answer2,
+                    $q->answer3,
+                    $q->answer4
+                ];
+            @endphp
+
+            @foreach($options as $index => $option)
                 <div>
                     <input type="radio" disabled 
-                        {{ $ans->ansCorrect ? 'checked' : '' }}>
-                    {{ $ans->ansID_text }}
+                        {{ $q->correct_answer == $index ? 'checked' : '' }}>
+                    {{ $option }}
                 </div>
             @endforeach
         </div>

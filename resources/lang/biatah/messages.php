@@ -1,12 +1,14 @@
 <?php
 return [
     'nav' => [
-        'home' => 'Remin',
+        'home' => 'Rumah',
         'courses' => 'Kursus',
         'community' => 'Jerita Kampung',
-    ],
-    'auth' => [
+        'about' => 'Pasal Empangan',
+        'language' => 'Bahasa',
+        'settings' => 'Tetapan',
+        'logout' => 'Keluar',
         'login' => 'Masuk',
         'register' => 'Daftar',
-    ]
+    ],
 ];

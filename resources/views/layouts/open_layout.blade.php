@@ -28,27 +28,27 @@
             <div class="collapse navbar-collapse justify-content-end">
                 <ul class="navbar-nav"> {{-- navigation menu --}}
                     <li class="nav-item mx-2">
-                        <a class="nav-link active" href="{{ route('homepage') }}">Home</a> {{--{{ route('learner.homepage') }}--}}
+                        <a class="nav-link active" href="{{ route('homepage') }}">{{ __('messages.nav.home') }}</a> {{--{{ route('learner.homepage') }}--}}
                     </li>
 
                     <li class="nav-item mx-2">
                         @if(app()->environment('local'))
-                            <a class="nav-link active" href="{{ route('courses.allCourses') }}">Courses</a>
+                            <a class="nav-link active" href="{{ route('courses.allCourses') }}">{{ __('messages.nav.courses') }}</a>
                         @else
-                            <a class="nav-link active" href="{{ route('courses.allCourses') }}">Courses</a>
+                            <a class="nav-link active" href="{{ route('courses.allCourses') }}">{{ __('messages.nav.courses') }}</a>
                         @endif
                     </li>
 
                     <li class="nav-item mx-2">
-                        <a class="nav-link" href="#">Community Stories</a>
+                        <a class="nav-link" href="#">{{ __('messages.nav.community') }}</a>
                     </li>
 
                     <li class="nav-item mx-2">
-                        <a class="nav-link" href="#">About the Dam</a>
+                        <a class="nav-link" href="#">{{ __('messages.nav.about') }}</a>
                     </li>
                     {{-- language switches --}}
                     <li class="nav-item dropdown mx-2">
-                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Language</a>
+                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">{{ __('messages.nav.language') }}</a>
                         <ul class="dropdown-menu">
                             <li>
                                 <a class="dropdown-item" href="{{ route('lang.switch', 'en') }}">English</a>
@@ -60,9 +60,7 @@
                                 <a class="dropdown-item" href="{{ route('lang.switch', 'iban') }}">Iban</a>
                             </li>
                             <li>
-                                <a class="dropdown-item" href="{{ route('lang.switch', 'biatah') }}">
-                                    Bidayuh (Biatah)
-                                </a>
+                                <a class="dropdown-item" href="{{ route('lang.switch', 'biatah') }}">Bidayuh (Biatah)</a>
                             </li>
                         </ul>
                     </li>
@@ -78,23 +76,23 @@
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li>
                                 <a class="dropdown-item" href="{{ route('settings.index') }}"> {{-- {{ route('settings.index') }} --}}
-                                    Settings
+                                    {{ __('messages.nav.settings') }}
                                 </a>
                             </li>
 
                             <li>
                                 <form method="POST" action="{{ route('logout') }}"> {{-- AuthController --}}
                                     @csrf
-                                    <button class="dropdown-item">Sign Out</button> {{-- allow user to log out --}}
+                                    <button class="dropdown-item">{{ __('messages.nav.logout') }}</button> {{-- allow user to log out --}}
                                 </form>
                             </li>
                         </ul>
                     </div>
 
                     @else
-                        <a class="nav-link text-primary fw-bold px-1" href="{{ route('register') }}">Register</a> {{-- AuthenticationController --}}
+                        <a class="nav-link text-primary fw-bold px-1" href="{{ route('register') }}">{{ __('messages.nav.register') }}</a> {{-- AuthenticationController --}}
                             <span class="text-muted">|</span>
-                        <a class="nav-link text-primary fw-bold px-1" href="{{ route('login') }}">Sign In</a> {{-- AuthenticationController --}}
+                        <a class="nav-link text-primary fw-bold px-1" href="{{ route('login') }}">{{ __('messages.nav.login') }}</a> {{-- AuthenticationController --}}
                     @endauth
                     </li>
                 </ul>

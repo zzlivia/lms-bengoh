@@ -102,11 +102,25 @@ class CourseController extends Controller
     //redirect user to start learning interface
     public function startLearning(Request $request, $id, $sectionId = null)
     {
-        $course = Course::with([
-            'modules.lectures.sections',
-            'modules.mcqs'
-        ])->findOrFail($id);
-
+        if (Auth::check()) {
+            $userId = Auth::id();
+            $modules = DB::table('module')->where('courseID', $id)->get();
+            foreach ($modules as $module) {
+                $exists = DB::table('enrolmentcoursemodule')->where('userID', $userId)->where('moduleID', $module->moduleID)->exists();
+                if (!$exists) {
+                    DB::table('enrolmentcoursemodule')->insert([
+                        'userID' => $userId,
+                        'courseID' => $id,
+                        'moduleID' => $module->moduleID,
+                        'isCompleted' => 0,
+                        'inProgress' => 1,
+                        'created_at' => now(),
+                        'updated_at' => now()
+                    ]);
+                }
+            }
+        }
+        $course = Course::with(['modules.lectures.sections','modules.mcqs'])->findOrFail($id);
         //collect all sections
         $sections = collect();
         foreach ($course->modules as $module) {

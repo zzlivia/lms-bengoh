@@ -299,9 +299,9 @@ class CourseController extends Controller
             'score' => $score,
             'total' => $total,
             'courseID' => $module->courseID,
-            'goFeedback' => route('feedback.page', $module->moduleID),
-            'reviewUrl' => route('review.mcq', $module->moduleID),
-            'attempts' => $attempts
+
+            'goFeedback' => route('course.feedback', $module->courseID),
+            'reviewUrl' => route('module.review', $module->moduleID)
         ]);
     }
 
@@ -316,12 +316,6 @@ class CourseController extends Controller
     {
         $course = Course::with('modules')->findOrFail($id);
         return view('learner.course_feedback', compact('course'));
-    }
-
-    public function showFeedback($id)
-    {
-        $module = Module::findOrFail($id);
-        return view('learner.course_feedback', compact('module'));
     }
 
     public function submitFeedback(Request $request, $id)

@@ -70,7 +70,7 @@
     <div class="certificate">
 
         <!-- watermark logo -->
-        <img src="{{ public_path('images/logo.png') }}" class="watermark">
+        <img src="{{ public_path('images/bengohdam-logo.png') }}" class="watermark">
 
         <div class="title">Certificate of Completion</div>
 

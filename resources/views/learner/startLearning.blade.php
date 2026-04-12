@@ -40,12 +40,13 @@
                             <h5 class="text-primary fw-bold">{{ $current->section_title }}</h5>
                             <div id="timer" class="fw-bold text-danger"></div>
                         </div>
-                        @if($current->section_type == 'video') {{-- video container --}}
+                        @if($current->section_type == 'video' && $current->section_file)
                             <div class="video-container mb-4">
-                                <div class="ratio ratio-16x9 bg-dark d-flex align-items-center justify-content-center rounded">
-                                    <span class="text-white">
-                                        <i class="fa fa-play-circle fa-3x"></i>
-                                    </span>
+                                <div class="ratio ratio-16x9">
+                                    <video controls class="w-100 h-100 rounded">
+                                        <source src="{{ asset('storage/' . $current->section_file) }}" type="video/mp4">
+                                        Your browser does not support the video tag.
+                                    </video>
                                 </div>
                             </div>
                         @endif

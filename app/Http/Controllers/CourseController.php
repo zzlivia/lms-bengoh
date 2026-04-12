@@ -294,12 +294,14 @@ class CourseController extends Controller
         //update progress with REAL score
         $this->updateProgress($module->courseID, 'MCQ' . $module->moduleID, $percentage);
 
+        //pass to the view
         return redirect()->back()->with([
             'score' => $score,
             'total' => $total,
             'courseID' => $module->courseID,
             'goFeedback' => route('feedback.page', $module->moduleID),
-            'reviewUrl' => route('review.mcq', $module->moduleID)
+            'reviewUrl' => route('review.mcq', $module->moduleID),
+            'attempts' => $attempts
         ]);
     }
 

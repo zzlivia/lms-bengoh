@@ -29,6 +29,12 @@ Route::get('/test-auth', function () {
 
 Route::get('/', fn () => view('homepage'));
 Route::get('/homepage', fn () => view('homepage'))->name('homepage');
+Route::get('/lang/{lang}', function ($lang) {
+        if (in_array($lang, ['en', 'ms', 'iban', 'bidayuh'])) {
+            session(['locale' => $lang]);
+        }
+        return redirect()->back();
+    })->name('lang.switch');
 
 /* authentication */
 

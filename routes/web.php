@@ -88,9 +88,7 @@ Route::get('/check-mail', function () {
 /* courses */
 Route::get('/courses', [CourseController::class, 'allCourses'])->name('courses.allCourses');
 Route::get('/courses/{id}', [CourseController::class, 'showCourse'])->name('courses.showCourse');
-Route::middleware('auth')->get('/courses/{id}/startLearn/{sectionId?}', 
-    [CourseController::class, 'startLearning']
-)->name('learn');
+Route::get('/courses/{id}/startLearn/{sectionId?}', [CourseController::class, 'startLearning'])->name('learn');
 
 /* MCQs */
 Route::get('/module/{id}/mcqs', [CourseController::class, 'showMCQS'])->name('mcq.module'); 

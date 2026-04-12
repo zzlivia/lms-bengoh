@@ -1,3 +1,4 @@
+<?php
 return [
     'nav' => [
         'home' => 'Home',

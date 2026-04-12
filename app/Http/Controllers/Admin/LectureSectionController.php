@@ -6,6 +6,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Lecture;
+use App\Models\LearningMaterials;
+use App\Models\VideoLearning;
 use App\Models\LectureSection;
 use Illuminate\Support\Facades\Storage;
 
@@ -33,8 +35,9 @@ class LectureSectionController extends Controller
         if($request->hasFile('section_file')){ //store file in storage/app/public/lecture_sections
             $filePath = $request->file('section_file')->store('lecture_sections','public');
         }
-        //create new record in db
-        LectureSection::create([
+
+        //create section first
+        $section = LectureSection::create([
             'lectID' => $request->lectID,
             'section_title' => $request->section_title,
             'section_type' => $request->section_type,
@@ -42,6 +45,29 @@ class LectureSectionController extends Controller
             'section_file' => $filePath,
             'section_order' => $request->section_order ?? 1
         ]);
+
+        //if it's a VIDEO → save into other tables
+        if ($request->section_type === 'video' && $filePath) {
+
+            //save into learningmaterials
+            $material = LearningMaterials::create([
+                'lectID' => $request->lectID,
+                'learningMaterialTitle' => $request->section_title,
+                'learningMaterialDesc' => 'Video material',
+                'learningMaterialType' => 'video',
+                'storagePath' => $filePath
+            ]);
+
+            //save into videolearning
+            VideoLearning::create([
+                'learningMaterialID' => $material->learningMaterialID,
+                'videoLearningName' => $request->section_title,
+                'videoLearningPath' => $filePath,
+                'videoLearningDesc' => 'Video lesson',
+                'videoLearningDuration' => null,
+                'videoLearningResolution' => null
+            ]);
+        }
         //redirect back
         return redirect()->back()->with('success','Section added successfully');
     }
@@ -57,26 +83,73 @@ class LectureSectionController extends Controller
         $request->validate([
             'section_title' => 'required',
             'section_content' => 'nullable',
-            'section_file' => 'nullable|file',
-            'section_type' => 'required'
+            'section_file' => 'nullable|file|mimes:mp4,mov,avi,pdf,jpg,png',
+            'section_type' => 'required|in:text,video,pdf,image'
         ]);
 
         $section = LectureSection::findOrFail($id);
+        $oldFile = $section->section_file;
 
+        // update basic fields
         $section->section_title = $request->section_title;
-        if ($request->hasFile('section_file')) {
-            // delete old file
-            if ($section->section_file) {
-                Storage::disk('public')->delete($section->section_file);
-            }
-            // store new file
-            $filePath = $request->file('section_file')->store('lecture_sections','public');
-            $section->section_file = $filePath;
-        }
         $section->section_content = $request->section_content;
         $section->section_type = $request->section_type;
 
+        // handle new file upload
+        if ($request->hasFile('section_file')) {
+            // delete old file
+            if ($oldFile) {
+                Storage::disk('public')->delete($oldFile);
+            }
+            // store new file
+            $filePath = $request->file('section_file')->store('lecture_sections', 'public');
+            $section->section_file = $filePath;
+        } else {
+            $filePath = $section->section_file;
+        }
         $section->save();
+        //sync learningmaterials + videolearning
+        if ($section->section_type === 'video' && $filePath) {
+
+            //update or create learning material
+            $material = LearningMaterials::updateOrCreate(
+                [
+                    'lectID' => $section->lectID,
+                    'learningMaterialTitle' => $section->section_title
+                ],
+                [
+                    'learningMaterialDesc' => 'Video material',
+                    'learningMaterialType' => 'video',
+                    'storagePath' => $filePath
+                ]
+            );
+
+            //update or create video learning
+            VideoLearning::updateOrCreate(
+                [
+                    'learningMaterialID' => $material->learningMaterialID
+                ],
+                [
+                    'videoLearningName' => $section->section_title,
+                    'videoLearningPath' => $filePath,
+                    'videoLearningDesc' => 'Video lesson',
+                    'videoLearningDuration' => null,
+                    'videoLearningResolution' => null
+                ]
+            );
+
+        } else {
+            //if changed from video → text/pdf/image, old records will be cleaned up
+
+            $material = LearningMaterials::where('lectID', $section->lectID)
+                ->where('learningMaterialTitle', $section->section_title)
+                ->first();
+
+            if ($material) {
+                VideoLearning::where('learningMaterialID', $material->learningMaterialID)->delete();
+                $material->delete();
+            }
+        }
 
         return back()->with('success', 'Section updated successfully');
     }

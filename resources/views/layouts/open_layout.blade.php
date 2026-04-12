@@ -50,9 +50,20 @@
                     <li class="nav-item dropdown mx-2">
                         <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Language</a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#" onclick="setLanguage('en-US', 'English')">English</a></li>
-                            <li><a class="dropdown-item" href="#" onclick="setLanguage('ms-MY', 'Bahasa Melayu')">Bahasa Melayu</a></li>
-                            <li><a class="dropdown-item" href="#" onclick="setLanguage('ms-MY', 'Iban')">Iban</a></li>
+                            <li>
+                                <a class="dropdown-item" href="{{ route('lang.switch', 'en') }}">English</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{{ route('lang.switch', 'ms') }}">Bahasa Melayu</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{{ route('lang.switch', 'iban') }}">Iban</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{{ route('lang.switch', 'bidayuh') }}">
+                                    Bidayuh
+                                </a>
+                            </li>
                         </ul>
                     </li>
                     {{-- authentication --}}

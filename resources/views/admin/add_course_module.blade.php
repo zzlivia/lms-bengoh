@@ -558,19 +558,26 @@
 
     <script>
         function generateAIQuestions() {
-            let content = document.querySelector('textarea[name="section_content"]');
+            let moduleID = document.querySelector('select[name="moduleID"]').value;
 
-            if (!content || !content.value.trim()) {
-                alert("Please enter section content first!");
+            if (!moduleID) {
+                alert("Please select a module first!");
                 return;
             }
 
-            console.log("Content sent to AI:", content.value);
-
-            // TEMP: just test first
-            alert("AI button clicked! Next step we connect to backend.");
+            fetch(`/admin/generate-ai-mcq/${moduleID}`)
+                .then(res => res.json())
+                .then(data => {
+                    alert("AI Questions Generated & Saved!");
+                    console.log(data);
+                    location.reload(); // refresh table
+                })
+                .catch(err => {
+                    console.error(err);
+                    alert("Something went wrong!");
+                });
         }
     </script>
-    
+
     @stack('scripts')
 @endsection

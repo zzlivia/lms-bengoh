@@ -566,17 +566,37 @@
                 return;
             }
 
-            fetch(`/admin/generate-ai-mcq/${moduleID}`)
-                .then(res => res.json())
-                .then(data => {
-                    alert("AI Questions Generated & Saved!");
-                    console.log(data);
-                    location.reload(); // refresh table
+            // 🔹 NEW: ask admin for number of questions
+            let num = prompt("Enter number of questions to generate:");
+
+            if (!num || isNaN(num) || num <= 0) {
+                alert("Please enter a valid number!");
+                return;
+            }
+
+            fetch(`/admin/generate-ai-mcq/${moduleID}`, {
+                method: "POST", // 🔹 IMPORTANT: change to POST
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
+                },
+                body: JSON.stringify({
+                    count: parseInt(num)
                 })
-                .catch(err => {
-                    console.error(err);
-                    alert("Something went wrong!");
-                });
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    alert("AI Questions Generated & Saved!");
+                    location.reload();
+                } else {
+                    alert(data.error || "Failed to generate questions");
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                alert("Something went wrong!");
+            });
         }
     </script>
 

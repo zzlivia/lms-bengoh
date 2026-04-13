@@ -266,65 +266,41 @@ class AdminController extends Controller
         return $questions;
     }
 
-    private function generateWithAI($content)
+    private function generateWithAI($content, $count = 3)
     {
-        $response = Http::withHeaders([
-            'Authorization' => 'Bearer ' . env('OPENAI_API_KEY'),
-            'Content-Type' => 'application/json',
-        ])->post('https://api.openai.com/v1/chat/completions', [
-            'model' => 'gpt-4.1-mini',
-            'messages' => [
-                [
-                    'role' => 'system',
-                    'content' => 'You generate multiple choice questions.'
-                ],
-                [
-                    'role' => 'user',
-                    'content' => "Generate 3 MCQ questions based on this content.
-
-    Return ONLY JSON like:
-    [
-    {
-        \"question\": \"...\",
-        \"answers\": [\"...\",\"...\",\"...\",\"...\"],
-        \"correct\": 0
-    }
-    ]
-
-    Content:
-    " . substr($content, 0, 1500)
-                ]
-            ],
-            'temperature' => 0.7,
-        ]);
-
+        $response = Http::withHeaders(['Authorization' => 'Bearer ' . env('OPENAI_API_KEY'),'Content-Type' => 'application/json',])
+        ->post('https://api.openai.com/v1/chat/completions', [
+            'model' => 'gpt-4.1-mini','messages' => [
+                ['role' => 'system','content' => 'You generate multiple choice questions.'],
+                ['role' => 'user','content' => "Generate {$count} MCQ questions based on this content.
+                    Return ONLY JSON like:
+                    [{
+                        \"question\": \"...\",
+                        \"answers\": [\"...\",\"...\",\"...\",\"...\"],
+                        \"correct\": 0
+                    }]
+                    Content:" . substr($content, 0, 1500)]],'temperature' => 0.7,]);
         $data = $response->json();
-
         $aiText = $data['choices'][0]['message']['content'] ?? '';
-
         $questions = json_decode($aiText, true);
-
         if (!$questions) {
             throw new \Exception("Invalid AI response: " . $aiText);
         }
-
         return $questions;
     }
 
-    public function generateAI($moduleID)
+    public function generateAI(Request $request, $moduleID)
     {
+        $count = min((int) $request->input('count', 3), 20); //min 3, max 20
         try {
             $lectures = Lecture::where('moduleID', $moduleID)->pluck('lectID');
-
             $contents = LectureSection::whereIn('lectID', $lectures)
                 ->pluck('section_content')
                 ->implode("\n");
-
             if (!$contents) {
                 return response()->json(['error' => 'No content found'], 400);
             }
-
-            $questions = $this->generateWithAI($contents);
+            $questions = $this->generateWithAI($contents, $count);
 
             //get existing MCQs for this module
             $existingMcqs = Mcqs::where('moduleID', $moduleID)

@@ -246,22 +246,12 @@ class AdminController extends Controller
         return redirect()->route('admin.course.module')->with('success','Course deleted successfully');
     }
 
-    private function mockAI($content)
+    private function mockAI($content, $count = 3)
     {
         $questions = [];
-        for ($i = 1; $i <= 3; $i++) {
-            $answers = [
-                "Correct Answer $i",
-                "Wrong Answer A$i",
-                "Wrong Answer B$i",
-                "Wrong Answer C$i"
-            ];
-
-            $questions[] = [
-                'question' => "AI Question $i based on: " . substr($content, 0, 50),
-                'answers' => $answers,
-                'correct' => 0
-            ];
+        for ($i = 1; $i <= $count; $i++) {
+            $answers = ["Correct Answer $i","Wrong Answer A$i","Wrong Answer B$i","Wrong Answer C$i"];
+            $questions[] = ['question' => "AI Question $i based on: " . substr($content, 0, 50),'answers' => $answers,'correct' => 0];
         }
         return $questions;
     }

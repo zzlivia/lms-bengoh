@@ -389,22 +389,46 @@ class AdminController extends Controller
         }
         return back()->with('success', 'Materials added successfully!');
     }
-    public function progress() //user progress status
+    public function progress()
     {
-        $totalProgress = Progress::count(); 
-        //count statuses
+        //course progress
+        $totalProgress = Progress::count();
         $notStarted = Progress::where('progressStatus', 'Not Started')->count();
         $inProgress = Progress::where('progressStatus', 'In Progress')->count();
-        $completed = Progress::where('progressStatus', 'Completed')->count();
-        //convert to percentage
-        $notStartedPercent = $totalProgress > 0 ? round(($notStarted / $totalProgress) * 100) : 0;
-        $inProgressPercent = $totalProgress > 0 ? round(($inProgress / $totalProgress) * 100) : 0;
-        $completedPercent = $totalProgress > 0 ? round(($completed / $totalProgress) * 100) : 0;
-
-        return view('admin.progress', compact('notStartedPercent','inProgressPercent','completedPercent'
+        $completed = Progress::where('progressStatus', 'completed')->count();
+        $notStartedPercent = $totalProgress ? round(($notStarted / $totalProgress) * 100) : 0;
+        $inProgressPercent = $totalProgress ? round(($inProgress / $totalProgress) * 100) : 0;
+        $completedPercent = $totalProgress ? round(($completed / $totalProgress) * 100) : 0;
+        //mcqs progress
+        $totalMcq = AssessmentResult::where('type', 'mcq')->count();
+        $mcqAttemptedCount = AssessmentResult::where('type', 'mcq')->where('attempts', '>', 0)->count();
+        $mcqNotAttemptedCount = AssessmentResult::where('type', 'mcq')->where('attempts', 0)->count();
+        $mcqAttempted = $totalMcq ? round(($mcqAttemptedCount / $totalMcq) * 100) : 0;
+        $mcqNotAttempted = $totalMcq ? round(($mcqNotAttemptedCount / $totalMcq) * 100) : 0;
+        $mcqAssigned = 100;
+        //course assessment
+        $totalAssessments = AssessmentResult::where('type', 'final')->count();
+        $assessmentCompletedCount = AssessmentResult::where('type', 'final')->where('status', 'pass')->count();
+        $assessmentPendingCount = AssessmentResult::where('type', 'final')->where('status', '!=', 'pass')->count();
+        $assessmentCompleted = $totalAssessments ? round(($assessmentCompletedCount / $totalAssessments) * 100) : 0;
+        $assessmentPending = $totalAssessments ? round(($assessmentPendingCount / $totalAssessments) * 100) : 0;
+        $assessmentNotStarted = 0;
+        //average score
+        $averageScore = round(AssessmentResult::avg('score') ?? 0);
+        return view('admin.progress', compact(
+            'notStartedPercent',
+            'inProgressPercent',
+            'completedPercent',
+            'mcqAttempted',
+            'mcqNotAttempted',
+            'mcqAssigned',
+            'assessmentCompleted',
+            'assessmentPending',
+            'assessmentNotStarted',
+            'averageScore'
         ));
     }
-
+    
     public function announcements()
     {
         //newest announcements always appear first

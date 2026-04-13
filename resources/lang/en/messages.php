@@ -13,3 +13,5 @@ return [
         'register' => 'Register',
     ],
 ];
+
+?>

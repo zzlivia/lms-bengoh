@@ -12,3 +12,4 @@ return [
         'register' => 'Daftar',
     ],
 ];
+?>

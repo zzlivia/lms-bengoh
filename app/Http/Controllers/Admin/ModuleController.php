@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller; //base controller
 use App\Models\Course;
 use App\Models\Module;
 use App\Models\Lecture;
+use App\Models\Mcqs;
 use App\Models\LectureSection;
 use Illuminate\Http\Request; //handles form requests
 use Illuminate\Support\Facades\DB;
@@ -159,13 +160,9 @@ class ModuleController extends Controller
 
     public function previewMCQ($moduleID)
     {
-        $questions = DB::table('mcqs as q')
-            ->leftJoin('moduleans as a', 'q.moduleQs_ID', '=', 'a.moduleQs_ID')
-            ->where('q.moduleID', $moduleID)
-            ->orderBy('q.moduleQs_ID')
-            ->orderBy('a.ansID')
-            ->get()
-            ->groupBy('moduleQs_ID');
+        $questions = Mcqs::where('moduleID', $moduleID)
+            ->orderBy('moduleQs_ID')
+            ->get();
 
         return view('admin.preview', compact('questions'));
     }

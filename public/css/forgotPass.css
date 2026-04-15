@@ -108,3 +108,15 @@
     text-align: center;
     margin-top: 8px;
 }
+
+.toggle-password {
+    position: absolute;
+    top: 38px;
+    right: 15px;
+    cursor: pointer;
+    color: #6c757d;
+}
+
+.toggle-password:hover {
+    color: #000;
+}

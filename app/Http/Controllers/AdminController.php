@@ -296,7 +296,7 @@ class AdminController extends Controller
             foreach ($existingMcqs as $index => $mcq) {
                 if (isset($questions[$index])) {$q = $questions[$index];
                     $mcq->update([
-                        'question' => $q['question'],'answer1' => $q['answers'][0],'answer2' => $q['answers'][1],'answer3' => $q['answers'][2],
+                        'moduleQs' => $mcq->moduleQs ?? null, 'question' => $q['question'],'answer1' => $q['answers'][0],'answer2' => $q['answers'][1],'answer3' => $q['answers'][2],
                                       'answer4' => $q['answers'][3],'correct_answer' => $q['correct'],
                     ]);
                 }

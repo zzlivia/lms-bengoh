@@ -75,6 +75,9 @@ Route::post('/forgot-password', [AuthenticationController::class, 'requestReset'
 Route::get('/password/change', [AuthenticationController::class, 'showChangePassword'])
     ->name('password.change');
 
+Route::post('/password/change', [AuthenticationController::class, 'updatePassword'])
+    ->name('password.update');
+
 Route::get('/check-mail', function () {
     return config('mail.mailers.smtp.password');
 });

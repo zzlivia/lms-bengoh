@@ -284,30 +284,20 @@ class AdminController extends Controller
         $count = min((int) $request->input('count', 3), 20); //min 3, max 20
         try {
             $lectures = Lecture::where('moduleID', $moduleID)->pluck('lectID');
-            $contents = LectureSection::whereIn('lectID', $lectures)
-                ->pluck('section_content')
-                ->implode("\n");
+            $contents = LectureSection::whereIn('lectID', $lectures)->pluck('section_content')->implode("\n");
             if (!$contents) {
                 return response()->json(['error' => 'No content found'], 400);
             }
             $questions = $this->generateWithAI($contents, $count);
-
             //get existing MCQs for this module
             $existingMcqs = Mcqs::where('moduleID', $moduleID)
-                ->orderBy('moduleQs_ID') // or your primary key
-                ->get()
-                ->values();
+                ->orderBy('moduleQs_ID')->get()->values();
 
             foreach ($existingMcqs as $index => $mcq) {
-                if (isset($questions[$index])) {
-                    $q = $questions[$index];
+                if (isset($questions[$index])) {$q = $questions[$index];
                     $mcq->update([
-                        'question' => $q['question'],
-                        'answer1' => $q['answers'][0],
-                        'answer2' => $q['answers'][1],
-                        'answer3' => $q['answers'][2],
-                        'answer4' => $q['answers'][3],
-                        'correct_answer' => $q['correct'],
+                        'question' => $q['question'],'answer1' => $q['answers'][0],'answer2' => $q['answers'][1],'answer3' => $q['answers'][2],
+                                      'answer4' => $q['answers'][3],'correct_answer' => $q['correct'],
                     ]);
                 }
             }
@@ -317,22 +307,16 @@ class AdminController extends Controller
                 for ($i = $existingMcqs->count(); $i < count($questions); $i++) {
                     $q = $questions[$i];
                     Mcqs::create([
-                        'moduleID' => $moduleID,
-                        'question' => $q['question'],
-                        'answer1' => $q['answers'][0],
-                        'answer2' => $q['answers'][1],
-                        'answer3' => $q['answers'][2],
-                        'answer4' => $q['answers'][3],
-                        'correct_answer' => $q['correct'],
+                        'moduleID' => $moduleID, 'moduleQs' => null, 'question' 
+                        => $q['question'],'answer1' => $q['answers'][0],'answer2' => $q['answers'][1],
+                            'answer3' => $q['answers'][2],'answer4' => $q['answers'][3],'correct_answer' => $q['correct'],
                     ]);
                 }
             }
             return response()->json(['success' => true]);
 
         } catch (\Exception $e) {
-            return response()->json([
-                'error' => $e->getMessage()
-            ], 500);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
     }
     

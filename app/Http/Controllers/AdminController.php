@@ -307,7 +307,7 @@ class AdminController extends Controller
                 for ($i = $existingMcqs->count(); $i < count($questions); $i++) {
                     $q = $questions[$i];
                     Mcqs::create([
-                        'moduleID' => $moduleID, 'moduleQs' => null, 'question' 
+                        'moduleID' => $moduleID, 'moduleQs' => $q['question'], 'question' 
                         => $q['question'],'answer1' => $q['answers'][0],'answer2' => $q['answers'][1],
                             'answer3' => $q['answers'][2],'answer4' => $q['answers'][3],'correct_answer' => $q['correct'],
                     ]);

@@ -160,7 +160,7 @@ class ModuleController extends Controller
     public function previewMCQ($moduleID)
     {
         $questions = DB::table('mcqs as q')
-            ->join('moduleans as a', 'q.moduleQs_ID', '=', 'a.moduleQs_ID')
+            ->leftJoin('moduleans as a', 'q.moduleQs_ID', '=', 'a.moduleQs_ID')
             ->where('q.moduleID', $moduleID)
             ->orderBy('q.moduleQs_ID')
             ->orderBy('a.ansID')

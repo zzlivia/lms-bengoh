@@ -8,17 +8,14 @@
         </a>
     </div>
     <h3>MCQ Preview</h3>
-
-    @foreach($questions as $qID => $answers)
+    @foreach($questions as $q)
         <div class="card mb-3 p-3">
             <h5>
-                {{ $loop->iteration }}. 
-                {{-- if AI exist, shows the questions but if not generated, show manual questions instead --}}
-                {{ $answers[0]->question ?? $answers[0]->moduleQs }} {{-- either manual question or AI generated question --}}
+                {{ $loop->iteration }}.
+                {{ $q->question ?? $q->moduleQs }}
             </h5>
 
             @php
-                $q = $answers[0];
                 $options = [
                     $q->answer1,
                     $q->answer2,

@@ -99,11 +99,9 @@ class AuthenticationController extends Controller
         if (filter_var($login, FILTER_VALIDATE_EMAIL)) {
             $user = DB::table('users')->where('userEmail', $login)->first();
         } else {
-            $user = DB::table('users')
-                ->where('userEmail', $login)
-                ->orWhere('phone', $login)
-                ->first();
+            $user = DB::table('users')->where('phone', $login)->first();
         }
+
         if (!$user) {
             return back()->withErrors(['login' => 'User not found']);
         }
@@ -123,7 +121,7 @@ class AuthenticationController extends Controller
         // send email
         Mail::raw("Your temporary password is: $tempPassword", function ($message) use ($user) {
             $message->to($user->userEmail)
-                    ->subject('Temporary Password');
+                    ->subject('Temporary Password of Bengoh Academy Account');
         });
 
         return back()->with('success', 'Temporary password sent to your email.');

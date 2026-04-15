@@ -72,14 +72,8 @@ Route::get('/forgot-password', [AuthenticationController::class, 'showForgotPass
 Route::post('/forgot-password', [AuthenticationController::class, 'requestReset'])
     ->name('password.sendTemp');
 
-Route::get('/test-mail', function () {
-    Mail::raw('Test email from Laravel', function ($message) {
-        $message->to('geemajovinus@gmail.com')
-                ->subject('Test Email');
-    });
-
-    return 'Email sent!';
-});
+Route::get('/password/change', [AuthenticationController::class, 'showChangePassword'])
+    ->name('password.change');
 
 Route::get('/check-mail', function () {
     return config('mail.mailers.smtp.password');

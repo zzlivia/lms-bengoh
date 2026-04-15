@@ -131,4 +131,23 @@ class AuthenticationController extends Controller
     {
         return view('authentication.forgot_password');
     }
+
+    public function showChangePassword()
+    {
+        return view('authentication.change_password');
+    }
+
+    public function updatePassword(Request $request)
+    {
+        $request->validate([
+            'password' => 'required|min:6|confirmed'
+        ]);
+
+        $user = Auth::user();
+        $user->userPass = Hash::make($request->password);
+        $user->must_change_password = 0;
+        $user->save();
+        return redirect()->route('homepage')->with('success', 'Password updated successfully.');
+    }
+
 }

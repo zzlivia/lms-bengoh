@@ -48,13 +48,8 @@
                     <div class="mb-2">{{--password input--}}
                         <label class="form-label small fw-bold">Password</label>
                         <div class="input-group">
-                            <input type="password"
-                                id="password"
-                                name="password"
-                                class="form-control @error('password') is-invalid @enderror"
-                                placeholder="••••••••"
-                                autocomplete="off"
-                                required>
+                            <input type="password" id="password" name="password" class="form-control @error('password') is-invalid @enderror" placeholder="••••••••"
+                                 autocomplete="off" required>
                             <span class="input-group-text" id="togglePassword" style="cursor: pointer;">
                                 <i class="bi bi-eye"></i>
                             </span>

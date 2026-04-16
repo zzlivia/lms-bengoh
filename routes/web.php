@@ -13,6 +13,7 @@ use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\AdminSettingsController;
 use App\Http\Controllers\Admin\CourseAssAdminController;
 use App\Http\Controllers\AssessmentController;
+use App\Http\Controllers\CommunityController;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Http;
 
@@ -184,6 +185,9 @@ Route::prefix('settings')->name('settings.')->group(function () {
 /* community stories*/
 
 Route::get('/community-stories', [CommunityStoryController::class, 'index'])
+    ->name('community.stories');
+
+Route::get('/community-stories', [CommunityController::class, 'index'])
     ->name('community.stories');
 
 /* admin authentication*/

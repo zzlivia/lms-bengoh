@@ -4,7 +4,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\Admin\CommunityStoryController;
-use App\Http\Controllers\Admin\CommunityStoryController as AdminCommunityStoryController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Admin\LectureSectionController;
 use Illuminate\Support\Facades\Artisan;
@@ -51,10 +50,14 @@ Route::get('/test-ai', function () {
 
 Route::get('/', function () {
     $stories = CommunityStory::latest()->get();
-
     return view('homepage', compact('stories'));
 });
-Route::get('/homepage', fn () => view('homepage'))->name('homepage');
+
+Route::get('/homepage', function () {
+    $stories = CommunityStory::latest()->get();
+    return view('homepage', compact('stories'));
+})->name('homepage');
+
 Route::get('/lang/{lang}', function ($lang) {
         if (in_array($lang, ['en', 'ms', 'iban', 'biatah'])) {
             session(['locale' => $lang]);

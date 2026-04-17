@@ -122,7 +122,7 @@ class CourseController extends Controller
                 }
             }
         }
-        $course = Course::with(['modules.lectures.sections','modules.mcqs'])->findOrFail($id);
+        $course = Course::with(['modules.lectures.sections','modules.mcqs'])->where('courseID', $id)->firstOrFail();
         //collect all sections
         $sections = collect();
         foreach ($course->modules as $module) {

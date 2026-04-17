@@ -29,7 +29,6 @@ main {
     text-align: center;
     height: 100%;
 }
-
 .course-card {
     border: 1px solid #ccc;
     border-radius: 10px;
@@ -37,6 +36,8 @@ main {
     background: #fff;
     text-align: center;
     height: 100%;
+    transition: all 0.3s ease;
+    cursor: pointer;
 }
 
 .course-card img {
@@ -44,6 +45,12 @@ main {
     height: 150px;
     object-fit: cover;
     border-radius: 8px;
+}
+
+.course-card:hover {
+    transform: translateY(-5px) scale(1.03);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    border-color: #00aaff;
 }
 
 .story-card,

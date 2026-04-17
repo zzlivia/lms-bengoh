@@ -189,9 +189,6 @@ Route::prefix('settings')->name('settings.')->group(function () {
 
 /* community stories*/
 
-Route::get('/community-stories', [CommunityStoryController::class, 'index'])
-    ->name('community.stories');
-
 Route::get('/community-stories', [CommunityController::class, 'index'])
     ->name('community.stories');
 
@@ -393,10 +390,6 @@ Route::prefix('admin')
     Route::get('/feedback', [AdminController::class, 'feedbackList'])->name('feedback');
 
     /* community stories that controlled by admin*/
-    Route::get('/stories', [AdminCommunityStoryController::class, 'index'])->name('stories.index');
-    Route::get('/stories/create', [AdminCommunityStoryController::class, 'create'])->name('stories.create');
-    Route::post('/stories', [AdminCommunityStoryController::class, 'store'])->name('stories.store');
-    Route::get('/stories/{id}/edit', [AdminCommunityStoryController::class, 'edit'])->name('stories.edit');
-    Route::put('/stories/{id}', [AdminCommunityStoryController::class, 'update'])->name('stories.update');
-    Route::delete('/stories/{id}', [AdminCommunityStoryController::class, 'destroy'])->name('stories.destroy');
+    Route::get('/community-stories', [CommunityStoryController::class, 'index'])
+        ->name('admin.community.stories');
 });

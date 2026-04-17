@@ -14,6 +14,7 @@ use App\Http\Controllers\AdminSettingsController;
 use App\Http\Controllers\Admin\CourseAssAdminController;
 use App\Http\Controllers\AssessmentController;
 use App\Http\Controllers\CommunityController;
+use App\Models\CommunityStory;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Http;
 
@@ -48,7 +49,11 @@ Route::get('/test-ai', function () {
 
 /* public route */
 
-Route::get('/', fn () => view('homepage'));
+Route::get('/', function () {
+    $stories = CommunityStory::latest()->get();
+
+    return view('homepage', compact('stories'));
+});
 Route::get('/homepage', fn () => view('homepage'))->name('homepage');
 Route::get('/lang/{lang}', function ($lang) {
         if (in_array($lang, ['en', 'ms', 'iban', 'biatah'])) {

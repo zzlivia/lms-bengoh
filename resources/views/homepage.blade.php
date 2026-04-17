@@ -62,28 +62,33 @@
     {{-- community stories section --}}
     <h5 class="text-center mb-4 fw-bold">Community Story</h5>
     <div class="row mb-3 justify-content-center">
-        <div class="col-md-5 mb-3">
-            <div class="story-card d-flex align-items-center">
-                <i class="fa-solid fa-user-tie profile-icon me-3"></i>
-                <div>
-                    <h6 class="fw-bold mb-1">Atta Anak Peter</h6>
-                    <p class="small mb-0">"Thanks to Bengoh Academy, I launched a homestay."</p>
+        @forelse($stories->take(2) as $story)
+            <div class="col-md-5 mb-3">
+                <div class="story-card d-flex align-items-center">
+                    {{-- image --}}
+                    @if($story->community_image)
+                        <img src="{{ asset('storage/' . $story->community_image) }}" 
+                            class="profile-icon me-3 rounded" width="60" height="60" style="object-fit: cover;">
+                    @else
+                        <i class="fa-solid fa-user-tie profile-icon me-3"></i>
+                    @endif
+                    {{-- content --}}
+                    <div>
+                        <h6 class="fw-bold mb-1">{{ $story->community_name }}</h6>
+                        <p class="small mb-0">"{{ $story->community_story }}"</p>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="col-md-5 mb-3">
-            <div class="story-card d-flex align-items-center">
-                <i class="fa-solid fa-user-tie profile-icon me-3"></i>
-                <div>
-                    <h6 class="fw-bold mb-1">Oscar Anak Isah</h6>
-                    <p class="small mb-0">"Thanks to Bengoh Academy, I learned a lot on customer service and communication skills."</p>
-                </div>
-            </div>
-        </div>
+        @empty
+            <div class="col-12 text-center"><p class="text-muted">No community stories available yet.</p></div>
+        @endforelse
     </div>
+
     {{-- link to community stories section --}}
     <div class="text-center mb-5">
-        <a href="#" class="text-primary small text-decoration-underline">Read More Community Stories</a>
+        <a href="{{ route('community.stories') }}" class="text-primary small text-decoration-underline">
+            Read More Community Stories
+        </a>
     </div>
 
     {{-- histories of the Bengoh Dam --}}

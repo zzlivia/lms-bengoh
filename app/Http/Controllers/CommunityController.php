@@ -9,6 +9,6 @@ class CommunityController extends Controller
     public function index()
     {
         $stories = CommunityStory::latest()->get();
-        return view('community', compact('stories'));
+        return view('learner.community', compact('stories'));
     }
 }

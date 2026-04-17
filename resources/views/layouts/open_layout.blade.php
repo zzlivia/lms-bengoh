@@ -70,8 +70,7 @@
 
                     <li class="nav-item mx-2" x-data="{ open: false }">
                         <i class="bi bi-bell nav-link" @click="open = !open" style="cursor:pointer;"></i>
-
-                        <div x-show="open" @click.outside="open = false" class="dropdown-menu show position-absolute">
+                        <div x-show="open" x-transition x-cloak @click.outside="open = false" class="dropdown-menu position-absolute">
                             <p class="px-3 mb-0">No new notifications</p>
                         </div>
                     </li>

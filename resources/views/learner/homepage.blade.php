@@ -33,24 +33,26 @@
         </div>
     </div>
 
-    {{-- featured courses - fetch top 4 courses from database --}}
-    <h5 class="mb-3 fw-bold">Featured Courses</h5>
-
-    <div class="row">
-    @foreach(\App\Models\Course::where('isAvailable', 1)->take(4)->get() as $course)
-
-    <div class="col-md-3 mb-3">
-        <div class="course-card">
-            <img src="{{ asset('storage/' . $course->courseImg) }}" alt="{{ $course->courseName }}">
-            <h6 class="mt-2 fw-bold">{{ $course->courseName }}</h6>
+    
+    {{-- featured courses --}}
+    <div class="mt-5">
+        <h5 class="mb-3 fw-bold">Featured Courses</h5>
+        <div class="row justify-content-center text-center">
+            @foreach(\App\Models\Course::where('isAvailable', 1)->take(4)->get() as $course)
+                <div class="col-auto mb-3">
+                    <a href="{{ route('courses.showCourse', $course->courseID) }}" class="text-decoration-none">
+                        <div class="course-card">
+                            <img src="{{ asset($course->courseImg) }}" alt="">
+                            <h5>{{ $course->courseName }}</h5>
+                        </div>
+                    </a>
+                </div>
+            @endforeach
         </div>
     </div>
 
-    @endforeach
-    </div>
-
     {{-- button --}}
-    <a href="{{ route('courses.allCourses') }}" onclick="window.location.href='{{ route('courses.allCourses') }}'; return true;" class="btn btn-primary"></a>
+    <a href="{{ route('courses.allCourses') }}" class="btn btn-primary">
         View All Courses
     </a>
 

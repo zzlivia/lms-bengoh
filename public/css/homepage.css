@@ -149,3 +149,8 @@ a {
 .btn-nav {
     min-width: 120px;
 }
+
+h5 + .row {
+    position: relative;
+    z-index: 10;
+}

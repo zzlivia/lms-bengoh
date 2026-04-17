@@ -108,9 +108,9 @@ class CourseController extends Controller
             $userId = Auth::id();
             $modules = DB::table('module')->where('courseID', $id)->get();
             foreach ($modules as $module) {
-                $exists = DB::table('enrolmentcoursemodule')->where('userID', $userId)->where('moduleID', $module->moduleID)->exists();
+                $exists = DB::table('enrolmentcoursemodules')->where('userID', $userId)->where('moduleID', $module->moduleID)->exists();
                 if (!$exists) {
-                    DB::table('enrolmentcoursemodule')->insert([
+                    DB::table('enrolmentcoursemodules')->insert([
                         'userID' => $userId,
                         'courseID' => $id,
                         'moduleID' => $module->moduleID,

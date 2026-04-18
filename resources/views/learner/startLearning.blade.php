@@ -224,26 +224,18 @@
         @endif
     </script>
 
-    <script> //save current section
+    <script>
+        const sectionKey = "last_section_{{ auth()->id() }}_{{ $course->courseID }}";
         @if($current)
-            const sectionKey = "last_section_{{ auth()->id() }}_{{ $course->courseID }}";
-
             // save current section
             localStorage.setItem(sectionKey, "{{ $current->sectionID }}");
         @endif
-    </script>
-
-    <script> //resume automatice once user back logged in
-        const sectionKey = "last_section_{{ auth()->id() }}_{{ $course->courseID }}";
+        // resume automatically once user returns
         const savedSection = localStorage.getItem(sectionKey);
-
-        // check if URL already has sectionId
         const urlParams = new URLSearchParams(window.location.search);
         const currentSectionId = urlParams.get('sectionId');
-
         if (!currentSectionId && savedSection) {
             window.location.href = `?sectionId=${savedSection}`;
         }
     </script>
-
 @endsection

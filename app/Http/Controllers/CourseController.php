@@ -102,13 +102,21 @@ class CourseController extends Controller
     }
     
     //redirect user to start learning interface
-    public function startLearning(Request $request, $id, $sectionId = null)
+    public function startLearning(Request $request, $id)
     {
+        //get sectionId from query instead of route param
+        $sectionId = $request->query('sectionId');
+
         if (Auth::check()) {
             $userId = Auth::id();
             $modules = DB::table('module')->where('courseID', $id)->get();
+
             foreach ($modules as $module) {
-                $exists = DB::table('enrolmentcoursemodules')->where('userID', $userId)->where('moduleID', $module->moduleID)->exists();
+                $exists = DB::table('enrolmentcoursemodules')
+                    ->where('userID', $userId)
+                    ->where('moduleID', $module->moduleID)
+                    ->exists();
+
                 if (!$exists) {
                     DB::table('enrolmentcoursemodules')->insert([
                         'userID' => $userId,
@@ -122,8 +130,12 @@ class CourseController extends Controller
                 }
             }
         }
-        $course = Course::with(['modules.lectures.sections','modules.mcqs'])->where('courseID', $id)->firstOrFail();
-        //collect all sections
+
+        $course = Course::with(['modules.lectures.sections','modules.mcqs'])
+            ->where('courseID', $id)
+            ->firstOrFail();
+
+        // collect all sections
         $sections = collect();
         foreach ($course->modules as $module) {
             foreach ($module->lectures as $lecture) {
@@ -132,62 +144,70 @@ class CourseController extends Controller
                 }
             }
         }
-        //sort by display_order
+
+        // sort sections
         $sections = $sections->sortBy('section_order')->values();
-        //collection session
+
         $totalSections = $sections->count();
-        if ($sections->isEmpty()) { //if there is no content in the module
+
+        if ($sections->isEmpty()) {
             return redirect()->route('courses.showCourse', $course->courseID)
                 ->with('error', 'This module has no learning materials yet.');
         }
+
         $completedSections = 0;
-        $isCompletedAll = $completedSections >= $totalSections;
-        //get current section
-        if ($sectionId) {
-            $currentIndex = $sections->search(fn($s) => (int)$s->sectionID === (int)$sectionId);
+
+        //current section logic
+        if (!$sectionId) {
+            // no sectionId → first section
+            $currentIndex = 0;
+            $current = $sections->first();
+        } else {
+            // find section
+            $currentIndex = $sections->search(
+                fn($s) => (int)$s->sectionID === (int)$sectionId
+            );
+
+            // fallback if invalid
             if ($currentIndex === false) {
                 $currentIndex = 0;
             }
 
             $current = $sections->get($currentIndex);
-            $lecture = Lecture::find($current->lectID);
-
-            //to track per section
-            if (Auth::check()) {
-                Progress::updateOrCreate(
-                    [
-                        'userID' => Auth::id(),
-                        'courseID' => $id,
-                        'progressName' => 'SECTION_' . $current->sectionID
-                    ],
-                    [
-                        'progressStatus' => 'completed',
-                        'completionProgress' => 10,
-                        'lastAccessed' => now(),
-                    ]
-                );
-            }
-            
-
-            if (Auth::check()) {
-                $completedSections = Progress::where('userID', Auth::id())
-                    ->where('courseID', $id)
-                    ->where('progressName', 'like', 'SECTION_%')
-                    ->count();
-            }
-            
-        } else {
-            $current = $sections->first();
-            $currentIndex = 0;
-            $lecture = Lecture::find($current->lectID);
         }
+
+        $lecture = Lecture::find($current->lectID);
+
+        // progress tracking
+        if (Auth::check()) {
+            Progress::updateOrCreate(
+                [
+                    'userID' => Auth::id(),
+                    'courseID' => $id,
+                    'progressName' => 'SECTION_' . $current->sectionID
+                ],
+                [
+                    'progressStatus' => 'completed',
+                    'completionProgress' => 10,
+                    'lastAccessed' => now(),
+                ]
+            );
+
+            $completedSections = Progress::where('userID', Auth::id())
+                ->where('courseID', $id)
+                ->where('progressName', 'like', 'SECTION_%')
+                ->count();
+        }
+
+        $isCompletedAll = $completedSections >= $totalSections;
+
         return view('learner.startLearning', [
             'course' => $course,
             'sections' => $sections,
             'current' => $current,
             'lecture' => $lecture,
             'currentIndex' => $currentIndex,
-            'module' => $course->modules->firstWhere('moduleID', $current->moduleID ?? null), //fetch module with current section
+            'module' => $course->modules->firstWhere('moduleID', $current->moduleID ?? null),
             'completedSections' => $completedSections,
             'totalSections' => $totalSections,
             'isCompletedAll' => $isCompletedAll

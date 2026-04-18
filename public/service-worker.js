@@ -1,15 +1,24 @@
-//flow: when user visit a page for first time, it saved to cache - from server
-//flow: when user visit next time even during offline, it works without interner - from cache
-
 const CACHE_NAME = "laravel-dynamic-v2";
 
-//install
+const urlsToCache = [
+  '/',
+  '/offline.html'
+];
+
+// install
 self.addEventListener("install", event => {
   console.log("Service Worker Installed");
+
+  event.waitUntil(
+    caches.open(CACHE_NAME).then(cache => {
+      return cache.addAll(urlsToCache);
+    })
+  );
+
   self.skipWaiting();
 });
 
-//activate (clean old caches)
+// activate
 self.addEventListener("activate", event => {
   event.waitUntil(
     caches.keys().then(keys => {
@@ -20,47 +29,48 @@ self.addEventListener("activate", event => {
       );
     })
   );
+
   console.log("Service Worker Activated");
 });
 
-//fetch
+// fetch
 self.addEventListener("fetch", event => {
-  //only handle GET requests
   if (event.request.method !== "GET") return;
-
-  //only handle HTTP/HTTPS (skip chrome-extension)
   if (!event.request.url.startsWith("http")) return;
 
-  event.respondWith(
-    caches.match(event.request).then(cachedResponse => {
-      //return cache if exists
-      if (cachedResponse) {
-        return cachedResponse;
-      }
-      //fetch from network
-      return fetch(event.request)
-        .then(networkResponse => {
-          //avoid caching bad responses
-          if (!networkResponse || networkResponse.status !== 200) {
-            return networkResponse;
-          }
-          //clone & store in cache
-          const responseClone = networkResponse.clone();
+  const acceptHeader = event.request.headers.get("accept");
+
+  //handle HTML (modules, lectures, etc.)
+  if (acceptHeader && acceptHeader.includes("text/html")) {
+    event.respondWith(
+      fetch(event.request)
+        .then(response => {
+          const responseClone = response.clone();
           caches.open(CACHE_NAME).then(cache => {
             cache.put(event.request, responseClone);
           });
-
-          return networkResponse;
+          return response;
         })
         .catch(() => {
-          //offline fallback
-          if (event.request.headers.get("accept").includes("text/html")) {
-            return new Response(
-              "<h1>You are offline</h1><p>This page is not cached yet.</p>",{ headers: { "Content-Type": "text/html" } }
-            );
-          }
-        });
+          return caches.match(event.request)
+            .then(res => res || caches.match('/offline.html'));
+        })
+    );
+    return;
+  }
 
+  //handle others (CSS, JS, etc.)
+  event.respondWith(
+    caches.match(event.request).then(cachedResponse => {
+      if (cachedResponse) return cachedResponse;
+
+      return fetch(event.request).then(networkResponse => {
+        const responseClone = networkResponse.clone();
+        caches.open(CACHE_NAME).then(cache => {
+          cache.put(event.request, responseClone);
+        });
+        return networkResponse;
+      });
     })
   );
 });

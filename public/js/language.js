@@ -1,12 +1,11 @@
-var selectedLang = localStorage.getItem('lang') || 'en-US';
-var selectedLangLabel = localStorage.getItem('langLabel') || 'English';
+let selectedLang = localStorage.getItem("lang") || "en-US";
+let selectedLangLabel = localStorage.getItem("langLabel") || "English";
 let voices = [];
 
 function loadVoices() {
     voices = speechSynthesis.getVoices();
 }
 
-// load voices properly
 speechSynthesis.onvoiceschanged = loadVoices;
 
 function setLanguage(lang, label) {

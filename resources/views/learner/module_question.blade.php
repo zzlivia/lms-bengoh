@@ -196,8 +196,11 @@
             let data = JSON.parse(localStorage.getItem("mcq_attempts")) || [];
             let moduleAttempt = data.find(m => m.module_id === moduleId);
             if (!moduleAttempt) return;
+
             moduleAttempt.answers.forEach(ans => {
-                const input = document.querySelector(`input[name="q${ans.question_id}"][value="${ans.selected}"]`);
+                const input = document.querySelector(
+                    `input[name="answers[${ans.question_id}]"][value="${ans.selected}"]`
+                );
                 if (input) input.checked = true;
             });
         }

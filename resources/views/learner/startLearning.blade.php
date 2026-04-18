@@ -125,7 +125,7 @@
         const courseId = {{ $course->courseID }};
         const allSections = @json($sections->pluck('sectionID'));
     </script>
-    
+
     <script>
     document.getElementById('quizForm')?.addEventListener('submit', function(e) {
         const questions = document.querySelectorAll('[name^="answers["]');
@@ -246,6 +246,7 @@
         }
     </script>
 
+    {{-- preload --}}
     @push('scripts')
     <script>
     document.addEventListener("DOMContentLoaded", function () {
@@ -254,25 +255,31 @@
 
         const CACHE_NAME = "laravel-dynamic-v2";
 
-        const currentSection = {{ $current->sectionID ?? 1 }};
-        const courseId = {{ $course->courseID }};
-
-        const nextLessons = [
-            `/courses/${courseId}/startLearn?sectionId=${currentSection + 1}`,
-            `/courses/${courseId}/startLearn?sectionId=${currentSection + 2}`
-        ];
+        // build all lesson URLs dynamically
+        const lessonUrls = allSections.map(sectionId =>
+            `/courses/${courseId}/startLearn?sectionId=${sectionId}`
+        );
 
         caches.open(CACHE_NAME).then(cache => {
-            nextLessons.forEach(url => {
-                fetch(url)
-                    .then(res => {
-                        if (res.ok) {
-                            cache.put(url, res.clone());
-                            console.log("Pre-cached:", url);
-                        }
-                    })
-                    .catch(() => {});
+
+            lessonUrls.forEach(url => {
+
+                // avoid duplicate caching
+                cache.match(url).then(existing => {
+                    if (existing) return;
+
+                    fetch(url)
+                        .then(res => {
+                            if (res.ok) {
+                                cache.put(url, res.clone());
+                                console.log("Cached:", url);
+                            }
+                        })
+                        .catch(() => {});
+                });
+
             });
+
         });
 
     });

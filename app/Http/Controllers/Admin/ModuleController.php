@@ -176,7 +176,7 @@ class ModuleController extends Controller
         return view('admin.edit_mcq', compact('mcq'));
     }
 
-    public function update(Request $request, $group_id)
+    public function updateMCQ(Request $request, $group_id)
     {
         $mcq = Mcqs::where('group_id', $group_id)
                 ->where('is_active', 1)

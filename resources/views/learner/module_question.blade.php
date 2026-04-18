@@ -126,7 +126,6 @@
         </div>
     </div>
 
-    <script src="{{ asset('js/language.js') }}"></script>
     {{-- installed alert --}}
 
     <script>
@@ -175,18 +174,15 @@
     <script>
         //save answer
         function saveAnswer(moduleId, questionId, selectedOption) {
+            console.log("WORKING", moduleId, questionId, selectedOption);
+
             let data = JSON.parse(localStorage.getItem("mcq_attempts")) || [];
-            let moduleAttempt = data.find(m => m.module_id === moduleId);
-            if (!moduleAttempt) {
-                moduleAttempt = {module_id: moduleId, answers: [], status: "pending"};
-                data.push(moduleAttempt);
-            }
-            const existing = moduleAttempt.answers.find(a => a.question_id === questionId);
-            if (existing) {
-                existing.selected = selectedOption;
-            } else {
-                moduleAttempt.answers.push({question_id: questionId, selected: selectedOption});
-            }
+
+            data.push({
+                module_id: moduleId,
+                answers: [{ question_id: questionId, selected: selectedOption }]
+            });
+
             localStorage.setItem("mcq_attempts", JSON.stringify(data));
         }
 

@@ -158,10 +158,10 @@ class ModuleController extends Controller
         return back()->with('success', 'All MCQs added successfully!');
     }
 
-    public function previewMCQ($moduleID)
+    public function preview($group_id)
     {
-        $questions = Mcqs::where('moduleID', $moduleID)
-            ->orderBy('moduleQs_ID')
+        $questions = Mcqs::where('group_id', $group_id)
+            ->where('is_active', 1)
             ->get();
 
         return view('admin.preview', compact('questions'));

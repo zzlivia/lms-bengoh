@@ -286,6 +286,8 @@ Route::prefix('admin')
 
     Route::post('/generate-ai-mcq/{moduleID}', [AdminController::class, 'generateAI']);
 
+    Route::post('/mcq/use-ai/{id}', [AdminController::class, 'useAiQuestion']);
+
     /* course assessment */
 
     Route::post('/assessment/store', [CourseAssAdminController::class, 'storeAssessment'])

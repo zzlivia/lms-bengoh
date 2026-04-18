@@ -328,6 +328,22 @@ class AdminController extends Controller
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
+
+    public function useAiQuestion($id)
+    {
+        $selected = Mcqs::findOrFail($id);
+
+        //deactivate all in the same group
+        Mcqs::where('group_id', $selected->group_id)
+            ->update(['is_active' => 0]);
+
+        //activate selected one
+        $selected->update([
+            'is_active' => 1
+        ]);
+
+        return back()->with('success', 'AI question is now active');
+    }
     
     public function storeMaterials(Request $request, $id) //store learning materials
     {   //loop every each of uploaded material

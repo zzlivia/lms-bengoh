@@ -417,53 +417,22 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse($modules as $index => $module)
-                        <tr>
-                            <td>{{ $index + 1 }}</td>
-                            <td>{{ $module->moduleName }}</td>
-
-                            <!-- count questions -->
-                            <td>{{ $module->mcqs->count() ?? 0 }}</td>
-
-                            <!-- status -->
-                            <td>
-                                @if($module->is_active)
-                                    <span class="badge bg-success">Available</span>
-                                @else
-                                    <span class="badge bg-danger">Disabled</span>
-                                @endif
-                            </td>
-
-                            <!-- actions -->
-                            <td>
-                                <!-- preview -->
-                                <a href="{{ route('mcq.preview', $module->moduleID) }}" 
-                                class="btn btn-secondary btn-sm">
-                                    Preview
-                                </a>
-
-                                <!-- edit -->
-                                <a href="{{ route('admin.mcq.edit', $mcq->group_id) }}" 
-                                class="btn btn-warning btn-sm">
-                                    Edit
-                                </a>
-
-                                <!-- enable/disable -->
-                                <form action="{{ route('admin.module.toggle', $module->moduleID) }}" 
-                                    method="POST" 
-                                    class="d-inline">
-                                    @csrf
-                                    <button class="btn btn-danger btn-sm">
-                                        Disable
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>
-                        @empty
-                        <tr>
-                            <td colspan="5" class="text-center">No modules found</td>
-                        </tr>
-                        @endforelse
+                    @foreach($module->mcqs as $mcq)
+                    <tr>
+                        <td>{{ $loop->iteration }}</td>
+                        <td>{{ $module->moduleName }}</td>
+                        <td>{{ $mcq->question }}</td>
+                        <td>
+                            <span class="badge bg-success">Available</span>
+                        </td>
+                        <td>
+                            <a href="{{ route('admin.mcq.preview', $mcq->group_id) }}" 
+                            class="btn btn-secondary btn-sm">Preview</a>
+                            <a href="{{ route('admin.mcq.edit', $mcq->group_id) }}" 
+                            class="btn btn-warning btn-sm">Edit</a>
+                        </td>
+                    </tr>
+                    @endforeach
                     </tbody>
                 </table>
             </div>

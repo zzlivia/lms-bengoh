@@ -205,4 +205,10 @@
             });
         }
     </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            loadSavedAnswers({{ $module->moduleID }});
+        });
+    </script>
 @endsection

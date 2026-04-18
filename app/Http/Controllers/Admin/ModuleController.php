@@ -167,11 +167,11 @@ class ModuleController extends Controller
         return view('admin.preview', compact('questions'));
     }
 
-    public function editMCQ($moduleID)
+    public function editMCQ($group_id)
     {
-        $module = Module::with('mcqs.answers')
-                    ->where('moduleID', $moduleID)
-                    ->firstOrFail();
+        $mcq = Mcqs::where('group_id', $group_id)
+                ->where('is_active', 1)
+                ->firstOrFail();
 
         return view('admin.edit_mcq', compact('mcq'));
     }

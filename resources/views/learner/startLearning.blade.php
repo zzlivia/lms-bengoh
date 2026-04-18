@@ -238,4 +238,37 @@
             window.location.href = `?sectionId=${savedSection}`;
         }
     </script>
+
+    @push('scripts')
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        if (!navigator.onLine) return;
+
+        const CACHE_NAME = "laravel-dynamic-v2";
+
+        const currentSection = {{ $current->sectionID ?? 1 }};
+        const courseId = {{ $course->courseID }};
+
+        const nextLessons = [
+            `/courses/${courseId}/startLearn?sectionId=${currentSection + 1}`,
+            `/courses/${courseId}/startLearn?sectionId=${currentSection + 2}`
+        ];
+
+        caches.open(CACHE_NAME).then(cache => {
+            nextLessons.forEach(url => {
+                fetch(url)
+                    .then(res => {
+                        if (res.ok) {
+                            cache.put(url, res.clone());
+                            console.log("Pre-cached:", url);
+                        }
+                    })
+                    .catch(() => {});
+            });
+        });
+
+    });
+    </script>
+    @endpush
 @endsection

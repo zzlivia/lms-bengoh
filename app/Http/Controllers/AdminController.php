@@ -295,9 +295,18 @@ class AdminController extends Controller
 
             foreach ($existingMcqs as $index => $mcq) {
                 if (isset($questions[$index])) {$q = $questions[$index];
-                    $mcq->update([
-                        'moduleQs' => $mcq->moduleQs ?? null, 'question' => $q['question'],'answer1' => $q['answers'][0],'answer2' => $q['answers'][1],'answer3' => $q['answers'][2],
-                                      'answer4' => $q['answers'][3],'correct_answer' => $q['correct'],
+                    Mcqs::create([
+                        'moduleID' => $moduleID,
+                        'moduleQs' => $mcq->moduleQs, // keep manual as history
+                        'question' => $q['question'], // AI version
+                        'answer1' => $q['answers'][0],
+                        'answer2' => $q['answers'][1],
+                        'answer3' => $q['answers'][2],
+                        'answer4' => $q['answers'][3],
+                        'correct_answer' => $q['correct'],
+                        'group_id' => $mcq->group_id, // SAME group
+                        'source' => 'ai',
+                        'is_active' => 0
                     ]);
                 }
             }

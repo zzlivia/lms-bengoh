@@ -1,5 +1,5 @@
-let selectedLang = localStorage.getItem('lang') || 'en-US';
-let selectedLangLabel = localStorage.getItem('langLabel') || 'English';
+var selectedLang = localStorage.getItem('lang') || 'en-US';
+var selectedLangLabel = localStorage.getItem('langLabel') || 'English';
 let voices = [];
 
 function loadVoices() {

@@ -176,6 +176,34 @@ class ModuleController extends Controller
         return view('admin.edit_mcq', compact('mcq'));
     }
 
+    public function update(Request $request, $group_id)
+    {
+        $mcq = Mcqs::where('group_id', $group_id)
+                ->where('is_active', 1)
+                ->firstOrFail();
+
+        // deactivate current
+        Mcqs::where('group_id', $group_id)
+            ->where('is_active', 1)
+            ->update(['is_active' => 0]);
+
+        // create new version (history-safe)
+        Mcqs::create([
+            'moduleID' => $mcq->moduleID,
+            'group_id' => $group_id,
+            'question' => $request->question,
+            'answer1' => $request->answer1,
+            'answer2' => $request->answer2,
+            'answer3' => $request->answer3,
+            'answer4' => $request->answer4,
+            'correct_answer' => $request->correct_answer,
+            'source' => 'manual',
+            'is_active' => 1
+        ]);
+
+        return redirect()->back()->with('success', 'MCQ updated successfully');
+    }
+
     public function toggleMCQ($moduleID)
     {
         $module = Module::where('moduleID', $moduleID)->firstOrFail();

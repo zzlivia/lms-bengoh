@@ -173,7 +173,7 @@ class ModuleController extends Controller
                     ->where('moduleID', $moduleID)
                     ->firstOrFail();
 
-        return view('admin.edit_mcq', compact('module'));
+        return view('admin.edit_mcq', compact('mcq'));
     }
 
     public function toggleMCQ($moduleID)

@@ -443,7 +443,7 @@
                                 </a>
 
                                 <!-- edit -->
-                                <a href="{{ route('admin.mcq.edit', $module->moduleID) }}" 
+                                <a href="{{ route('admin.mcq.edit', $mcq->group_id) }}" 
                                 class="btn btn-warning btn-sm">
                                     Edit
                                 </a>

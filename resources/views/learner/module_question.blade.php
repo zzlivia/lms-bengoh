@@ -171,4 +171,35 @@
             });
         });
     </script>
+
+    <script>
+        //save answer
+        function saveAnswer(moduleId, questionId, selectedOption) {
+            let data = JSON.parse(localStorage.getItem("mcq_attempts")) || [];
+            let moduleAttempt = data.find(m => m.module_id === moduleId);
+            if (!moduleAttempt) {
+                moduleAttempt = {module_id: moduleId, answers: [], status: "pending"};
+                data.push(moduleAttempt);
+            }
+            const existing = moduleAttempt.answers.find(a => a.question_id === questionId);
+            if (existing) {
+                existing.selected = selectedOption;
+            } else {
+                moduleAttempt.answers.push({question_id: questionId, selected: selectedOption});
+            }
+            localStorage.setItem("mcq_attempts", JSON.stringify(data));
+        }
+
+
+        //load saved answers
+        function loadSavedAnswers(moduleId) {
+            let data = JSON.parse(localStorage.getItem("mcq_attempts")) || [];
+            let moduleAttempt = data.find(m => m.module_id === moduleId);
+            if (!moduleAttempt) return;
+            moduleAttempt.answers.forEach(ans => {
+                const input = document.querySelector(`input[name="q${ans.question_id}"][value="${ans.selected}"]`);
+                if (input) input.checked = true;
+            });
+        }
+    </script>
 @endsection

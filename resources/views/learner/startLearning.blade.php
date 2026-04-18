@@ -119,6 +119,13 @@
     </div>
 
     {{-- ================= SCRIPTS ================= --}}
+    
+    {{-- pass all section IDs --}}
+    <script>
+        const courseId = {{ $course->courseID }};
+        const allSections = @json($sections->pluck('sectionID'));
+    </script>
+    
     <script>
     document.getElementById('quizForm')?.addEventListener('submit', function(e) {
         const questions = document.querySelectorAll('[name^="answers["]');

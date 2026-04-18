@@ -47,7 +47,7 @@ self.addEventListener("fetch", event => {
         .then(response => {
           const responseClone = response.clone();
           caches.open(CACHE_NAME).then(cache => {
-            cache.put(event.request, responseClone);
+            cache.put(event.request, responseClone); //handles visited pages
           });
           return response;
         })
@@ -67,7 +67,7 @@ self.addEventListener("fetch", event => {
       return fetch(event.request).then(networkResponse => {
         const responseClone = networkResponse.clone();
         caches.open(CACHE_NAME).then(cache => {
-          cache.put(event.request, responseClone);
+          cache.put(event.request, responseClone); //handles visited pages
         });
         return networkResponse;
       });

@@ -282,6 +282,9 @@ Route::prefix('admin')
     /* mcqs */
     Route::post('/mcq/store', [ModuleController::class, 'storeMCQ'])->name('mcq.store');
 
+    Route::get('/mcq/preview/{group_id}', [ModuleController::class, 'preview'])
+    ->name('mcq.preview');
+
     Route::get('/mcq/edit/{group_id}', [ModuleController::class, 'edit']);
 
     Route::put('/mcq/update/{group_id}', [ModuleController::class, 'update'])

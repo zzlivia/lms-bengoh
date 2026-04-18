@@ -57,8 +57,8 @@
                                     <input class="form-check-input" type="radio"
                                         name="answers[{{ $question->moduleQs_ID }}]"
                                         value="{{ $answer->ansID }}"
+                                        onclick="saveAnswer({{ $module->moduleID }}, {{ $question->moduleQs_ID }}, '{{ $answer->ansID }}')"
                                         {{ old('answers.' . $question->moduleQs_ID) == $answer->ansID ? 'checked' : '' }}>
-
                                     <label class="form-check-label">
                                         {{ $answer->ansID_text }}
                                     </label>

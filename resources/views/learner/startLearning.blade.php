@@ -53,7 +53,7 @@
                         @endif
                         @if($current->section_type == 'text') {{-- text lecture content --}}
                             <div class="text-content mb-4 lead-custom">
-                                {!! $current->section_content !!}
+                                {!! optional($currentTranslation)->content ?? $current->section_content !!}
                             </div>
                         @endif
                         @if($current->section_type == 'pdf') {{-- PDF frame --}}

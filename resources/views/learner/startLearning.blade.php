@@ -57,6 +57,7 @@
                         @if($current->section_type == 'pdf') {{-- PDF frame --}}
                             <div class="pdf-container mb-4">
                                 <iframe 
+                                    id="lessonPdf"
                                     src="{{ url('/pdf/' . basename($current->section_file)) }}#toolbar=0"
                                     width="100%"
                                     height="600px"

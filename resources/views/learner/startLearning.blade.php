@@ -296,5 +296,7 @@
     </script>
     @endpush
 
+    <script> window.lectID = {{ $current->lectID ?? 0 }};</script>
+
     <script src="{{ asset('js/app.js') }}"></script>
 @endsection

@@ -107,10 +107,8 @@
                         </div>
                         <div>
                             @if(!empty($current->section_file))
-                                <button id="downloadBtn"
-                                        data-url="{{ asset('storage/' . $current->section_file) }}"
-                                        class="btn btn-warning"
-                                        title="Download for offline">
+                                <button onclick="downloadLesson('{{ asset('storage/' . $current->section_file) }}', this)" 
+                                        class="btn btn-warning">
                                     <i class="bi bi-download"></i>
                                 </button>
                             @endif

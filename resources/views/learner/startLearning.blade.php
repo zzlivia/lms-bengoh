@@ -37,7 +37,9 @@
                     {{-- ================= CONTENT ================= --}}
                     @if($current) {{-- current selected lecture --}}
                         <div class="d-flex justify-content-between align-items-center mb-3">
-                            <h5 class="text-primary fw-bold">{{ $current->section_title }}</h5>
+                            <h5 class="text-primary fw-bold">
+                                {{ optional($currentTranslation)->title ?? $current->section_title }}
+                            </h5>
                             <div id="timer" class="fw-bold text-danger"></div>
                         </div>
                         @if($current->section_type == 'video' && $current->section_file)

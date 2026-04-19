@@ -74,3 +74,26 @@ self.addEventListener("fetch", event => {
     })
   );
 });
+
+self.addEventListener("message", event => {
+  if (event.data && event.data.type === "CACHE_URL") {
+
+    const url = event.data.url;
+
+    caches.open(CACHE_NAME).then(cache => {
+      fetch(url)
+        .then(response => {
+          if (!response || response.status !== 200) {
+            throw new Error("Failed to fetch file");
+          }
+
+          cache.put(url, response.clone());
+          console.log("File cached for offline:", url);
+        })
+        .catch(err => {
+          console.error("Caching failed:", err);
+        });
+    });
+
+  }
+});

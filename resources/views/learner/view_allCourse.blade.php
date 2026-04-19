@@ -10,14 +10,13 @@
         <form action="{{ route('courses.allCourses') }}" method="GET" id="filterForm">
             <div class="course-hero mb-5">
                 <p class="mb-1 fw-bold">Bengoh Academy</p>
-                <h1 class="fw-bold">Our Courses</h1>
-
+                <h1 class="fw-bold">{{ __('messages.courses.title') }}</h1>
                 <div class="search-bar">
                     <i class="fa fa-search search-icon"></i>
                     <input type="text"
                         name="search"
                         class="form-control"
-                        placeholder="Search Courses"
+                        placeholder="{{ __('messages.courses.search_placeholder') }}"
                         value="{{ request('search') }}">
                 </div>
             </div>
@@ -26,24 +25,24 @@
                 {{-- sidebar --}}
                 <div class="col-md-3 filter-section">
                     <div class="sort-box mb-4">
-                        <label class="fw-bold mb-2">Sort By</label>
+                        <label class="fw-bold mb-2">{{ __('messages.courses.filter') }}</label>
                         <select name="sort" class="form-select" onchange="this.form.submit()"> {{-- remove  --}}
-                            <option value="">Best Match</option>
-                            <option value="latest" {{ request('sort') == 'latest' ? 'selected' : '' }}>Latest Added</option>
-                            <option value="short" {{ request('sort') == 'short' ? 'selected' : '' }}>Short Learning</option>
-                            <option value="updated" {{ request('sort') == 'updated' ? 'selected' : '' }}>Recently Updated</option>
+                            <option value="">{{ __('messages.courses.best_match') }}</option>
+                            <option value="latest" {{ request('sort') == 'latest' ? 'selected' : '' }}>{{ __('messages.courses.latest_added') }}</option>
+                            <option value="short" {{ request('sort') == 'short' ? 'selected' : '' }}>{{ __('messages.courses.short_learn') }}</option>
+                            <option value="updated" {{ request('sort') == 'updated' ? 'selected' : '' }}>{{ __('messages.courses.recent_update') }}</option>
                         </select>
                     </div>
 
-                    <p class="small text-muted mb-3">Refine your search:</p>
+                    <p class="small text-muted mb-3">{{ __('messages.courses.refine_search') }}</p>
                     {{-- course category--}}
                     <div class="filter-group mb-3">
                         <div class="d-flex justify-content-between align-items-center">
-                            <label class="fw-bold">Subjects</label>
+                            <label class="fw-bold">{{ __('messages.courses.subjects') }}</label>
                             <i class="fa fa-chevron-down small"></i>
                         </div>
                         <select name="category" class="form-select" onchange="this.form.submit()"> {{-- remove  --}}
-                            <option value="">All Subjects</option>
+                            <option value="">{{ __('messages.courses.all_category') }}</option>
                             @foreach($categories as $category)
                             <option value="{{ $category }}" {{ request('category') == $category ? 'selected' : '' }}>
                                 {{ $category }}
@@ -54,9 +53,9 @@
 
                     {{-- course level --}}
                     <div class="mb-3">
-                        <label class="fw-bold">Course Level</label>
+                        <label class="fw-bold">{{ __('messages.courses.level') }}</label>
                         <select name="level" class="form-select" onchange="this.form.submit()">  {{-- remove onchange="this.form.submit()" --}}
-                            <option value="">All Levels</option>
+                            <option value="">{{ __('messages.courses.all_levels') }}</option>
                             @foreach($levels as $level)
                             <option value="{{ $level }}" {{ request('level') == $level ? 'selected' : '' }}>
                                 {{ $level }}
@@ -67,12 +66,12 @@
 
                     {{-- course duration --}}
                     <div class="mb-3">
-                        <label class="fw-bold">Course Duration</label>
+                        <label class="fw-bold">{{ __('messages.courses.duration') }}</label>
                         <select name="duration" class="form-select" onchange="this.form.submit()">  {{-- remove onchange="this.form.submit()" --}}
-                            <option value="">Any Duration</option>
+                            <option value="">{{ __('messages.courses.any_duration') }}</option>
                             @foreach($durations as $duration)
                             <option value="{{ $duration }}" {{ request('duration') == $duration ? 'selected' : '' }}>
-                                {{ $duration }} Weeks
+                                {{ $duration }} {{ __('messages.courses.weeks') }}
                             </option>
                             @endforeach
                         </select>
@@ -82,7 +81,7 @@
                 {{-- available course list --}}
                 <div class="col-md-9">
                     <div class="d-flex justify-content-end align-items-center mb-4">
-                        <span class="me-2">Showing</span>
+                        <span class="me-2">{{ __('messages.courses.showing') }}</span>
                             {{-- choose number courses to be displayed per page --}}
                             <select name="per_page" class="form-select form-select-sm w-auto" onchange="this.form.submit()"> {{-- remove onchange="this.form.submit()" --}}
                                 <option value="3" {{ request('per_page') == 3 ? 'selected' : '' }}>3</option>
@@ -90,7 +89,7 @@
                                 <option value="8" {{ request('per_page') == 8 ? 'selected' : '' }}>8</option>
                                 <option value="10" {{ request('per_page') == 10 ? 'selected' : '' }}>10</option>
                             </select>
-                        <span class="ms-2">Courses Per Page</span>
+                        <span class="ms-2">{{ __('messages.courses.per_page') }}</span>
                     </div>            
                     
                     @forelse($courses as $course)
@@ -106,7 +105,7 @@
                                     onclick="readCourseName('{{ $course->courseName }}')"></i>
                                 <h5 class="course-title">{{ $course->courseName }}</h5>
                                 <div class="meta-text mb-2">
-                                    <span class="me-3">{{ $course->duration ?? '2' }} Weeks</span>
+                                    <span class="me-3">{{ $course->duration ?? '2' }} {{ __('messages.courses.sweeks') }}</span>
                                     <span>{{ $course->level ?? 'Beginner' }}</span>
                                 </div>
                                 <p class="small text-muted">
@@ -115,11 +114,11 @@
                                 <div class="d-flex justify-content-end gap-2 mt-3">
                                     <a href="{{ route('learn', $course->courseID) }}" 
                                     class="btn btn-outline-dark btn-sm px-4">
-                                        Start Learning
+                                        {{ __('messages.courses.start_learning') }}
                                     </a>
                                     <a href="{{ route('courses.showCourse', $course->courseID) }}" 
                                     class="btn btn-outline-secondary btn-sm">
-                                        View Course
+                                        {{ __('messages.courses.view_course') }}
                                     </a>
                                 </div>
                             </div>
@@ -127,7 +126,7 @@
                     </div>
                     @empty
                     <div class="text-center py-5">
-                        <p>No courses found matching your search.</p>
+                        <p>{{ __('messages.courses.no_match_course') }}</p>
                     </div>
                     @endforelse
 

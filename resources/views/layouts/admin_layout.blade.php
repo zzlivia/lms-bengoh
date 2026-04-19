@@ -26,44 +26,55 @@
 
             <div class="flex-grow-1">
                 <a href="{{ route('admin.dashboard') }}"
-                   class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">Dashboard</a>
+                   class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">{{ __('messages.admin.dashboard') }}</a>
 
                 <a href="{{ route('admin.user.management') }}"
-                   class="{{ request()->routeIs('admin.user.management') ? 'active' : '' }}">User Management</a>
+                   class="{{ request()->routeIs('admin.user.management') ? 'active' : '' }}">{{ __('messages.admin.user_mgmt') }}</a>
 
                 <a href="{{ route('admin.course.module') }}"
-                   class="{{ request()->routeIs('admin.course.module') ? 'active' : '' }}">Course/Module Management</a>
+                   class="{{ request()->routeIs('admin.course.module') ? 'active' : '' }}">{{ __('messages.admin.course_mgmt') }}</a>
 
                 <a href="{{ route('admin.progress') }}"
-                   class="{{ request()->routeIs('admin.progress') ? 'active' : '' }}">Progress</a>
+                   class="{{ request()->routeIs('admin.progress') ? 'active' : '' }}">{{ __('messages.admin.progress') }}</a>
 
                 <a href="{{ route('admin.announcements') }}"
-                   class="{{ request()->routeIs('admin.announcements') ? 'active' : '' }}">Announcements</a>
+                   class="{{ request()->routeIs('admin.announcements') ? 'active' : '' }}">{{ __('messages.admin.announcements') }}</a>
 
                 <a href="{{ route('admin.reports') }}"
-                   class="{{ request()->routeIs('admin.reports') ? 'active' : '' }}">Reports</a>
+                   class="{{ request()->routeIs('admin.reports') ? 'active' : '' }}">{{ __('messages.admin.reports') }}</a>
             </div>
 
             <div>
                 <a href="{{ route('admin.settings') }}"
-                   class="{{ request()->routeIs('admin.settings') ? 'active' : '' }}">Settings</a>
+                   class="{{ request()->routeIs('admin.settings') ? 'active' : '' }}">{{ __('messages.nav.settings') }}</a>
 
-                <a href="{{ route('admin.help') }}">Help & Support</a>
+                <a href="{{ route('admin.help') }}">{{ __('messages.admin.help') }}</a>
 
                 <form method="POST" action="{{ route('admin.logout') }}">
                     @csrf
-                    <button type="submit" class="sidebar-logout">Sign Out</button>
+                    <button type="submit" class="sidebar-logout">{{ __('messages.nav.logout') }}</button>
                 </form>
             </div>
         </div>
 
         <div class="main-content flex-grow-1 d-flex flex-column">
-            
             <div class="topbar d-flex align-items-center p-3 px-4">
                 <div class="d-flex align-items-center ms-auto gap-4">
-                    <div class="d-flex align-items-center text-muted" style="cursor:pointer;">
-                        <small class="me-1">Languages</small>
-                        <i class="bi bi-chevron-down"></i>
+                    <div class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle"
+                        href="#"
+                        role="button"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                            {{ __('messages.nav.language') }}
+                        </a>
+
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="{{ route('lang.switch', 'en') }}">English</a></li>
+                            <li><a class="dropdown-item" href="{{ route('lang.switch', 'ms') }}">Bahasa Melayu</a></li>
+                            <li><a class="dropdown-item" href="{{ route('lang.switch', 'iban') }}">Iban</a></li>
+                            <li><a class="dropdown-item" href="{{ route('lang.switch', 'biatah') }}">Bidayuh (Biatah)</a></li>
+                        </ul>
                     </div>
                     <div class="d-flex align-items-center">
                         <i class="bi bi-person-circle fs-4 me-2"></i>
@@ -75,7 +86,7 @@
                                     Guest
                                 @endif
                             </div>
-                            <small class="text-muted">Administrator</small>
+                            <small class="text-muted">{{ __('messages.admin.admin_role') }}</small>
                         </div>
                     </div>
                     <ul class="navbar-nav">
@@ -92,25 +103,25 @@
                                 @endif
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end shadow">
-                                <li><h6 class="dropdown-header">Admin Alerts</h6></li>
+                                <li><h6 class="dropdown-header">{{ __('messages.admin.alerts') }}</h6></li>
                                 <li>
                                     <a class="dropdown-item d-flex justify-content-between"
                                        href="{{ route('admin.password.requests') }}">
-                                        Password Reset Requests
+                                        {{ __('messages.admin.reset_req') }}
                                         <span class="badge bg-primary">{{ $forgotRequests }}</span>
                                     </a>
                                 </li>
                                 <li>
                                     <a class="dropdown-item d-flex justify-content-between"
                                        href="{{ route('admin.feedback') }}">
-                                        Pending Feedback
+                                        {{ __('messages.admin.pending_feedback') }}
                                         <span class="badge bg-primary">{{ $pendingFeedbackCount ?? 0 }}</span>
                                     </a>
                                 </li>
                                 <li>
                                     <a class="dropdown-item d-flex justify-content-between"
                                        href="{{ route('admin.announcements') }}">
-                                        Announcements for Review
+                                        {{ __('messages.admin.announcement_review') }}
                                         <span class="badge bg-primary">{{ $announcementReview }}</span>
                                     </a>
                                 </li>
@@ -127,7 +138,6 @@
     </div>
 
     @stack('scripts')
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
@@ -155,6 +165,6 @@
     {{-- the rich editor 
     <script src="https://cdn.tiny.cloud/1/v6ov6w4ysrw63gdffs61dqb69kgf7co61rpfrrc77u59ae9u/tinymce/6/tinymce.min.js"></script>--}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.7.0/tinymce.min.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

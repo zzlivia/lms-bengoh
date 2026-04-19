@@ -13,6 +13,17 @@
             'featured_courses' => 'Kursus Pilihan',
         ],
 
+        'admin' => [
+            'dashboard' => 'Panel Kawalan',
+            'user_mgmt' => 'Pengurusan Pengguna',
+            'course_mgmt' => 'Pengurusan Kursus',
+            'progress' => 'Prestasi',
+            'announcements' => 'Pengumuman',
+            'reports' => 'Laporan',
+            'help' => 'Bantuan & Sokongan',
+            'admin_role' => 'Administrator',
+        ],
+
         'home' => [
             'feature_1_title' => 'Direka untuk Bengoh',
             'feature_1_desc' => 'Kursus yang direka untuk membangunkan perusahaan milik komuniti',
@@ -204,5 +215,6 @@
                 ],
             ],
         ],
+
     ];
 ?>

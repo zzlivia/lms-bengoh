@@ -57,9 +57,21 @@ body{
 }
 
 /* ================= TOPBAR ================= */
-.topbar{
-    background:white;
-    border-bottom:1px solid #ddd;
+/* Ensure the topbar allows the menu to overflow its boundaries */
+.topbar {
+    overflow: visible !important;
+    position: relative;
+    z-index: 1030; /* Ensures topbar is above sidebar content */
+}
+
+/* Ensure the dropdown menu itself is at the very front */
+.dropdown-menu {
+    z-index: 9999 !important;
+}
+
+/* Fix for d-flex containers that sometimes clip children */
+.topbar .d-flex {
+    overflow: visible !important;
 }
 
 /* ================= CARDS ================= */

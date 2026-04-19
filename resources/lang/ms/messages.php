@@ -183,6 +183,14 @@
                     'instructor' => 'Pengajar',
                     'date' => 'Tarikh',
                 ],
+
+                'settings' => [
+                    'notifications' => 'Pemberitahuan',
+                    'general_notif' => 'Pemberitahuan Umum',
+                    'notify_mcq' => 'MCQ yang Dihantar',
+                    'notify_grades' => 'Gred Keseluruhan',
+                    'save_changes' => 'Simpan Perubahan',
+                ],
             ],
         ],
     ];

@@ -1,19 +1,16 @@
 @extends('settings.settings')
 
 @section('settings_content')
-    <h6 class="mb-3">Settings / Notifications</h6>
-
+    <h6 class="mb-3">{{ __('messages.nav.settings') }} / {{ __('messages.settings.notifications') }}</h6>
     <form method="POST" action="{{ route('settings.notifications.save') }}">
         @csrf
-
-        {{-- GENERAL (LABEL ONLY) --}}
         <div class="settings-row">
-            <strong>General Notification</strong>
+            <strong>{{ __('messages.settings.general_notif') }}</strong>
         </div>
 
-        {{-- SUBMITTED MCQs --}}
+        {{-- MCQs --}}
         <div class="settings-row d-flex justify-content-between align-items-center">
-            <span>Submitted MCQs</span>
+            <span>{{ __('messages.settings.notify_mcq') }}</span>
             <input 
                 type="checkbox" 
                 name="notify_mcq"
@@ -21,9 +18,9 @@
             >
         </div>
 
-        {{-- OVERALL GRADES --}}
+        {{-- Overall Grades --}}
         <div class="settings-row d-flex justify-content-between align-items-center">
-            <span>Overall Grades</span>
+            <span>{{ __('messages.settings.notify_grades') }}</span>
             <input 
                 type="checkbox" 
                 name="notify_grades"
@@ -31,10 +28,10 @@
             >
         </div>
 
-        {{-- BUTTONS --}}
+        {{-- button --}}
         <div class="mt-4 d-flex gap-2">
-            <a href="{{ route('homepage') }}" class="btn btn-success">Home</a>
-            <button type="submit" class="btn btn-success">Save Changes</button>
+            <a href="{{ route('homepage') }}" class="btn btn-success">{{ __('messages.nav.home') }}</a>
+            <button type="submit" class="btn btn-success">{{ __('messages.settings.save_changes') }}</button>
         </div>
 
     </form>

@@ -69,11 +69,16 @@
             'start_learning' => 'Mula Belajar',
             'default_desc' => 'Penerangan kursus di sini.',
 
-            //view single course
+            //view single course & sidebar ---
+            'course_modules' => 'Modul Kursus',
             'module' => 'Modul',
             'mins' => 'minit',
-            'view_feedback' => 'Lihat Maklum Balas Kursus',
+            'view_feedback' => 'Maklum Balas Kursus',
             'enrol_now' => 'Daftar Sekarang',
+            'mcqs' => 'Soalan Pelbagai Pilihan (MCQ)',
+            'course_assessment' => 'Penilaian Kursus',
+            'my_progress' => 'Prestasi Saya',
+            'leaderboards' => 'Papan Pendahulu',
 
             //learning page
             'courses_breadcrumb' => 'Kursus',

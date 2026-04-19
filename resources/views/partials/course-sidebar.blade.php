@@ -9,10 +9,10 @@
             ->pluck('lectID')
             ->toArray();
     @endphp
-    <h6 class="fw-bold mb-3">Course Modules</h6>
+    <h6 class="fw-bold mb-3">{{ __('messages.courses.course_modules') }}</h6>
     @foreach($course->modules as $module)
     <div class="mb-3">
-        <div class="text-uppercase small text-muted fw-bold">MODULE {{ $loop->iteration }}</div>
+        <div class="text-uppercase small text-muted fw-bold">{{ __('messages.courses.module') }} {{ $loop->iteration }}</div>
         {{-- retrieve modules --}}
         @php
             $moduleLectureIds = $module->lectures->pluck('lectID')->toArray();
@@ -25,7 +25,6 @@
             @else
                 <i class="fa fa-circle text-muted me-1"></i>
             @endif
-
             {{ $module->moduleName }}
         </a>
         {{-- retrieve lectures --}}
@@ -37,7 +36,6 @@
                     @else
                         <i class="fa fa-circle text-muted me-1"></i>
                     @endif
-
                     {{ $lecture->lectName }}
                 </div>
             </div>
@@ -54,15 +52,15 @@
         @if($module->mcqs && $module->mcqs->count() > 0)
             <div class="ms-2 mt-1">
                 <a href="{{ route('mcq.module', $module->moduleID) }}" class="text-decoration-none">
-                    ○ MCQs {{ $loop->iteration }}
+                    ○ {{ __('messages.courses.mcqs') }} {{ $loop->iteration }}
                 </a>
             </div>
         @endif
     </div>
     @endforeach
     {{-- others --}}
-    <a class="sidebar-link d-block mb-2" href="{{ route('course.feedback', $course->courseID) }}">Course Feedback</a>
-    <a class="sidebar-link d-block mb-2" href="{{ route('course.assessment', $course->courseID) }}">Course Assessment</a>
-    <a class="sidebar-link d-block mb-2" href="{{ route('course.progress', $course->courseID) }}">Progress</a>
-    <a class="sidebar-link d-block" href="{{ route('course.leaderboard', $course->courseID) }}">Leaderboards</a>
+    <a class="sidebar-link d-block mb-2" href="{{ route('course.feedback', $course->courseID) }}">{{ __('messages.courses.view_feedback') }}</a>
+    <a class="sidebar-link d-block mb-2" href="{{ route('course.assessment', $course->courseID) }}">{{ __('messages.courses.course_assessment') }}</a>
+    <a class="sidebar-link d-block mb-2" href="{{ route('course.progress', $course->courseID) }}">{{ __('messages.courses.my_progress') }}</a>
+    <a class="sidebar-link d-block" href="{{ route('course.leaderboard', $course->courseID) }}">{{ __('messages.courses.leaderboards') }}</a>
 </div>

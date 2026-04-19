@@ -11,30 +11,30 @@
         <div class="col-md-4">
             <div class="feature-box">
                 <i class="fa-solid fa-handshake fs-3 mb-2"></i>
-                <h6>Built for Bengoh</h6> 
-                <small>Courses designed to foster community-owned enterprises</small>
+                <h6>{{ __('messages.home.feature_1_title') }}</h6>
+                <p>{{ __('messages.home.feature_1_desc') }}</p>
             </div>
         </div>
 
         <div class="col-md-4">
             <div class="feature-box">
                 <i class="fa-solid fa-graduation-cap fs-3 mb-2"></i>
-                <h6>Eco-centric Learning</h6>
-                <small>Training in eco-tourism</small>
+                <h6>{{ __('messages.home.feature_2_title') }}</h6>
+                <p>{{ __('messages.home.feature_2_desc') }}</p>
             </div>
         </div>
 
         <div class="col-md-4">
             <div class="feature-box">
                 <i class="fa-solid fa-gear fs-3 mb-2"></i>
-                <h6>Ready Skills</h6>
-                <small>Get hands-on skills</small>
+                <h6>{{ __('messages.home.feature_3_title') }}</h6>
+                <p>{{ __('messages.home.feature_3_desc') }}</p>
             </div>
         </div>
     </div>
 
     {{-- featured courses - fetch top 4 courses from database --}}
-    <h5 class="mb-3 fw-bold">Featured Courses</h5>
+    <h5 class="mb-3 fw-bold">{{ __('messages.nav.featured_courses') }}</h5>
 
     {{-- featured courses --}}
     <div class="row">
@@ -49,18 +49,18 @@
 
         @empty
             <div class="col-12 text-center">
-                <p class="text-muted">No courses available for now.</p>
+                <p class="text-muted">{{ __('messages.home.no_courses') }}</p>
             </div>
         @endforelse
     </div>
 
     {{-- button --}}
     <div class="text-center mb-5">
-        <a href="{{ route('courses.allCourses') }}" class="btn btn-primary btn-lg">View All Courses</a>
+        <a href="{{ route('courses.allCourses') }}" class="btn btn-primary btn-lg">{{ __('messages.home.view_all_courses') }}</a>
     </div>
 
     {{-- community stories section --}}
-    <h5 class="text-center mb-4 fw-bold">Community Story</h5>
+    <h5 class="text-center mb-4 fw-bold">{{ __('messages.home.community_title') }}</h5>
     <div class="row mb-3 justify-content-center">
         @forelse($stories->take(2) as $story)
             <div class="col-md-5 mb-3">
@@ -80,47 +80,38 @@
                 </div>
             </div>
         @empty
-            <div class="col-12 text-center"><p class="text-muted">No community stories available yet.</p></div>
+            <div class="col-12 text-center"><p class="text-muted">{{ __('messages.home.no_stories') }}</p></div>
         @endforelse
     </div>
 
     {{-- link to community stories section --}}
     <div class="text-center mb-5">
         <a href="{{ route('community.stories') }}" class="text-primary small text-decoration-underline">
-            Read More Community Stories
+            {{ __('messages.home.read_more') }}
         </a>
     </div>
 
     {{-- histories of the Bengoh Dam --}}
-    <h5 class="mb-3 fw-bold">The Bengoh Dam Histories</h5>
+    <h5 class="mb-3 fw-bold">{{ __('messages.home.history_title') }}</h5>
     <div class="row g-3">
         <div class="col-md-4">
             <div class="history-card p-3 h-100">
-                <h6 class="small fw-bold">Function & Usage</h6>
-                <p class="small text-muted mb-0">
-                    Bengoh Dam serves as a primary water supply source for Kuching, ensuring clean and sustainable water
-                    for thousands of residents. It also helps regulate water flow and supports surrounding ecosystems.
-                </p>
+                <h6 class="small fw-bold">{{ __('messages.home.history_1_title') }}</h6>
+                <p class="small text-muted mb-0">{{ __('messages.home.history_1_desc') }}</p>
             </div>
         </div>
 
         <div class="col-md-4">
             <div class="history-card p-3 h-100">
-                <h6 class="small fw-bold">Impact on the Community</h6>
-                <p class="small text-muted mb-0">
-                    The construction of Bengoh Dam led to the relocation of local communities, but it also opened
-                    opportunities for eco-tourism, new livelihoods, and improved infrastructure in the area.
-                </p>
+                <h6 class="small fw-bold">{{ __('messages.home.history_2_title') }}</h6>
+                <p class="small text-muted mb-0">{{ __('messages.home.history_2_desc') }}</p>
             </div>
         </div>
 
         <div class="col-md-4">
             <div class="history-card p-3 h-100">
-                <h6 class="small fw-bold">Nature Tourism Attraction</h6>
-                <p class="small text-muted mb-0">
-                    Surrounded by lush rainforest, Bengoh Dam is now a popular destination for hiking, waterfalls,
-                    and cultural experiences, attracting both local and international visitors.
-                </p>
+                <h6 class="small fw-bold">{{ __('messages.home.history_3_title') }}</h6>
+                <p class="small text-muted mb-0">{{ __('messages.home.history_3_desc') }}</p>
             </div>
         </div>
     </div>

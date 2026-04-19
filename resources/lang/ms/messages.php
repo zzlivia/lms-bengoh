@@ -120,6 +120,23 @@
                 'completed_courses' => 'Kursus Tamat',
                 'badge_earned' => 'Lencana Diperoleh',
 
+                // --- Assessment Page ---
+                'learn_history' => 'Pelajari Sejarah Tempatan Empangan',
+                'assessment_title' => 'Penilaian Kursus Modul :id : :name',
+                'assessment_purpose_label' => 'Tujuan Penilaian',
+                'assessment_purpose_text' => 'Penilaian ini direka untuk membantu pelajar merenung kembali apa yang telah dipelajari.',
+                'question' => 'Soalan',
+                'submit' => 'Hantar',
+                'confirm_submission' => 'Sahkan Penghantaran',
+                'confirm_prompt' => 'Adakah anda pasti mahu menghantar?',
+                'check_answers_prompt' => 'Sila semak semula jawapan anda.',
+                'yes_submit' => 'Ya, Hantar',
+                'cancel' => 'Batal',
+                'unanswered_warning' => 'Anda mempunyai :count soalan yang belum dijawab.',
+                'login_required' => 'Penilaian ini memerlukan log masuk.',
+                'login' => 'Log Masuk',
+                'register' => 'Daftar',
+
         ],
     ];
 ?>

@@ -22,6 +22,26 @@
             'reports' => 'Laporan',
             'help' => 'Bantuan & Sokongan',
             'admin_role' => 'Administrator',
+            'summary' => 'Ringkasan',
+            'total_users' => 'Jumlah Pengguna',
+            'reg_users_desc' => 'Pengguna berdaftar',
+            'new_users' => 'Pengguna Baharu',
+            'joined_week' => 'Sertai minggu ini',
+            'active_users' => 'Pengguna Aktif',
+            'active_week' => 'Aktif minggu ini',
+            'search_user_placeholder' => 'Cari Pengguna...',
+            'remove_user' => 'Alih Keluar Pengguna',
+            'engagement' => 'Penglibatan',
+            'rank' => 'Tahap',
+            'completed_courses_col' => 'Kursus Tamat',
+            'action' => 'Tindakan',
+            'delete' => 'Padam',
+            'no_users_found' => 'Tiada pengguna dijumpai',
+            
+            // User Ranks
+            'expert' => 'Pakar',
+            'intermediate' => 'Sederhana',
+            'beginner' => 'Permulaan',
         ],
 
         'home' => [

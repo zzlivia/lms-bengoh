@@ -1,27 +1,27 @@
 @extends('layouts.admin_layout')
 
 @section('content')
-    <h4 class="fw-bold mb-4">Summary</h4>
+    <h4 class="fw-bold mb-4">{{ __('messages.admin.summary') }}</h4>
     <div class="row mb-4 justify-content-center">
         <div class="col-md-4">
             <div class="card-box text-center">
-                <h6>Total Users</h6>
+                <h6>{{ __('messages.admin.total_users') }}</h6>
                 <h2>{{ $totalUsers }}</h2>
-                <small>Registered users</small>
+                <small>{{ __('messages.admin.reg_users_desc') }}</small>
             </div>
         </div>
         <div class="col-md-4">
             <div class="card-box text-center">
-                <h6>New Users</h6>
+                <h6>{{ __('messages.admin.new_users') }}</h6>
                 <h2>{{ $newUsers }}</h2>
-                <small>Joined this week</small>
+                <small>{{ __('messages.admin.joined_week') }}</small>
             </div>
         </div>
         <div class="col-md-4">
             <div class="card-box text-center">
-                <h6>Active Users</h6>
+                <h6>{{ __('messages.admin.active_users') }}<</h6>
                 <h2>{{ $activeUsers }}</h2>
-                <small>Active this week</small>
+                <small>{{ __('messages.admin.active_week') }}</small>
             </div>
         </div>
     </div>
@@ -30,7 +30,7 @@
         class="d-flex justify-content-between align-items-center mb-3">
         <input type="text" name="search" class="form-control w-50" placeholder="Search User">
         <div>
-            <button type="button" class="btn btn-danger">Remove User</button>
+            <button type="button" class="btn btn-danger">{{ __('messages.admin.remove_user') }}</button>
         </div>
     </form>
 
@@ -46,12 +46,12 @@
         <table id="userTable" class="table">
             <thead>
                 <tr>
-                    <th>Name</th>
-                    <th>Email Address</th>
-                    <th>Engagement</th>
-                    <th>Rank</th>
-                    <th>Completed Courses</th>
-                    <th>Action</th>
+                    <th>{{ __('messages.settings.name') }}</th>
+                    <th>{{ __('messages.settings.email') }}</th>
+                    <th>{{ __('messages.admin.engagement') }}</th>
+                    <th>{{ __('messages.admin.rank') }}</th>
+                    <th>{{ __('messages.admin.completed_courses_col') }}</th>
+                    <th>{{ __('messages.admin.action') }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -63,11 +63,11 @@
                         <td>{{ $user->engagement }}</td>
                         <td>
                             @if($user->completedCourses >= 10)
-                                Expert
+                                {{ __('messages.admin.expert') }}
                             @elseif($user->completedCourses >= 5)
-                                Intermediate
+                                {{ __('messages.admin.intermediate') }}
                             @else
-                                Beginner
+                                {{ __('messages.admin.beginner') }}
                             @endif
                         </td>
                         <td>{{ $user->completedCourses }}</td>
@@ -75,14 +75,14 @@
                             <form action="{{ route('admin.user.delete', $user->userID) }}" method="POST">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                <button type="submit" class="btn btn-danger btn-sm">{{ __('messages.admin.delete') }}</button>
                             </form>
                         </td>
                     </tr>
                 @endforeach
             @else
                 <tr>
-                    <td colspan="6" class="text-center">No users found</td>
+                    <td colspan="6" class="text-center">{{ __('messages.admin.no_users_found') }}</td>
                 </tr>
             @endif
             </tbody>
@@ -90,6 +90,6 @@
     </div>
 
     <div class="text-center mt-5">
-        <a href="{{ route('admin.dashboard') }}" class="btn btn-primary">Home</a>
+        <a href="{{ route('admin.dashboard') }}" class="btn btn-primary">{{ __('messages.nav.home') }}</a>
     </div>
 @endsection

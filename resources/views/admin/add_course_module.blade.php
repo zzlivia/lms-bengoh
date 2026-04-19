@@ -569,6 +569,26 @@
         }
     </script>
 
+    @push('scripts')
+        <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            tinymce.init({
+                selector: '#section_content',
+                height: 400,
+                menubar: true,
+                plugins: [
+                    'advlist autolink lists link image charmap preview anchor',
+                    'searchreplace visualblocks code fullscreen',
+                    'insertdatetime media table help wordcount'
+                ],
+                toolbar: 'undo redo | formatselect | bold italic underline | \
+                        alignleft aligncenter alignright alignjustify | \
+                        bullist numlist outdent indent | link image media | code preview'
+            });
+        });
+        </script>
+    @endpush
+
     <script> //initialize TineMCE
         tinymce.init({
             selector: '#section_content',

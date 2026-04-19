@@ -56,6 +56,14 @@ Route::get('/pdf/{filename}', function ($filename) {
     return response()->file($path);
 });
 
+Route::post('/upload-image', function (\Illuminate\Http\Request $request) {
+    $path = $request->file('file')->store('editor_images', 'public');
+
+    return response()->json([
+        'location' => asset('storage/' . $path)
+    ]);
+});
+
 /* public route */
 
 Route::get('/', function () {

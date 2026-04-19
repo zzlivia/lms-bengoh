@@ -74,6 +74,19 @@
             'mins' => 'minit',
             'view_feedback' => 'Lihat Maklum Balas Kursus',
             'enrol_now' => 'Daftar Sekarang',
+
+            //learning page
+            'courses_breadcrumb' => 'Kursus',
+            'video_not_supported' => 'Pelayar anda tidak menyokong tag video.',
+            'module_quiz' => 'Kuiz Modul',
+            'submit_quiz' => 'Hantar Kuiz',
+            'select_prompt' => 'Sila pilih modul atau kuliah daripada bar sisi.',
+            'previous' => 'Sebelumnya',
+            'next' => 'Seterusnya',
+            'go_to_mcq' => 'Ke Soalan MCQ',
+            'completed' => 'Selesai',
+            'time_left' => 'Masa Berbaki',
+            'quiz_confirm' => 'Anda tertinggal :count soalan. Hantar juga?',
         ],
     ];
 ?>

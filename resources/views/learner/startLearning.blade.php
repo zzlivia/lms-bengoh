@@ -21,11 +21,7 @@
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb small">
                             <li class="breadcrumb-item">
-                                @if(app()->environment('local'))
-                                    <a href="{{ route('courses.allCourses') }}">Courses</a>
-                                @else
-                                    <a href="{{ route('courses.allCourses') }}">Courses</a>
-                                @endif
+                                <a href="{{ route('courses.allCourses') }}">{{ __('messages.courses.courses_breadcrumb') }}</a>
                             </li>
                             <li class="breadcrumb-item active">
                                 {{ $course->courseName }}
@@ -46,7 +42,7 @@
                             <div class="video-container mb-4">
                                 <div class="ratio ratio-16x9">
                                     <video id="lessonVideo" controls class="w-100 h-100 rounded">
-                                        <source src="{{ asset('storage/' . $current->section_file) }}" type="video/mp4">Your browser does not support the video tag.
+                                        <source src="{{ asset('storage/' . $current->section_file) }}" type="video/mp4">{{ __('messages.courses.video_not_supported') }}
                                     </video>
                                 </div>
                             </div>
@@ -69,7 +65,7 @@
                         @endif
                     {{-- ================= MCQ ================= --}}
                     @elseif($module && $module->mcqs->count())
-                        <h5 class="fw-bold mb-3">Module Quiz: {{ $module->moduleName }}</h5>
+                        <h5 class="fw-bold mb-3">{{ __('messages.courses.module_quiz') }}: {{ $module->moduleName }}</h5>
                         <form id="quizForm" method="POST" action="{{ route('module.questions.submit', $module->moduleID) }}">
                             @csrf
                             @foreach($module->mcqs as $question)
@@ -88,12 +84,12 @@
                                     @endforeach
                                 </div>
                             @endforeach
-                            <button class="btn btn-primary">Submit Quiz</button>
+                            <button class="btn btn-primary">{{ __('messages.courses.submit_quiz') }}</button>
                         </form>
                     {{-- ================= EMPTY ================= --}}
                     @else
                         <div class="alert alert-info">
-                            Please select a module or lecture from the sidebar.
+                            {{ __('messages.courses.select_prompt') }}
                         </div>
                     @endif
                     {{-- ================= NAVIGATION ================= --}}
@@ -105,7 +101,7 @@
                     <div class="d-flex justify-content-between mt-5 pt-3 border-top">
                         <div>
                             @if($prev)
-                                <a href="{{ route('learn', ['id' => $course->courseID, 'sectionId' => $prev->sectionID]) }}" class="btn btn-outline-secondary">← Previous</a>
+                                <a href="{{ route('learn', ['id' => $course->courseID, 'sectionId' => $prev->sectionID]) }}" class="btn btn-outline-secondary">← {{ __('messages.courses.previous') }}</a>
                             @endif
                         </div>
                         <div>
@@ -118,9 +114,9 @@
                         </div>
                         <div>
                             @if(!$isLast)
-                                <a href="{{ route('learn', ['id' => $course->courseID, 'sectionId' => $next->sectionID]) }}" class="btn btn-primary">Next →</a>
+                                <a href="{{ route('learn', ['id' => $course->courseID, 'sectionId' => $next->sectionID]) }}" class="btn btn-primary">{{ __('messages.courses.next') }} →</a>
                             @else
-                                <a href="{{ route('mcq.module', $module->moduleID ?? 1) }}" class="btn btn-success text-white">Go to MCQ →</a>
+                                <a href="{{ route('mcq.module', $module->moduleID ?? 1) }}" class="btn btn-success text-white">{{ __('messages.courses.go_to_mcq') }} →</a>
                             @endif
                         </div>
 
@@ -136,6 +132,42 @@
     <script>
         const courseId = {{ $course->courseID }};
         const allSections = @json($sections->pluck('sectionID'));
+    </script>
+
+    <script>
+        // Localized strings for JS
+        const confirmMsg = "{{ __('messages.courses.quiz_confirm') }}";
+        const timeLeftLabel = "{{ __('messages.courses.time_left') }}";
+        const completedLabel = "{{ __('messages.courses.completed') }}";
+
+        document.getElementById('quizForm')?.addEventListener('submit', function(e) {
+            const questions = document.querySelectorAll('[name^="answers["]');
+            const answered = new Set();
+            questions.forEach(input => { if (input.checked) answered.add(input.name); });
+
+            const totalQuestions = new Set(Array.from(questions).map(q => q.name)).size;
+            const remaining = totalQuestions - answered.size;
+
+            if (answered.size < totalQuestions) {
+                e.preventDefault();
+                // Dynamic replacement for the JS confirm dialog
+                let msg = confirmMsg.replace(':count', remaining);
+                if (confirm(msg)) {
+                    e.target.submit();
+                }
+            }
+        });
+
+        @if($current && $current->lecture && $current->lecture->lect_duration)
+            // ... (existing timer logic) ...
+            // Inside your setInterval:
+            if (remaining <= 0) {
+                timerDisplay.textContent = completedLabel + " ✅";
+                // ...
+            } else {
+                timerDisplay.textContent = `${timeLeftLabel}: ${minutes}:${seconds}`;
+            }
+        @endif
     </script>
 
     <script>

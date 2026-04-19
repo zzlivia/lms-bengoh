@@ -46,6 +46,16 @@ Route::get('/test-ai', function () {
     return $response->json();
 });
 
+Route::get('/pdf/{filename}', function ($filename) {
+    $path = storage_path('app/public/lecture_sections/' . $filename);
+
+    if (!file_exists($path)) {
+        abort(404);
+    }
+
+    return response()->file($path);
+});
+
 /* public route */
 
 Route::get('/', function () {

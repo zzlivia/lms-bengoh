@@ -153,6 +153,6 @@
     </script>
 
     {{-- the rich editor --}}
-    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js"></script>
+    <script src="https://cdn.tiny.cloud/1/v6ov6w4ysrw63gdffs61dqb69kgf7co61rpfrrc77u59ae9u/tinymce/6/tinymce.min.js"></script>
 </body>
 </html>

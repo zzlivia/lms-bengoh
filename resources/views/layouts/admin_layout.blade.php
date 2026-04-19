@@ -152,7 +152,9 @@
         });
     </script>
 
-    {{-- the rich editor --}}
-    <script src="https://cdn.tiny.cloud/1/v6ov6w4ysrw63gdffs61dqb69kgf7co61rpfrrc77u59ae9u/tinymce/6/tinymce.min.js"></script>
+    {{-- the rich editor 
+    <script src="https://cdn.tiny.cloud/1/v6ov6w4ysrw63gdffs61dqb69kgf7co61rpfrrc77u59ae9u/tinymce/6/tinymce.min.js"></script>--}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.7.0/tinymce.min.js"></script>
+
 </body>
 </html>

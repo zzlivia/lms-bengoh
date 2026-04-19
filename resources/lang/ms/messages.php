@@ -137,6 +137,26 @@
                 'login' => 'Log Masuk',
                 'register' => 'Daftar',
 
+                //Progress
+                'progress' => [
+                'congrats_msg' => '🎉 Tahniah! Anda telah menamatkan kursus ini.',
+                'action_prompt' => 'Adakah anda ingin:',
+                'choose_another' => 'Pilih Kursus Lain',
+                'view_progress' => 'Lihat Prestasi Anda',
+                'your_progress' => 'Prestasi Anda',
+                'course_completion' => 'Penyelesaian Kursus',
+                'completion_desc' => 'Ini mewakili jumlah kandungan kursus yang telah anda siapkan.',
+                'completed_small' => 'selesai',
+                'congrats_title' => 'Tahniah!',
+                'success_msg' => 'Anda telah berjaya menamatkan kursus ini.',
+                'name_label' => 'Nama',
+                'download_cert' => 'Muat Turun Sijil',
+                'your_grades' => 'Gred Anda',
+                'task' => 'Tugasan',
+                'passing_grade' => 'Gred Lulus',
+                'current_grade' => 'Gred Semasa',
+                'total_grade' => 'Jumlah Gred Keseluruhan',
+            ],
         ],
     ];
 ?>

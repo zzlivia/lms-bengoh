@@ -112,6 +112,14 @@
                 'skipped_msg' => 'Anda melangkau <b>:count</b> soalan.<br>Adakah anda mahu teruskan?',
                 'yes_continue' => 'Ya, teruskan',
                 'go_back' => 'Kembali',
-            ],
-        ];
+
+                // --- Leaderboard ---
+                'leaderboard_subtitle' => 'Pelajar Terbaik Bengoh Academy Masa Kini',
+                'rank' => 'Kedudukan',
+                'name' => 'Nama',
+                'completed_courses' => 'Kursus Tamat',
+                'badge_earned' => 'Lencana Diperoleh',
+
+        ],
+    ];
 ?>

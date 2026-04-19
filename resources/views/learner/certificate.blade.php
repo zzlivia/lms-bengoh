@@ -8,6 +8,7 @@
         }
 
         body {
+            /* Ensure the font supports BM characters if any special accents are used */
             font-family: DejaVu Sans, sans-serif;
             margin: 0;
             padding: 0;
@@ -23,7 +24,6 @@
             text-align: center;
         }
 
-        /* watermark */
         .watermark {
             position: absolute;
             top: 50%;
@@ -37,6 +37,7 @@
             font-size: 34px;
             font-weight: bold;
             margin-top: 40px;
+            text-transform: uppercase;
         }
 
         .subtitle {
@@ -49,6 +50,7 @@
             font-weight: bold;
             margin: 25px 0;
             color: #2c3e50;
+            text-decoration: underline;
         }
 
         .course {
@@ -57,12 +59,10 @@
             margin-top: 15px;
         }
 
-        /* spacing to push footer down */
         .spacer {
             height: 120px;
         }
 
-        /* footer using table (VERY IMPORTANT) */
         .footer {
             width: 100%;
             position: absolute;
@@ -76,58 +76,52 @@
 
         .left {
             text-align: left;
-            padding-left: 20px;
+            padding-left: 50px;
         }
 
         .right {
             text-align: right;
-            padding-right: 20px;
+            padding-right: 50px;
         }
-
     </style>
 </head>
 
 <body>
     <div class="certificate">
-
-        <!-- watermark -->
         <img src="{{ public_path('images/bengohdam-logo.png') }}" class="watermark">
 
-        <div class="title">Certificate of Completion</div>
+        <div class="title">{{ __('messages.cert.title') }}</div>
 
-        <div class="subtitle">This certifies that</div>
+        <div class="subtitle">{{ __('messages.cert.certifies_that') }}</div>
 
         <div class="name">
             {{ $user->userName }}
         </div>
 
         <div class="subtitle">
-            has successfully completed the course
+            {{ __('messages.cert.completed_msg') }}
         </div>
 
         <div class="course">
             {{ $course->courseName }}
         </div>
 
-        <!-- push content down -->
         <div class="spacer"></div>
 
-        <!-- footer -->
         <div class="footer">
             <table>
                 <tr>
                     <td class="left">
                         ______________________ <br>
                         {{ $course->courseAuthor }} <br>
-                        Instructor
+                        {{ __('messages.cert.instructor') }}
                     </td>
                     <td class="right">
-                        Date: {{ now()->format('d M Y') }}
+                        {{ __('messages.cert.date') }}: {{ now()->format('d/m/Y') }}
                     </td>
                 </tr>
             </table>
         </div>
-
     </div>
 </body>
 </html>

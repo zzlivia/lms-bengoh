@@ -175,6 +175,14 @@
                     'not_really' => 'Tidak Sangat',
                     'select_module' => 'Pilih Modul',
                 ],
+
+                'cert' => [
+                    'title' => 'Sijil Penghargaan',
+                    'certifies_that' => 'Ini memperakui bahawa',
+                    'completed_msg' => 'telah berjaya menamatkan kursus',
+                    'instructor' => 'Pengajar',
+                    'date' => 'Tarikh',
+                ],
             ],
         ],
     ];

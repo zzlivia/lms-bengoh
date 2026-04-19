@@ -56,7 +56,12 @@
                         @endif
                         @if($current->section_type == 'pdf') {{-- PDF frame --}}
                             <div class="pdf-container mb-4">
-                                <iframe src="{{ asset('storage/' . $current->section_file) }}#toolbar=0" width="100%" height="600px" class="rounded border"></iframe>
+                                <iframe 
+                                    src="{{ url('/pdf/' . basename($current->section_file)) }}#toolbar=0"
+                                    width="100%"
+                                    height="600px"
+                                    class="rounded border">
+                                </iframe>
                             </div>
                         @endif
                     {{-- ================= MCQ ================= --}}

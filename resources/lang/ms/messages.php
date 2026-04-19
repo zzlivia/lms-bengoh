@@ -68,6 +68,12 @@
             'view_course' => 'Lihat Kursus',
             'start_learning' => 'Mula Belajar',
             'default_desc' => 'Penerangan kursus di sini.',
+
+            //view single course
+            'module' => 'Modul',
+            'mins' => 'minit',
+            'view_feedback' => 'Lihat Maklum Balas Kursus',
+            'enrol_now' => 'Daftar Sekarang',
         ],
     ];
 ?>

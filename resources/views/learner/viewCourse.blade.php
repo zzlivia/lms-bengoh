@@ -46,7 +46,7 @@
                                 <li class="list-group-item d-flex justify-content-between align-items-center px-0 bg-transparent">
                                     <span><i class="fa-regular fa-circle-play me-2 text-primary"></i>{{ $lecture->lectName }}</span>
                                     <span class="text-muted small">
-                                        {{ $lecture->lect_duration }} mins
+                                        {{ $lecture->lect_duration }} {{ __('messages.courses.mins') }}
                                     </span>
                                 </li>
                             @endforeach
@@ -59,10 +59,10 @@
 
         <div class="d-flex justify-content-between align-items-center mt-5 mb-5 p-4 bg-light rounded">
             <a href="{{ route('course.feedback', $course->courseID) }}" class="btn btn-link text-decoration-none"> {{--{{ route('course.feedback', $course->courseID) }}--}}
-                <i class="fa fa-comment-dots me-1"></i> View Course Feedback
+                <i class="fa fa-comment-dots me-1"></i> {{ __('messages.courses.view_feedback') }}
             </a>
             <a href="{{ route('learn', $course->courseID) }}" class="btn btn-primary btn-lg px-5 shadow"> {{--{{ route('courses.learn', $course->courseID) }}--}}
-                Enrol Now
+                {{ __('messages.courses.enrol_now') }}
             </a>
         </div>
     </div>

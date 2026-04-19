@@ -194,6 +194,13 @@
                     'preferences' => 'Keutamaan',
                     'listening_mode' => 'Mod Mendengar',
                     'sound_effects' => 'Kesan Bunyi',
+
+                    'profile' => 'Profil',
+                    'name' => 'Nama',
+                    'email' => 'E-mel',
+                    'new_password' => 'Kata Laluan Baharu',
+                    'password_placeholder' => 'Biarkan kosong jika tiada perubahan',
+                    'guest_msg' => 'Sila log masuk untuk melihat dan mengemas kini profil anda.',
                 ],
             ],
         ],

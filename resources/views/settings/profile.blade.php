@@ -3,7 +3,7 @@
 @section('settings_content')
     @auth
 
-    <h6 class="mb-3">Settings / Profile</h6>
+    <h6 class="mb-3">{{ __('messages.nav.settings') }} / {{ __('messages.settings.profile') }}</h6>
 
     {{-- SUCCESS MESSAGE --}}
     @if(session('success'))
@@ -17,7 +17,7 @@
 
         {{-- NAME --}}
         <div class="settings-row">
-            <label class="form-label">Name</label>
+            <label class="form-label">{{ __('messages.settings.name') }}</label>
             <input 
                 type="text" 
                 name="name" 
@@ -29,7 +29,7 @@
 
         {{-- EMAIL --}}
         <div class="settings-row">
-            <label class="form-label">Email</label>
+            <label class="form-label">{{ __('messages.settings.email') }}</label>
             <input 
                 type="email" 
                 name="email" 
@@ -41,7 +41,7 @@
 
         {{-- NEW PASSWORD --}}
         <div class="settings-row">
-            <label class="form-label">New Password</label>
+            <label class="form-label">{{ __('messages.settings.new_password') }}</label>
             <input 
                 type="password" 
                 name="new_password" 
@@ -52,8 +52,8 @@
 
         {{-- BUTTONS --}}
         <div class="mt-4 d-flex gap-2">
-            <a href="{{ route('homepage') }}" class="btn btn-success">Home</a>
-            <button type="submit" class="btn btn-success">Save Changes</button>
+            <a href="{{ route('homepage') }}" class="btn btn-success">{{ __('messages.nav.home') }}</a>
+            <button type="submit" class="btn btn-success">{{ __('messages.settings.save_changes') }}</button>
         </div>
 
     </form>
@@ -63,8 +63,8 @@
 
     @guest
     <div class="text-center">
-        <p class="text-muted">Please log in to view and update your profile.</p>
-        <a href="{{ route('login') }}" class="btn btn-primary">Login</a>
+        <p class="text-muted">{{ __('messages.settings.guest_msg') }}</p>
+        <a href="{{ route('login') }}" class="btn btn-primary">{{ __('messages.nav.login') }}</a>
     </div>
     @endguest
 

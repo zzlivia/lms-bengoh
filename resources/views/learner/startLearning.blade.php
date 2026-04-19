@@ -43,7 +43,7 @@
                         @if($current->section_type == 'video' && $current->section_file)
                             <div class="video-container mb-4">
                                 <div class="ratio ratio-16x9">
-                                    <video controls class="w-100 h-100 rounded">
+                                    <video id="lessonVideo" controls class="w-100 h-100 rounded">
                                         <source src="{{ asset('storage/' . $current->section_file) }}" type="video/mp4">Your browser does not support the video tag.
                                     </video>
                                 </div>

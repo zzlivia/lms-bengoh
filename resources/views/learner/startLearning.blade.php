@@ -106,12 +106,18 @@
                             @endif
                         </div>
                         <div>
+                            <button onclick="downloadLesson('{{ $lesson->video_url }}')" class="btn btn-warning">
+                                <i class="bi bi-download"></i>
+                            </button>
+                        </div>
+                        <div>
                             @if(!$isLast)
                                 <a href="{{ route('learn', ['id' => $course->courseID, 'sectionId' => $next->sectionID]) }}" class="btn btn-primary">Next →</a>
                             @else
                                 <a href="{{ route('mcq.module', $module->moduleID ?? 1) }}" class="btn btn-success text-white">Go to MCQ →</a>
                             @endif
                         </div>
+
                     </div>
                 </div>
             </div>

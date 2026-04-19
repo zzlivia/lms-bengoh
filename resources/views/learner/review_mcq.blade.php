@@ -7,17 +7,14 @@
             @include('partials.course-sidebar', ['course' => $course])
             {{-- main content --}}
             <div class="col-md-9 px-md-4">
-                <h4 class="mb-4">Review Answers</h4>
-
+                <h4 class="mb-4">{{ __('messages.courses.review_answers') }}</h4>
                 @foreach($module->mcqs as $index => $question)
                     <div class="card p-3 mb-3 shadow-sm">
                         <strong>{{ $index+1 }}. {{ $question->moduleQs }}</strong>
-
                         @foreach($question->answers as $answer)
                             <div class="mt-2">
                                 <span style="color: {{ $answer->ansCorrect ? 'green' : 'black' }}">
                                     {{ $answer->ansID_text }}
-
                                     @if($answer->ansCorrect)
                                         ✅ (Correct Answer)
                                     @endif
@@ -30,15 +27,13 @@
                 <div class="mt-4 d-flex gap-2">
                     {{-- back to mcq --}}
                     <a href="{{ route('mcq.module', $module->moduleID) }}" class="btn btn-secondary">
-                        Back to MCQ
+                        {{ __('messages.courses.back_to_mcq') }}
                     </a>
-
                     {{-- proceed to feedback --}}
                     <a href="{{ route('course.feedback', ['id' => $module->courseID]) }}" class="btn btn-primary">
-                        Proceed to Feedback
+                        {{ __('messages.courses.proceed_to_feedback') }}
                     </a>
                 </div>
-
             </div>
         </div>
     </div>

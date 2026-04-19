@@ -92,6 +92,12 @@
             'completed' => 'Selesai',
             'time_left' => 'Masa Berbaki',
             'quiz_confirm' => 'Anda tertinggal :count soalan. Hantar juga?',
+
+            // --- MCQ Review Page ---
+            'review_answers' => 'Semakan Jawapan',
+            'correct_answer' => 'Jawapan Betul',
+            'back_to_mcq' => 'Kembali ke MCQ',
+            'proceed_to_feedback' => 'Seterusnya ke Maklum Balas',
         ],
     ];
 ?>

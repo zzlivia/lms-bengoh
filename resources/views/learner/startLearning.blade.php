@@ -106,9 +106,11 @@
                             @endif
                         </div>
                         <div>
-                            <button onclick="downloadLesson('{{ $lesson->video_url }}')" class="btn btn-warning">
-                                <i class="bi bi-download"></i>
-                            </button>
+                            @if(!empty($current->file_url))
+                                <button onclick="downloadLesson('{{ $current->file_url }}')" class="btn btn-warning">
+                                    <i class="bi bi-download"></i>
+                                </button>
+                            @endif
                         </div>
                         <div>
                             @if(!$isLast)

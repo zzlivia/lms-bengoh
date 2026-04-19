@@ -162,6 +162,9 @@ class CourseController extends Controller
             // no sectionId → first section
             $currentIndex = 0;
             $current = $sections->first();
+            $currentTranslation = $current->translations()
+                ->where('locale', app()->getLocale())
+                ->first();
         } else {
             // find section
             $currentIndex = $sections->search(
@@ -174,6 +177,9 @@ class CourseController extends Controller
             }
 
             $current = $sections->get($currentIndex);
+            $currentTranslation = $current->translations()
+                ->where('locale', app()->getLocale())
+                ->first();
         }
 
         $lecture = Lecture::find($current->lectID);
@@ -205,6 +211,7 @@ class CourseController extends Controller
             'course' => $course,
             'sections' => $sections,
             'current' => $current,
+            'currentTranslation' => $currentTranslation,
             'lecture' => $lecture,
             'currentIndex' => $currentIndex,
             'module' => $course->modules->firstWhere('moduleID', $current->moduleID ?? null),

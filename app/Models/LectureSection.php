@@ -20,4 +20,7 @@ class LectureSection extends Model
     ];
 
     public function lecture(){return $this->belongsTo(Lecture::class, 'lectID', 'lectID');}
+
+    public function translations()
+    {return $this->hasMany(LectureSectionTranslation::class, 'sectionID');}
 }

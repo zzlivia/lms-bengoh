@@ -190,6 +190,10 @@
                     'notify_mcq' => 'MCQ yang Dihantar',
                     'notify_grades' => 'Gred Keseluruhan',
                     'save_changes' => 'Simpan Perubahan',
+
+                    'preferences' => 'Keutamaan',
+                    'listening_mode' => 'Mod Mendengar',
+                    'sound_effects' => 'Kesan Bunyi',
                 ],
             ],
         ],

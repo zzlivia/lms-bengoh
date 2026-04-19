@@ -291,7 +291,7 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Section Content</label>
-                        <textarea class="form-control" name="section_content" rows="5"></textarea>
+                        <textarea id="section_content" class="form-control" name="section_content" rows="5"></textarea>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Upload File (Optional)</label>
@@ -535,7 +535,7 @@
                 return;
             }
 
-            // 🔹 NEW: ask admin for number of questions
+            //ask admin for number of questions
             let num = prompt("Enter number of questions to generate:");
 
             if (!num || isNaN(num) || num <= 0) {
@@ -544,7 +544,7 @@
             }
 
             fetch(`/admin/generate-ai-mcq/${moduleID}`, {
-                method: "POST", // 🔹 IMPORTANT: change to POST
+                method: "POST", 
                 headers: {
                     "Content-Type": "application/json",
                     "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
@@ -569,5 +569,20 @@
         }
     </script>
 
+    <script> //initialize TineMCE
+        tinymce.init({
+            selector: '#section_content',
+            height: 400,
+            menubar: true,
+            plugins: [
+                'advlist autolink lists link image charmap preview anchor',
+                'searchreplace visualblocks code fullscreen',
+                'insertdatetime media table help wordcount'
+            ],
+            toolbar: 'undo redo | formatselect | bold italic underline | \
+                    alignleft aligncenter alignright alignjustify | \
+                    bullist numlist outdent indent | link image media | code preview'
+        });
+    </script>
     @stack('scripts')
 @endsection

@@ -574,14 +574,31 @@
             selector: '#section_content',
             height: 400,
             menubar: true,
-            plugins: [
-                'advlist autolink lists link image charmap preview anchor',
-                'searchreplace visualblocks code fullscreen',
-                'insertdatetime media table help wordcount'
-            ],
+            plugins: ['advlist autolink lists link image charmap preview anchor','searchreplace visualblocks code fullscreen','insertdatetime media table help wordcount'],
             toolbar: 'undo redo | formatselect | bold italic underline | \
                     alignleft aligncenter alignright alignjustify | \
-                    bullist numlist outdent indent | link image media | code preview'
+                    bullist numlist outdent indent | link image media | code preview',
+
+            /* support image upload */
+            images_upload_url: '/upload-image',
+            automatic_uploads: true,
+            file_picker_types: 'image',
+            images_upload_handler: function (blobInfo, success, failure) {
+                let formData = new FormData();
+                formData.append('file', blobInfo.blob());
+
+                fetch('/upload-image', {method: 'POST', body: formData,headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    }
+                })
+                .then(response => response.json())
+                .then(result => {
+                    success(result.location);
+                })
+                .catch(() => {
+                    failure('Upload failed');
+                });
+            }
         });
     </script>
     @stack('scripts')

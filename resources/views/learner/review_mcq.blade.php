@@ -16,7 +16,7 @@
                                 <span style="color: {{ $answer->ansCorrect ? 'green' : 'black' }}">
                                     {{ $answer->ansID_text }}
                                     @if($answer->ansCorrect)
-                                        ✅ (Correct Answer)
+                                        ✅ ({{ __('messages.courses.correct_answer') }})
                                     @endif
                                 </span>
                             </div>

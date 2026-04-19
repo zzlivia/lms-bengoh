@@ -44,8 +44,7 @@
                             <div class="video-container mb-4">
                                 <div class="ratio ratio-16x9">
                                     <video controls class="w-100 h-100 rounded">
-                                        <source src="{{ asset('storage/' . $current->section_file) }}" type="video/mp4">
-                                        Your browser does not support the video tag.
+                                        <source src="{{ asset('storage/' . $current->section_file) }}" type="video/mp4">Your browser does not support the video tag.
                                     </video>
                                 </div>
                             </div>
@@ -57,11 +56,7 @@
                         @endif
                         @if($current->section_type == 'pdf') {{-- PDF frame --}}
                             <div class="pdf-container mb-4">
-                                <iframe src="{{ asset('learning-materials/' . $current->section_file) }}#toolbar=0"
-                                        width="100%"
-                                        height="600px"
-                                        class="rounded border">
-                                </iframe>
+                                <iframe src="{{ asset('storage/' . $current->section_file) }}#toolbar=0" width="100%" height="600px" class="rounded border"></iframe>
                             </div>
                         @endif
                     {{-- ================= MCQ ================= --}}

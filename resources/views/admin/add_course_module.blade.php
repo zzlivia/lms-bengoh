@@ -10,7 +10,7 @@
             </div>
         @endif
 
-        <h3 class="mb-4">Create Course or Module</h3>
+        <h3 class="mb-4">{{ __('messages.admin.create_title') }}</h3>
         <!-- tabs  -->
         <ul class="nav nav-tabs mb-4" id="managementTab" role="tablist">
             <li class="nav-item" role="presentation">
@@ -20,7 +20,7 @@
                         data-bs-target="#course-form"
                         type="button"
                         role="tab">
-                    Add Course
+                    {{ __('messages.admin.add_course') }}
                 </button>
             </li>
 
@@ -31,7 +31,7 @@
                         data-bs-target="#module-form"
                         type="button"
                         role="tab">
-                    Add Module
+                    {{ __('messages.admin.add_module') }}
                 </button>
             </li>
 
@@ -42,7 +42,7 @@
                         data-bs-target="#lecture-form"
                         type="button"
                         role="tab">
-                    Add Lecture
+                    {{ __('messages.admin.add_lecture') }}
                 </button>
             </li>
 
@@ -53,7 +53,7 @@
                         data-bs-target="#section-form"
                         type="button"
                         role="tab">
-                    Add Lecture Section
+                   {{ __('messages.admin.add_section') }}
                 </button>
             </li>
 
@@ -64,7 +64,7 @@
                         data-bs-target="#mcq-form"
                         type="button"
                         role="tab">
-                    Add MCQ
+                    {{ __('messages.admin.add_mcq') }}
                 </button>
             </li>
 
@@ -75,14 +75,14 @@
                         data-bs-target="#assessment-form"
                         type="button"
                         role="tab">
-                    Add Course Assessment
+                    {{ __('messages.admin.add_assessment') }}
                 </button>
             </li>
         </ul>
         <hr class="my-4">
         <div class="d-flex justify-content-between align-items-center mb-3">
-            <h5>Course Assessments</h5>
-            <a href="{{ route('admin.assessment.manageCourseAss') }}" class="btn btn-outline-primary">View All Assessments</a>
+            <h5>{{ __('messages.admin.course_assessments') }}</h5>
+            <a href="{{ route('admin.assessment.manageCourseAss') }}" class="btn btn-outline-primary">{{ __('messages.admin.view_all_assessments') }}</a>
         </div>
         <div class="tab-content">
             <!-- course form -->
@@ -91,52 +91,52 @@
                     @csrf
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label class="form-label">Course Code</label>
+                            <label class="form-label">{{ __('messages.admin.view_all_assessments') }}</label>
                             <input type="text" class="form-control" name="courseCode" required>
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label class="form-label">Course Name</label>
+                            <label class="form-label">{{ __('messages.admin.course_name') }}</label>
                             <input type="text" class="form-control" name="courseName" required>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label class="form-label">Author</label>
+                            <label class="form-label">{{ __('messages.admin.author') }}</label>
                             <input type="text" class="form-control" name="courseAuthor" required>
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label class="form-label">Category</label>
+                            <label class="form-label">{{ __('messages.courses.category') }}</label>
                             <input type="text" class="form-control" name="courseCategory" required>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-4 mb-3">
-                            <label class="form-label">Level</label>
+                            <label class="form-label">{{ __('messages.courses.level') }}</label>
                             <select class="form-control" name="courseLevel" required>
-                                <option value="Beginner">Beginner</option>
-                                <option value="Intermediate">Intermediate</option>
-                                <option value="Advanced">Advanced</option>
+                                <option value="Beginner">{{ __('messages.admin.beginner') }}</option>
+                                <option value="Intermediate">{{ __('messages.admin.intermediate') }}</option>
+                                <option value="Advanced">{{ __('messages.admin.advanced') }}</option>
                             </select>
                         </div>
                         <div class="col-md-4 mb-3">
-                            <label class="form-label">Duration (Weeks)</label>
+                            <label class="form-label">{{ __('messages.courses.duration') }} ({{ __('messages.courses.weeks') }})</label>
                             <input type="number" class="form-control" name="courseDuration" required>
                         </div>
                         <div class="col-md-4 mb-3">
-                            <label class="form-label">Course Thumbnail</label>
+                            <label class="form-label">{{ __('messages.admin.thumbnail') }}</label>
                             <input type="file" class="form-control" name="courseImg" accept="image/*">
                         </div>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Description</label>
+                        <label class="form-label">{{ __('messages.admin.desc') }}</label>
                         <textarea class="form-control" name="courseDesc" rows="4" required></textarea>
                     </div>
                     <div class="mb-3 form-check">
                         <input type="checkbox" class="form-check-input" name="isAvailable" value="1" id="isAvailable" checked>
-                        <label class="form-check-label">Make this course available immediately</label>
+                        <label class="form-check-label">{{ __('messages.admin.available_immediately') }}</label>
                     </div>
                     <div class="text-end">
-                        <button type="submit" class="btn btn-success">Save Course</button>
+                        <button type="submit" class="btn btn-success">{{ __('messages.admin.save_course') }}</button>
                     </div>
                 </form>
             </div>
@@ -145,9 +145,9 @@
                 <form method="POST" action="{{ route('admin.module.store') }}">
                     @csrf
                     <div class="mb-3">
-                        <label class="form-label">Select Course</label>
+                        <label class="form-label">{{ __('messages.admin.select_course') }}</label>
                         <select class="form-control" name="courseID" required>
-                            <option value="">-- Choose a Course --</option>
+                            <option value="">-- {{ __('messages.admin.choose_course') }} --</option>
                             @foreach($courses as $course)
                                 <option value="{{ $course->courseID }}">
                                     {{ $course->courseName }}
@@ -156,21 +156,21 @@
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Module Name</label>
+                        <label class="form-label">{{ __('messages.admin.module_name') }}</label>
                         <input type="text" class="form-control" name="moduleName" required>
                     </div>
-                    <button type="submit" class="btn btn-primary">Save Module</button>
+                    <button type="submit" class="btn btn-primary">{{ __('messages.admin.save_module') }}</button>
                 </form>
                 <!-- display existing module below the form -->    
                 <hr class="my-4">
-                <h5 class="mb-3">Existing Modules</h5>
+                <h5 class="mb-3">{{ __('messages.admin.existing_modules') }}</h5>
                 <table class="table table-bordered table-striped">
                     <thead class="table-dark">
                         <tr>
                             <th>#</th>
-                            <th>Course</th>
-                            <th>Module Name</th>
-                            <th width="150">Action</th>
+                            <th{{ __('messages.nav.courses') }}</th>
+                            <th>{{ __('messages.admin.module_name') }}</th>
+                            <th width="150">{{ __('messages.admin.action') }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -184,13 +184,13 @@
                                 <form action="{{ route('admin.module.delete',$module->moduleID) }}" method="POST" class="d-inline">
                                     @csrf
                                     @method('DELETE')
-                                    <button class="btn btn-danger btn-sm" onclick="return confirm('Delete this module?')"> Delete </button>
+                                    <button class="btn btn-danger btn-sm" onclick="return confirm('{{ __('messages.admin.confirm_delete_module') }}')"> {{ __('messages.admin.delete') }} </button>
                                 </form>
                             </td>
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="4" class="text-center"> No modules added yet </td>
+                            <td colspan="4" class="text-center"> {{ __('messages.admin.no_modules') }} </td>
                         </tr>
                         @endforelse
                     </tbody>
@@ -202,9 +202,9 @@
                     @csrf
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label class="form-label">Select Module</label>
+                            <label class="form-label">{{ __('messages.admin.select_module') }}</label>
                             <select class="form-control" name="moduleID" required>
-                                <option value="">-- Choose a Module --</option>
+                                <option value="">-- {{ __('messages.admin.choose_module') }} --</option>
                                 @foreach($modules as $module)
                                     <option value="{{ $module->moduleID }}">
                                         {{ $module->course->courseName }} - {{ $module->moduleName }}
@@ -215,27 +215,27 @@
                     </div>
                     <div class="row">
                         <div class="col-md-8 mb-3">
-                            <label class="form-label">Lecture Name</label>
+                            <label class="form-label">{{ __('messages.admin.lecture_name') }}</label>
                             <input type="text" class="form-control" name="lectName" required>
                         </div>
                         <div class="col-md-4 mb-3">
-                            <label class="form-label">Duration (Minutes)</label>
+                            <label class="form-label">{{ __('messages.admin.duration_mins') }}</label>
                             <input type="number" class="form-control" name="lect_duration" required>
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-info text-white"> Save Lecture </button>
+                    <button type="submit" class="btn btn-info text-white"> {{ __('messages.admin.save_lecture') }} </button>
                 </form>
                 <!-- display existing lecture below the form -->
                 <hr class="my-4">
-                <h5 class="mb-3">Existing Lectures</h5>
+                <h5 class="mb-3">{{ __('messages.admin.existing_lectures') }}</h5>
                 <table class="table table-bordered table-striped">
                     <thead class="table-dark">
                         <tr>
                             <th>#</th>
-                            <th>Module</th>
-                            <th>Lecture Name</th>
-                            <th>Duration</th>
-                            <th width="150">Action</th>
+                            <th>{{ __('messages.courses.module') }}</th>
+                            <th>{{ __('messages.admin.lecture_name') }}</th>
+                            <th>{{ __('messages.courses.duration') }}</th>
+                            <th width="150">{{ __('messages.admin.action') }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -244,19 +244,19 @@
                             <td>{{ $index + 1 }}</td>
                             <td>{{ $lecture->module->moduleName ?? 'N/A' }}</td>
                             <td>{{ $lecture->lectName }}</td>
-                            <td>{{ $lecture->lect_duration }} min</td>
+                            <td>{{ $lecture->lect_duration }} {{ __('messages.courses.mins') }}</td>
                             <td>
                                 <a href="{{ route('admin.lecture.edit',$lecture->lectID) }}" class="btn btn-warning btn-sm"> Edit </a>
                                 <form action="{{ route('admin.lecture.delete',$lecture->lectID) }}" method="POST" class="d-inline">
                                     @csrf
                                     @method('DELETE')
-                                    <button class="btn btn-danger btn-sm" onclick="return confirm('Delete this lecture?')"> Delete </button>
+                                    <button class="btn btn-danger btn-sm" onclick="return confirm('{{ __('messages.admin.confirm_delete_lecture') }}')">{{ __('messages.admin.delete') }}</button>
                                 </form>
                             </td>
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="5" class="text-center"> No lectures added yet </td>
+                            <td colspan="5" class="text-center"> {{ __('messages.admin.no_lectures') }} </td>
                         </tr>
                         @endforelse
                     </tbody>
@@ -267,9 +267,9 @@
                 <form method="POST" action="{{ route('admin.sections.store') }}" enctype="multipart/form-data">
                     @csrf
                     <div class="mb-3">
-                        <label class="form-label">Select Lecture</label>
+                        <label class="form-label">{{ __('messages.admin.select_lecture') }}</label>
                         <select class="form-control" name="lectID" required>
-                            <option value="">-- Choose Lecture --</option>
+                            <option value="">-- {{ __('messages.admin.choose_lecture') }} --</option>
                             @foreach($lectures as $lecture)
                             <option value="{{ $lecture->lectID }}">
                             {{ $lecture->module->moduleName }} - {{ $lecture->lectName }}
@@ -278,30 +278,30 @@
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Section Title</label>
+                        <label class="form-label">{{ __('messages.admin.section_title') }}</label>
                         <input type="text" class="form-control" name="section_title" required>
                     </div>
                     <div class="mb-3">
-                        <label>Section Type</label>
+                        <label>{{ __('messages.admin.section_type') }}</label>
                         <select name="section_type" id="editType" class="form-control">
-                            <option value="text">Text</option>
-                            <option value="video">Video</option>
+                            <option value="text">{{ __('messages.admin.text') }}</option>
+                            <option value="video">{{ __('messages.admin.video') }}</option>
                             <option value="pdf">PDF</option>
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Section Content</label>
+                        <label class="form-label">{{ __('messages.admin.section_content') }}</label>
                         <textarea id="section_content" class="form-control" name="section_content" rows="5"></textarea>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Upload File (Optional)</label>
+                        <label class="form-label">{{ __('messages.admin.upload_file') }} ({{ __('messages.admin.optional') }})</label>
                         <input type="file" class="form-control" name="section_file">
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Display Order</label>
+                        <label class="form-label">{{ __('messages.admin.display_order') }}</label>
                         <input type="number" class="form-control" name="section_order">
                     </div>
-                    <button type="submit" class="btn btn-success"> Save Section </button>
+                    <button type="submit" class="btn btn-success"> {{ __('messages.admin.save_section') }} </button>
                 </form>
                 <!-- allow admin to edit section later -->
                 <hr class="my-4">
@@ -310,9 +310,9 @@
                         <thead class="table-dark">
                             <tr>
                                 <th>#</th>
-                                <th>Lecture</th>
-                                <th>Section Title</th>
-                                <th>Action</th>
+                                <th>{{ __('messages.admin.lecture') }}</th>
+                                <th>{{ __('messages.admin.section_title') }}</th>
+                                <th>{{ __('messages.admin.action') }}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -322,19 +322,19 @@
                             <td>{{ $section->lecture->lectName }}</td>
                             <td>{{ $section->section_title }}</td>
                             <td>
-                                <button class="btn btn-info btn-sm viewSectionBtn" data-title="{{ $section->section_title }}" data-content="{{ $section->section_content }}"> View </button>
+                                <button class="btn btn-info btn-sm viewSectionBtn" data-title="{{ $section->section_title }}" data-content="{{ $section->section_content }}"> {{ __('messages.admin.view') }} </button>
                                 <button 
                                     class="btn btn-warning btn-sm editSectionBtn"
                                     data-id="{{ $section->sectionID }}"
                                     data-title="{{ $section->section_title }}"
                                     data-content="{{ $section->section_content }}"
                                     data-type="{{ $section->section_type }}">
-                                    Edit
+                                    {{ __('messages.admin.edit') }}
                                 </button>
                                 <form action="{{ route('admin.section.delete',$section->sectionID) }}" method="POST" class="d-inline">
                                     @csrf
                                     @method('DELETE')
-                                    <button class="btn btn-danger btn-sm">Delete</button>
+                                    <button class="btn btn-danger btn-sm">{{ __('messages.admin.delete') }}</button>
                                 </form>
                             </td>
                         </tr>
@@ -362,7 +362,7 @@
                 <form method="POST" action="{{ route('admin.mcq.store') }}">
                     @csrf
                     <div class="mb-3">
-                        <label>Select Module</label>
+                        <label>{{ __('messages.admin.select_module') }}</label>
                         <select name="moduleID" class="form-control" required>
                             @foreach($modules as $module)
                                 <option value="{{ $module->moduleID }}">
@@ -375,32 +375,32 @@
                     <div id="questions-container">
                         {{-- main question display first --}}
                         <div class="question-block border p-3 mb-3 rounded">
-                            <label>Question</label>
+                            <label>{{ __('messages.courses.question') }}</label>
                             <input type="text" name="questions[0][text]" class="form-control mb-2" required>
 
                             {{-- list of answers --}}
                             @for($i = 0; $i < 4; $i++)
                                 <input type="text" name="questions[0][answers][]" class="form-control mb-2" placeholder="Answer {{ $i+1 }}" required>
                             @endfor
-                            <label>Correct Answer</label>
+                            <label>{{ __('messages.courses.correct_answer') }}</label>
                             <select name="questions[0][correct]" class="form-control">
-                                <option value="0">Answer 1</option>
-                                <option value="1">Answer 2</option>
-                                <option value="2">Answer 3</option>
-                                <option value="3">Answer 4</option>
+                                <option value="0">{{ __('messages.admin.answer') }} 1</option>
+                                <option value="1">{{ __('messages.admin.answer') }} 2</option>
+                                <option value="2">{{ __('messages.admin.answer') }} 3</option>
+                                <option value="3">{{ __('messages.admin.answer') }} 4</option>
                             </select>
                         </div>
                     </div>
                     {{-- buttons --}}
                     <div class="d-flex justify-content-between align-items-center mt-3">
                         <!-- left -->
-                        <button type="button" class="btn btn-secondary" onclick="addQuestion()">+ Add Question</button>
+                        <button type="button" class="btn btn-secondary" onclick="addQuestion()">+ {{ __('messages.admin.add_question_btn') }}</button>
                         <!-- AI generate MCQS button -->
                         <button type="button" class="btn btn-primary ms-2" onclick="generateAIQuestions()">
-                            ? Generate AI Questions
+                            ? {{ __('messages.admin.generate_ai_mcq') }}
                         </button>
                         <!-- right -->
-                        <button class="btn btn-success">Submit All</button>
+                        <button class="btn btn-success">{{ __('messages.admin.submit_all') }}</button>
                     </div>
                 </form>
                 {{-- list of mcq --}}

@@ -75,7 +75,10 @@ class LectureSectionController extends Controller
     public function editSection($id)
     {
         $section = LectureSection::findOrFail($id);
-        return view('admin.edit_section', compact('section'));
+        $sectionTranslation = $section->translations()
+            ->where('locale', app()->getLocale())
+            ->first();
+        return view('admin.lecture_section.edit', compact('section', 'sectionTranslation'));
     }
 
     public function updateSection(Request $request, $id)
@@ -88,6 +91,7 @@ class LectureSectionController extends Controller
         ]);
 
         $section = LectureSection::findOrFail($id);
+        
         $oldFile = $section->section_file;
 
         // update basic fields

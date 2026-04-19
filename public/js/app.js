@@ -38,3 +38,13 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 });
+
+//save progress offline
+function saveProgressOffline(data) {
+  let queue = JSON.parse(localStorage.getItem("progressQueue")) || [];
+  queue.push({
+    ...data,
+    synced: false
+  });
+  localStorage.setItem("progressQueue", JSON.stringify(queue));
+}

@@ -168,7 +168,7 @@
                     <thead class="table-dark">
                         <tr>
                             <th>#</th>
-                            <th{{ __('messages.nav.courses') }}</th>
+                            <th>{{ __('messages.nav.courses') }}</th>
                             <th>{{ __('messages.admin.module_name') }}</th>
                             <th width="150">{{ __('messages.admin.action') }}</th>
                         </tr>

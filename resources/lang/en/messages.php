@@ -3,7 +3,7 @@
 return [
     /*
     |--------------------------------------------------------------------------
-    | Navigation & Global
+    | Navigation
     |--------------------------------------------------------------------------
     */
     'nav' => [
@@ -47,7 +47,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Admin Panel
+    | Admin
     |--------------------------------------------------------------------------
     */
     'admin' => [
@@ -156,7 +156,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Courses & Learning
+    | Courses
     |--------------------------------------------------------------------------
     */
     'courses' => [
@@ -321,5 +321,41 @@ return [
             'listening_mode'        => 'Listening Mode',
             'sound_effects'         => 'Sound Effects',
         ],
+    ],
+
+    'about' => [
+        'title'             => 'About Bengoh Academy',
+        'subtitle'          => 'Empowering learners everywhere',
+        'mission_title'     => 'Our Mission',
+        'mission_desc'      => 'Bengoh Academy aims to provide accessible, high-quality education for everyone. We believe that learning should be flexible, practical, and available to all, regardless of location or background.',
+        
+        'offer_title'       => 'What We Offer',
+        'offer_courses'     => 'Courses',
+        'offer_courses_desc'=> 'Structured online courses',
+        'offer_video'       => 'Video Learning',
+        'offer_video_desc'  => 'Engaging video content',
+        'offer_community'   => 'Community',
+        'offer_comm_desc'   => 'Discussion & collaboration',
+        'offer_tracking'    => 'Progress Tracking',
+        'offer_track_desc'  => 'Monitor your learning journey',
+        'offer_access'      => 'Access Anywhere',
+        'offer_access_desc' => 'Learn anytime, anywhere',
+
+        'system_title'      => 'Our Learning System',
+        'system_intro'      => 'Our platform is designed with the learner in mind:',
+        'system_clarity'    => 'Clarity',
+        'system_clarity_d'  => 'Simple and structured teaching',
+        'system_engage'     => 'Engagement',
+        'system_engage_d'   => 'Interactive learning experience',
+        'system_practical'  => 'Practicality',
+        'system_practical_d'=> 'Real-world application',
+        'system_flex'       => 'Flexibility',
+        'system_flex_d'     => 'Learn at your own pace',
+
+        'vision_title'      => 'Our Vision',
+        'vision_desc'       => 'We envision a future where education is inclusive, digital, and empowering, helping individuals unlock their full potential.',
+        
+        'cta_title'         => 'Join Bengoh Academy Today',
+        'cta_tagline'       => 'Learn. Grow. Succeed.',
     ],
 ];

@@ -322,4 +322,40 @@ return [
             'sound_effects'        => 'Kesan Bunyi',
         ],
     ],
+
+    'about' => [
+        'title'             => 'Tentang Bengoh Academy',
+        'subtitle'          => 'Memperkasa pelajar di mana jua',
+        'mission_title'     => 'Misi Kami',
+        'mission_desc'      => 'Bengoh Academy bertujuan untuk menyediakan pendidikan yang mudah diakses dan berkualiti tinggi untuk semua orang. Kami percaya bahawa pembelajaran haruslah fleksibel, praktikal, dan tersedia untuk semua, tanpa mengira lokasi atau latar belakang.',
+        
+        'offer_title'       => 'Apa Yang Kami Tawarkan',
+        'offer_courses'     => 'Kursus',
+        'offer_courses_desc'=> 'Kursus dalam talian yang tersusun',
+        'offer_video'       => 'Pembelajaran Video',
+        'offer_video_desc'  => 'Kandungan video yang menarik',
+        'offer_community'   => 'Komuniti',
+        'offer_comm_desc'   => 'Perbincangan & kolaborasi',
+        'offer_tracking'    => 'Penjejakan Kemajuan',
+        'offer_track_desc'  => 'Pantau perjalanan pembelajaran anda',
+        'offer_access'      => 'Akses Di Mana Jua',
+        'offer_access_desc' => 'Belajar pada bila-bila masa, di mana sahaja',
+
+        'system_title'      => 'Sistem Pembelajaran Kami',
+        'system_intro'      => 'Platform kami direka dengan mengutamakan pelajar:',
+        'system_clarity'    => 'Kejelasan',
+        'system_clarity_d'  => 'Pengajaran yang mudah dan tersusun',
+        'system_engage'     => 'Penglibatan',
+        'system_engage_d'   => 'Pengalaman pembelajaran interaktif',
+        'system_practical'  => 'Praktikaliti',
+        'system_practical_d'=> 'Aplikasi dunia nyata',
+        'system_flex'       => 'Fleksibiliti',
+        'system_flex_d'     => 'Belajar mengikut rentak anda sendiri',
+
+        'vision_title'      => 'Visi Kami',
+        'vision_desc'       => 'Kami membayangkan masa depan di mana pendidikan adalah inklusif, digital, dan memperkasakan, membantu individu membuka potensi penuh mereka.',
+        
+        'cta_title'         => 'Sertai Bengoh Academy hari ini',
+        'cta_tagline'       => 'Belajar. Berkembang. Berjaya.',
+    ],
 ];

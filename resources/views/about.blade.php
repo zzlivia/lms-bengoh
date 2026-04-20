@@ -3,7 +3,11 @@
 @section('content')
 
 <div class="container mt-5">
-
+    <div class="mb-4">
+        <a href="{{ url('/') }}" class="btn btn-outline-primary">
+            <i class="fas fa-arrow-left me-2"></i> Home
+        </a>
+    </div>
     <!-- Page Title -->
     <div class="text-center mb-5">
         <h1 class="fw-bold">About Bengoh Academy</h1>

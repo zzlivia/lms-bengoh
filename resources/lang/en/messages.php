@@ -209,6 +209,25 @@ return [
         'ai_valid_number'         => 'Please enter a valid number!',
         'ai_success'              => 'AI Questions Successfully Generated & Saved!',
         'confirm_delete_generic'  => 'Are you sure you want to delete this?',
+
+        //help support
+        'help_support' => [
+            'title' => 'Help & Support',
+            'system_guide_title' => 'System Guide',
+            'system_guide_desc' => 'This system allows administrators to manage users, courses, announcements, and reports. Use the sidebar menu to navigate through different system modules.',
+            'faq_title' => 'Frequently Asked Questions',
+            'faq_q1' => 'How do I create a user?',
+            'faq_a1' => 'Go to <b>User Management</b> and click "Add User".',
+            'faq_q2' => 'How do I publish announcements?',
+            'faq_a2' => 'Go to <b>Announcements</b> and click "Create Announcement".',
+            'faq_q3' => 'How do I export reports?',
+            'faq_a3' => 'Go to <b>Reports</b> and choose PDF or Excel export.',
+            'contact_title' => 'Contact Support',
+            'email' => 'Email',
+            'phone' => 'Phone',
+            'office_hours' => 'Office Hours',
+            'work_days' => 'Monday – Friday',
+        ],
     ],
 
     /*

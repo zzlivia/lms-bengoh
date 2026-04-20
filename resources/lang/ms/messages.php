@@ -209,6 +209,25 @@ return [
         'ai_valid_number'         => 'Sila masukkan nombor yang sah!',
         'ai_success'              => 'Soalan AI Berjaya Dijana & Disimpan!',
         'confirm_delete_generic'  => 'Adakah anda pasti mahu memadam ini?',
+
+        //help support
+        'help_support' => [
+            'title' => 'Bantuan & Sokongan',
+            'system_guide_title' => 'Panduan Sistem',
+            'system_guide_desc' => 'Sistem ini membolehkan pentadbir mengurus pengguna, kursus, pengumuman, dan laporan. Gunakan menu bar sisi untuk menavigasi modul sistem yang berbeza.',
+            'faq_title' => 'Soalan Lazim (FAQ)',
+            'faq_q1' => 'Bagaimanakah cara untuk mencipta pengguna?',
+            'faq_a1' => 'Pergi ke <b>Pengurusan Pengguna</b> dan klik "Tambah Pengguna".',
+            'faq_q2' => 'Bagaimanakah cara untuk menyiarkan pengumuman?',
+            'faq_a2' => 'Pergi ke <b>Pengumuman</b> dan klik "Cipta Pengumuman".',
+            'faq_q3' => 'Bagaimanakah cara untuk mengeksport laporan?',
+            'faq_a3' => 'Pergi ke <b>Laporan</b> dan pilih eksport PDF atau Excel.',
+            'contact_title' => 'Hubungi Sokongan',
+            'email' => 'E-mel',
+            'phone' => 'Telefon',
+            'office_hours' => 'Waktu Pejabat',
+            'work_days' => 'Isnin – Jumaat',
+],
     ],
 
     /*

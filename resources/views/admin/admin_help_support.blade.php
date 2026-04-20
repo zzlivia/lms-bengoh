@@ -1,31 +1,29 @@
 @extends('layouts.admin_layout')
 @section('content')
 
-<h4 class="mb-4">Help & Support</h4>
+<h4 class="mb-4">{{ __('messages.admin.help_support.title') }}</h4>
 
-<h6 class="fw-bold">System Guide</h6>
+<h6 class="fw-bold">{{ __('messages.admin.help_support.system_guide_title') }}</h6>
 <p>
-This system allows administrators to manage users, courses, announcements, and reports.
-Use the sidebar menu to navigate through different system modules.
+    {{ __('messages.admin.help_support.system_guide_desc') }}
 </p>
+<h6 class="fw-bold mt-4">{{ __('messages.admin.help_support.faq_title') }}</h6>
 
-<h6 class="fw-bold mt-4">Frequently Asked Questions</h6>
+<p><strong>{{ __('messages.admin.help_support.faq_q1') }}</strong><br>
+{!! __('messages.admin.help_support.faq_a1') !!}</p>
 
-<p><strong>How do I create a user?</strong><br>
-Go to <b>User Management</b> and click "Add User".</p>
+<p><strong>{{ __('messages.admin.help_support.faq_q2') }}</strong><br>
+{!! __('messages.admin.help_support.faq_a2') !!}</p>
 
-<p><strong>How do I publish announcements?</strong><br>
-Go to <b>Announcements</b> and click "Create Announcement".</p>
+<p><strong>{{ __('messages.admin.help_support.faq_q3') }}</strong><br>
+{!! __('messages.admin.help_support.faq_a3') !!}</p>
 
-<p><strong>How do I export reports?</strong><br>
-Go to <b>Reports</b> and choose PDF or Excel export.</p>
-
-<h6 class="fw-bold mt-4">Contact Support</h6>
+<h6 class="fw-bold mt-4">{{ __('messages.admin.help_support.contact_title') }}</h6>
 
 <p>
-    Email: geemaolivia@gmail.com<br>
-    Phone: +6019 835 5025<br>
-    Office Hours: Monday – Friday (9AM – 5PM)
+    {{ __('messages.admin.help_support.email') }}: geemaolivia@gmail.com<br>
+    {{ __('messages.admin.help_support.phone') }}: +6019 835 5025<br>
+    {{ __('messages.admin.help_support.office_hours') }}: {{ __('messages.admin.help_support.work_days') }} (9AM – 5PM)
 </p>
 
 @endsection

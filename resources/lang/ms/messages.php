@@ -228,6 +228,11 @@ return [
             'office_hours' => 'Waktu Pejabat',
             'work_days' => 'Isnin – Jumaat',
         ],
+
+        //announcements
+        'posted'                => 'Diterbitkan',
+        'review'                => 'Semak',
+        'filter_announcements'  => 'Tapis pengumuman',
     ],
 
     'admin_settings' => [

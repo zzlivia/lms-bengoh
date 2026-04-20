@@ -228,6 +228,11 @@ return [
             'office_hours' => 'Office Hours',
             'work_days' => 'Monday – Friday',
         ],
+
+        //announcements
+        'posted'                => 'Posted',
+        'review'                => 'Review',
+        'filter_announcements'  => 'Filter the announcements',
     ],
 
     'admin_settings' => [

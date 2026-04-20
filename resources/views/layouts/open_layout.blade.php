@@ -17,6 +17,7 @@
         <link rel="stylesheet" href="{{ asset('css/course-sidebar.css') }}">
         <link rel="stylesheet" href="{{ asset('css/homepage.css') }}"> {{-- custom CSS --}}
         <link rel="stylesheet" href="{{ asset('css/settings.css') }}">
+        <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
         @yield('styles')
     </head>
 

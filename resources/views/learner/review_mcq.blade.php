@@ -11,15 +11,32 @@
                 @foreach($module->mcqs as $index => $question)
                     <div class="card p-3 mb-3 shadow-sm">
                         <strong>{{ $index+1 }}. {{ $question->moduleQs }}</strong>
-                        @foreach($question->answers as $answer)
-                            <div class="mt-2">
-                                <span style="color: {{ $answer->ansCorrect ? 'green' : 'black' }}">
-                                    {{ $answer->ansID_text }}
-                                    @if($answer->ansCorrect)
-                                        ✅ ({{ __('messages.courses.correct_answer') }})
-                                    @endif
-                                </span>
-                            </div>
+
+                        @php
+                            $options = [
+                                1 => $question->answer1,
+                                2 => $question->answer2,
+                                3 => $question->answer3,
+                                4 => $question->answer4,
+                            ];
+                            $correct = $question->correct_answer;
+                        @endphp
+
+                        @foreach($options as $key => $option)
+                            @if($option)
+                                @php
+                                    $labels = [1 => 'A', 2 => 'B', 3 => 'C', 4 => 'D'];
+                                @endphp
+
+                                <div class="mt-2">
+                                    <span style="color: {{ $key == $correct ? 'green' : 'black' }}">
+                                        <strong>{{ $labels[$key] }}.</strong> {{ $option }}
+                                        @if($key == $correct)
+                                            <i class="bi bi-check-circle-fill text-success"></i>
+                                        @endif
+                                    </span>
+                                </div>
+                            @endif
                         @endforeach
                     </div>
                 @endforeach

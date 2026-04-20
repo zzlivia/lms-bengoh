@@ -292,6 +292,7 @@ return [
             'somewhat'       => 'Agak Memberangsangkan',
             'not_really'     => 'Tidak Sangat',
             'select_module'  => 'Pilih Modul',
+            'feedback_submit' => 'Hantar Maklum Balas',
         ],
 
         // Certificate

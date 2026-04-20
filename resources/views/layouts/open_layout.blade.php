@@ -144,5 +144,10 @@
         @yield('scripts')
 
         @stack('scripts')
+
+        <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+        <script>
+            AOS.init();
+        </script>
     </body>
 </html>

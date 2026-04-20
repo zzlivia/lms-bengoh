@@ -13,20 +13,20 @@
                     @auth
                     <a href="{{ route('settings.profile') }}" 
                     class="settings-link {{ request()->routeIs('settings.profile') ? 'active' : '' }}">
-                        {{ __('messages.settings.profile') }}
+                        {{ __('messages.courses.settings.profile') }}
                         <span>›</span>
                     </a>
                     @endauth
 
                     <a href="{{ route('settings.notifications') }}" 
                     class="settings-link {{ request()->routeIs('settings.notifications') ? 'active' : '' }}">
-                        {{ __('messages.settings.notifications') }}
+                        {{ __('messages.courses.settings.notifications') }}
                         <span>›</span>
                     </a>
 
                     <a href="{{ route('settings.preferences') }}" 
                     class="settings-link {{ request()->routeIs('settings.preferences') ? 'active' : '' }}">
-                        {{ __('messages.settings.preferences') }}
+                        {{ __('messages.courses.settings.preferences') }}
                         <span>›</span>
                     </a>
                 </div>

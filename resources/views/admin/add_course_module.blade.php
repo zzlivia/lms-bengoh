@@ -305,7 +305,7 @@
                 </form>
                 <!-- allow admin to edit section later -->
                 <hr class="my-4">
-                <h5>Existing Sections</h5>
+                <h5>{{ __('messages.admin.existing_sections') }}</h5>
                     <table class="table table-bordered">
                         <thead class="table-dark">
                             <tr>

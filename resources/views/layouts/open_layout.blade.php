@@ -43,7 +43,7 @@
                     </li>
 
                     <li class="nav-item mx-2">
-                        <a class="nav-link" href="#">{{ __('messages.nav.community') }}</a>
+                        <a class="nav-link" href="{{ route('community.stories') }}">{{ __('messages.nav.community') }}</a>
                     </li>
 
                     <li class="nav-item mx-2">

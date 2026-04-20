@@ -323,14 +323,10 @@
                             <td>{{ $section->section_title }}</td>
                             <td>
                                 <button class="btn btn-info btn-sm viewSectionBtn" data-title="{{ $section->section_title }}" data-content="{{ $section->section_content }}"> {{ __('messages.admin.view') }} </button>
-                                <button 
-                                    class="btn btn-warning btn-sm editSectionBtn"
-                                    data-id="{{ $section->sectionID }}"
-                                    data-title="{{ $section->section_title }}"
-                                    data-content="{{ $section->section_content }}"
-                                    data-type="{{ $section->section_type }}">
+                                <a href="{{ route('admin.sections.edit', $section->sectionID) }}" 
+                                class="btn btn-warning btn-sm">
                                     {{ __('messages.admin.edit') }}
-                                </button>
+                                </a>
                                 <form action="{{ route('admin.section.delete',$section->sectionID) }}" method="POST" class="d-inline">
                                     @csrf
                                     @method('DELETE')

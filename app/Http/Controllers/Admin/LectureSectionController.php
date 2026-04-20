@@ -75,9 +75,11 @@ class LectureSectionController extends Controller
     public function editSection($id)
     {
         $section = LectureSection::findOrFail($id);
+
         $sectionTranslation = $section->translations()
             ->where('locale', app()->getLocale())
             ->first();
+
         return view('admin.lecture_section.edit', compact('section', 'sectionTranslation'));
     }
 

@@ -11,7 +11,7 @@
     </div>
 
     <!-- Mission -->
-    <div class="mb-5">
+    <div class="mb-5" data-aos="fade-up">
         <h3>Our Mission</h3>
         <p>
             Bengoh Academy aims to provide accessible, high-quality education for everyone.
@@ -21,30 +21,62 @@
     </div>
 
     <!-- What We Offer -->
-    <div class="mb-5">
-        <h3>What We Offer</h3>
-        <ul class="list-unstyled">
-            <li class="mb-2">
-                <i class="fas fa-book text-primary me-2"></i>
-                Structured online courses
-            </li>
-            <li class="mb-2">
-                <i class="fas fa-video text-danger me-2"></i>
-                Video-based learning
-            </li>
-            <li class="mb-2">
-                <i class="fas fa-users text-success me-2"></i>
-                Community discussions
-            </li>
-            <li class="mb-2">
-                <i class="fas fa-chart-line text-warning me-2"></i>
-                Progress tracking
-            </li>
-            <li class="mb-2">
-                <i class="fas fa-globe text-info me-2"></i>
-                Learn anytime, anywhere
-            </li>
-        </ul>
+    <div class="mb-5" data-aos="fade-right">
+        <h3 class="mb-4">What We Offer</h3>
+
+        <div class="row g-4">
+
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm offer-card">
+                    <div class="card-body text-center">
+                        <i class="fas fa-book fa-2x text-primary mb-3"></i>
+                        <h5>Courses</h5>
+                        <p>Structured online courses</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm offer-card">
+                    <div class="card-body text-center">
+                        <i class="fas fa-video fa-2x text-danger mb-3"></i>
+                        <h5>Video Learning</h5>
+                        <p>Engaging video content</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm offer-card">
+                    <div class="card-body text-center">
+                        <i class="fas fa-users fa-2x text-success mb-3"></i>
+                        <h5>Community</h5>
+                        <p>Discussion & collaboration</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm offer-card">
+                    <div class="card-body text-center">
+                        <i class="fas fa-chart-line fa-2x text-warning mb-3"></i>
+                        <h5>Progress Tracking</h5>
+                        <p>Monitor your learning journey</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm offer-card">
+                    <div class="card-body text-center">
+                        <i class="fas fa-globe fa-2x text-info mb-3"></i>
+                        <h5>Anywhere Access</h5>
+                        <p>Learn anytime, anywhere</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
     </div>
 
     <!-- Learning System -->

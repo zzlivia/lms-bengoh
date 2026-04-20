@@ -278,76 +278,63 @@ class CourseController extends Controller
     
     public function submitMCQS(Request $request, $id) 
     {
-        if (!Auth::check()) {
-            return redirect()->route('login')->with('error', 'Please login first.');
-        }
 
         $module = Module::with('mcqs.answers')->findOrFail($id);
-
         $answers = $request->input('answers', []);
         $total = $module->mcqs->count();
-
         $score = 0;
-
         //calculate score first
         foreach ($module->mcqs as $question) {
             $selectedAnswer = $answers[$question->moduleQs_ID] ?? null;
-
             if ($selectedAnswer) {
                 $correctAnswer = $question->answers->where('ansCorrect', 1)->first();
-
                 if ($correctAnswer && $correctAnswer->ansID == $selectedAnswer) {
                     $score++;
                 }
             }
         }
-
         //avoid division by zero
         $percentage = $total > 0 ? ($score / $total) * 100 : 0;
+        //logged-in users: save + limit attempts
+        if (Auth::check()) {
+            $existing = DB::table('assessment_results')
+                ->where('userID', Auth::id())
+                ->where('moduleID', $module->moduleID)
+                ->where('type', 'mcq')
+                ->first();
 
-        $existing = DB::table('assessment_results')
-            ->where('userID', Auth::id())
-            ->where('moduleID', $module->moduleID)
-            ->where('type', 'mcq')
-            ->first();
+            $attempts = $existing ? $existing->attempts + 1 : 1;
+            if ($attempts > 3) {
+                return redirect()->back()->with('error', 'You have reached the maximum number of attempts.');
+            }
 
-        $attempts = $existing ? $existing->attempts + 1 : 1;
-        //limit attempts
-        if ($attempts > 3) {
-            return redirect()->back()->with('error', 'You have reached the maximum number of attempts.');
+            DB::table('assessment_results')->updateOrInsert(
+                [
+                    'userID' => Auth::id(),
+                    'moduleID' => $module->moduleID,
+                    'courseID' => $module->courseID,
+                    'type' => 'mcq'
+                ],
+                [
+                    'score' => $percentage,
+                    'status' => $percentage >= 80 ? 'pass' : 'fail',
+                    'attempts' => $attempts,
+                    'updated_at' => now(),
+                    'created_at' => now(),
+                ]
+            );
+            $this->updateProgress($module->courseID, 'MCQ' . $module->moduleID, $percentage);
         }
-        
-        //save into assessment_results
-        DB::table('assessment_results')->updateOrInsert(
-            [
-                'userID' => Auth::id(),
-                'moduleID' => $module->moduleID,
-                'courseID' => $module->courseID,
-                'type' => 'mcq'
-            ],
-            [
-                'score' => $percentage,
-                'status' => $percentage >= 80 ? 'pass' : 'fail',
-                'attempts' => $attempts,
-                'updated_at' => now(),
-                'created_at' => now(),
-            ]
-        );
 
-        //update progress with REAL score
-        $this->updateProgress($module->courseID, 'MCQ' . $module->moduleID, $percentage);
-
-        //pass to the view
+        //return result (guest or user)
         return redirect()->back()->with([
             'score' => $score,
             'total' => $total,
             'courseID' => $module->courseID,
-
             'goFeedback' => route('course.feedback', $module->courseID),
             'reviewUrl' => route('module.review', $module->moduleID)
         ]);
     }
-
     public function reviewMCQ($id)
     {
         $module = Module::with('mcqs.answers', 'course')->findOrFail($id);

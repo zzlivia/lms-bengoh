@@ -185,7 +185,24 @@ return [
         'assessment_desc_label'   => 'Penerangan Penilaian',
         'desc_placeholder'        => 'Masukkan penerangan (pilihan)',
         'create_assessment_btn'   => 'Cipta Penilaian',
+        'add_questions' => 'Tambah Soalan',
+        'existing_questions' => 'Soalan Sedia Ada',
+        'question_num' => 'Soalan',
+        'confirm_delete_question' => 'Padam soalan ini?',
+        'question_type' => 'Jenis Soalan',
+        'mcq_options_label' => 'Pilihan (A–D)',
+        'option_placeholder' => 'Pilihan',
+        'correct_answer_label' => 'Jawapan Betul',
+        'remove' => 'Alih Keluar',
+        'save_questions' => 'Simpan Soalan',
+        'back' => 'Kembali',
+        'min_question_alert' => 'Sekurang-kurangnya satu soalan diperlukan.',
         
+        // Question Types
+        'type_mcq' => 'Aneka Pilihan (MCQ)',
+        'type_short' => 'Jawapan Pendek',
+        'type_long' => 'Jawapan Panjang',
+
         // JS & System Prompts
         'ai_prompt_count'         => 'Masukkan bilangan soalan untuk dijana:',
         'ai_select_module'        => 'Sila pilih modul terlebih dahulu!',

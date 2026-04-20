@@ -8,13 +8,13 @@
         </div>
     @endif
     <div class="container">
-        <h3>Add Questions: {{ $assessment->courseAssTitle }}</h3>
+        <h3>{{ __('messages.admin.add_questions') }} {{ $assessment->courseAssTitle }}</h3>
         @if($assessment->questions->count() > 0)
             <div class="mb-4">
-                <h5>Existing Questions</h5>
+                <h5>{{ __('messages.admin.existing_questions') }}</h5>
                 @foreach($assessment->questions as $q)
                     <div class="card p-3 mb-3">
-                        <b>Question {{ $loop->iteration }}:</b> {{ $q->courseAssQs }} <br>
+                        <b>{{ __('messages.admin.question_num') }} {{ $loop->iteration }}:</b> {{ $q->courseAssQs }} <br>
                         @if($q->courseAssType == 'MCQ')
                             @foreach($q->options as $index => $opt)
                                 {{ chr(65 + $index) }}. {{ $opt->optionText }} <br>
@@ -24,9 +24,8 @@
                             <!-- edit question button -->
                             <a href="{{ route('admin.assessment.editQuestions', $assessment->courseAssID) }}" 
                             class="btn btn-primary btn-sm">
-                                Edit
+                                {{ __('messages.admin.edit') }}
                             </a>
-
                             <!-- delete question button -->
                             <form action="{{ route('admin.assessment.deleteQuestion', $q->assQsID) }}" 
                                 method="POST" style="display:inline;">
@@ -34,7 +33,7 @@
                                 @method('DELETE')
                                 <button class="btn btn-danger btn-sm"
                                     onclick="return confirm('Delete this question?')">
-                                    Delete
+                                    {{ __('messages.admin.delete') }}
                                 </button>
                             </form>
                         </div>
@@ -50,26 +49,26 @@
                 <!-- question block -->
                 <div class="question-block border p-3 mb-3">
                     <!-- question text -->
-                    <label>Question</label>
+                    <label>{{ __('messages.admin.question_num') }}</label>
                     <input type="text" name="questions[0][text]" class="form-control mb-2" required>
 
                     <!-- type of question -->
-                    <label>Question Type</label>
+                    <label>{{ __('messages.admin.question_type') }}</label>
                     <select name="questions[0][type]" class="form-control mb-2" onchange="toggleOptions(this)">
-                        <option value="MCQ">MCQ</option>
-                        <option value="SHORT_ANSWER">Short Answer</option>
-                        <option value="LONG_ANSWER">Long Answer</option>
+                        <option value="MCQ">{{ __('messages.admin.type_mcq') }}</option>
+                        <option value="SHORT_ANSWER">{{ __('messages.admin.type_short') }}</option>
+                        <option value="LONG_ANSWER">{{ __('messages.admin.type_long') }}</option>
                     </select>
 
                     <!-- options of MCQS -->
                     <div class="mcq-options">
-                        <label>Options (A–D)</label>
-                        <input type="text" name="questions[0][options][]" class="form-control mb-1" placeholder="Option A">
-                        <input type="text" name="questions[0][options][]" class="form-control mb-1" placeholder="Option B">
-                        <input type="text" name="questions[0][options][]" class="form-control mb-1" placeholder="Option C">
-                        <input type="text" name="questions[0][options][]" class="form-control mb-1" placeholder="Option D">
+                        <label>{{ __('messages.admin.mcq_options_label') }}</label>
+                        <input type="text" name="questions[0][options][]" class="form-control mb-1" placeholder="{{ __('messages.admin.option_placeholder') }}">
+                        <input type="text" name="questions[0][options][]" class="form-control mb-1" placeholder="{{ __('messages.admin.option_placeholder') }}">
+                        <input type="text" name="questions[0][options][]" class="form-control mb-1" placeholder="{{ __('messages.admin.option_placeholder') }}">
+                        <input type="text" name="questions[0][options][]" class="form-control mb-1" placeholder="{{ __('messages.admin.option_placeholder') }}">
 
-                        <label>Correct Answer</label>
+                        <label>{{ __('messages.admin.correct_answer_label') }}</label>
                         <select name="questions[0][correct]" class="form-control">
                             <option value="0">A</option>
                             <option value="1">B</option>
@@ -78,7 +77,7 @@
                         </select>
                     </div>
                 <button type="button" class="btn btn-danger btn-sm mt-2" onclick="removeQuestion(this)">
-                    Remove
+                    {{ __('messages.admin.remove') }}
                 </button>
                 </div>
             </div>
@@ -86,13 +85,13 @@
             <div class="d-flex justify-content-between align-items-center mt-3">
                 <!-- left -->
                 <div>
-                    <button type="button" onclick="addQuestion()" class="btn btn-secondary">+ Add Question</button>
-                    <button type="submit" class="btn btn-success">Save Questions</button>
+                    <button type="button" onclick="addQuestion()" class="btn btn-secondary">+ {{ __('messages.admin.add_question_btn') }}</button>
+                    <button type="submit" class="btn btn-success">{{ __('messages.admin.save_questions') }}</button>
                 </div>
 
                 <!-- right -->
                 <div>
-                    <a href="{{ route('admin.course.module.create', ['tab' => 'assessment']) }}" class="btn btn-outline-primary">Back</a>
+                    <a href="{{ route('admin.course.module.create', ['tab' => 'assessment']) }}" class="btn btn-outline-primary">{{ __('messages.admin.back') }}</a>
                 </div>
             </div>
         </form>

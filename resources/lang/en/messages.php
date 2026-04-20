@@ -103,7 +103,7 @@ return [
         'pdf'             => 'PDF',
         'image'           => 'Image',
         'content'         => 'Content',
-        
+
         //course module
         'course_mod_mgmt'   => 'Course/Module Management',
         'feedback_received' => 'Feedback Received',
@@ -185,6 +185,23 @@ return [
         'assessment_desc_label'   => 'Assessment Description',
         'desc_placeholder'        => 'Enter description (optional)',
         'create_assessment_btn'   => 'Create Assessment',
+        'add_questions'           => 'Add Questions',
+        'existing_questions'      => 'Existing Questions',
+        'question_num'            => 'Question',
+        'confirm_delete_question' => 'Delete this question?',
+        'question_type'           => 'Question Type',
+        'mcq_options_label'       => 'Options (A–D)',
+        'option_placeholder'      => 'Option',
+        'correct_answer_label'    => 'Correct Answer',
+        'remove'                  => 'Remove',
+        'save_questions'          => 'Save Questions',
+        'back'                    => 'Back',
+        'min_question_alert'      => 'At least one question is required.',
+    
+        // Question Types
+        'type_mcq'          => 'MCQ',
+        'type_short'        => 'Short Answer',
+        'type_long'         => 'Long Answer',
         
         // JS & System Prompts
         'ai_prompt_count'         => 'Enter number of questions to generate:',

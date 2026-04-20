@@ -98,6 +98,21 @@ return [
         'edit'                    => 'Edit',
         'view'                    => 'View',
 
+        //course module
+        'course_mod_mgmt'   => 'Course/Module Management',
+        'feedback_received' => 'Feedback Received',
+        'assessments_passed'=> 'Assessments Passed',
+        'engaged_week'      => 'Engaged in this week',
+        'search_placeholder'=> 'Search Courses/Modules',
+        'add_new'           => 'Add New',
+        'available'         => 'Available',
+        'hidden'            => 'Hidden',
+        'course_details'    => 'Course Details',
+        'category'          => 'Category',
+        'level'             => 'Level',
+        'duration'          => 'Duration',
+        'hours'             => 'hours',
+
         // User Ranks
         'expert'                  => 'Expert',
         'intermediate'            => 'Intermediate',

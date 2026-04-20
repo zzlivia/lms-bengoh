@@ -98,6 +98,21 @@ return [
         'edit'                    => 'Edit',
         'view'                    => 'Lihat',
 
+        //course module
+        'course_mod_mgmt'   => 'Pengurusan Kursus/Modul',
+        'feedback_received' => 'Maklum Balas Diterima',
+        'assessments_passed'=> 'Penilaian Lulus',
+        'engaged_week'      => 'Penglibatan minggu ini',
+        'search_placeholder'=> 'Cari Kursus/Modul',
+        'add_new'           => 'Tambah Baharu',
+        'available'         => 'Tersedia',
+        'hidden'            => 'Disembunyikan',
+        'course_details'    => 'Butiran Kursus',
+        'category'          => 'Kategori',
+        'level'             => 'Tahap',
+        'duration'          => 'Tempoh',
+        'hours'             => 'jam',
+
         // User Ranks
         'expert'                  => 'Pakar',
         'intermediate'            => 'Sederhana',

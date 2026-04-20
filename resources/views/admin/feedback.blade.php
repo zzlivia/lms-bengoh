@@ -5,7 +5,7 @@
     <h4>{{ __('messages.courses.feedback.title') }}</h4>
         <div class="mb-3"> {{-- add filter function --}}
             <select id="courseFilter" class="form-control">
-                <option value="">All Courses</option>
+                <option value="">{{ __('messages.courses.all_categories') }}</option>
                 @foreach($feedbacks->pluck('course.courseName')->unique() as $courseName)
                     <option value="{{ $courseName }}">{{ $courseName }}</option>
                 @endforeach

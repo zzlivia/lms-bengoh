@@ -7,30 +7,19 @@
         @csrf
         @method('PUT')
         <div class="mb-3">
-            <label class="form-label">Title</label>
-            <input 
-                type="text" 
-                name="announcementTitle" 
-                class="form-control"
-                value="{{ $announcement->announcementTitle }}"
-                required
-            >
+            <label class="form-label">{{ __('messages.admin.section_title') }}</label>
+            <input  type="text" name="announcementTitle" class="form-control" value="{{ $announcement->announcementTitle }}"required>
         </div>
         <div class="mb-3">
             <label class="form-label">Details</label>
-            <textarea 
-                name="announcementDetails" 
-                class="form-control"
-                rows="4"
-                required
-            >{{ $announcement->announcementDetails }}</textarea>
+            <textarea name="announcementDetails" class="form-control" rows="4" required>{{ $announcement->announcementDetails }}</textarea>
         </div>
         <div class="d-flex justify-content-between mt-4">
             <a href="{{ route('admin.announcements') }}" class="btn btn-light">
-                Back
+               {{ __('messages.admin.back') }}
             </a>
             <button type="submit" class="btn btn-primary">
-                Update Announcement
+                {{ __('messages.courses.settings.save_changes') }}
             </button>
         </div>
     </form>

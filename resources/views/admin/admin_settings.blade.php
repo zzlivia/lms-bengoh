@@ -14,26 +14,26 @@
             <div class="row">
                 <!-- left side -->
                 <div class="col-md-6">
-                    <h6 class="fw-bold mb-3">General System Settings</h6>
+                    <h6 class="fw-bold mb-3">{{ __('messages.admin_settings.general_title') }}</h6>
                     <div class="mb-3 d-flex align-items-center">
-                        <label class="me-3">Default Language:</label>
+                        <label class="me-3">{{ __('messages.admin_settings.default_lang') }}</label>
                         <select class="form-select w-auto" name="default_language">
                             <option value="Default"
                                 {{ ($settings->default_language ?? '') == 'Default' ? 'selected' : '' }}>
-                                Default
+                                {{ __('messages.admin_settings.lang_default') }}
                             </option>
                             <option value="English"
                                 {{ ($settings->default_language ?? '') == 'English' ? 'selected' : '' }}>
-                                English
+                                {{ __('messages.admin_settings.lang_en') }}
                             </option>
                             <option value="Malay"
                                 {{ ($settings->default_language ?? '') == 'Malay' ? 'selected' : '' }}>
-                                Malay
+                                {{ __('messages.admin_settings.lang_ms') }}
                             </option>
                         </select>
                     </div>
                     <div class="mb-4 d-flex align-items-center">
-                    <label class="me-3">Notifications:</label>
+                    <label class="me-3">{{ __('messages.admin_settings.notifications') }}</label>
                         <div class="form-check form-switch">
                             <input class="form-check-input"
                             type="checkbox"
@@ -42,17 +42,17 @@
                             {{ ($settings->notifications ?? 0) ? 'checked' : '' }}>
                         </div>
                     </div>
-                    <h6 class="fw-bold mb-3">User & Access Settings</h6>
+                    <h6 class="fw-bold mb-3">{{ __('messages.admin_settings.user_access_title') }}</h6>
                     <div class="mb-3">
-                        <label class="me-3">User Registration:</label>
+                        <label class="me-3">{{ __('messages.admin_settings.registration') }}</label>
                         <select class="form-select w-auto" name="user_registration">
                             <option value="1"
                                 {{ ($settings->user_registration ?? 1) == 1 ? 'selected' : '' }}>
-                                Enable
+                                {{ __('messages.admin_settings.enable') }}
                             </option>
                             <option value="0"
                                 {{ ($settings->user_registration ?? 1) == 0 ? 'selected' : '' }}>
-                                Disable
+                                {{ __('messages.admin_settings.disable') }}
                             </option>
                         </select>
                     </div>
@@ -61,11 +61,11 @@
                         <select class="form-select w-auto" name="guest_access">
                             <option value="1"
                                 {{ ($settings->guest_access ?? 0) == 1 ? 'selected' : '' }}>
-                                Enable
+                                {{ __('messages.admin_settings.enable') }}
                             </option>
                             <option value="0"
                                 {{ ($settings->guest_access ?? 0) == 0 ? 'selected' : '' }}>
-                                Disable
+                                {{ __('messages.admin_settings.disable') }}
                             </option>
                         </select>
                     </div>
@@ -75,11 +75,11 @@
                             <select class="form-select w-auto" name="text_to_speech">
                                 <option value="1"
                                     {{ ($settings->text_to_speech ?? 0) == 1 ? 'selected' : '' }}>
-                                    Enable
+                                    {{ __('messages.admin_settings.enable') }}
                                 </option>
                                 <option value="0"
                                     {{ ($settings->text_to_speech ?? 0) == 0 ? 'selected' : '' }}>
-                                    Disable
+                                    {{ __('messages.admin_settings.disable') }}
                                 </option>
                             </select>
                     </div>
@@ -88,35 +88,35 @@
                             <select class="form-select w-auto" name="font_size">
                                 <option value="Default"
                                     {{ ($settings->font_size ?? '') == 'Default' ? 'selected' : '' }}>
-                                    Default
+                                    {{ __('messages.admin_settings.lang_default') }}
                                 </option>
                                 <option value="Small"
                                     {{ ($settings->font_size ?? '') == 'Small' ? 'selected' : '' }}>
-                                    Small
+                                    {{ __('messages.admin_settings.font_small') }}
                                 </option>
                                 <option value="Medium"
                                     {{ ($settings->font_size ?? '') == 'Medium' ? 'selected' : '' }}>
-                                    Medium
+                                    {{ __('messages.admin_settings.font_medium') }}
                                 </option>
                                 <option value="Large"
                                     {{ ($settings->font_size ?? '') == 'Large' ? 'selected' : '' }}>
-                                    Large
+                                    {{ __('messages.admin_settings.font_large') }}
                                 </option>
                             </select>
                     </div>
                 </div> <!-- left side ends -->
                 <!-- right side -->
                 <div class="col-md-6">
-                    <h6 class="fw-bold mb-3">Announcement Settings</h6>
+                    <h6 class="fw-bold mb-3"{{ __('messages.admin_settings.announcement_title') }}</h6>
                     <div class="mb-4 d-flex align-items-center">
-                        <label class="me-3">Announcements:</label>
+                        <label class="me-3">{{ __('messages.admin_settings.announcements') }}</label>
                         <div class="form-check form-switch">
                             <input class="form-check-input" type="checkbox" name="announcements" value="1" {{ ($settings->announcements ?? 1) ? 'checked' : '' }}>
                         </div>
                     </div>
-                    <h6 class="fw-bold mb-3">Report Settings</h6>
+                    <h6 class="fw-bold mb-3">{{ __('messages.admin_settings.report_title') }}</h6>
                     <div class="mb-4">
-                        <label class="me-3">Export format:</label>
+                        <label class="me-3">{{ __('messages.admin_settings.export_format') }}</label>
                         <select class="form-select w-auto" name="export_format">
                             <option value="PDF"
                                 {{ ($settings->export_format ?? '') == 'PDF' ? 'selected' : '' }}>
@@ -128,23 +128,23 @@
                             </option>
                         </select>
                     </div>
-                    <h6 class="fw-bold mb-3">Content Upload & Media Settings</h6>
+                    <h6 class="fw-bold mb-3">{{ __('messages.admin_settings.media_title') }}</h6>
                     <div class="mb-3">
-                        <label class="me-3">Allowed File Types:</label>
+                        <label class="me-3">{{ __('messages.admin_settings.file_types') }}</label>
                         <input type="text" class="form-control w-50" name="allowed_file_types" value="{{ $settings->allowed_file_types ?? '' }}" placeholder="Example: PDF, MP4">
                     </div>
                     <div class="mb-3 d-flex align-items-center">
-                        <label class="me-3">Maximum file size:</label> class="form-control w-50" name="max_file_size" value="{{ $settings->max_file_size ?? '' }}" placeholder="Example: 10MB">
+                        <label class="me-3">{{ __('messages.admin_settings.max_size') }}</label> class="form-control w-50" name="max_file_size" value="{{ $settings->max_file_size ?? '' }}" placeholder="{{ __('messages.admin_settings.placeholder_size') }}">
                     </div>
                     <div class="mb-3 d-flex align-items-center">
-                        <label class="me-3">Video resolution limit:</label>
-                        <input type="text" class="form-control w-50" name="video_resolution_limit" value="{{ $settings->video_resolution_limit ?? '' }}" placeholder="Example: 1080p">
+                        <label class="me-3">{{ __('messages.admin_settings.video_res') }}</label>
+                        <input type="text" class="form-control w-50" name="video_resolution_limit" value="{{ $settings->video_resolution_limit ?? '' }}" placeholder="E{{ __('messages.admin_settings.placeholder_res') }}">
                     </div>
                 </div><!-- right side ends -->
             </div>
             <!-- save button section -->
             <div class="text-center mt-4">
-                <button type="submit" class="btn btn-outline-dark btn-sm"> Save Changes </button>
+                <button type="submit" class="btn btn-outline-dark btn-sm">{{ __('messages.admin.save_changes') }}</button>
             </div>
         </form>
     </div>

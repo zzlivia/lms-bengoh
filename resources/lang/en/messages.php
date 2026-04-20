@@ -230,6 +230,42 @@ return [
         ],
     ],
 
+    'admin_settings' => [
+        'general_title'    => 'General System Settings',
+        'default_lang'     => 'Default Language:',
+        'lang_default'     => 'Default',
+        'lang_en'          => 'English',
+        'lang_ms'          => 'Malay',
+        'notifications'    => 'Notifications:',
+        
+        'user_access_title'=> 'User & Access Settings',
+        'registration'     => 'User Registration:',
+        'guest_access'     => 'Guest Access:',
+        'enable'           => 'Enable',
+        'disable'          => 'Disable',
+        
+        'accessibility'    => 'Accessibility',
+        'tts'              => 'Enable Text-to-Speech:',
+        'font_size'        => 'Font Size:',
+        'font_small'       => 'Small',
+        'font_medium'      => 'Medium',
+        'font_large'       => 'Large',
+        
+        'announcement_title' => 'Announcement Settings',
+        'announcements'      => 'Announcements:',
+        
+        'report_title'     => 'Report Settings',
+        'export_format'    => 'Export format:',
+        
+        'media_title'      => 'Content Upload & Media Settings',
+        'file_types'       => 'Allowed File Types:',
+        'max_size'         => 'Maximum file size:',
+        'video_res'        => 'Video resolution limit:',
+        'placeholder_types'=> 'Example: PDF, MP4',
+        'placeholder_size' => 'Example: 10MB',
+        'placeholder_res'  => 'Example: 1080p',
+    ],
+
     /*
     |--------------------------------------------------------------------------
     | Courses

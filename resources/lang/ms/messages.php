@@ -227,7 +227,43 @@ return [
             'phone' => 'Telefon',
             'office_hours' => 'Waktu Pejabat',
             'work_days' => 'Isnin – Jumaat',
-],
+        ],
+    ],
+
+    'admin_settings' => [
+        'general_title'    => 'Tetapan Sistem Umum',
+        'default_lang'     => 'Bahasa Lalai:',
+        'lang_default'     => 'Lalai',
+        'lang_en'          => 'Inggeris',
+        'lang_ms'          => 'Melayu',
+        'notifications'    => 'Pemberitahuan:',
+        
+        'user_access_title'=> 'Tetapan Pengguna & Akses',
+        'registration'     => 'Pendaftaran Pengguna:',
+        'guest_access'     => 'Akses Tetamu:',
+        'enable'           => 'Aktifkan',
+        'disable'          => 'Nyahaktifkan',
+        
+        'accessibility'    => 'Kebolehcapaian',
+        'tts'              => 'Aktifkan Teks-ke-Ucapan:',
+        'font_size'        => 'Saiz Fon:',
+        'font_small'       => 'Kecil',
+        'font_medium'      => 'Sederhana',
+        'font_large'       => 'Besar',
+        
+        'announcement_title' => 'Tetapan Pengumuman',
+        'announcements'      => 'Pengumuman:',
+        
+        'report_title'     => 'Tetapan Laporan',
+        'export_format'    => 'Format eksport:',
+        
+        'media_title'      => 'Muat Naik Kandungan & Tetapan Media',
+        'file_types'       => 'Jenis Fail Dibenarkan:',
+        'max_size'         => 'Saiz fail maksimum:',
+        'video_res'        => 'Had resolusi video:',
+        'placeholder_types'=> 'Contoh: PDF, MP4',
+        'placeholder_size' => 'Contoh: 10MB',
+        'placeholder_res'  => 'Contoh: 1080p',
     ],
 
     /*

@@ -98,6 +98,12 @@ return [
         'edit'                    => 'Edit',
         'view'                    => 'View',
 
+        //add section
+        'section_order'   => 'Order',
+        'pdf'             => 'PDF',
+        'image'           => 'Image',
+        'content'         => 'Content',
+        
         //course module
         'course_mod_mgmt'   => 'Course/Module Management',
         'feedback_received' => 'Feedback Received',

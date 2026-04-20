@@ -169,6 +169,12 @@ return [
         'existing_sections'       => 'Bahagian Sedia Ada',
         'lecture'                 => 'Kuliah',
 
+        //add section
+        'section_order'   => 'Urutan',
+        'pdf'             => 'PDF',
+        'image'           => 'Imej',
+        'content'         => 'Kandungan',
+
         // MCQ & Assessment Management
         'answer'                  => 'Jawapan',
         'add_question_btn'        => 'Tambah Soalan',

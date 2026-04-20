@@ -210,6 +210,9 @@ return [
         'ai_success'              => 'Soalan AI Berjaya Dijana & Disimpan!',
         'confirm_delete_generic'  => 'Adakah anda pasti mahu memadam ini?',
 
+        //feedback
+        'system_clarity'        => 'Kejelasan Sistem',
+        
         //help support
         'help_support' => [
             'title' => 'Bantuan & Sokongan',

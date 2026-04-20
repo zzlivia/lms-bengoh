@@ -210,6 +210,9 @@ return [
         'ai_success'              => 'AI Questions Successfully Generated & Saved!',
         'confirm_delete_generic'  => 'Are you sure you want to delete this?',
 
+        //feedback
+        'system_clarity'        => 'Clarity',
+
         //help support
         'help_support' => [
             'title' => 'Help & Support',

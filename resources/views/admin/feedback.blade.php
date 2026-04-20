@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container">
-    <h4>Course Feedback</h4>
+    <h4>{{ __('messages.courses.feedback.title') }}</h4>
         <div class="mb-3"> {{-- add filter function --}}
             <select id="courseFilter" class="form-control">
                 <option value="">All Courses</option>
@@ -14,13 +14,13 @@
         <table class="table table-bordered" id="feedbackTable"> {{-- add ID to the table--}}
             <thead>
                 <tr>
-                    <th>User</th>
-                    <th>Course</th>
-                    <th>Rating</th>
-                    <th>Clarity</th>
-                    <th>Understanding</th>
-                    <th>Enjoyment</th>
-                    <th>Suggestions</th>
+                    <th>{{ __('messages.courses.cert.instructor') }} ({{ __('messages.courses.settings.name') }})</th>
+                    <th>{{ __('messages.courses.courses_breadcrumb') }}</th>
+                    <th>{{ __('messages.courses.feedback.overall_rating') }}</th>
+                    <th>{{ __('messages.admin.system_clarity') ?? 'Clarity' }}</th>
+                    <th>{{ __('messages.courses.feedback.q2_importance') }}</th>
+                    <th>{{ __('messages.courses.feedback.q4_enjoy') }}</th>
+                    <th>{{ __('messages.courses.feedback.q5_improve') }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -46,9 +46,7 @@
             </tbody>
         </table>
         <div class="text-center mt-4">
-            <a href="{{ route('admin.dashboard') }}" class="btn btn-light px-4">
-                HOME
-            </a>
+            <a href="{{ route('admin.dashboard') }}" class="btn btn-light px-4">{{ __('messages.nav.home') }}</a>
         </div>
     </div>
 @endsection
@@ -57,7 +55,13 @@
     <script>
     $(document).ready(function() {
         if ($('#feedbackTable').length) {
-            let table = $('#feedbackTable').DataTable();
+            let table = $('#feedbackTable').DataTable({
+                // Add localization for DataTable itself if needed
+                "language": {
+                    "search": "{{ __('messages.admin.search_placeholder') }}",
+                    "zeroRecords": "{{ __('messages.admin.no_data') }}"
+                }
+            });
             $('#courseFilter').on('change', function() {
                 table.column(1).search(this.value).draw();
             });

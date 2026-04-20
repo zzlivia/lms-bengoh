@@ -60,12 +60,6 @@
                             <li>
                                 <a class="dropdown-item" href="{{ route('lang.switch', 'ms') }}">Bahasa Melayu</a>
                             </li>
-                            <li>
-                                <a class="dropdown-item" href="{{ route('lang.switch', 'iban') }}">Iban</a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="{{ route('lang.switch', 'biatah') }}">Bidayuh (Biatah)</a>
-                            </li>
                         </ul>
                     </li>
 

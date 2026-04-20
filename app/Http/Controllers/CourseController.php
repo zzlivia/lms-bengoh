@@ -327,18 +327,26 @@ class CourseController extends Controller
         }
 
         //return result (guest or user)
-        return redirect()->back()->with([
+        return redirect()->route('module.review', $module->moduleID)->with([
             'score' => $score,
             'total' => $total,
+            'answers' => $answers,
             'courseID' => $module->courseID,
             'goFeedback' => route('course.feedback', $module->courseID),
             'reviewUrl' => route('module.review', $module->moduleID)
         ]);
     }
+
     public function reviewMCQ($id)
     {
         $module = Module::with('mcqs.answers', 'course')->findOrFail($id);
-        return view('learner.review_mcq', ['module' => $module,'course' => $module->course]);
+        //get submitted answers from session
+        $selectedAnswers = session('answers', []);
+        return view('learner.review_mcq', [
+            'module' => $module,
+            'course' => $module->course,
+            'selectedAnswers' => $selectedAnswers
+        ]);
     }
 
     //show feedback form

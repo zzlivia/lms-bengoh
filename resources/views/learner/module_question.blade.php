@@ -46,18 +46,27 @@
                                     <i class="fas fa-volume-up"></i> {{ __('messages.courses.listen') }}
                                 </button>
                             </div>
+                            @php
+                                $answers = [
+                                    0 => $question->answer1,
+                                    1 => $question->answer2,
+                                    2 => $question->answer3,
+                                    3 => $question->answer4,
+                                ];
+                            @endphp
 
-                            @foreach($question->answers as $answer)
-                                <div class="form-check mt-2">
-                                    <input class="form-check-input" type="radio"
-                                        name="answers[{{ $question->moduleQs_ID }}]"
-                                        value="{{ $answer->ansID }}"
-                                        onclick="saveAnswer({{ $module->moduleID }}, {{ $question->moduleQs_ID }}, '{{ $answer->ansID }}')"
-                                        {{ old('answers.' . $question->moduleQs_ID) == $answer->ansID ? 'checked' : '' }}>
-                                    <label class="form-check-label">
-                                        {{ $answer->ansID_text }}
-                                    </label>
-                                </div>
+                            @foreach($answers as $key => $answer)
+                                @if($answer)
+                                    <div class="form-check mt-2">
+                                        <input class="form-check-input" type="radio"
+                                            name="answers[{{ $question->moduleQs_ID }}]"
+                                            value="{{ $key }}"
+                                            {{ old('answers.' . $question->moduleQs_ID) == $key ? 'checked' : '' }}>
+                                        <label class="form-check-label">
+                                            {{ $answer }}
+                                        </label>
+                                    </div>
+                                @endif
                             @endforeach
                         </div>
                     @endforeach

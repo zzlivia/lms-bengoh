@@ -47,7 +47,7 @@
                 <hr>
                 @if($isCompletedAll)
                     <div class="alert alert-success text-center shadow-sm">
-                        <h4 class="fw-bold">🎉 {{ __('messages.courses.rogress.congrats_title') }}</h4>
+                        <h4 class="fw-bold">🎉 {{ __('messages.courses.progress.congrats_title') }}</h4>
                         <p class="mb-1">{{ __('messages.courses.progress.success_msg') }}</p>
                         <p class="mb-0">{{ __('messages.courses.progress.name_label') }}:<strong>{{ auth()->user()->userName }}</strong></p>
                         <a href="{{ route('course.certificate', $course->courseID) }}" class="btn btn-success mt-3">🎓 {{ __('messages.courses.progress.download_cert') }}</a>

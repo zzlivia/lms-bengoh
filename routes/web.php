@@ -13,6 +13,7 @@ use App\Http\Controllers\AdminSettingsController;
 use App\Http\Controllers\Admin\CourseAssAdminController;
 use App\Http\Controllers\AssessmentController;
 use App\Http\Controllers\CommunityController;
+use App\Http\Controllers\PageController;
 use App\Models\CommunityStory;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Http;
@@ -82,6 +83,8 @@ Route::get('/lang/{lang}', function ($lang) {
         }
         return redirect()->back();
     })->name('lang.switch');
+
+Route::get('/about', [PageController::class, 'about'])->name('about');
 
 /* authentication */
 

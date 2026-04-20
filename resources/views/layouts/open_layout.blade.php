@@ -47,7 +47,7 @@
                     </li>
 
                     <li class="nav-item mx-2">
-                        <a class="nav-link" href="#">{{ __('messages.nav.about') }}</a>
+                        <a class="nav-link" href="{{ route('about') }}">{{ __('messages.nav.about') }}</a>
                     </li>
                     {{-- language switches --}}
                     <li class="nav-item dropdown mx-2">

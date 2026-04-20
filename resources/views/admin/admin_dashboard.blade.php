@@ -6,30 +6,30 @@
 <div class="row mb-4">
     <div class="col-md-3">
         <div class="card card-stat p-3 text-center">
-            <h6>Total Users</h6>
+            <h6>{{ __('messages.admin.total_users') }}</h6>
             <h3>{{ $totalUsers }}</h3>
-            <small class="text-muted">Registered Users</small>
+            <small class="text-muted">{{ __('messages.admin.reg_users_desc') }}</small>
         </div>
     </div>
     <div class="col-md-3">
         <div class="card card-stat p-3 text-center">
-            <h6>Total Courses</h6>
+            <h6>{{ __('messages.admin.total_courses') }}</h6>
             <h3>{{ $totalCourses }}</h3>
-            <small class="text-muted">Offered Courses</small>
+            <small class="text-muted">{{ __('messages.admin.reg_courses') }}</small>
         </div>
     </div>
     <div class="col-md-3">
         <div class="card card-stat p-3 text-center">
-            <h6>Total Modules</h6>
+            <h6>{{ __('messages.admin.total_modules') }}</h6>
             <h3>{{ $totalModules }}</h3>
-            <small class="text-muted">Available Modules</small>
+            <small class="text-muted">{{ __('messages.admin.available_modules') }}</small>
         </div>
     </div>
     <div class="col-md-3">
         <div class="card card-stat p-3 text-center">
-            <h6>Total Lectures</h6>
+            <h6>{{ __('messages.admin.total_lectures') }}</h6>
             <h3>{{ $totalLectures }}</h3>
-            <small class="text-muted">Available Lectures</small>
+            <small class="text-muted">{{ __('messages.admin.available_lectures') }}</small>
         </div>
     </div>
 </div>
@@ -38,13 +38,13 @@
 <div class="row mb-4">
     <div class="col-md-7">
         <div class="card card-custom p-4">
-            <h6>Most Course Taken</h6>
+            <h6>{{ __('messages.admin.most_course_taken') }}</h6>
             <canvas id="barChart" height="120"></canvas>
         </div>
     </div>
     <div class="col-md-5">
         <div class="card card-custom p-4">
-            <h6>Announcements</h6>
+            <h6>{{ __('messages.admin.announcements') }}</h6>
             <ul class="list-group list-group-flush">
                 @foreach($announcements as $announcement)
                     <li class="list-group-item">
@@ -64,8 +64,7 @@
 <div class="row">
     <div class="col-md-6">
         <div class="card card-custom p-4">
-            <h6>Overall Analysis on Modules</h6>
-
+            <h6>{{ __('messages.admin.analysis_modules') }}</h6>
             <div class="chart-container">
                 <canvas id="pieChart"></canvas>
             </div>
@@ -73,31 +72,31 @@
     </div>
     <div class="col-md-6">
         <div class="card card-custom p-4">
-            <h6>Resource Summary</h6>
+            <h6>{{ __('messages.admin.resource_summary') }}</h6>
             <ul class="list-group list-group-flush">
                 <li class="list-group-item d-flex justify-content-between">
-                    Most Downloaded PDF
+                    {{ __('messages.admin.most_download_pdf') }}
                     <span>
                         {{ $recentPdf->learningMaterialTitle ?? 'Not Available Yet' }}
                     </span>
                 </li>
 
                 <li class="list-group-item d-flex justify-content-between">
-                    Most Viewed Video
+                    {{ __('messages.admin.most_viewed_video') }}
                     <span>
                         {{ $recentVideo->learningMaterialTitle ?? 'Not Available Yet' }}
                     </span>
                 </li>
 
                 <li class="list-group-item d-flex justify-content-between">
-                    Unused Materials
+                    {{ __('messages.admin.unused_materials') }}
                     <span>
                         {{ $unusedMaterials ?? 'Not Available Yet' }}
                     </span>
                 </li>
 
                 <li class="list-group-item d-flex justify-content-between">
-                    Recently Uploaded
+                    {{ __('messages.admin.recently_uploaded') }}
                     <span>
                         {{ $recentMaterial->learningMaterialTitle ?? 'Not Available Yet' }}
                     </span>

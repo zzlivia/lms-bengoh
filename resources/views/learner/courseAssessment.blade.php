@@ -21,9 +21,6 @@
                     {{ session('info') }}
                 </div>
             @endif
-            <div class="text-center mb-4">
-                <button class="btn btn-light shadow-sm px-4">{{ __('messages.courses.learn_history') }}</button>
-            </div>
             <h6 class="text-center mb-4">
                 {{ __('messages.courses.assessment_title', [
                     'id' => $assessment->courseAssID,

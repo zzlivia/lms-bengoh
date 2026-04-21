@@ -10,16 +10,16 @@
                 <h4 class="mb-4">{{ __('messages.courses.review_answers') }}</h4>
                 @foreach($module->mcqs as $index => $question)
                     <div class="card p-3 mb-3 shadow-sm">
-                        <strong>{{ $index+1 }}. {{ $question->moduleQs }}</strong>
-
+                        <strong>{{ $index+1 }}. {{ $question->getTranslation('question') }}</strong>
                         @php
                             $options = [
-                                1 => $question->answer1,
-                                2 => $question->answer2,
-                                3 => $question->answer3,
-                                4 => $question->answer4,
+                                1 => $question->getTranslation('answer1'),
+                                2 => $question->getTranslation('answer2'),
+                                3 => $question->getTranslation('answer3'),
+                                4 => $question->getTranslation('answer4'),
                             ];
                             $correct = $question->correct_answer;
+                            $labels = [1 => 'A', 2 => 'B', 3 => 'C', 4 => 'D'];
                         @endphp
 
                         @foreach($options as $key => $option)
@@ -33,6 +33,7 @@
                                         <strong>{{ $labels[$key] }}.</strong> {{ $option }}
                                         @if($key == $correct)
                                             <i class="bi bi-check-circle-fill text-success"></i>
+                                            <small class="text-success fw-bold">({{ __('messages.courses.correct_answer') }})</small>
                                         @endif
                                     </span>
                                 </div>

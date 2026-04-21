@@ -25,7 +25,6 @@ class LectureSection extends Model
 
     public function translations()
     {
-        // foreign_key is sectionID, local_key is sectionID
-        return $this->hasMany(LectureSectionTranslation::class, 'sectionID', 'sectionID');
+        return $this->morphMany(Translation::class, 'translatable');
     }
 }

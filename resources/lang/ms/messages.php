@@ -367,7 +367,7 @@ return [
         'badge_earned'         => 'Lencana Diperoleh',
 
         // Course Assessment
-        'learn_button'            => 'Pelajar :course',
+        'learn_button'            => 'Belajar :course',
         'assessment_title'        => 'Penilaian Kursus Modul :id : :name',
         'assessment_purpose_label'=> 'Tujuan Penilaian',
         'assessment_purpose_text' => 'Penilaian ini direka untuk membantu pelajar merenung kembali apa yang telah dipelajari.',

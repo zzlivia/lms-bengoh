@@ -236,6 +236,12 @@ return [
         'posted'                => 'Diterbitkan',
         'review'                => 'Semak',
         'filter_announcements'  => 'Tapis pengumuman',
+
+        //alerts/notifications
+        'alerts'              => 'Amaran',
+        'reset_req'           => 'Permintaan Set Semula Kata Laluan',
+        'pending_feedback'    => 'Maklum Balas Kursus Belum Selesai',
+        'announcement_review' => 'Pengumuman Menunggu Semakan',
     ],
 
     'admin_settings' => [

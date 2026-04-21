@@ -236,6 +236,12 @@ return [
         'posted'                => 'Posted',
         'review'                => 'Review',
         'filter_announcements'  => 'Filter the announcements',
+
+        //alerts/notifications
+        'alerts'              => 'Alerts',
+        'reset_req'           => 'Password Reset Requests',
+        'pending_feedback'    => 'Pending Course Feedback',
+        'announcement_review' => 'Announcements Pending Review',
     ],
 
     'admin_settings' => [

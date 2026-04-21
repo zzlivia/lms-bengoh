@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Lecture;
+use App\Models\LectureSectionTranslation;
 use App\Models\LearningMaterials;
 use App\Models\VideoLearning;
 use App\Models\LectureSection;
@@ -74,14 +74,16 @@ class LectureSectionController extends Controller
 
     public function editSection($id)
     {
+        // Find the main section
         $section = LectureSection::findOrFail($id);
 
-        //looks for a row where 'locale' matches 'en' or 'ms'
+        // Fetch the translation for the current language (e.g., 'ms' or 'en')
         $sectionTranslation = $section->translations()
             ->where('locale', app()->getLocale())
             ->first();
 
-        return view('admin.lecture_section.edit', compact('section', 'sectionTranslation'));
+        // Use the view name shown in your folder structure: admin/edit_section.blade.php
+        return view('admin.edit_section', compact('section', 'sectionTranslation'));
     }
 
     public function updateSection(Request $request, $id)
@@ -94,31 +96,42 @@ class LectureSectionController extends Controller
         ]);
 
         $section = LectureSection::findOrFail($id);
-        
         $oldFile = $section->section_file;
 
-        // update basic fields
+        // 1. UPDATE BASE FIELDS (Non-translatable logic)
+        $section->section_type = $request->section_type;
+        // We keep these as defaults in the main table in case a translation doesn't exist
         $section->section_title = $request->section_title;
         $section->section_content = $request->section_content;
-        $section->section_type = $request->section_type;
 
-        // handle new file upload
+        // handle file upload
         if ($request->hasFile('section_file')) {
-            // delete old file
             if ($oldFile) {
                 Storage::disk('public')->delete($oldFile);
             }
-            // store new file
             $filePath = $request->file('section_file')->store('lecture_sections', 'public');
             $section->section_file = $filePath;
         } else {
             $filePath = $section->section_file;
         }
+        
         $section->save();
-        //sync learningmaterials + videolearning
-        if ($section->section_type === 'video' && $filePath) {
 
-            //update or create learning material
+        // 2. SYNC TRANSLATION (The Localization Logic)
+        // This saves the title and content into the translations table based on current locale
+        $section->translations()->updateOrCreate(
+            [
+                'locale' => app()->getLocale(),
+                'sectionID' => $section->sectionID 
+            ],
+            [
+                'title' => $request->section_title,   // column name from your DB screenshot
+                'content' => $request->section_content // column name from your DB screenshot
+            ]
+        );
+
+        // 3. SYNC RESOURCES (Video logic)
+        if ($section->section_type === 'video' && $filePath) {
             $material = LearningMaterials::updateOrCreate(
                 [
                     'lectID' => $section->lectID,
@@ -131,23 +144,16 @@ class LectureSectionController extends Controller
                 ]
             );
 
-            //update or create video learning
             VideoLearning::updateOrCreate(
-                [
-                    'learningMaterialID' => $material->learningMaterialID
-                ],
+                ['learningMaterialID' => $material->learningMaterialID],
                 [
                     'videoLearningName' => $section->section_title,
                     'videoLearningPath' => $filePath,
-                    'videoLearningDesc' => 'Video lesson',
-                    'videoLearningDuration' => null,
-                    'videoLearningResolution' => null
+                    'videoLearningDesc' => 'Video lesson'
                 ]
             );
-
         } else {
-            //if changed from video → text/pdf/image, old records will be cleaned up
-
+            // Cleanup if type changed
             $material = LearningMaterials::where('lectID', $section->lectID)
                 ->where('learningMaterialTitle', $section->section_title)
                 ->first();
@@ -158,7 +164,8 @@ class LectureSectionController extends Controller
             }
         }
 
-        return back()->with('success', 'Section updated successfully');
+        // Use localization for the success message too!
+        return back()->with('success', __('messages.admin.save_changes'));
     }
 
     public function deleteSection($id)

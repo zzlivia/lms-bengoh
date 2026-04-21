@@ -314,6 +314,7 @@ return [
         'start_learning'       => 'Start Learning',
         'default_desc'         => 'Course description here.',
         'courses_breadcrumb'   => 'Courses',
+        'status'               => 'Status',
 
         // View Course Sidebar
         'course_modules'       => 'Course Modules',

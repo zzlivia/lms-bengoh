@@ -314,6 +314,7 @@ return [
         'start_learning'       => 'Mula Belajar',
         'default_desc'         => 'Penerangan kursus di sini.',
         'courses_breadcrumb'   => 'Kursus',
+        'status'               => 'Status',
 
         // View Course Sidebar
         'course_modules'       => 'Modul Kursus',

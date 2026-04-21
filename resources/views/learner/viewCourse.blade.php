@@ -1,6 +1,6 @@
 @extends('layouts.open_layout')
 
-@section('title', $course->courseName . ' - Bengoh Academy')
+@section('title', $course->getTranslation('courseName') . ' - Bengoh Academy')
 
 @section('styles')
     <link rel="stylesheet" href="{{ asset('css/viewCourse.css') }}">
@@ -16,13 +16,13 @@
     <div class="container mt-4">
         <div class="text-center mb-4">
             {{-- path to point to public/courses/ --}}
-            <img src="{{ asset($course->courseImg) }}"alt="{{ $course->courseName }}"class="course-banner-img img-fluid rounded shadow-sm"> 
+            <img src="{{ asset($course->courseImg) }}" alt="{{ $course->getTranslation('courseName') }}" class="course-banner-img img-fluid rounded shadow-sm"> 
         </div>
 
         <div class="row mb-4 align-items-end">
             <div class="col-md-9">
-                <h2 class="fw-bold">{{ $course->courseName }}</h2>
-                <p class="text-muted lead">{{ $course->courseDesc }}</p>
+                <h2 class="fw-bold">{{ $course->getTranslation('courseName') }}</h2>
+                <p class="text-muted lead">{{ $course->getTranslation('courseDesc') }}</p>
             </div>
             <div class="col-md-3 text-md-end">
                 <p class="mb-0 text-secondary"><i class="fa fa-user-edit me-1"></i> {{ $course->courseAuthor }}</p>
@@ -37,14 +37,14 @@
                 <div class="card h-100 border-0 shadow-sm module-card">
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center mb-3">
-                            <h5 class="card-title mb-0 fw-bold">{{ $module->moduleName }}</h5>
-                            <span class="badge bg-light text-dark border">Module {{ $index + 1 }}</span>
+                            <h5 class="card-title mb-0 fw-bold">{{ $module->getTranslation('moduleName') }}</h5>
+                            <span class="badge bg-light text-dark border">M{{ __('messages.courses.module') }} {{ $index + 1 }}</span>
                         </div>
 
                         <ul class="list-group list-group-flush">
                             @foreach($module->lectures as $lecture)
                                 <li class="list-group-item d-flex justify-content-between align-items-center px-0 bg-transparent">
-                                    <span><i class="fa-regular fa-circle-play me-2 text-primary"></i>{{ $lecture->lectName }}</span>
+                                    <span><i class="fa-regular fa-circle-play me-2 text-primary"></i>{{ $lecture->getTranslation('lectName') }}</span>
                                     <span class="text-muted small">
                                         {{ $lecture->lect_duration }} {{ __('messages.courses.mins') }}
                                     </span>

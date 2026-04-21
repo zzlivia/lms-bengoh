@@ -77,12 +77,13 @@ Route::get('/homepage', function () {
     return view('homepage', compact('stories'));
 })->name('homepage');
 
-Route::get('/lang/{lang}', function ($lang) {
-        if (in_array($lang, ['en', 'ms', 'iban', 'biatah'])) {
-            session(['locale' => $lang]);
-        }
-        return redirect()->back();
-    })->name('lang.switch');
+// routes/web.php
+Route::get('lang/{locale}', function ($locale) {
+    if (in_array($locale, ['en', 'ms'])) {
+        session(['locale' => $locale]);
+    }
+    return redirect()->back();
+})->name('lang.switch');
 
 Route::get('/about', [PageController::class, 'about'])->name('about');
 

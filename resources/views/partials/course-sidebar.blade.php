@@ -25,7 +25,7 @@
             @else
                 <i class="fa fa-circle text-muted me-1"></i>
             @endif
-            {{ $module->moduleName }}
+            {{ $module->getTranslation('moduleName') }}
         </a>
         {{-- retrieve lectures --}}
         @foreach($module->lectures as $lecture)
@@ -36,7 +36,7 @@
                     @else
                         <i class="fa fa-circle text-muted me-1"></i>
                     @endif
-                    {{ $lecture->lectName }}
+                    {{ $lecture->getTranslation('lectName') }}
                 </div>
             </div>
             {{-- display sections --}}
@@ -44,7 +44,7 @@
                 <a href="{{ route('learn', ['id' => $course->courseID, 'sectionId' => $section->sectionID]) }}"
                 class="ms-4 small d-block sidebar-section 
                 {{ isset($current) && $current->sectionID == $section->sectionID ? 'active-section' : '' }}">
-                    • {{ $section->section_title }}
+                    • {{ $section->getTranslation('section_title') }}
                 </a>
             @endforeach
         @endforeach

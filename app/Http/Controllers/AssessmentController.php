@@ -23,15 +23,9 @@ class AssessmentController extends Controller
             return back()->with('error', 'No assessment found.');
         }
 
-        $questions = DB::table('assessment_qs')
+        $questions = \App\Models\AssessmentQuestion::with('options')
             ->where('courseAssID', $assessment->courseAssID)
             ->get();
-
-        foreach ($questions as $q) {
-            $q->options = DB::table('assessment_mcq_options')
-                ->where('assQsID', $q->assQsID)
-                ->get();
-        }
 
         return view('learner.courseAssessment', compact('assessment', 'questions', 'course'));
     }

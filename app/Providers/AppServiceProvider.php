@@ -22,6 +22,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // FORCE HTTPS
+        if (app()->environment('production')) {
+            URL::forceScheme('https');
+        }
 
         View::composer('layouts.admin_layout', function ($view) {
             $forgot = DB::table('users')->where('must_change_password', 1)->count();

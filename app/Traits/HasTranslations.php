@@ -5,23 +5,28 @@ namespace App\Traits;
 use App\Models\Translation;
 use Illuminate\Support\Facades\App;
 
-trait HasTranslations {
-    public function translations() {
+trait HasTranslations
+{
+    public function translations()
+    {
         return $this->morphMany(Translation::class, 'translationable');
     }
 
-    public function getTranslation($column) {
+    public function getTranslation($key)
+    {
         $locale = App::getLocale();
-        // If locale is default (en), return the original column
-        if ($locale == 'en') {
-            return $this->{$column};
+        
+        // Default language (English) returns the direct column value
+        if ($locale === 'en') {
+            return $this->{$key};
         }
 
-        $translation = $this->translations
+        // Search for the translation in the polymorphic table
+        $translation = $this->translations()
             ->where('locale', $locale)
-            ->where('key', $column)
+            ->where('key', $key)
             ->first();
 
-        return $translation ? $translation->value : $this->{$column};
+        return $translation ? $translation->value : $this->{$key};
     }
 }

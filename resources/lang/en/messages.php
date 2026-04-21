@@ -315,6 +315,7 @@ return [
         'default_desc'         => 'Course description here.',
         'courses_breadcrumb'   => 'Courses',
         'status'               => 'Status',
+        'all_category'         => 'Category',
 
         // View Course Sidebar
         'course_modules'       => 'Course Modules',

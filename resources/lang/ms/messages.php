@@ -315,6 +315,7 @@ return [
         'default_desc'         => 'Penerangan kursus di sini.',
         'courses_breadcrumb'   => 'Kursus',
         'status'               => 'Status',
+        'all_category'         => 'Kategori',
 
         // View Course Sidebar
         'course_modules'       => 'Modul Kursus',

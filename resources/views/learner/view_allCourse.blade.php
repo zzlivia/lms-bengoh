@@ -97,19 +97,19 @@
                         <div class="row align-items-center">
                             <div class="col-md-4">
                                 {{-- path to point to public/courses/ --}}
-                                <img src="{{ asset($course->courseImg) }}" alt="{{ $course->courseName }}" class="img-fluid rounded">  
+                                <img src="{{ asset($course->courseImg) }}" alt="{{ $course->getTranslation('courseName') }}" class="img-fluid rounded">
                             </div>
                             <div class="col-md-8 position-relative">  
                                 {{-- audio icon --}}
                                 <i class="fa fa-volume-up position-absolute top-0 end-0 mt-2 me-2" style="cursor:pointer"
-                                    onclick="readCourseName('{{ $course->courseName }}')"></i>
-                                <h5 class="course-title">{{ $course->courseName }}</h5>
+                                    onclick="readCourseName('{{ $course->getTranslation('courseName') }}')"></i>
+                                <h5 class="course-title">{{ $course->getTranslation('courseName') }}</h5>
                                 <div class="meta-text mb-2">
                                     <span class="me-3">{{ $course->duration ?? '2' }} {{ __('messages.courses.sweeks') }}</span>
                                     <span>{{ $course->level ?? 'Beginner' }}</span>
                                 </div>
                                 <p class="small text-muted">
-                                    {{ Str::limit($course->courseDesc ?? 'Course description here.', 180) }}
+                                    {{ Str::limit($course->getTranslation('courseDesc') ?? 'Course description here.', 180) }}
                                 </p>
                                 <div class="d-flex justify-content-end gap-2 mt-3">
                                     <a href="{{ route('learn', $course->courseID) }}" 

@@ -25,6 +25,11 @@ class LectureSection extends Model
 
     public function translations()
     {
-        return $this->morphMany(Translation::class, 'translatable');
+        return $this->morphMany(
+            Translation::class, 
+            'translatable', 
+            'translationable_type',
+            'translationable_id'
+        );
     }
 }

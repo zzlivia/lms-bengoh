@@ -212,7 +212,7 @@ return [
 
         //feedback
         'system_clarity'        => 'Kejelasan Sistem',
-        
+
         //help support
         'help_support' => [
             'title' => 'Bantuan & Sokongan',
@@ -373,6 +373,7 @@ return [
         'login_required'          => 'Penilaian ini memerlukan log masuk.',
         'login'                   => 'Log Masuk',
         'register'                => 'Daftar',
+        'assessment_title_label'  => 'Tajuk Penilaian Kursus',
 
         // Progress Tracking
         'progress'            => 'Progres',

@@ -373,6 +373,7 @@ return [
         'login_required'          => 'This assessment requires a login.',
         'login'                   => 'Login',
         'register'                => 'Register',
+        'assessment_title_label'  => 'Title',
 
         // Progress Tracking
         'progress'            => 'Progress',

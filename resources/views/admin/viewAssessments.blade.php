@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container">
-        <h3 class="mb-4">Course Assessments</h3>
+        <h3 class="mb-4">{{ __('messages.admin.course_assessments') }}</h3>
         {{-- success message --}}
         @if(session('success'))
             <div class="alert alert-success">{{ session('success') }}</div>
@@ -13,7 +13,7 @@
             <div class="row">
                 <div class="col-md-4">
                     <select name="courseID" class="form-control">
-                        <option value="">-- Filter by Course --</option>
+                        <option value="">-- {{ __('messages.admin.choose_course') }} --</option>
                         @foreach($courses as $course)
                             <option value="{{ $course->courseID }}">
                                 {{ $course->courseName }}
@@ -23,7 +23,7 @@
                 </div>
 
                 <div class="col-md-2">
-                    <button class="btn btn-primary">Filter</button>
+                    <button class="btn btn-primary">{{ __('messages.courses.filter') }}</button>
                 </div>
             </div>
         </form>
@@ -33,10 +33,10 @@
             <thead class="table-dark">
                 <tr>
                     <th>#</th>
-                    <th>Course</th>
-                    <th>Title</th>
-                    <th>Description</th>
-                    <th width="200">Actions</th>
+                    <th>{{ __('messages.admin.course_name') }}</th>
+                    <th>{{ __('messages.courses.assessment_title_label') ?? __('messages.admin.assessment_title_label') }}</th>
+                    <th>{{ __('messages.admin.desc') }}</th>
+                    <th width="200">{{ __('messages.admin.action') }}</th>
                 </tr>
             </thead>
 
@@ -51,12 +51,12 @@
                         <div class="d-flex align-items-center gap-2 flex-wrap">
                             <!-- add question route -->
                             <a href="{{ route('admin.assessment.addQs', $ass->courseAssID) }}" class="btn btn-success btn-sm me-1">
-                                <i class="bi bi-plus-circle me-1"></i> Add Questions
+                                <i class="bi bi-plus-circle me-1"></i> {{ __('messages.admin.add_questions') }}
                             </a>
                             <!-- edit assessment -->
                             <a href="{{ route('admin.assessment.editAss', $ass->courseAssID) }}" 
                             class="btn btn-warning btn-sm">
-                                Edit
+                                {{ __('messages.admin.edit') }}
                             </a>
                             <!-- delete assessment -->
                             <form action="{{ route('admin.assessment.deleteCourseAss', $ass->courseAssID) }}" 
@@ -65,7 +65,7 @@
                                 @method('DELETE')
                                 <button class="btn btn-danger btn-sm"
                                     onclick="return confirm('Delete this assessment?')">
-                                    Delete
+                                    {{ __('messages.admin.delete') }}
                                 </button>
                             </form>
                         </div>
@@ -73,13 +73,13 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="5" class="text-center">No assessments found</td>
+                    <td colspan="5" class="text-center"{{ __('messages.admin.no_data') }}</td>
                 </tr>
                 @endforelse
             </tbody>
         </table>
     </div>
     <div class="mb-3">
-        <button onclick="history.back()" class="btn btn-secondary"><i class="bi bi-arrow-left"></i> Back</button>
+        <button onclick="history.back()" class="btn btn-secondary"><i class="bi bi-arrow-left"></i> {{ __('messages.admin.back') }}</button>
     </div>
 @endsection

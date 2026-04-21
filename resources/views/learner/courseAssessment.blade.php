@@ -25,13 +25,13 @@
                 <button class="btn btn-light shadow-sm px-4">{{ __('messages.courses.learn_history') }}</button>
             </div>
             <h6 class="text-center mb-4">
-                {{ __('messages.courses.assessment_title', ['id' => 1, 'name' => 'Pendahuluan Empangan']) }}
+                {{ __('messages.courses.assessment_title', ['id' => $assessment->courseAssID,, 'name' => $assessment->getTranslation('courseAssTitle')]) }}
             </h6>
             @auth
             <div class="card p-4 shadow-sm">
                 <p>
                     <b>{{ __('messages.courses.assessment_purpose_label') }}</b><br>
-                    {{ __('messages.courses.assessment_purpose_text') }}
+                    {{ $assessment->getTranslation('courseAssDesc') }}
                 </p>
                 <hr>
                 <form id="assessmentForm" method="POST" action="{{ route('final.assessment.submit', $course->courseID) }}">
@@ -41,13 +41,13 @@
                     <input type="hidden" name="score" value="80">
                     @foreach($questions as $index => $q)
                         <p><b>{{ __('messages.courses.question') }} {{ $index+1 }}</b><br>
-                        {{ $q->courseAssQs }}</p>
+                        {{ $q->getTranslation('courseAssQs') }}</p>
                         @if($q->courseAssType == 'MCQ')
                             @foreach($q->options as $opt)
                                 <input type="radio"
                                     name="answers[{{ $q->assQsID }}]"
                                     value="{{ $opt->id }}">
-                                {{ $opt->optionText }} <br>
+                                {{ $opt->getTranslation('optionText') }} <br>
                             @endforeach
                         @else
                             <textarea name="answers[{{ $q->assQsID }}]" class="form-control mb-3"></textarea>

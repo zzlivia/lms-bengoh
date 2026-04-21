@@ -236,6 +236,7 @@ return [
         'posted'                => 'Diterbitkan',
         'review'                => 'Semak',
         'filter_announcements'  => 'Tapis pengumuman',
+        'save_changes' => 'Simpan Perubahan',
 
         //alerts/notifications
         'alerts'              => 'Amaran',

@@ -236,6 +236,7 @@ return [
         'posted'                => 'Posted',
         'review'                => 'Review',
         'filter_announcements'  => 'Filter the announcements',
+        'save_changes' => 'Save Changes',
 
         //alerts/notifications
         'alerts'              => 'Alerts',

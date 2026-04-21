@@ -16,11 +16,9 @@
                         @endif
                         {{-- Content --}}
                         <div>
-                            <h5 class="fw-bold mb-1">{{ $story->community_name }}</h5>
-                            <h6 class="text-muted">{{ $story->title }}</h6>
-                            <p class="mb-0 small">
-                                "{{ $story->community_story }}"
-                            </p>
+                            <h5 class="fw-bold mb-1">{{ $story->getTranslation('community_name') }}</h5>
+                            <h6 class="text-muted">{{ $story->getTranslation('title') }}</h6>
+                            <p class="mb-0 small">"{{ $story->getTranslation('community_story') }}"</p>
                         </div>
                     </div>
                 </div>

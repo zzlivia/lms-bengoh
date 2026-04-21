@@ -300,6 +300,9 @@ Route::prefix('admin')
     Route::delete('/sections/delete/{id}', [LectureSectionController::class, 'deleteSection'])
         ->name('section.delete');//delete section
 
+    Route::post('/sections/{id}/materials', [AdminController::class, 'storeMaterials'])
+        ->name('section.material.store');
+
     /* mcqs */
     Route::post('/mcq/store', [ModuleController::class, 'storeMCQ'])->name('mcq.store');
 

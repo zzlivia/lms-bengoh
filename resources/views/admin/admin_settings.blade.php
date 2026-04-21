@@ -15,23 +15,6 @@
                 <!-- left side -->
                 <div class="col-md-6">
                     <h6 class="fw-bold mb-3">{{ __('messages.admin_settings.general_title') }}</h6>
-                    <div class="mb-3 d-flex align-items-center">
-                        <label class="me-3">{{ __('messages.admin_settings.default_lang') }}</label>
-                        <select class="form-select w-auto" name="default_language">
-                            <option value="Default"
-                                {{ ($settings->default_language ?? '') == 'Default' ? 'selected' : '' }}>
-                                {{ __('messages.admin_settings.lang_default') }}
-                            </option>
-                            <option value="English"
-                                {{ ($settings->default_language ?? '') == 'English' ? 'selected' : '' }}>
-                                {{ __('messages.admin_settings.lang_en') }}
-                            </option>
-                            <option value="Malay"
-                                {{ ($settings->default_language ?? '') == 'Malay' ? 'selected' : '' }}>
-                                {{ __('messages.admin_settings.lang_ms') }}
-                            </option>
-                        </select>
-                    </div>
                     <div class="mb-4 d-flex align-items-center">
                     <label class="me-3">{{ __('messages.admin_settings.notifications') }}</label>
                         <div class="form-check form-switch">

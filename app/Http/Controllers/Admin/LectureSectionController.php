@@ -76,6 +76,7 @@ class LectureSectionController extends Controller
     {
         $section = LectureSection::findOrFail($id);
 
+        //looks for a row where 'locale' matches 'en' or 'ms'
         $sectionTranslation = $section->translations()
             ->where('locale', app()->getLocale())
             ->first();

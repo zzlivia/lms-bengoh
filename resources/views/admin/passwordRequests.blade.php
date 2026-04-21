@@ -2,14 +2,13 @@
 
 @section('content')
     <div class="container">
-    <h4>Password Reset Requests</h4>
-
+    <h4>{{ __('messages.admin.edit') }} {{ __('messages.courses.settings.new_password') }}</h4>
     <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Action</th>
+                    <th>{{ __('messages.courses.settings.name') }}</th>
+                    <th>{{ __('messages.courses.settings.email') }}</th>
+                    <th>{{ __('messages.admin.action') }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -18,12 +17,11 @@
                         <td>{{ $user->name }}</td>
                         <td>{{ $user->email }}</td>
                         <td>
-                            <button class="btn btn-success">Reset Password</button>
+                            <button class="btn btn-success">{{ __('messages.admin.edit') }} {{ __('messages.courses.settings.new_password') }}</button>
                         </td>
                     </tr>
                 @endforeach
             </tbody>
-
         </table>
     </div>
 @endsection

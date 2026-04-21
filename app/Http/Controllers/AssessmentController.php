@@ -17,9 +17,7 @@ class AssessmentController extends Controller
             'modules.mcqs'
         ])->findOrFail($id);
 
-        $assessment = DB::table('course_assessments')
-            ->where('courseID', $id)
-            ->first();
+        $assessment = \App\Models\CourseAssessment::where('courseID', $id)->first();
 
         if (!$assessment) {
             return back()->with('error', 'No assessment found.');

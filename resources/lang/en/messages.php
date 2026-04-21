@@ -367,7 +367,7 @@ return [
         'badge_earned'         => 'Badge Earned',
 
         // Course Assessment
-        'learn_history'           => 'Learn Local Dam History',
+        'learn_button'           => 'Learn :course',
         'assessment_title'        => 'Module :id Course Assessment : :name',
         'assessment_purpose_label'=> 'Assessment Purpose',
         'assessment_purpose_text' => 'This assessment is designed to help students reflect on what they have learned.',

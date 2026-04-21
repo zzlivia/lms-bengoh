@@ -25,7 +25,10 @@
                 <button class="btn btn-light shadow-sm px-4">{{ __('messages.courses.learn_history') }}</button>
             </div>
             <h6 class="text-center mb-4">
-                {{ __('messages.courses.assessment_title', ['id' => $assessment->courseAssID,, 'name' => $assessment->getTranslation('courseAssTitle')]) }}
+                {{ __('messages.courses.assessment_title', [
+                    'id' => $assessment->courseAssID,
+                    'name' => $assessment->getTranslation('courseAssTitle', app()->getLocale())
+                ]) }}
             </h6>
             @auth
             <div class="card p-4 shadow-sm">
@@ -33,6 +36,9 @@
                     <b>{{ __('messages.courses.assessment_purpose_label') }}</b><br>
                     {{ $assessment->getTranslation('courseAssDesc') }}
                 </p>
+                <div class="text-center mb-3">
+                    <h5>Time Left: <span id="timer">10:00</span></h5>
+                </div>
                 <hr>
                 <form id="assessmentForm" method="POST" action="{{ route('final.assessment.submit', $course->courseID) }}">
                     @csrf
@@ -134,6 +140,27 @@
         });
 
     });
+    </script>
+
+    <script>
+        let timeLeft = 600; // 10 minutes
+
+        const timerEl = document.getElementById('timer');
+
+        const countdown = setInterval(() => {
+            let minutes = Math.floor(timeLeft / 60);
+            let seconds = timeLeft % 60;
+
+            seconds = seconds < 10 ? '0' + seconds : seconds;
+            timerEl.textContent = minutes + ':' + seconds;
+
+            if (timeLeft <= 0) {
+                clearInterval(countdown);
+                document.getElementById('assessmentForm').submit();
+            }
+
+            timeLeft--;
+        }, 1000);
     </script>
 
 @endsection

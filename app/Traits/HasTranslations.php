@@ -4,7 +4,6 @@ namespace App\Traits;
 
 use App\Models\Translation;
 use Illuminate\Support\Facades\App;
-
 trait HasTranslations
 {
     public function translations()

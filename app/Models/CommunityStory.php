@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\HasTranslations;
 
 class CommunityStory extends Model
 {
+    use HasTranslations;
     protected $table = 'community_stories';
     protected $primaryKey = 'id';
     protected $fillable = [

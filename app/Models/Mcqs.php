@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\HasTranslations;
 
 class Mcqs extends Model
 {
+    use HasTranslations;
     protected $table = 'mcqs';
     protected $primaryKey = 'moduleQs_ID';
     protected $fillable = [

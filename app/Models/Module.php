@@ -8,9 +8,11 @@ use App\Models\Mcqs;
 use App\Models\Enrollment;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\HasTranslations;
 
 class Module extends Model
 {
+    use HasTranslations;
     protected $table = 'module';
     protected $primaryKey = 'moduleID';
     protected $fillable = [

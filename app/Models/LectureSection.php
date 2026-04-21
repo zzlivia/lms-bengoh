@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\HasTranslations;
 
 class LectureSection extends Model
 {
+    use HasTranslations;
     protected $table = 'lecture_sections';
     protected $primaryKey = 'sectionID';
     public $incrementing = true;

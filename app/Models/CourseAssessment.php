@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\HasTranslations;
 
 class CourseAssessment extends Model
 {
+    use HasTranslations;
     protected $table = 'course_assessments';
     protected $primaryKey = 'courseAssID';
 

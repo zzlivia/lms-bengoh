@@ -6,10 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable; 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\HasTranslations;
 
 class Users extends Authenticatable 
 {
     use HasFactory, Notifiable;
+    use HasTranslations;
     protected $table = 'users';
     protected $primaryKey = 'userID';
     public $incrementing = true;

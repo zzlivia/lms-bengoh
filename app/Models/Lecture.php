@@ -8,9 +8,11 @@ use App\Models\LearningMaterials;
 use App\Models\Mcqs;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\HasTranslations;
 
 class Lecture extends Model
 {
+    use HasTranslations;
     protected $table = 'lecture';
     protected $primaryKey = 'lectID';
     protected $fillable = [

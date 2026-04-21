@@ -3,11 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\HasTranslations;
 
 class AssessmentMcqOption extends Model
 {
-    protected $table = 'assessment_mcq_options';
-
+    use HasTranslations;    
+    
     protected $fillable = [
         'assQsID',
         'optionText',

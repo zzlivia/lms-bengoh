@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\HasTranslations;
 
 class Feedback extends Model
 {
+    use HasTranslations;
     protected $table = 'coursefeedback';
     protected $primaryKey = 'feedbackID';
     protected $fillable = [

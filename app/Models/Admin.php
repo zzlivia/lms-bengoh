@@ -6,11 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Traits\HasTranslations;
 
 class Admin extends Authenticatable
 {
     use HasFactory, Notifiable; //enable factory usage and notifications
-
+    use HasTranslations;
     protected $table = 'admin'; //table name
     protected $primaryKey = 'adminID'; //custom primary key
     protected $fillable = [ //attributes

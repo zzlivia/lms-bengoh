@@ -345,25 +345,29 @@ class AdminController extends Controller
         return back()->with('success', 'AI question is now active');
     }
     
-    public function storeMaterials(Request $request, $id) //store learning materials
-    {   //loop every each of uploaded material
+    public function storeMaterials(Request $request, $id)
+    {
+        //added a check to prevent errors if no materials are added
+        if (!$request->has('materials')) {
+            return back()->with('error', 'No materials to save.');
+        }
         foreach ($request->materials as $material) {
             $data = [
-                'section_id' => $id,
-                'type' => $material['type'],
+                'sectionID' => $id,
+                'type'      => $material['type'],
             ];
-            //check if any pdf upload
             if ($material['type'] == 'pdf' && isset($material['file'])) {
                 $file = $material['file'];
-                $path = $file->store('materials', 'public'); //store file in storage/public/materials
+                $path = $file->store('materials', 'public');
                 $data['content'] = $path;
-            } else { //or else store text or link
+            } else {
                 $data['content'] = $material['content'] ?? null;
             }
-            LearningMaterials::create($data); //insert into db
+            LearningMaterials::create($data);
         }
         return back()->with('success', 'Materials added successfully!');
     }
+
     public function progress()
     {
         //course progress

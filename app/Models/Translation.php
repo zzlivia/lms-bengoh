@@ -1,26 +1,23 @@
 <?php
+    namespace App\Models;
 
-namespace App\Models;
+    use Illuminate\Database\Eloquent\Model;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-
-class Translation extends Model
-{
-    use HasFactory;
-    protected $fillable = [
-        'translationable_id',
-        'translationable_type',
-        'locale',
-        'key',
-        'value'
-    ];
-
-    /**
-     * This allows the translation to link back to any model 
-     */
-    public function translationable()
+    class Translation extends Model
     {
-        return $this->morphTo();
+        protected $table = 'translations'; // Points to your first image table
+
+        protected $fillable = [
+            'translatable_type',
+            'translatable_id',
+            'locale',
+            'key',
+            'value'
+        ];
+
+        public function translatable()
+        {
+            return $this->morphTo();
+        }
     }
-}
+?>

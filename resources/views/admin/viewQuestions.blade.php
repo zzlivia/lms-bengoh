@@ -14,7 +14,7 @@
                 @endforeach
 
                 <small class="text-success">
-                    Correct: 
+                    {{ __('messages.admin.correct_answer_label') }}:
                     {{ chr(65 + $q->options->search(fn($o) => $o->is_correct)) }}
                 </small>
             @endif

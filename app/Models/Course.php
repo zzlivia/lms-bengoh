@@ -7,7 +7,7 @@ use App\Models\Feedback;
 use App\Models\Enrollment;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Traits\HasTranslations; // Import the trait
+use App\Traits\HasTranslations;
 
 class Course extends Model
 {

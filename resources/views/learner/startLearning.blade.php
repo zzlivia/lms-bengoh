@@ -23,9 +23,7 @@
                             <li class="breadcrumb-item">
                                 <a href="{{ route('courses.allCourses') }}">{{ __('messages.courses.courses_breadcrumb') }}</a>
                             </li>
-                            <li class="breadcrumb-item active">
-                                {{ $course->courseName }}
-                            </li>
+                            <li class="breadcrumb-item active">{{ $course->getTranslation('courseName') }}</li>
                         </ol>
                     </nav>
 
@@ -34,7 +32,7 @@
                     @if($current) {{-- current selected lecture --}}
                         <div class="d-flex justify-content-between align-items-center mb-3">
                             <h5 class="text-primary fw-bold">
-                                {{ optional($currentTranslation)->title ?? $current->section_title }}
+                                {{ $current->getTranslation('section_title') }}
                             </h5>
                             <div id="timer" class="fw-bold text-danger"></div>
                         </div>
@@ -49,7 +47,7 @@
                         @endif
                         @if($current->section_type == 'text') {{-- text lecture content --}}
                             <div class="text-content mb-4 lead-custom">
-                                {!! optional($currentTranslation)->content ?? $current->section_content !!}
+                                {!! $current->getTranslation('section_content') !!}
                             </div>
                         @endif
                         @if($current->section_type == 'pdf') {{-- PDF frame --}}
@@ -70,7 +68,7 @@
                             @csrf
                             @foreach($module->mcqs as $question)
                                 <div class="mb-4">
-                                    <strong>{{ $question->moduleQs }}</strong>
+                                    <strong>{{ $question->getTranslation('question') }}</strong>
                                     @foreach($question->answers as $answer)
                                         <div class="form-check">
                                             <input class="form-check-input"

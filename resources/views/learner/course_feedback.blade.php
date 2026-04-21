@@ -86,7 +86,7 @@
                         <select name="favorite_module" class="form-select">
                             <option value="">{{ __('messages.courses.feedback.select_module') }}</option>
                             @foreach($course->modules as $module)
-                                <option value="{{ $module->moduleID }}">{{ __('messages.courses.feedback.module') }} {{ $loop->iteration }} - {{ $module->moduleName }}</option>
+                                <option value="{{ $module->moduleID }}">{{ __('messages.courses.feedback.module') }} {{ $loop->iteration }} - {{ $module->getTranslation('moduleName') }}</option>
                             @endforeach
                         </select>
                     </div>

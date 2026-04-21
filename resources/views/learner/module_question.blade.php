@@ -8,7 +8,7 @@
             {{-- main content --}}
             <div class="col-md-9 px-md-4">
                 <h5 class="mb-4">
-                    {{ __('messages.courses.mcq_title', ['id' => $module->moduleID, 'name' => $module->moduleName]) }}
+                    {{ __('messages.courses.mcq_title', ['id' => $module->moduleID, 'name' => $module->getTranslation('moduleName')]) }}
                 </h5>
                 <form id="quizForm" method="POST" action="{{ route('module.submit', $module->moduleID) }}">
                     @csrf
@@ -39,7 +39,7 @@
 
                             <div class="d-flex justify-content-between align-items-start">
                                 <strong id="questionText{{ $index }}">
-                                    {{ $index+1 }}. {{ $question->moduleQs }}
+                                    {{ $index+1 }}. {{ $question->getTranslation('question') }}
                                 </strong>
 
                                 <button type="button" class="btn btn-sm btn-primary ms-2" onclick="speakQuestion({{ $index }})">
@@ -48,10 +48,10 @@
                             </div>
                             @php
                                 $answers = [
-                                    0 => $question->answer1,
-                                    1 => $question->answer2,
-                                    2 => $question->answer3,
-                                    3 => $question->answer4,
+                                    0 => $question->getTranslation('answer1'),
+                                    1 => $question->getTranslation('answer2'),
+                                    2 => $question->getTranslation('answer3'),
+                                    3 => $question->getTranslation('answer4'),
                                 ];
                             @endphp
 

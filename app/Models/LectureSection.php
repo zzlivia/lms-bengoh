@@ -23,13 +23,4 @@ class LectureSection extends Model
 
     public function lecture(){return $this->belongsTo(Lecture::class, 'lectID', 'lectID');}
 
-    public function translations()
-    {
-        return $this->morphMany(
-            Translation::class, 
-            'translatable', 
-            'translationable_type',
-            'translationable_id'
-        );
-    }
 }

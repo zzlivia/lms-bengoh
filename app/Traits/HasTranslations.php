@@ -8,7 +8,7 @@ trait HasTranslations
 {
     public function translations()
     {
-        return $this->morphMany(Translation::class, 'translationable');
+        return $this->morphMany(Translation::class, 'translatable');
     }
 
     public function getTranslation($key)

@@ -43,7 +43,7 @@
             <div class="col-md-3 mb-3">
                 <div class="course-card">
                     <img src="{{ asset($course->courseImg) }}" alt="{{ $course->courseName }}">
-                    <h6 class="mt-2 fw-bold">{{ $course->courseName }}</h6>
+                    <h6 class="mt-2 fw-bold">{{ $course->getTranslation('courseName') }}</h6>
                 </div>
             </div>
 
@@ -74,8 +74,8 @@
                     @endif
                     {{-- content --}}
                     <div>
-                        <h6 class="fw-bold mb-1">{{ $story->community_name }}</h6>
-                        <p class="small mb-0">"{{ $story->community_story }}"</p>
+                        <h6 class="fw-bold mb-1">{{ $story->getTranslation('community_name') }}</h6>
+                        <p class="small mb-0">"{{ $story->getTranslation('community_story') }}"</p>
                     </div>
                 </div>
             </div>

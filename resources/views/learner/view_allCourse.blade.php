@@ -105,7 +105,7 @@
                                     onclick="readCourseName('{{ $course->getTranslation('courseName') }}')"></i>
                                 <h5 class="course-title">{{ $course->getTranslation('courseName') }}</h5>
                                 <div class="meta-text mb-2">
-                                    <span class="me-3">{{ $course->duration ?? '2' }} {{ __('messages.courses.sweeks') }}</span>
+                                    <span class="me-3">{{ $course->duration ?? '2' }} {{ __('messages.courses.weeks') }}</span>
                                     <span>{{ $course->level ?? 'Beginner' }}</span>
                                 </div>
                                 <p class="small text-muted">

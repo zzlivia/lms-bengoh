@@ -401,39 +401,38 @@
                 </form>
                 {{-- list of mcq --}}
                 <hr class="my-4">
-                <h5 class="mb-3">MCQ Overview</h5>
-                <table class="table table-bordered table-striped">
-                    <thead class="table-dark">
-                        <tr>
-                            <th>#</th>
-                            <th>Module</th>
-                            <th>Total Questions</th>
-                            <th>Status</th>
-                            <th width="250">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {{-- check if $module exists AND has mcqs before looping --}}
-                        @if(isset($module) && $module->mcqs)
-                            @foreach($module->mcqs as $mcq)
-                                <tr>
-                                    <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $module->moduleName }}</td>
-                                    <td>{{ $mcq->question }}</td>
-                                    <td><span class="badge bg-success">Available</span></td>
-                                    <td>
-                                        <a href="{{ route('admin.mcq.preview', $mcq->group_id) }}" class="btn btn-secondary btn-sm">Preview</a>
-                                        <a href="{{ route('admin.mcq.edit', $mcq->group_id) }}" class="btn btn-warning btn-sm">Edit</a>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        @else
+                @foreach($modules as $module) {{-- Add this wrapper loop --}}
+                    <h5 class="mb-3">MCQ Overview for {{ $module->moduleName }}</h5>
+                    <table class="table table-bordered table-striped">
+                        <thead class="table-dark">
                             <tr>
-                                <td colspan="5" class="text-center">No MCQs found for this module.</td>
+                                <th>#</th>
+                                <th>Module</th>
+                                <th>Question</th> {{-- Changed from 'Total Questions' to match your data --}}
+                                <th>Status</th>
+                                <th width="250">Action</th>
                             </tr>
-                        @endif
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                        @foreach($module->mcqs as $mcq)
+                        <tr>
+                            <td>{{ $loop->iteration }}</td>
+                            <td>{{ $module->moduleName }}</td>
+                            <td>{{ $mcq->question }}</td>
+                            <td>
+                                <span class="badge bg-success">Available</span>
+                            </td>
+                            <td>
+                                <a href="{{ route('admin.mcq.preview', $mcq->group_id ?? 0) }}" 
+                                class="btn btn-secondary btn-sm">Preview</a>
+                                <a href="{{ route('admin.mcq.edit', $mcq->group_id ?? 0) }}" 
+                                class="btn btn-warning btn-sm">Edit</a>
+                            </td>
+                        </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
+                @endforeach
             </div>
             {{-- Course Assessment Tab --}}
             <div class="tab-pane fade" id="assessment-form">

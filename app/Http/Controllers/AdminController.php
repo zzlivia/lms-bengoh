@@ -271,7 +271,6 @@ class AdminController extends Controller
                     }]
                     Content:" . substr($content, 0, 1500)]],'temperature' => 0.7,]);
         $data = $response->json();
-        dd($data);
         $aiText = $data['choices'][0]['message']['content'] ?? '';
         $questions = json_decode($aiText, true);
         if (!$questions) {

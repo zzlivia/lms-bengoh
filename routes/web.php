@@ -317,7 +317,8 @@ Route::prefix('admin')
     Route::put('/mcq/update/{group_id}', [ModuleController::class, 'update'])
     ->name('mcq.update');
 
-    Route::get('/generate-ai-mcq/{moduleID}', [AdminController::class, 'generateAI']);
+    Route::match(['get', 'post'], '/generate-ai-mcq/{moduleID}', [AdminController::class, 'generateAI'])
+        ->name('generate.ai.mcq');
 
     Route::post('/mcq/use-ai/{id}', [AdminController::class, 'useAiQuestion']);
 

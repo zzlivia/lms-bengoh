@@ -12,10 +12,17 @@ class AssessmentQuestion extends Model
     protected $table = 'assessment_qs';
     protected $primaryKey = 'assQsID';
 
+    // Add this block below
+    protected $fillable = [
+        'courseAssID',
+        'courseAssQs',
+        'courseAssType'
+    ];
+
     public $translatable = ['courseAssQs'];
 
     public function options()
     {
         return $this->hasMany(AssessmentOption::class, 'assQsID');
     }
-}
+} ?>

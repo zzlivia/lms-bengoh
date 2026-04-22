@@ -16,18 +16,7 @@ use App\Http\Controllers\CommunityController;
 use App\Http\Controllers\PageController;
 use App\Models\CommunityStory;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Storage;
 
-Route::get('/test-upload', function () {
-    try {
-        // This attempts to create a small text file in your Cloudflare bucket
-        Storage::disk('r2')->put('test-connection.txt', 'Bengoh Academy is now connected to Cloudflare R2!');
-        
-        return "<h1>Success!</h1><p>The file was uploaded. Check your Cloudflare Bucket 'bengohdam-assets' for <b>test-connection.txt</b>.</p>";
-    } catch (\Exception $e) {
-        return "<h1>Connection Failed</h1><p>Error: " . $e->getMessage() . "</p>";
-    }
-});
 
 Route::get('/run-migrate', function () {
     Artisan::call('migrate', ['--force' => true]);

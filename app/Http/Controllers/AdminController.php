@@ -188,18 +188,19 @@ class AdminController extends Controller
         $course->isAvailable = $request->input('isAvailable', 0); //available is 1, not available is 0
         //handle image upload
         if ($request->hasFile('courseImg')) {
-            // delete old image if exists
-            if (!empty($course->courseImg) && file_exists(public_path($course->courseImg))) {
-                unlink(public_path($course->courseImg));
+            // 1. Delete old image from STORAGE if it exists
+            if ($course->courseImg) {
+                // We use the Storage facade to handle the file system safely
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($course->courseImg);
             }
-            // generate filename
-            $filename = time() . '.' . $request->file('courseImg')->extension();
-            // move file to public/courses
-            $request->file('courseImg')->move(public_path('courses-assets'), $filename);
-            // save path in DB
-            $course->courseImg = 'courses-assets/' . $filename;
+
+            // 2. Store the new file in 'storage/app/public/courses-assets'
+            // This returns the relative path: "courses-assets/filename.jpg"
+            $path = $request->file('courseImg')->store('courses-assets', 'public');
+
+            // 3. Save that relative path to the database
+            $course->courseImg = $path;
         }
-        $course->save(); //save to db
 
         return redirect()->route('admin.course.module')->with('success', 'Course added successfully!');
     }

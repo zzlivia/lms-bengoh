@@ -280,6 +280,9 @@ Route::prefix('admin')
     Route::get('/lecture/edit/{id}', [ModuleController::class, 'editLecture'])
         ->name('lecture.edit');
 
+    Route::put('/lecture/update/{id}', [ModuleController::class, 'updateLecture'])
+        ->name('lecture.update');
+
     Route::delete('/lecture/delete/{id}', [ModuleController::class, 'deleteLecture'])
         ->name('lecture.delete');        
 

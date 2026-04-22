@@ -413,26 +413,25 @@
                         </tr>
                     </thead>
                     <tbody>
-                    @if(isset($module) && $module->mcqs)
-                        @foreach($module->mcqs as $mcq)
-                        <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td>{{ $module->moduleName }}</td>
-                            <td>{{ $mcq->question }}</td>
-                            <td>
-                                <span class="badge bg-success">Available</span>
-                            </td>
-                            <td>
-                                <a href="{{ route('admin.mcq.preview', $mcq->group_id) }}" class="btn btn-secondary btn-sm">Preview</a>
-                                <a href="{{ route('admin.mcq.edit', $mcq->group_id) }}" class="btn btn-warning btn-sm">Edit</a>
-                            </td>
-                        </tr>
-                        @endforeach
-                    @else
-                        <tr>
-                            <td colspan="5" class="text-center">No questions found. Save the module first to add MCQs.</td>
-                        </tr>
-                    @endif
+                        {{-- check if $module exists AND has mcqs before looping --}}
+                        @if(isset($module) && $module->mcqs)
+                            @foreach($module->mcqs as $mcq)
+                                <tr>
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $module->moduleName }}</td>
+                                    <td>{{ $mcq->question }}</td>
+                                    <td><span class="badge bg-success">Available</span></td>
+                                    <td>
+                                        <a href="{{ route('admin.mcq.preview', $mcq->group_id) }}" class="btn btn-secondary btn-sm">Preview</a>
+                                        <a href="{{ route('admin.mcq.edit', $mcq->group_id) }}" class="btn btn-warning btn-sm">Edit</a>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        @else
+                            <tr>
+                                <td colspan="5" class="text-center">No MCQs found for this module.</td>
+                            </tr>
+                        @endif
                     </tbody>
                 </table>
             </div>

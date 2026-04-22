@@ -11,7 +11,7 @@
             health: '/up',
         )
         ->withMiddleware(function (Middleware $middleware) {
-            // ADD THIS LINE BELOW
+            //added 
             $middleware->trustProxies(at: '*'); 
 
             $middleware->web(append: [

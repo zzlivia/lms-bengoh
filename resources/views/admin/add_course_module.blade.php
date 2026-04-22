@@ -91,7 +91,7 @@
                     @csrf
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label class="form-label">{{ __('messages.admin.view_all_assessments') }}</label>
+                            <label class="form-label">{{ __('messages.admin.add_course_code') }}</label>
                             <input type="text" class="form-control" name="courseCode" required>
                         </div>
                         <div class="col-md-6 mb-3">

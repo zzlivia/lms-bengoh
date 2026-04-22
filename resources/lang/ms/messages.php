@@ -128,6 +128,7 @@ return [
         'add_assessment'          => 'Tambah Penilaian Kursus',
         'course_assessments'      => 'Penilaian Kursus',
         'view_all_assessments'    => 'Lihat Semua Penilaian',
+        'add_course_code'         => 'Kod Kursus',
         
         // Form Labels
         'course_code'             => 'Kod Kursus',

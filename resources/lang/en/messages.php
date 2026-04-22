@@ -134,6 +134,7 @@ return [
         'add_assessment'          => 'Add Course Assessment',
         'course_assessments'      => 'Course Assessments',
         'view_all_assessments'    => 'View All Assessments',
+        'add_course_code'         => 'Course Code',
         
         // Form Labels
         'course_code'             => 'Course Code',

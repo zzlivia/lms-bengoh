@@ -88,6 +88,24 @@ class ModuleController extends Controller
         return view('admin.editLecture', compact('lecture','modules')); //send back data
     }
 
+    public function updateLecture(Request $request, $id)
+    {
+        $request->validate([
+            'moduleID' => 'required',
+            'lectName' => 'required',
+            'lect_duration' => 'required'
+        ]);
+
+        $lecture = Lecture::where('lectID', $id)->firstOrFail();
+        $lecture->update([
+            'moduleID' => $request->moduleID,
+            'lectName' => $request->lectName,
+            'lect_duration' => $request->lect_duration,
+        ]);
+
+        return redirect()->route('admin.course.module')->with('success', 'Lecture updated successfully!');
+    }
+
     public function deleteLecture($id) //delete lecture
     {
         Lecture::where('lectID', $id)->delete(); //delete lecture through lectID

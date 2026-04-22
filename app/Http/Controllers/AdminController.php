@@ -272,6 +272,8 @@ class AdminController extends Controller
                     Content:" . substr($content, 0, 1500)]],'temperature' => 0.7,]);
         $data = $response->json();
         $aiText = $data['choices'][0]['message']['content'] ?? '';
+        $aiText = str_replace(['```json', '```'], '', $aiText);
+        $aiText = trim($aiText);
         $questions = json_decode($aiText, true);
         if (!$questions) {
             throw new \Exception("Invalid AI response: " . $aiText);

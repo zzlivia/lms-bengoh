@@ -319,8 +319,6 @@ Route::prefix('admin')
 
     Route::get('/generate-ai-mcq/{moduleID}', [AdminController::class, 'generateAI']);
 
-    Route::post('/generate-ai-mcq/{moduleID}', [AdminController::class, 'generateAI']);
-
     Route::post('/mcq/use-ai/{id}', [AdminController::class, 'useAiQuestion']);
 
     /* course assessment */

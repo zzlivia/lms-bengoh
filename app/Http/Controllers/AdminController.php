@@ -260,7 +260,7 @@ class AdminController extends Controller
     {
         $response = Http::withHeaders(['Authorization' => 'Bearer ' . env('OPENAI_API_KEY'),'Content-Type' => 'application/json',])
         ->post('https://api.openai.com/v1/chat/completions', [
-            'model' => 'gpt-4.1-mini','messages' => [
+            'model' => 'gpt-4o-mini','messages' => [
                 ['role' => 'system','content' => 'You generate multiple choice questions.'],
                 ['role' => 'user','content' => "Generate {$count} MCQ questions based on this content.
                     Return ONLY JSON like:

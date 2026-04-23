@@ -434,7 +434,9 @@
                                 @if(isset($mcq->group_id))
                                     <a href="{{ route('admin.mcq.preview', $mcq->group_id) }}" class="btn btn-secondary">Preview</a>
                                 @endif
-                                <a href="{{ route('admin.mcq.edit', ['moduleID' => $mcq->group_id]) }}" class="btn btn-warning">Edit</a>
+                                @if(isset($mcq->group_id))
+                                    <a href="{{ route('admin.mcq.edit', ['moduleID' => $mcq->group_id]) }}" class="btn btn-warning">Edit</a>
+                                @endif
                             </td>
                         </tr>
                         @endforeach

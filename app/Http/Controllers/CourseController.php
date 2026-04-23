@@ -269,83 +269,65 @@ class CourseController extends Controller
     }
 
     //display questions
-    public function showMCQS($id)
-    {
-        $module = Module::with('mcqs.answers')->findOrFail($id);
-        $course = $module->course;
-        return view('learner.module_question', compact('module', 'course'));
-    }
-    
     public function submitMCQS(Request $request, $id) 
     {
-
         $module = Module::with('mcqs.answers')->findOrFail($id);
-        $answers = $request->input('answers', []);
+        $userAnswers = $request->input('answers', []);
         $total = $module->mcqs->count();
         $score = 0;
-        //calculate score first
         foreach ($module->mcqs as $question) {
-            $selectedAnswer = $answers[$question->moduleQs_ID] ?? null;
-            if ($selectedAnswer) {
-                $correctAnswer = $question->answers->where('ansCorrect', 1)->first();
-                if ($correctAnswer && $correctAnswer->ansID == $selectedAnswer) {
+            $selectedIndex = $userAnswers[$question->moduleQs_ID] ?? null;
+            if ($selectedIndex !== null) {
+                // find which answer key is actually correct in the DB
+                $answersList = [
+                    $question->answer1, 
+                    $question->answer2, 
+                    $question->answer3, 
+                    $question->answer4
+                ];
+                if (($question->correct_answer - 1) == $selectedIndex) {
                     $score++;
                 }
             }
         }
-        //avoid division by zero
         $percentage = $total > 0 ? ($score / $total) * 100 : 0;
-        //logged-in users: save + limit attempts
         if (Auth::check()) {
             $existing = DB::table('assessment_results')
                 ->where('userID', Auth::id())
                 ->where('moduleID', $module->moduleID)
                 ->where('type', 'mcq')
                 ->first();
-
             $attempts = $existing ? $existing->attempts + 1 : 1;
             if ($attempts > 3) {
-                return redirect()->back()->with('error', 'You have reached the maximum number of attempts.');
+                return redirect()->back()->with('error', 'Maximum attempts reached.');
             }
-
             DB::table('assessment_results')->updateOrInsert(
+                ['userID' => Auth::id(), 'moduleID' => $module->moduleID, 'type' => 'mcq'],
                 [
-                    'userID' => Auth::id(),
-                    'moduleID' => $module->moduleID,
                     'courseID' => $module->courseID,
-                    'type' => 'mcq'
-                ],
-                [
                     'score' => $percentage,
                     'status' => $percentage >= 80 ? 'pass' : 'fail',
                     'attempts' => $attempts,
-                    'updated_at' => now(),
-                    'created_at' => now(),
+                    'updated_at' => now()
                 ]
             );
             $this->updateProgress($module->courseID, 'MCQ' . $module->moduleID, $percentage);
         }
-
-        //return result (guest or user)
         return redirect()->route('module.review', $module->moduleID)->with([
             'score' => $score,
             'total' => $total,
-            'answers' => $answers,
-            'courseID' => $module->courseID,
-            'goFeedback' => route('course.feedback', $module->courseID),
-            'reviewUrl' => route('module.review', $module->moduleID)
+            'last_submitted_answers' => $userAnswers, // Used for the Red/Green marks
+            'attempts' => $attempts ?? 1
         ]);
     }
 
     public function reviewMCQ($id)
     {
-        $module = Module::with('mcqs.answers', 'course')->findOrFail($id);
-        //get submitted answers from session
-        $selectedAnswers = session('answers', []);
+        $module = Module::with('mcqs', 'course')->findOrFail($id);
         return view('learner.review_mcq', [
             'module' => $module,
             'course' => $module->course,
-            'selectedAnswers' => $selectedAnswers
+            'selectedAnswers' => session('last_submitted_answers', [])
         ]);
     }
 

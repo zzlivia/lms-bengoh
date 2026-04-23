@@ -188,17 +188,8 @@ class AdminController extends Controller
         $course->isAvailable = $request->input('isAvailable', 0); //available is 1, not available is 0
         //handle image upload
         if ($request->hasFile('courseImg')) {
-            // 1. Delete old image from STORAGE if it exists
-            if ($course->courseImg) {
-                // We use the Storage facade to handle the file system safely
-                \Illuminate\Support\Facades\Storage::disk('public')->delete($course->courseImg);
-            }
-
-            // 2. Store the new file in 'storage/app/public/courses-assets'
-            // This returns the relative path: "courses-assets/filename.jpg"
-            $path = $request->file('courseImg')->store('courses-assets', 'public');
-
-            // 3. Save that relative path to the database
+            // Force Laravel to use the 'r2' disk specifically
+            $path = $request->file('courseImg')->store('courses-assets', 'r2');
             $course->courseImg = $path;
         }
         $course->save();
@@ -219,15 +210,8 @@ class AdminController extends Controller
         $course->isAvailable = $request->isAvailable;
         //update image
         if ($request->hasFile('courseImg')) {
-            // 1. Delete the old image from storage if it exists
-            if ($course->courseImg) {
-                \Illuminate\Support\Facades\Storage::disk('public')->delete($course->courseImg);
-            }
-
-            // 2. Store the new file using the Storage system
-            $path = $request->file('courseImg')->store('courses-assets', 'public');
-
-            // 3. Update the database with the new 'storage-friendly' path
+            // Force Laravel to use the 'r2' disk specifically
+            $path = $request->file('courseImg')->store('courses-assets', 'r2');
             $course->courseImg = $path;
         }
         $course->save();

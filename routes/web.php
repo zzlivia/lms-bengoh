@@ -27,6 +27,13 @@ Route::get('/run-migrate', function () {
     return 'Migrations executed!';
 });
 
+Route::get('/clear-cache', function () {
+    \Illuminate\Support\Facades\Artisan::call('config:clear');
+    \Illuminate\Support\Facades\Artisan::call('cache:clear');
+    \Illuminate\Support\Facades\Artisan::call('view:clear');
+    return 'All caches cleared! Let\'s try loading the image again.';
+});
+
 Route::get('/test-auth', function () {
     return auth()->check() ? 'LOGGED IN' : 'NOT LOGGED IN';
 });

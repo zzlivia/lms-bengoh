@@ -27,30 +27,35 @@
                                 2 => $question->getTranslation('answer3'),
                                 3 => $question->getTranslation('answer4'),
                             ];
-
-                            // Get user choice and DB answer once per question
                             $userSelection = session('last_submitted_answers')[$question->moduleQs_ID] ?? null;
                             $correctIndex = (int)$question->correct_answer - 1; 
                         @endphp
-
                         @foreach($options as $key => $option)
                             @if($option)
                                 @php
-                                    // NOW we can use $key because we are inside the loop
                                     $isCorrect = ($key === $correctIndex);
                                     $isSelected = ($userSelection !== null && (string)$userSelection === (string)$key);
                                 @endphp
 
-                                <div class="mt-2 p-2 rounded" style="border: 1px solid #eee; background-color: {{ $isCorrect ? '#d4edda' : ($isSelected ? '#f8d7da' : 'transparent') }}">
-                                    <strong>{{ chr(65 + $key) }}.</strong> {{ $option }}
+                                <div class="mt-2 p-3 rounded border" 
+                                    style="background-color: {{ $isCorrect ? '#d4edda' : ($isSelected ? '#f8d7da' : 'white') }}; 
+                                            border-color: {{ $isCorrect ? '#c3e6cb' : ($isSelected ? '#f5c6cb' : '#dee2e6') }} !important;">
                                     
-                                    @if($isCorrect)
-                                        <i class="bi bi-check-circle-fill text-success"></i> <small class="text-success">(Correct Answer)</small>
-                                    @endif
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span>
+                                            <strong>{{ chr(65 + $key) }}.</strong> {{ $option }}
+                                        </span>
 
-                                    @if($isSelected && !$isCorrect)
-                                        <i class="bi bi-x-circle-fill text-danger"></i> <small class="text-danger">(Your Choice)</small>
-                                    @endif
+                                        @if($isCorrect)
+                                            <span class="badge bg-success text-white p-2">
+                                                <i class="bi bi-check-circle-fill"></i> Correct Answer
+                                            </span>
+                                        @elseif($isSelected)
+                                            <span class="badge bg-danger text-white p-2">
+                                                <i class="bi bi-x-circle-fill"></i> Your Choice
+                                            </span>
+                                        @endif
+                                    </div>
                                 </div>
                             @endif
                         @endforeach

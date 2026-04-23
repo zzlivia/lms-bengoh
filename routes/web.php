@@ -17,6 +17,10 @@ use App\Http\Controllers\PageController;
 use App\Models\CommunityStory;
 use Illuminate\Support\Facades\Http;
 
+Route::get('/link-storage', function () {
+    Artisan::call('storage:link');
+    return 'The [public/storage] directory has been linked.';
+});
 
 Route::get('/run-migrate', function () {
     Artisan::call('migrate', ['--force' => true]);

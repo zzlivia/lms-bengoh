@@ -375,23 +375,27 @@ class CourseController extends Controller
         if (!Auth::check()) {
             return redirect()->route('login')->with('error', 'Please login first.');
         }
-
-        $request->validate(['clarity' => 'required','understanding' => 'required','rating' => 'required|integer|min:1|max:5']);
-        
-        DB::table('coursefeedback')->insert([
-            'courseID' => $id,
-            'clarity' => $request->clarity,
-            'understanding' => $request->understanding,
-            'favorite_module' => $request->favorite_module,
-            'enjoyed' => $request->enjoyed,
-            'suggestions' => $request->suggestions,
-            'rating' => $request->rating,
-            'userID' => Auth::id(),
-            'created_at' => now(),
-            'updated_at' => now(),
+        $request->validate([
+            'rating'          => 'required|integer|min:1|max:5',
+            'clarity'         => 'required|string',
+            'understanding'   => 'required|string',
+            'favorite_module' => 'nullable', 
+            'enjoyed'         => 'nullable|string',
+            'suggestions'     => 'nullable|string',
         ]);
-
-        return redirect()->route('course.assessment', $id);
+        DB::table('coursefeedback')->insert([
+            'courseID'        => $id, 
+            'userID'          => Auth::id(),
+            'rating'          => $request->rating,
+            'clarity'         => $request->clarity,
+            'understanding'   => $request->understanding,
+            'favorite_module' => $request->favorite_module,
+            'enjoyed'         => $request->enjoyed,
+            'suggestions'     => $request->suggestions,
+            'created_at'      => now(),
+            'updated_at'      => now(),
+        ]);
+        return redirect()->route('course.assessment', $id)->with('success', 'Feedback submitted successfully!');
     }
 
     public function courseAssessment($id)

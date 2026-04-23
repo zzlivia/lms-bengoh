@@ -27,9 +27,15 @@
                                 2 => $question->getTranslation('answer3'),
                                 3 => $question->getTranslation('answer4'),
                             ];
-                            // Use the variable passed from Controller
-                            $userSelection = $selectedAnswers[$question->moduleQs_ID] ?? null;
-                            $correctIndex = (int)$question->correct_answer - 1;
+
+                            $userSelection = session('last_submitted_answers')[$question->moduleQs_ID] ?? null;
+                            
+                            //convert DB (1-4) to Index (0-3)
+                            $correctIndex = (int)$question->correct_answer - 1; 
+
+                            $isCorrect = ($key === $correctIndex);
+                            $isSelected = ($userSelection !== null && (int)$userSelection === $key);
+
                         @endphp
 
                         @foreach($options as $key => $option)

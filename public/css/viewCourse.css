@@ -1,9 +1,10 @@
 /* Specific to the Course View Page */
 
 .course-banner-img {
-    max-height: 400px;
+    height: 450px; /* force a consistent height */
     width: 100%;
-    object-fit: cover;
+    object-fit: cover; /* prevents the squishing */
+    object-position: center; /* keeps the hiker centered */
 }
 
 .module-card {
@@ -18,4 +19,20 @@
 
 .list-group-item {
     border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+/*create a subtle fade at the bottom of the image */
+.course-banner-container {
+    position: relative;
+    overflow: hidden;
+}
+
+.course-banner-container::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 40%;
+    background: linear-gradient(to top, rgba(0,0,0,0.5), transparent);
 }

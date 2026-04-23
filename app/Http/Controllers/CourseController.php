@@ -347,10 +347,14 @@ class CourseController extends Controller
     public function reviewMCQ($id)
     {
         $module = Module::with('mcqs', 'course')->findOrFail($id);
+        //get answers from session (immediately after submission)
+        $selectedAnswers = session('last_submitted_answers');
+
+        //if session is empty (user clicked 'Back' or refreshed)
         return view('learner.review_mcq', [
             'module' => $module,
             'course' => $module->course,
-            'selectedAnswers' => session('last_submitted_answers', [])
+            'selectedAnswers' => $selectedAnswers ?? [] 
         ]);
     }
 

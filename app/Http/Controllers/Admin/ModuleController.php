@@ -153,42 +153,40 @@ class ModuleController extends Controller
 
     public function storeMCQ(Request $request)
     {
-        // Validate the incoming request to ensure data integrity
-        $request->validate([
-            'moduleID' => 'required|exists:modules,moduleID',
-            'questions' => 'required|array',
-            'questions.*.text' => 'required|string',
-            'questions.*.answers' => 'required|array|min:4',
-        ]);
+        //basic validation to ensure data exist
+        if (!$request->has('questions')) {
+            return back()->with('error', 'No questions provided.');
+        }
 
         foreach ($request->questions as $q) {
-            //generate a unique group_id. 
-            $groupId = time() . rand(1000, 9999);
+            //generate a unique group_id so the Edit/Preview links work
+            $groupId = time() . rand(100, 999);
 
-            //insert the Question into the 'mcqs' table
+            //insert the Question using your specific column names: 'moduleQs' and 'group_id'
             $questionID = \DB::table('mcqs')->insertGetId([
                 'moduleID'   => $request->moduleID,
                 'moduleQs'   => $q['text'],
                 'group_id'   => $groupId,
-                'is_active'  => 1,
                 'source'     => 'generated',
+                'is_active'  => 1,
                 'created_at' => now(),
                 'updated_at' => now()
             ]);
 
-            //insert the Answers into the 'moduleans' table
-            foreach ($q['answers'] as $index => $answerText) {
-                \DB::table('moduleans')->insert([
-                    'moduleQs_ID' => $questionID,
-                    'ansID_text'  => $answerText,
-                    //check if this index matches the 'correct' index passed from the generator
-                    'ansCorrect'  => ($index == $q['correct']) ? 1 : 0,
-                    'created_at'  => now(),
-                    'updated_at'  => now()
-                ]);
+            //insert the Answers into 'moduleans' table
+            if (isset($q['answers']) && is_array($q['answers'])) {
+                foreach ($q['answers'] as $index => $answer) {
+                    \DB::table('moduleans')->insert([
+                        'moduleQs_ID' => $questionID,
+                        'ansID_text'  => $answer,
+                        'ansCorrect'  => ($index == $q['correct']) ? 1 : 0,
+                        'created_at'  => now(),
+                        'updated_at'  => now()
+                    ]);
+                }
             }
         }
-        return back()->with('success', 'All MCQs generated and saved with unique IDs!');
+        return back()->with('success', 'Questions generated and saved with valid IDs!');
     }
 
     public function preview($group_id)

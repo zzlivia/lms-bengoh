@@ -286,19 +286,20 @@ class CourseController extends Controller
         $total = $module->mcqs->count();
         $score = 0;
         foreach ($module->mcqs as $question) {
-            $selectedIndex = $userAnswers[$question->moduleQs_ID] ?? null;
-            if ($selectedIndex !== null) {
-                //get all answers for this question as a simple list
-                $answersList = $question->answers->values(); 
-                //check if the user's selected index exists in our list
-                if (isset($answersList[$selectedIndex])) {
-                    //check if that specific answer is marked as correct (ansCorrect == 1)
-                    if ($answersList[$selectedIndex]->ansCorrect == 1) {
-                        $score++;
+                $selectedIndex = $userAnswers[$question->moduleQs_ID] ?? null;
+
+                if ($selectedIndex !== null) {
+                    // 1. Convert the collection of answers to a simple array to match the 0,1,2,3 index from Blade
+                    $answersList = $question->answers->values(); 
+
+                    // 2. Check if that specific answer object has ansCorrect set to 1
+                    if (isset($answersList[$selectedIndex])) {
+                        if ((int)$answersList[$selectedIndex]->ansCorrect === 1) {
+                            $score++;
+                        }
                     }
                 }
             }
-        }
         $percentage = $total > 0 ? ($score / $total) * 100 : 0;
         //initialize attempts variable
         $attempts = 1; 

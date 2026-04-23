@@ -280,26 +280,24 @@ class CourseController extends Controller
     //display questions
     public function submitMCQS(Request $request, $id) 
     {
-        //load module with mcqs and answers
-        $module = Module::with('mcqs.answers')->findOrFail($id);
+    $module = Module::with('mcqs')->findOrFail($id);
         $userAnswers = $request->input('answers', []);
         $total = $module->mcqs->count();
         $score = 0;
+
         foreach ($module->mcqs as $question) {
-                $selectedIndex = $userAnswers[$question->moduleQs_ID] ?? null;
+            // The radio button value from Blade is 0, 1, 2, or 3
+            $selectedIndex = $userAnswers[$question->moduleQs_ID] ?? null;
 
-                if ($selectedIndex !== null) {
-                    // 1. Convert the collection of answers to a simple array to match the 0,1,2,3 index from Blade
-                    $answersList = $question->answers->values(); 
-
-                    // 2. Check if that specific answer object has ansCorrect set to 1
-                    if (isset($answersList[$selectedIndex])) {
-                        if ((int)$answersList[$selectedIndex]->ansCorrect === 1) {
-                            $score++;
-                        }
-                    }
+            if ($selectedIndex !== null) {
+                // Convert 0-based index from form to 1-based index for DB
+                // (e.g., User selects 0, DB says 1 is correct -> Match!)
+                if ((int)$selectedIndex + 1 === (int)$question->correct_answer) {
+                    $score++;
                 }
             }
+        }
+
         $percentage = $total > 0 ? ($score / $total) * 100 : 0;
         //initialize attempts variable
         $attempts = 1; 

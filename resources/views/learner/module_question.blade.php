@@ -180,15 +180,18 @@
         }
 
 
-        //load saved answers
+        //load saved answers - will look for specific moduleID and checks the correct button
         function loadSavedAnswers(moduleId) {
-            let data = JSON.parse(localStorage.getItem("mcq_attempts")) || [];
-            let moduleAttempt = data.find(m => m.module_id === moduleId);
-            if (!moduleAttempt) return;
+            let allAttempts = JSON.parse(localStorage.getItem("mcq_attempts")) || {};
+            let moduleAnswers = allAttempts[moduleId];
 
-            moduleAttempt.answers.forEach(ans => {
+            if (!moduleAnswers) return;
+
+            // Loop through the saved questions for this module
+            Object.keys(moduleAnswers).forEach(questionId => {
+                let selectedValue = moduleAnswers[questionId];
                 const input = document.querySelector(
-                    `input[name="answers[${ans.question_id}]"][value="${ans.selected}"]`
+                    `input[name="answers[${questionId}]"][value="${selectedValue}"]`
                 );
                 if (input) input.checked = true;
             });

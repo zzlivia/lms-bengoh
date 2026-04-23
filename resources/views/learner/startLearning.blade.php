@@ -125,210 +125,102 @@
     </div>
 
     {{-- ================= SCRIPTS ================= --}}
-    
-    {{-- pass all section IDs --}}
-    <script>
-        const courseId = {{ $course->courseID }};
-        const allSections = @json($sections->pluck('sectionID'));
-    </script>
 
     <script>
-        // Localized strings for JS
+        // global Variables & Localized strings
+        const courseId = {{ $course->courseID }};
+        const allSections = @json($sections->pluck('sectionID'));
         const confirmMsg = "{{ __('messages.courses.quiz_confirm') }}";
         const timeLeftLabel = "{{ __('messages.courses.time_left') }}";
         const completedLabel = "{{ __('messages.courses.completed') }}";
-
+        window.lectID = {{ $current->lectID ?? 0 }};
+        // consolidated Quiz Form Logic
         document.getElementById('quizForm')?.addEventListener('submit', function(e) {
             const questions = document.querySelectorAll('[name^="answers["]');
             const answered = new Set();
-            questions.forEach(input => { if (input.checked) answered.add(input.name); });
-
+            // track which questions have been answered
+            questions.forEach(input => { 
+                if (input.checked) answered.add(input.name); 
+            });
+            // calculate totals
             const totalQuestions = new Set(Array.from(questions).map(q => q.name)).size;
-            const remaining = totalQuestions - answered.size;
-
+            const remainingQuestions = totalQuestions - answered.size;
+            // if questions are missing, show confirmation
             if (answered.size < totalQuestions) {
                 e.preventDefault();
-                // Dynamic replacement for the JS confirm dialog
-                let msg = confirmMsg.replace(':count', remaining);
+                // use translation string if available, otherwise fallback to English
+                let msg = confirmMsg.includes(':count') 
+                    ? confirmMsg.replace(':count', remainingQuestions) 
+                    : `You forgot ${remainingQuestions} question(s). Submit anyway?`;
                 if (confirm(msg)) {
-                    e.target.submit();
+                    this.submit(); // submit the form programmatically if user says OK
                 }
             }
         });
 
+        // lecture Timer & Auto-Complete Logic
         @if($current && $current->lecture && $current->lecture->lect_duration)
-            // ... (existing timer logic) ...
-            // Inside your setInterval:
-            if (remaining <= 0) {
-                timerDisplay.textContent = completedLabel + " ✅";
-                // ...
-            } else {
-                timerDisplay.textContent = `${timeLeftLabel}: ${minutes}:${seconds}`;
-            }
+            (function() {
+                const lectureId = {{ $current->lectID }};
+                const storageKey = "lecture_timer_" + lectureId;
+                const timerDisplay = document.getElementById('timer');
+                const totalDuration = {{ $current->lecture->lect_duration }} * 60; // Convert mins to secs
+                let savedStartTime = localStorage.getItem(storageKey);
+                let startTime = savedStartTime ? parseInt(savedStartTime) : Date.now();
+                if (!savedStartTime) localStorage.setItem(storageKey, startTime);
+                const countdown = setInterval(() => {
+                    const now = Date.now();
+                    const elapsed = Math.floor((now - startTime) / 1000);
+                    const remainingTime = totalDuration - elapsed;
+                    if (remainingTime <= 0) {
+                        clearInterval(countdown);
+                        timerDisplay.textContent = completedLabel + " ✅";
+                        localStorage.removeItem(storageKey);
+                        //notify Backend of completion
+                        fetch(`/lecture/complete/{{ $current->lectID }}`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            }
+                        });
+                    } else {
+                        let mins = Math.floor(remainingTime / 60);
+                        let secs = remainingTime % 60;
+                        secs = secs < 10 ? '0' + secs : secs;
+                        timerDisplay.textContent = `${timeLeftLabel}: ${mins}:${secs}`;
+                    }
+                }, 1000);
+            })();
         @endif
-    </script>
 
-    <script>
-    document.getElementById('quizForm')?.addEventListener('submit', function(e) {
-        const questions = document.querySelectorAll('[name^="answers["]');
-        const answered = new Set();
-
-        questions.forEach(input => {
-            if (input.checked) {
-                answered.add(input.name);
+        // remember Last Section Logic
+        (function() {
+            const sectionKey = "last_section_{{ auth()->id() }}_{{ $course->courseID }}";
+            @if($current)
+                localStorage.setItem(sectionKey, "{{ $current->sectionID }}");
+            @endif
+            const urlParams = new URLSearchParams(window.location.search);
+            if (!urlParams.get('sectionId')) {
+                const savedSection = localStorage.getItem(sectionKey);
+                if (savedSection) {
+                    window.location.href = `?sectionId=${savedSection}`;
+                }
             }
-        });
+        })();
 
-        const totalQuestions = new Set(Array.from(questions).map(q => q.name)).size;
-        const answeredCount = answered.size;
-
-        if (answeredCount < totalQuestions) {
-            e.preventDefault();
-            const remaining = totalQuestions - answeredCount;
-
-            if (confirm(`You forgot ${remaining} question(s). Submit anyway?`)) {
-                e.target.submit();
-            }
-        }
-    });
-    </script>
-
-    {{-- pop up alert modal --}}
-    <script>
+        // access Modal Logic
         document.addEventListener("DOMContentLoaded", function () {
             const modal = document.getElementById('accessModal');
             const closeBtn = document.getElementById('closeModal');
-
             if (modal) {
                 modal.style.display = 'flex';
-
-                // auto close after 5s
-                setTimeout(() => {
-                    modal.style.display = 'none';
-                }, 5000);
-
-                // close button
-                closeBtn?.addEventListener('click', () => {
-                    modal.style.display = 'none';
-                });
-
-                // click outside
-                modal.addEventListener('click', (e) => {
-                    if (e.target === modal) {
-                        modal.style.display = 'none';
-                    }
-                });
+                setTimeout(() => { modal.style.display = 'none'; }, 5000);
+                closeBtn?.addEventListener('click', () => { modal.style.display = 'none'; });
+                window.addEventListener('click', (e) => { if (e.target === modal) modal.style.display = 'none'; });
             }
         });
     </script>
-
-    <script>
-        @if($current && $current->lecture && $current->lecture->lect_duration)
-
-            const lectureId = {{ $current->lectID }};
-            const storageKey = "lecture_timer_" + lectureId;
-            let duration;
-            //check if timer already exists
-            const savedStartTime = localStorage.getItem(storageKey);
-            const totalDuration = {{ $current->lecture->lect_duration }} * 60;
-
-            let startTime;
-
-            if (savedStartTime) {
-                startTime = parseInt(savedStartTime);
-            } else {
-                startTime = Date.now();
-                localStorage.setItem(storageKey, startTime);
-            }
-
-            const timerDisplay = document.getElementById('timer');
-
-            const countdown = setInterval(() => { //countdown function
-                const now = Date.now();
-                const elapsed = Math.floor((now - startTime) / 1000);
-                const remaining = totalDuration - elapsed;
-
-                if (remaining <= 0) {
-                    clearInterval(countdown);
-                    timerDisplay.textContent = "Completed ✅";
-                    localStorage.removeItem(storageKey);
-
-                    // send to backend
-                    fetch(`/lecture/complete/{{ $current->lectID }}`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                        }
-                    });
-                    return;
-                }
-
-                let minutes = Math.floor(remaining / 60);
-                let seconds = remaining % 60;
-                seconds = seconds < 10 ? '0' + seconds : seconds;
-
-                timerDisplay.textContent = `Time Left: ${minutes}:${seconds}`;
-            }, 1000);
-        @endif
-    </script>
-
-    <script>
-        const sectionKey = "last_section_{{ auth()->id() }}_{{ $course->courseID }}";
-        @if($current)
-            // save current section
-            localStorage.setItem(sectionKey, "{{ $current->sectionID }}");
-        @endif
-        // resume automatically once user returns
-        const savedSection = localStorage.getItem(sectionKey);
-        const urlParams = new URLSearchParams(window.location.search);
-        const currentSectionId = urlParams.get('sectionId');
-        if (!currentSectionId && savedSection) {
-            window.location.href = `?sectionId=${savedSection}`;
-        }
-    </script>
-
-    {{-- preload --}}
-    @push('scripts')
-    <script>
-    document.addEventListener("DOMContentLoaded", function () {
-
-        if (!navigator.onLine) return;
-
-        const CACHE_NAME = "laravel-dynamic-v2";
-
-        // build all lesson URLs dynamically
-        const lessonUrls = allSections.map(sectionId =>
-            `/courses/${courseId}/startLearn?sectionId=${sectionId}`
-        );
-
-        caches.open(CACHE_NAME).then(cache => {
-
-            lessonUrls.forEach(url => {
-
-                // avoid duplicate caching
-                cache.match(url).then(existing => {
-                    if (existing) return;
-
-                    fetch(url)
-                        .then(res => {
-                            if (res.ok) {
-                                cache.put(url, res.clone());
-                                console.log("Cached:", url);
-                            }
-                        })
-                        .catch(() => {});
-                });
-
-            });
-
-        });
-
-    });
-    </script>
-    @endpush
-
-    <script> window.lectID = {{ $current->lectID ?? 0 }};</script>
 
     <script src="{{ asset('js/app.js') }}"></script>
 @endsection

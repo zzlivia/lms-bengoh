@@ -218,15 +218,16 @@ class AdminController extends Controller
         $course->isAvailable = $request->isAvailable;
         //update image
         if ($request->hasFile('courseImg')) {
-            // delete old image
-            if (!empty($course->courseImg) && file_exists(public_path($course->courseImg))) {
-                unlink(public_path($course->courseImg));
+            // 1. Delete the old image from storage if it exists
+            if ($course->courseImg) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($course->courseImg);
             }
-            // generate filename
-            $filename = time() . '.' . $request->file('courseImg')->extension();
-            // move file to public/courses-assets
-            $request->file('courseImg')->move(public_path('courses-assets'), $filename);
-            $course->courseImg = 'courses-assets/' . $filename;
+
+            // 2. Store the new file using the Storage system
+            $path = $request->file('courseImg')->store('courses-assets', 'public');
+
+            // 3. Update the database with the new 'storage-friendly' path
+            $course->courseImg = $path;
         }
         $course->save();
 

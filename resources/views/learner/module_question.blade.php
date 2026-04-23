@@ -165,18 +165,18 @@
     </script>
 
     <script>
-        //save answer
+        //save answer function where it checks if the question was already answered and updates it
         function saveAnswer(moduleId, questionId, selectedOption) {
-            console.log("WORKING", moduleId, questionId, selectedOption);
-
-            let data = JSON.parse(localStorage.getItem("mcq_attempts")) || [];
-
-            data.push({
-                module_id: moduleId,
-                answers: [{ question_id: questionId, selected: selectedOption }]
-            });
-
-            localStorage.setItem("mcq_attempts", JSON.stringify(data));
+            // get existing data or an empty object
+            let allAttempts = JSON.parse(localStorage.getItem("mcq_attempts")) || {};
+            //ensure we have an object for this specific module
+            if (!allAttempts[moduleId]) {
+                allAttempts[moduleId] = {};
+            }
+            //save the answer for this specific question (overwrites if already exists)
+            allAttempts[moduleId][questionId] = selectedOption;
+            //save back to localStorage
+            localStorage.setItem("mcq_attempts", JSON.stringify(allAttempts));
         }
 
 

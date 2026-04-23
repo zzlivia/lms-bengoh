@@ -127,89 +127,88 @@
     {{-- ================= SCRIPTS ================= --}}
 
     <script>
-        // global Variables & Localized strings
+        //configuration and localization
         const courseId = {{ $course->courseID }};
         const allSections = @json($sections->pluck('sectionID'));
         const confirmMsg = "{{ __('messages.courses.quiz_confirm') }}";
         const timeLeftLabel = "{{ __('messages.courses.time_left') }}";
         const completedLabel = "{{ __('messages.courses.completed') }}";
         window.lectID = {{ $current->lectID ?? 0 }};
-        // consolidated Quiz Form Logic
+        //mcqs
         document.getElementById('quizForm')?.addEventListener('submit', function(e) {
             const questions = document.querySelectorAll('[name^="answers["]');
             const answered = new Set();
-            // track which questions have been answered
-            questions.forEach(input => { 
-                if (input.checked) answered.add(input.name); 
-            });
-            // calculate totals
+            //track answered questions
+            questions.forEach(input => { if (input.checked) answered.add(input.name); });
             const totalQuestions = new Set(Array.from(questions).map(q => q.name)).size;
             const remainingQuestions = totalQuestions - answered.size;
-            // if questions are missing, show confirmation
             if (answered.size < totalQuestions) {
                 e.preventDefault();
-                // use translation string if available, otherwise fallback to English
+                //fallback for translation string
                 let msg = confirmMsg.includes(':count') 
                     ? confirmMsg.replace(':count', remainingQuestions) 
                     : `You forgot ${remainingQuestions} question(s). Submit anyway?`;
                 if (confirm(msg)) {
-                    this.submit(); // submit the form programmatically if user says OK
+                    this.submit(); //submit
                 }
             }
         });
 
-        // lecture Timer & Auto-Complete Logic
+        //lecture timer and autocomplete check logic
         @if($current && $current->lecture && $current->lecture->lect_duration)
-            (function() {
-                const lectureId = {{ $current->lectID }};
-                const storageKey = "lecture_timer_" + lectureId;
-                const timerDisplay = document.getElementById('timer');
-                const totalDuration = {{ $current->lecture->lect_duration }} * 60; // Convert mins to secs
-                let savedStartTime = localStorage.getItem(storageKey);
-                let startTime = savedStartTime ? parseInt(savedStartTime) : Date.now();
-                if (!savedStartTime) localStorage.setItem(storageKey, startTime);
-                const countdown = setInterval(() => {
-                    const now = Date.now();
-                    const elapsed = Math.floor((now - startTime) / 1000);
-                    const remainingTime = totalDuration - elapsed;
-                    if (remainingTime <= 0) {
-                        clearInterval(countdown);
-                        timerDisplay.textContent = completedLabel + " ✅";
-                        localStorage.removeItem(storageKey);
-                        //notify Backend of completion
-                        fetch(`/lecture/complete/{{ $current->lectID }}`, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                            }
-                        });
-                    } else {
-                        let mins = Math.floor(remainingTime / 60);
-                        let secs = remainingTime % 60;
-                        secs = secs < 10 ? '0' + secs : secs;
-                        timerDisplay.textContent = `${timeLeftLabel}: ${mins}:${secs}`;
-                    }
-                }, 1000);
-            })();
+        (function() {
+            const lectureId = {{ $current->lectID }};
+            const storageKey = "lecture_timer_" + lectureId;
+            const timerDisplay = document.getElementById('timer');
+            const totalDuration = {{ $current->lecture->lect_duration }} * 60; //minutes to seconds
+            let savedStartTime = localStorage.getItem(storageKey);
+            let startTime = savedStartTime ? parseInt(savedStartTime) : Date.now();
+            if (!savedStartTime) localStorage.setItem(storageKey, startTime);
+            const countdown = setInterval(() => {
+                const now = Date.now();
+                const elapsed = Math.floor((now - startTime) / 1000);
+                const remainingTime = totalDuration - elapsed; // remaining time
+                if (remainingTime <= 0) {
+                    clearInterval(countdown);
+                    timerDisplay.innerHTML = completedLabel + `
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="green">
+                            <path d="M20 6L9 17l-5-5" stroke="green" stroke-width="2" fill="none"/>
+                        </svg>
+                        `;
+                    localStorage.removeItem(storageKey);
+                    // API Call to complete lecture
+                    fetch(`/lecture/complete/{{ $current->lectID }}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        }
+                    });
+                } else {
+                    let mins = Math.floor(remainingTime / 60);
+                    let secs = remainingTime % 60;
+                    secs = secs < 10 ? '0' + secs : secs;
+                    timerDisplay.textContent = `${timeLeftLabel}: ${mins}:${secs}`;
+                }
+            }, 1000);
+        })();
         @endif
 
-        // remember Last Section Logic
+        //resume where left off 
         (function() {
             const sectionKey = "last_section_{{ auth()->id() }}_{{ $course->courseID }}";
             @if($current)
                 localStorage.setItem(sectionKey, "{{ $current->sectionID }}");
             @endif
+
             const urlParams = new URLSearchParams(window.location.search);
             if (!urlParams.get('sectionId')) {
                 const savedSection = localStorage.getItem(sectionKey);
-                if (savedSection) {
-                    window.location.href = `?sectionId=${savedSection}`;
-                }
+                if (savedSection) window.location.href = `?sectionId=${savedSection}`;
             }
         })();
 
-        // access Modal Logic
+        //alert modal
         document.addEventListener("DOMContentLoaded", function () {
             const modal = document.getElementById('accessModal');
             const closeBtn = document.getElementById('closeModal');
@@ -221,6 +220,26 @@
             }
         });
     </script>
+
+    @push('scripts')
+    <script>
+        //offline caching logic
+        document.addEventListener("DOMContentLoaded", function () {
+            if (!navigator.onLine) return;
+            const CACHE_NAME = "laravel-dynamic-v2";
+            const lessonUrls = allSections.map(sid => `/courses/${courseId}/startLearn?sectionId=${sid}`);
+
+            caches.open(CACHE_NAME).then(cache => {
+                lessonUrls.forEach(url => {
+                    cache.match(url).then(exists => {
+                        if (exists) return;
+                        fetch(url).then(res => { if (res.ok) cache.put(url, res.clone()); }).catch(()=>{});
+                    });
+                });
+            });
+        });
+    </script>
+    @endpush
 
     <script src="{{ asset('js/app.js') }}"></script>
 @endsection

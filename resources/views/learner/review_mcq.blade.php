@@ -38,15 +38,20 @@
                         @foreach($options as $key => $option)
                             @if($option)
                                 @php
-                                    $userSelection = $selectedAnswers[$question->moduleQs_ID] ?? null;
-                                    $correctIndex = $question->correct_answer - 1; 
-                                @endphp
-                                <div class="mt-2" style="color: {{ ($key == $correctIndex) ? 'green' : (($key == $userSelection) ? 'red' : 'black') }}">
+                                    $userSelection = isset($selectedAnswers[$question->moduleQs_ID]) 
+                                                    ? (int)$selectedAnswers[$question->moduleQs_ID] 
+                                                    : null;
+                                    $correctIndex = (int)$question->correct_answer - 1; 
+                                    $isCorrect = ($key === $correctIndex);
+                                    $isUserWrong = ($key === $userSelection && $key !== $correctIndex);
+                                @php
+                                <div class="mt-2" style="color: {{ $isCorrect ? 'green' : ($isUserWrong ? 'red' : 'black') }}">
                                     <strong>{{ $labels[$key + 1] }}.</strong> {{ $option }}
-                                    @if($key == $correctIndex)
+                                    @if($isCorrect)
                                         <i class="bi bi-check-circle-fill text-success"></i>
                                     @endif
-                                    @if($key == $userSelection && $key != $correctIndex)
+
+                                    @if($isUserWrong)
                                         <i class="bi bi-x-circle-fill text-danger"></i>
                                         <small class="text-danger">({{ __('messages.courses.your_answer') }})</small>
                                     @endif

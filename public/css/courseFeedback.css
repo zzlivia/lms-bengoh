@@ -90,3 +90,39 @@
     border: 2px solid #198754;
     background: #e9f7ef;
 }
+
+/* ================= MOBILE RATING ADJUSTMENTS ================= */
+@media (max-width: 576px) {
+    /* make stars larger for easier tapping */
+    .star-rating label {
+        font-size: 40px; /* increased from 30px */
+        padding: 0 5px;   /* added spacing between stars */
+    }
+
+    /* stack clarity ratings vertically */
+    .clarity-rating {
+        flex-direction: column; /* stack Poor/Average/Good/Excellent */
+        align-items: stretch;   /* make buttons full width */
+        gap: 10px;
+    }
+
+    .clarity-rating label {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 15px; /* Thicker tap target */
+        text-align: left;
+    }
+
+    /* move stars to the right side of the text in mobile view */
+    .clarity-rating .stars {
+        margin-bottom: 0;
+        order: 2;
+    }
+
+    /* disable hover scale on mobile */
+    .star-rating label:hover,
+    .clarity-rating label:hover {
+        transform: none;
+    }
+}

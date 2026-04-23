@@ -32,3 +32,28 @@
     position: relative;
     z-index: 1; /* ✅ bring text to front */
 }
+
+/* ================= RESPONSIVE PROGRESS CIRCLES ================= */
+@media (max-width: 576px) {
+    .progress-circle {
+        /* Scale down the outer container */
+        width: 80px;
+        height: 80px;
+    }
+
+    /* Adjust the inner white circle to keep the ring thickness consistent */
+    .progress-circle::before {
+        width: 60px;
+        height: 60px;
+    }
+
+    /* Scale down the text size for smaller circles */
+    .progress-circle span {
+        font-size: 14px;
+    }
+
+    .progress-circle small {
+        font-size: 10px;
+        margin-top: 0;
+    }
+}

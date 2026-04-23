@@ -47,9 +47,50 @@
     color: white;
 }
 
-/* Responsive fix */
-@media (max-width: 992px) {
-    .left-peeking-image {
-        display: none; /* Hide image on mobile for better focus */
+/* ================= MOBILE LOGIN ADJUSTMENTS ================= */
+@media (max-width: 576px) {
+    /* reduce padding so the card doesn't feel cramped on small screens */
+    .login-section {
+        padding: 40px 15px; /* Less vertical space, more side breathing room */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 80vh; /* Keeps card vertically balanced */
+    }
+
+    /* soften the card padding */
+    .login-card {
+        padding: 1.5rem; /* Reduced from 2.5rem to save screen real estate */
+        max-width: 100%;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); /* Softer shadow for mobile */
+    }
+
+    /* thumb-friendly inputs (CRITICAL) */
+    .form-control {
+        height: 48px; /* Standard mobile tap height */
+        font-size: 16px !important; /* Prevents iOS auto-zoom on focus */
+        padding: 0.75rem;
+    }
+
+    /* make the login button more prominent */
+    .btn-login {
+        width: 100%; /* Full width is better for mobile thumb reach */
+        height: 48px;
+        font-size: 16px;
+        font-weight: 600;
+        margin-top: 10px;
+    }
+
+    /* adjust typography */
+    .login-card h2 {
+        font-size: 24px;
+        text-align: center;
+    }
+
+    /* helpful for links like "Forgot Password?" or "Sign Up" */
+    .login-card .small, .login-card a {
+        display: block;
+        text-align: center;
+        margin-top: 10px;
     }
 }

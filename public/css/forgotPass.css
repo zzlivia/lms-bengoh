@@ -120,3 +120,46 @@
 .toggle-password:hover {
     color: #000;
 }
+
+/* ================= MOBILE LOGIN ADJUSTMENTS ================= */
+@media (max-width: 576px) {
+    /* 1. Switch from fixed height to min-height */
+    /* This prevents the keyboard from squashing your card */
+    .login-section {
+        height: auto;
+        min-height: calc(100vh - 80px); /* Adjust based on mobile nav height */
+        padding: 40px 15px; /* Add space so card doesn't touch screen edges */
+        display: flex;
+        align-items: center;
+    }
+
+    /* 2. Content Wrapper should allow vertical stacking */
+    .content-wrapper {
+        flex-direction: column;
+    }
+
+    /* 3. Make the card fit the screen width but keep its limit */
+    .login-card {
+        max-width: 100%; 
+        padding: 25px 20px; /* More comfortable padding for touch */
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05); /* Softer shadow for mobile */
+    }
+
+    /* 4. Increase touch targets for inputs and buttons */
+    .modern-input, 
+    .btn-modern {
+        height: 48px; /* Standard mobile tap height (minimum 44px) */
+        font-size: 16px; /* prevents iOS from auto-zooming on focus */
+    }
+
+    /* 5. Scale the image for smaller screens */
+    .forgot-image {
+        max-height: 90px;
+        margin-bottom: 10px;
+    }
+
+    /* 6. Adjust Title size for mobile */
+    .login-card h3 {
+        font-size: 20px;
+    }
+}

@@ -57,3 +57,65 @@
 .col-md-9 {
     border-left: 1px solid #f0f0f0;
 }
+
+/* ================= MOBILE LEARNING INTERFACE ================= */
+@media (max-width: 768px) {
+    /* reset card height to prevent awkward empty scrolling */
+    .learning-content-card {
+        min-height: auto;
+        border: none; /* Remove borders on mobile for a cleaner 'app' look */
+        padding: 10px 0;
+    }
+
+    /* content Typography - Slightly smaller but more readable */
+    .lead-custom {
+        font-size: 1rem;
+        line-height: 1.6;
+        padding: 0 10px;
+    }
+
+    /* modal adjustments - Make it feel like a bottom sheet or full screen */
+    .custom-modal-content {
+        width: 90%;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    /* PDF Container - Ensure it doesn't break horizontal flow */
+    .pdf-container iframe {
+        height: 500px; /* Force a height so the user can scroll within the PDF */
+        width: 100%;
+    }
+
+    /* navigation Buttons - Stacking vs. Row */
+    .btn-nav-group {
+        display: flex;
+        flex-direction: column; /* Stack buttons for easier thumb reach */
+        gap: 10px;
+        padding: 15px;
+    }
+
+    .btn-nav {
+        width: 100%;
+        height: 48px; /* Larger tap target */
+        border-radius: 12px; /* More modern mobile aesthetic */
+    }
+
+    /* layout Reset - Remove borders between sidebar and content */
+    .col-md-9 {
+        border-left: none !important;
+        padding: 15px;
+    }
+
+    /* video Container Padding */
+    .video-container {
+        margin-bottom: 20px;
+    }
+}
+
+/* Extra small devices (Landscape Phones) */
+@media (max-width: 576px) {
+    .custom-modal-content {
+        padding: 15px;
+    }
+}

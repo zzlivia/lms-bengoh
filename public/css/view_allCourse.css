@@ -118,3 +118,71 @@ a {
     text-decoration: none;
     color: inherit;
 }
+
+/* ================= MOBILE RESPONSIVE UPDATES ================= */
+@media (max-width: 991px) {
+    /* hero Section: Adjust padding and font sizes */
+    .course-hero {
+        padding: 40px 15px;
+        border-radius: 0; /* Removing radius on mobile looks more professional */
+    }
+
+    .course-hero h1 {
+        font-size: 24px;
+    }
+
+    /* search Bar: Full width */
+    .search-bar {
+        max-width: 100%;
+        margin-top: 15px;
+    }
+
+    /* layout: Stack Sidebar Filter and Course Rows */
+    /* If you are using Bootstrap rows, they stack automatically. 
+       If not, ensure containers are width: 100% */
+    .filter-section {
+        margin-bottom: 20px;
+    }
+
+    /* course Row: Vertical Layout */
+    .course-row {
+        padding: 15px;
+    }
+
+    .course-row img {
+        height: 200px; /* Taller image for full-width mobile view */
+        margin-bottom: 15px;
+    }
+
+    /* course Card Grids */
+    .course-card, .story-card, .history-card, .feature-box {
+        height: auto; /* Allow height to expand with text */
+        margin-bottom: 15px;
+    }
+
+    /* typography adjustments for readability */
+    .course-title {
+        font-size: 18px;
+    }
+
+    .meta-text {
+        font-size: 13px;
+    }
+
+    /* footer: Reduce margins */
+    footer {
+        margin-top: 30px;
+        padding: 30px 15px;
+    }
+}
+
+/* Small Phones */
+@media (max-width: 576px) {
+    .profile-icon {
+        font-size: 60px;
+    }
+
+    .search-bar input {
+        font-size: 16px; /* Prevents iOS auto-zoom on focus */
+    }
+}

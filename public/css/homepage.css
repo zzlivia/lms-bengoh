@@ -163,3 +163,65 @@ h5 + .row {
     transform: translateY(-10px);
     box-shadow: 0 12px 30px rgba(0,0,0,0.2);
 }
+
+/* ================= MOBILE RESPONSIVE UPDATES ================= */
+@media (max-width: 768px) {
+    
+    /* reset heights for stacking */
+    .feature-box,
+    .course-card,
+    .story-card,
+    .history-card {
+        height: auto; /* allow cards to grow with text */
+        margin-bottom: 20px;
+    }
+
+    /* adjust Course Card Images */
+    .course-card img {
+        height: 200px; /* give it more height on mobile since width is now full-screen */
+    }
+
+    /* disable hover transforms for touch */
+    /* On mobile, 'hover' triggers on first tap and stays stuck. */
+    .course-card:hover,
+    .history-card:hover,
+    .offer-card:hover {
+        transform: none;
+    }
+
+    /* start Learning Page Sidebar */
+    .sidebar {
+        height: auto;
+        position: relative; /* Change from sticky/fixed to normal flow */
+        border-right: none;
+        border-bottom: 1px solid #ddd;
+        padding-bottom: 15px;
+    }
+
+    /* video Box - Adjust height for mobile aspect ratio */
+    .video-box {
+        height: 200px; /* 16:9 ratio usually looks better on mobile */
+    }
+
+    /* footer - Reduce top margin */
+    footer {
+        margin-top: 30px;
+    }
+
+    /* general Spacing */
+    .content-section {
+        padding: 15px;
+    }
+}
+
+/* extra small devices (Phones) */
+@media (max-width: 576px) {
+    .btn-nav {
+        width: 100%; /* make buttons full-width for easier tapping */
+        margin-bottom: 10px;
+    }
+
+    .profile-icon {
+        font-size: 50px; /* scale down large icons */
+    }
+}

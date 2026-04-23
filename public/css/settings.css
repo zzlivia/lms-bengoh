@@ -39,3 +39,45 @@
 .settings-sidebar form button:hover {
     text-decoration: underline;
 }
+
+/* ================= MOBILE SETTINGS SIDEBAR ================= */
+@media (max-width: 768px) {
+    .settings-sidebar {
+        min-height: auto; /* Remove the 70vh requirement */
+        margin-bottom: 20px;
+        padding: 10px;
+        /* Change from a tall column to a compact list */
+        flex-direction: column; 
+    }
+
+    .settings-link {
+        padding: 14px; /* Slightly larger for easier tapping */
+        background: #f8f9fa; /* Give links a slight background to look like buttons */
+        border: 1px solid #dee2e6;
+    }
+
+    /* Keep the active state distinct */
+    .settings-link.active {
+        background: #dbeafe;
+        border-color: #bfdbfe;
+    }
+
+    /* Ensure the bottom section (like Logout) has space */
+    .settings-sidebar > div:last-child {
+        margin-top: 15px;
+        padding-top: 15px;
+        border-top: 1px dashed #ced4da;
+    }
+}
+
+/* For very small phones, stack everything and ensure full width */
+@media (max-width: 576px) {
+    .settings-link {
+        font-size: 14px;
+    }
+    
+    /* Make arrows/icons inside the links stay visible */
+    .settings-link i {
+        font-size: 16px;
+    }
+}

@@ -57,3 +57,44 @@
 .sidebar a {
     text-decoration: none;
 }
+
+/* ================= MOBILE RESPONSIVE SIDEBAR ================= */
+@media (max-width: 991.98px) {
+    .sidebar {
+        /* change from sticky to fixed for mobile overlay */
+        position: fixed;
+        top: 0;
+        left: -100%; /* Hide completely off-screen */
+        width: 280px; /* Slightly wider for thumb-friendly links */
+        z-index: 1050; 
+        transition: left 0.3s ease-in-out;
+        box-shadow: 5px 0 15px rgba(0,0,0,0.1);
+    }
+
+    /* show sidebar when 'active' class is added via JS */
+    .sidebar.active {
+        left: 0;
+    }
+
+    /* increase touch targets (Fitt's Law) */
+    .sidebar-section {
+        padding: 12px 15px; /* Bigger area for fingers to tap */
+        margin-bottom: 5px;
+    }
+
+    /* optional: Darken background when sidebar is open */
+    .sidebar-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0,0,0,0.5);
+        z-index: 1040;
+    }
+    
+    .sidebar-overlay.show {
+        display: block;
+    }
+}

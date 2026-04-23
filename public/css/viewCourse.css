@@ -50,9 +50,53 @@
     background: linear-gradient(to top, rgba(0,0,0,0.5), transparent);
 }
 
-/* Responsive adjustment for mobile screens */
+/* ================= MOBILE COURSE VIEW UPDATES ================= */
 @media (max-width: 768px) {
+    /* scale down the banner height */
     .course-banner-img {
-        height: 250px;
+        height: 220px; /* Slightly shorter for better above-the-fold content */
+        border-radius: 4px; /* Subtle radius looks better on small screens */
+    }
+
+    /* banner Overlay Adjustment */
+    .course-banner-container::after {
+        height: 60%; /* Deeper gradient to help text legibility on small screens */
+    }
+
+    /* module Cards: Remove fixed height constraints */
+    .module-card {
+        min-height: auto; /* Allow cards to shrink to fit content */
+        margin-bottom: 1rem;
+        border-left-width: 6px; /* Thicker border looks more like a tab on mobile */
+    }
+
+    /* disable Hover Animations */
+    /* Hover effects can feel "glitchy" on touch devices */
+    .module-card:hover {
+        transform: none;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05) !important;
+    }
+
+    /* spacing for List Items */
+    .list-group-item {
+        padding: 12px 8px; /* Larger tap target for lecture links */
+    }
+
+    /* font Scaling */
+    .card-title {
+        font-size: 1.1rem;
+    }
+}
+
+/* Extra small devices (Landscape Phones) */
+@media (max-width: 576px) {
+    .course-banner-img {
+        height: 180px;
+    }
+    
+    /* Ensure the container padding doesn't squash the content */
+    .container {
+        padding-left: 15px;
+        padding-right: 15px;
     }
 }

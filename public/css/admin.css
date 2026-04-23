@@ -141,3 +141,42 @@ body{
 @keyframes growProgress{
     from{ --value:0 }
 }
+
+/* ================= RESPONSIVE MOBILE VIEW ================= */
+@media (max-width: 992px) {
+    
+    /* 1. Hide Sidebar by default or move it off-screen */
+    .sidebar {
+        width: 250px;
+        left: -250px; /* Hide off-screen */
+        transition: 0.3s ease-in-out;
+    }
+
+    /* 2. Add a class to show sidebar (you'll toggle this with JS) */
+    .sidebar.active {
+        left: 0;
+    }
+
+    /* 3. Remove the margin from main content so it fills the screen */
+    .main-content {
+        margin-left: 0;
+        width: 100%;
+        padding: 15px; /* Give it some breathing room on mobile */
+    }
+
+    /* 4. Topbar adjustments */
+    .topbar {
+        padding: 10px;
+    }
+
+    /* 5. Stack cards and charts */
+    .chart-container {
+        width: 100%; /* Allow it to be flexible */
+        max-width: 280px; 
+    }
+
+    /* 6. Fix for any horizontal scrolling */
+    body {
+        overflow-x: hidden;
+    }
+}

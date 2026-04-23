@@ -8,6 +8,22 @@
             {{-- main content --}}
             <div class="col-md-9 px-md-4">
                 <h4 class="mb-4">{{ __('messages.courses.review_answers') }}</h4>
+                {{-- display score --}}
+                @if(session()->has('score'))
+                    <div class="alert alert-info shadow-sm d-flex justify-content-between align-items-center">
+                        <div>
+                            <h5 class="mb-0">
+                                <i class="bi bi-trophy-fill text-warning me-2"></i>
+                                {{ __('messages.courses.score_label') }}: 
+                                <strong>{{ session('score') }} / {{ session('total') }}</strong>
+                            </h5>
+                            <small>{{ __('messages.courses.attempt_label') }}: {{ session('attempts') }}</small>
+                        </div>
+                        <span class="badge {{ session('score') == session('total') ? 'bg-success' : 'bg-primary' }} p-2">
+                            {{ session('score') == session('total') ? 'Perfect!' : 'Keep Learning' }}
+                        </span>
+                    </div>
+                @endif
                 @foreach($module->mcqs as $index => $question)
                     <div class="card p-3 mb-3 shadow-sm">
                         <strong>{{ $index+1 }}. {{ $question->getTranslation('question') }}</strong>

@@ -13,13 +13,11 @@ return new class extends Migration
     {
         Schema::create('translations', function (Blueprint $table) {
             $table->id();
-            // This creates 'translationable_id' and 'translationable_type'
-            // It allows this row to link to a Course, a Module, or an MCQ
-            $table->morphs('translationable'); 
+            $table->morphs('translatable'); 
             
-            $table->string('locale'); // 'en', 'ms', etc.
-            $table->string('key');    // 'name', 'description', 'question'
-            $table->text('value');    // The actual translated text
+            $table->string('locale');
+            $table->string('key');
+            $table->text('value');
             $table->timestamps();
         });
     }

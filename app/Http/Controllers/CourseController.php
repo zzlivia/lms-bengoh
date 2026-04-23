@@ -268,6 +268,15 @@ class CourseController extends Controller
         return response()->json(['status' => 'saved']);
     }
 
+    public function showMCQS($id)
+    {
+        // We load the module and its associated MCQs
+        $module = Module::with('mcqs.answers')->findOrFail($id);
+        $course = $module->course;
+
+        return view('learner.module_question', compact('module', 'course'));
+    }
+
     //display questions
     public function submitMCQS(Request $request, $id) 
     {

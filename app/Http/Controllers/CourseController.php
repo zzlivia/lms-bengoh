@@ -280,7 +280,7 @@ class CourseController extends Controller
     //display questions
     public function submitMCQS(Request $request, $id) 
     {
-        //load module with mcqsand answers
+        //load module with mcqs and answers
         $module = Module::with('mcqs.answers')->findOrFail($id);
         $userAnswers = $request->input('answers', []);
         $total = $module->mcqs->count();
@@ -288,7 +288,7 @@ class CourseController extends Controller
         foreach ($module->mcqs as $question) {
             $selectedIndex = $userAnswers[$question->moduleQs_ID] ?? null;
             if ($selectedIndex !== null) {
-                // get all answers for this question as a simple list (0, 1, 2, 3)
+                //get all answers for this question as a simple list
                 $answersList = $question->answers->values(); 
                 //check if the user's selected index exists in our list
                 if (isset($answersList[$selectedIndex])) {
@@ -300,18 +300,29 @@ class CourseController extends Controller
             }
         }
         $percentage = $total > 0 ? ($score / $total) * 100 : 0;
+        //initialize attempts variable
+        $attempts = 1; 
         //database updates
         if (Auth::check()) {
             try {
+                //get existing record to handle attempt incrementing properly
                 $existing = DB::table('assessment_results')
                     ->where('userID', Auth::id())
                     ->where('moduleID', $module->moduleID)
                     ->where('type', 'mcq')
                     ->first();
-                $attempts = $existing ? $existing->attempts + 1 : 1;
+
+                if ($existing) {
+                    $attempts = $existing->attempts + 1;
+                }
+                //logic check: only save if they haven't exceeded attempts 
                 if ($attempts <= 3) {
                     DB::table('assessment_results')->updateOrInsert(
-                        ['userID' => Auth::id(), 'moduleID' => $module->moduleID, 'type' => 'mcq'],
+                        [
+                            'userID' => Auth::id(), 
+                            'moduleID' => $module->moduleID, 
+                            'type' => 'mcq'
+                        ],
                         [
                             'courseID' => $module->courseID,
                             'score' => $percentage,
@@ -325,9 +336,11 @@ class CourseController extends Controller
                     if (method_exists($this, 'updateProgress')) {
                         $this->updateProgress($module->courseID, 'MCQ' . $module->moduleID, $percentage);
                     }
+                } else {
+                    //if over the limit, we still show the last recorded attempts
+                    $attempts = $existing->attempts;
                 }
             } catch (\Exception $e) {
-                // 
                 logger("MCQ Submit Error: " . $e->getMessage());
             }
         }
@@ -335,7 +348,7 @@ class CourseController extends Controller
             'score' => $score,
             'total' => $total,
             'last_submitted_answers' => $userAnswers,
-            'attempts' => $attempts ?? 1
+            'attempts' => $attempts //passes the updated number to the review page
         ]);
     }
 

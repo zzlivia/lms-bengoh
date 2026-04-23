@@ -431,10 +431,8 @@
                             <td>{{ $mcq->question }}</td>
                             <td><span class="badge bg-success">Available</span></td>
                             <td>
-                                <a href="{{ route('admin.mcq.preview', $mcq->group_id ?? 0) }}" 
-                                class="btn btn-secondary btn-sm">Preview</a>
-                                <a href="{{ route('admin.mcq.edit', $mcq->group_id ?? 0) }}" 
-                                class="btn btn-warning btn-sm">Edit</a>
+                                <a href="{{ route('admin.mcq.preview', $mcq->group_id) }}" class="btn btn-secondary">Preview</a>
+                                <a href="{{ route('admin.mcq.edit', $mcq->group_id) }}" class="btn btn-warning">Edit</a>
                             </td>
                         </tr>
                         @endforeach

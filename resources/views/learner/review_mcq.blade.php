@@ -8,22 +8,26 @@
             {{-- main content --}}
             <div class="col-md-9 px-md-4">
                 <h4 class="mb-4">{{ __('messages.courses.review_answers') }}</h4>
-                {{-- display score --}}
-                @if(session()->has('score'))
-                    <div class="alert alert-info shadow-sm d-flex justify-content-between align-items-center">
-                        <div>
-                            <h5 class="mb-0">
-                                <i class="bi bi-trophy-fill text-warning me-2"></i>
-                                {{ __('messages.courses.score_label') }}: 
-                                <strong>{{ session('score') }} / {{ session('total') }}</strong>
-                            </h5>
-                            <small>{{ __('messages.courses.attempt_label') }}: {{ session('attempts') }}</small>
-                        </div>
+
+                {{-- Display Score and Marks --}}
+                @if(session('score') !== null)
+                    <div class="alert alert-success shadow-sm">
+                        <h5>Result: {{ session('score') }} / {{ session('total') }} Marks</h5>
+                        <p class="mb-0">Percentage: {{ (session('score') / session('total')) * 100 }}% | Attempt: {{ session('attempts') }}/3</p>
                     </div>
                 @endif
+
+                {{-- Red Error Alert if they tried to submit a 4th time --}}
+                @if(session('error'))
+                    <div class="alert alert-danger">
+                        {{ session('error') }}
+                    </div>
+                @endif
+
                 @foreach($module->mcqs as $index => $question)
                     <div class="card p-3 mb-3 shadow-sm">
                         <strong>{{ $index+1 }}. {{ $question->getTranslation('question') }}</strong>
+                        
                         @php
                             $options = [
                                 0 => $question->getTranslation('answer1'),
@@ -31,36 +35,34 @@
                                 2 => $question->getTranslation('answer3'),
                                 3 => $question->getTranslation('answer4'),
                             ];
-                            $correct = $question->correct_answer;
-                            $labels = [1 => 'A', 2 => 'B', 3 => 'C', 4 => 'D'];
+                            // Get the user's specific choice from the session
+                            $userSelection = session('last_submitted_answers')[$question->moduleQs_ID] ?? null;
+                            $correctIndex = (int)$question->correct_answer - 1;
                         @endphp
 
                         @foreach($options as $key => $option)
                             @if($option)
                                 @php
-                                    $userSelection = isset($selectedAnswers[$question->moduleQs_ID]) ? (int)$selectedAnswers[$question->moduleQs_ID] : null;
-                                    $correctIndex = (int)$question->correct_answer - 1; 
-                                    
                                     $isCorrect = ($key === $correctIndex);
-                                    $isUserWrong = ($key === $userSelection && $key !== $correctIndex);
+                                    $isSelected = ($userSelection !== null && (int)$userSelection === $key);
                                 @endphp
 
-                                <div class="mt-2" style="color: {{ $isCorrect ? 'green' : ($isUserWrong ? 'red' : 'black') }}">
-                                    <strong>{{ $labels[$key + 1] }}.</strong> {{ $option }}
+                                <div class="mt-2 p-2 rounded" style="background-color: {{ $isCorrect ? '#d4edda' : ($isSelected ? '#f8d7da' : 'transparent') }}">
+                                    <strong>{{ chr(65 + $key) }}.</strong> {{ $option }}
                                     
                                     @if($isCorrect)
-                                        <i class="bi bi-check-circle-fill text-success"></i>
+                                        <i class="bi bi-check-circle-fill text-success"></i> (Correct Answer)
                                     @endif
 
-                                    @if($isUserWrong)
-                                        <i class="bi bi-x-circle-fill text-danger"></i>
-                                        <small class="text-danger">({{ __('messages.courses.your_answer') }})</small>
+                                    @if($isSelected && !$isCorrect)
+                                        <i class="bi bi-x-circle-fill text-danger"></i> (Your Choice)
                                     @endif
                                 </div>
                             @endif
                         @endforeach
                     </div>
                 @endforeach
+            </div>
                 {{--buttons after loop--}}
                 <div class="mt-4 d-flex gap-3">
                     <a href="{{ route('mcq.module', $module->moduleID) }}" class="btn btn-secondary px-4">

@@ -57,10 +57,13 @@ class ModuleController extends Controller
         return view('admin.editModule', compact('module','courses')); //send to edit page
     }
 
-    public function deleteModule($id) //delete module
+    public function deleteModule($id) 
     {
-        Module::where('moduleID', $id)->delete(); //delete module by its ID
-        return redirect()->back()->with('success','Module deleted successfully'); //return back to previous page
+        //delete the links in the enrolment table first
+        \DB::table('enrolmentcoursemodules')->where('moduleID', $id)->delete();
+        //delete the module
+        Module::where('moduleID', $id)->delete();
+        return redirect()->back()->with('success', 'Module and related enrollments deleted successfully');
     }
 
     // store main lecture information

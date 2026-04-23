@@ -201,7 +201,8 @@ class AdminController extends Controller
             // 3. Save that relative path to the database
             $course->courseImg = $path;
         }
-
+        $course->save();
+        
         return redirect()->route('admin.course.module')->with('success', 'Course added successfully!');
     }
 

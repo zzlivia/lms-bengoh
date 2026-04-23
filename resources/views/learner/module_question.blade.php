@@ -115,9 +115,17 @@
                             },
                             willClose: () => { clearInterval(timerInterval); }
                         }).then((result) => {
-                            if (result.isConfirmed) { window.location.href = feedbackUrl; } 
-                            else if (result.dismiss === Swal.DismissReason.cancel) { window.location.href = reviewUrl; } 
-                            else { window.location.href = assessmentUrl; }
+                            if (result.isConfirmed) { 
+                                //redirect to Feedback
+                                window.location.href = "{{ route('course.feedback', ['id' => $module->courseID]) }}"; 
+                            } 
+                            else if (result.dismiss === Swal.DismissReason.cancel) { 
+                                //redirect to Review
+                                window.location.href = "{{ route('module.review', ['id' => $module->moduleID]) }}"; 
+                            } 
+                            else { 
+                                window.location.href = "{{ route('course.assessment', ['id' => $module->courseID]) }}"; 
+                            }
                         });
                     });
                     </script>
@@ -146,8 +154,11 @@
                         html: "{{ __('messages.courses.skipped_msg', ['count' => '${unanswered}']) }}".replace('${unanswered}', unanswered),
                         icon: 'warning',
                         showCancelButton: true,
-                        confirmButtonText: "{{ __('messages.courses.yes_continue') }}",
-                        cancelButtonText: "{{ __('messages.courses.go_back') }}"
+                        customClass: {
+                        confirmButton: 'btn btn-primary btn-lg mx-2', 
+                        cancelButton: 'btn btn-secondary btn-lg mx-2'
+                        },
+                    buttonsStyling: false, 
                     }).then((result) => {
                         if (result.isConfirmed) {
                             allowSubmit = true;

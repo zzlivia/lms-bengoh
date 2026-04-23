@@ -280,6 +280,7 @@ class CourseController extends Controller
     //display questions
     public function submitMCQS(Request $request, $id) 
     {
+        dd($request->all());
         $module = Module::with('mcqs.answers')->findOrFail($id);
         $userAnswers = $request->input('answers', []);
         $total = $module->mcqs->count();

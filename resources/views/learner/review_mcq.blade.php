@@ -67,13 +67,11 @@
                     </div>
                 @endforeach
                 {{--buttons after loop--}}
-                <div class="mt-4 d-flex gap-2">
-                    {{-- back to mcq --}}
-                    <a href="{{ route('mcq.module', $module->moduleID) }}" class="btn btn-secondary">
+                <div class="mt-4 d-flex gap-3">
+                    <a href="{{ route('mcq.module', $module->moduleID) }}" class="btn btn-secondary px-4">
                         {{ __('messages.courses.back_to_mcq') }}
                     </a>
-                    {{-- proceed to feedback --}}
-                    <a href="{{ route('course.feedback', ['id' => $module->courseID]) }}" class="btn btn-primary">
+                    <a href="{{ route('course.feedback', ['id' => $module->courseID]) }}" class="btn btn-primary px-4">
                         {{ __('messages.courses.proceed_to_feedback') }}
                     </a>
                 </div>

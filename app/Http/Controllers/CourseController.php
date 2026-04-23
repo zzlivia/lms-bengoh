@@ -295,74 +295,52 @@ class CourseController extends Controller
     //display questions
     public function submitMCQS(Request $request, $id) 
     {
-    $module = Module::with('mcqs')->findOrFail($id);
+        $module = Module::findOrFail($id);
         $userAnswers = $request->input('answers', []);
         $total = $module->mcqs->count();
         $score = 0;
 
+        //check attempts first
+        $existing = DB::table('assessment_results')
+            ->where('userID', Auth::id())
+            ->where('moduleID', $id)
+            ->first();
+
+        $attempts = $existing ? $existing->attempts + 1 : 1;
+
+        if ($attempts > 3) {
+            return redirect()->route('module.review', $id)
+                ->with('error', 'Maximum attempts reached. You cannot submit again.');
+        }
+
+        //scoring logic
         foreach ($module->mcqs as $question) {
-            // The radio button value from Blade is 0, 1, 2, or 3
             $selectedIndex = $userAnswers[$question->moduleQs_ID] ?? null;
-
-            if ($selectedIndex !== null) {
-                // Convert 0-based index from form to 1-based index for DB
-                // (e.g., User selects 0, DB says 1 is correct -> Match!)
-                if ((int)$selectedIndex + 1 === (int)$question->correct_answer) {
-                    $score++;
-                }
+            // Compare 0-based index from form to 1-based index from DB
+            if ($selectedIndex !== null && ((int)$selectedIndex + 1 === (int)$question->correct_answer)) {
+                $score++;
             }
         }
 
-        $percentage = $total > 0 ? ($score / $total) * 100 : 0;
-        //initialize attempts variable
-        $attempts = 1; 
-        //database updates
-        if (Auth::check()) {
-            try {
-                //get existing record to handle attempt incrementing properly
-                $existing = DB::table('assessment_results')
-                    ->where('userID', Auth::id())
-                    ->where('moduleID', $module->moduleID)
-                    ->where('type', 'mcq')
-                    ->first();
+        $percentage = ($total > 0) ? ($score / $total) * 100 : 0;
+        DB::table('assessment_results')->updateOrInsert(
+            ['userID' => Auth::id(), 'moduleID' => $id, 'type' => 'mcq'],
+            [
+                'courseID' => $module->courseID,
+                'score' => $percentage,
+                'status' => $percentage >= 80 ? 'pass' : 'fail',
+                'attempts' => $attempts,
+                'updated_at' => now()
+            ]
+        );
 
-                if ($existing) {
-                    $attempts = $existing->attempts + 1;
-                }
-                //logic check: only save if they haven't exceeded attempts 
-                if ($attempts <= 3) {
-                    DB::table('assessment_results')->updateOrInsert(
-                        [
-                            'userID' => Auth::id(), 
-                            'moduleID' => $module->moduleID, 
-                            'type' => 'mcq'
-                        ],
-                        [
-                            'courseID' => $module->courseID,
-                            'score' => $percentage,
-                            'status' => $percentage >= 80 ? 'pass' : 'fail',
-                            'attempts' => $attempts,
-                            'updated_at' => now(),
-                            'created_at' => $existing ? $existing->created_at : now(),
-                        ]
-                    );
-                    //ensure updateProgress exists and works
-                    if (method_exists($this, 'updateProgress')) {
-                        $this->updateProgress($module->courseID, 'MCQ' . $module->moduleID, $percentage);
-                    }
-                } else {
-                    //if over the limit, we still show the last recorded attempts
-                    $attempts = $existing->attempts;
-                }
-            } catch (\Exception $e) {
-                logger("MCQ Submit Error: " . $e->getMessage());
-            }
-        }
-        return redirect()->route('module.review', $module->moduleID)->with([
+        //redirect with the data needed for the review
+        return redirect()->route('module.review', $id)->with([
+            'success' => 'Assessment submitted!',
             'score' => $score,
             'total' => $total,
-            'last_submitted_answers' => $userAnswers,
-            'attempts' => $attempts //passes the updated number to the review page
+            'attempts' => $attempts,
+            'last_submitted_answers' => $userAnswers
         ]);
     }
 

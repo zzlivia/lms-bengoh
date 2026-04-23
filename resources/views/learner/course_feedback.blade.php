@@ -17,7 +17,15 @@
                 <h5 class="fw-semibold">{{ __('messages.courses.feedback.title') }}</h5>
                 <p class="text-muted small">{{ __('messages.courses.feedback.subtitle') }}</p>
             </div>
-
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
             <form action="{{ route('course.feedback.submit', $course->courseID) }}" method="POST">
                 @csrf
                 <div class="card shadow-sm border-0 p-4">
@@ -66,7 +74,7 @@
                     <div class="mb-4">
                         <label class="form-label fw-semibold">2. {{ __('messages.courses.feedback.q2_importance') }}</label>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="understanding" value="Yes">
+                            <input class="form-check-input" type="radio" name="understanding" value="Yes" required>
                             <label class="form-check-label">{{ __('messages.courses.feedback.yes') }}</label>
                         </div>
 

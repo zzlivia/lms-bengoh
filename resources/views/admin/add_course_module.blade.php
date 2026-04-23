@@ -87,6 +87,16 @@
         <div class="tab-content">
             <!-- course form -->
             <div class="tab-pane fade show active" id="course-form">
+                @if ($errors->any())
+                    <div style="background: #fee2e2; color: #991b1b; padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #f87171;">
+                        <strong>Whoops! Something went wrong:</strong>
+                        <ul style="margin-top: 10px;">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
                 <form method="POST" action="{{ route('admin.course.store') }}" enctype="multipart/form-data">
                     @csrf
                     <div class="row">

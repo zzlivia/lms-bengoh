@@ -31,6 +31,12 @@ Route::get('/link-storage', function () {
     return 'Storage link has been hard-reset and recreated!';
 });
 
+Route::get('/fix-permissions', function () {
+    // This gives the web server permission to read the storage folder
+    exec('chmod -R 755 storage/app/public');
+    return 'Permissions updated to 755!';
+});
+
 Route::get('/run-migrate', function () {
     Artisan::call('migrate', ['--force' => true]);
     return 'Migrations executed!';

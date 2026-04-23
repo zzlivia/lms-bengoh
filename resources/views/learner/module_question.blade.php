@@ -156,7 +156,7 @@
                             input.name = "force_submit";
                             input.value = "1";
                             form.appendChild(input);
-                            form.requestSubmit(); // submit again WITHOUT triggering popup
+                            form.submit();
                         }
                     });
                 }

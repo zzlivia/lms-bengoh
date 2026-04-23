@@ -2,13 +2,10 @@
 
 .course-banner-img {
     width: 100%;
-    /* Set a fixed height that looks good on desktop */
-    height: 400px; 
-    /* This is the magic line: it crops the image instead of stretching it */
-    object-fit: cover; 
-    /* This ensures the hiker (on the right) stays in view */
-    object-position: center; 
-    display: block;
+    height: 400px; /* Set a consistent height for desktop */
+    object-fit: cover; /* This stops the stretching! */
+    object-position: center; /* Keeps the important stuff in the middle */
+    border-radius: 8px; /* Optional: keeps your rounded corners looking sharp */
 }
 
 .module-card {

@@ -19,9 +19,6 @@
                             </h5>
                             <small>{{ __('messages.courses.attempt_label') }}: {{ session('attempts') }}</small>
                         </div>
-                        <span class="badge {{ session('score') == session('total') ? 'bg-success' : 'bg-primary' }} p-2">
-                            {{ session('score') == session('total') ? 'Perfect!' : 'Keep Learning' }}
-                        </span>
                     </div>
                 @endif
                 @foreach($module->mcqs as $index => $question)
@@ -29,10 +26,10 @@
                         <strong>{{ $index+1 }}. {{ $question->getTranslation('question') }}</strong>
                         @php
                             $options = [
-                                1 => $question->getTranslation('answer1'),
-                                2 => $question->getTranslation('answer2'),
-                                3 => $question->getTranslation('answer3'),
-                                4 => $question->getTranslation('answer4'),
+                                0 => $question->getTranslation('answer1'),
+                                1 => $question->getTranslation('answer2'),
+                                2 => $question->getTranslation('answer3'),
+                                3 => $question->getTranslation('answer4'),
                             ];
                             $correct = $question->correct_answer;
                             $labels = [1 => 'A', 2 => 'B', 3 => 'C', 4 => 'D'];
@@ -41,23 +38,15 @@
                         @foreach($options as $key => $option)
                             @if($option)
                                 @php
-                                    // Check if this specific option ($key) was the one the user clicked
                                     $userSelection = $selectedAnswers[$question->moduleQs_ID] ?? null;
-                                    
-                                    // Note: If your Blade loop starts at 1, but radio values were 0-3, 
-                                    // adjust $key accordingly. In your module_question, value was $key (0-3).
-                                    // In review_mcq, your $options array starts at 1. 
-                                    // So we check: $key - 1 == $userSelection
+                                    $correctIndex = $question->correct_answer - 1; 
                                 @endphp
-
-                                <div class="mt-2" style="color: {{ ($key == $correct) ? 'green' : (($key - 1 == $userSelection) ? 'red' : 'black') }}">
-                                    <strong>{{ $labels[$key] }}.</strong> {{ $option }}
-                                    
-                                    @if($key == $correct)
+                                <div class="mt-2" style="color: {{ ($key == $correctIndex) ? 'green' : (($key == $userSelection) ? 'red' : 'black') }}">
+                                    <strong>{{ $labels[$key + 1] }}.</strong> {{ $option }}
+                                    @if($key == $correctIndex)
                                         <i class="bi bi-check-circle-fill text-success"></i>
                                     @endif
-
-                                    @if($key - 1 == $userSelection && $key != $correct)
+                                    @if($key == $userSelection && $key != $correctIndex)
                                         <i class="bi bi-x-circle-fill text-danger"></i>
                                         <small class="text-danger">({{ __('messages.courses.your_answer') }})</small>
                                     @endif

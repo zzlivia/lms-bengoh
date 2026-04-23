@@ -62,7 +62,6 @@
                                             name="answers[{{ $question->moduleQs_ID }}]"
                                             value="{{ $key }}"
                                             {{ old('answers.' . $question->moduleQs_ID) == (string)$key ? 'checked' : '' }}>
-                                            {{ old('answers.' . $question->moduleQs_ID) == $key ? 'checked' : '' }}>
                                         <label class="form-check-label">
                                             {{ $answer }}
                                         </label>
@@ -175,8 +174,9 @@
         });
     </script>
 
+{{--
     <script>
-        //save answer function where it checks if the question was already answered and updates it
+        save answer function where it checks if the question was already answered and updates it
         function saveAnswer(moduleId, questionId, selectedOption) {
             // get existing data or an empty object
             let allAttempts = JSON.parse(localStorage.getItem("mcq_attempts")) || {};
@@ -207,11 +207,5 @@
                 if (input) input.checked = true;
             });
         }
-    </script>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            loadSavedAnswers({{ $module->moduleID }});
-        });
-    </script>
+    </script>--}}
 @endsection

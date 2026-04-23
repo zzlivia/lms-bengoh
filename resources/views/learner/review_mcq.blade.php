@@ -41,17 +41,26 @@
                         @foreach($options as $key => $option)
                             @if($option)
                                 @php
-                                    $labels = [1 => 'A', 2 => 'B', 3 => 'C', 4 => 'D'];
+                                    // Check if this specific option ($key) was the one the user clicked
+                                    $userSelection = $selectedAnswers[$question->moduleQs_ID] ?? null;
+                                    
+                                    // Note: If your Blade loop starts at 1, but radio values were 0-3, 
+                                    // adjust $key accordingly. In your module_question, value was $key (0-3).
+                                    // In review_mcq, your $options array starts at 1. 
+                                    // So we check: $key - 1 == $userSelection
                                 @endphp
 
-                                <div class="mt-2">
-                                    <span style="color: {{ $key == $correct ? 'green' : 'black' }}">
-                                        <strong>{{ $labels[$key] }}.</strong> {{ $option }}
-                                        @if($key == $correct)
-                                            <i class="bi bi-check-circle-fill text-success"></i>
-                                            <small class="text-success fw-bold">({{ __('messages.courses.correct_answer') }})</small>
-                                        @endif
-                                    </span>
+                                <div class="mt-2" style="color: {{ ($key == $correct) ? 'green' : (($key - 1 == $userSelection) ? 'red' : 'black') }}">
+                                    <strong>{{ $labels[$key] }}.</strong> {{ $option }}
+                                    
+                                    @if($key == $correct)
+                                        <i class="bi bi-check-circle-fill text-success"></i>
+                                    @endif
+
+                                    @if($key - 1 == $userSelection && $key != $correct)
+                                        <i class="bi bi-x-circle-fill text-danger"></i>
+                                        <small class="text-danger">({{ __('messages.courses.your_answer') }})</small>
+                                    @endif
                                 </div>
                             @endif
                         @endforeach

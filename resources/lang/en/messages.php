@@ -359,6 +359,7 @@ return [
         'skipped_msg'          => 'You skipped <b>:count</b> questions.<br>Do you want to continue?',
         'yes_continue'         => 'Yes, continue',
         'go_back'              => 'Go back',
+        'your_answer'          => 'Your Answer',
 
         // Leaderboard
         'leaderboard_subtitle' => 'Current Bengoh Academy Top Students',

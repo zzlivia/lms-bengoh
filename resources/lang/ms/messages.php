@@ -359,6 +359,7 @@ return [
         'skipped_msg'          => 'Anda melangkau <b>:count</b> soalan.<br>Adakah anda mahu teruskan?',
         'yes_continue'         => 'Ya, teruskan',
         'go_back'              => 'Kembali',
+        'your_answer'          => 'Jawapan Anda',
 
         // Leaderboard
         'leaderboard_subtitle' => 'Pelajar Terbaik Bengoh Academy Masa Kini',

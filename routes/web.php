@@ -23,9 +23,8 @@ Route::get('/link-storage', function () {
 });
 
 Route::get('/run-migrate', function () {
-    // This forces the database to drop all tables and start over
-    \Illuminate\Support\Facades\Artisan::call('migrate:fresh', ['--force' => true]);
-    return 'Database refreshed! The "ion" typo should be gone now.';
+    Artisan::call('migrate', ['--force' => true]);
+    return 'Migrations executed!';
 });
 
 Route::get('/test-auth', function () {

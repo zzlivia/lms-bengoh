@@ -10,11 +10,23 @@
 .module-card {
     transition: all 0.3s ease;
     border-left: 4px solid #0d6efd !important;
+    min-height: 250px; /* Ensures a baseline uniformity */
+    display: flex;
+    flex-direction: column;
 }
 
 .module-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+}
+
+.module-card .card-body {
+    display: flex;
+    flex-direction: column;
+}
+
+.module-card .list-group {
+    flex-grow: 1; /* push the content to fill the space */
 }
 
 .list-group-item {

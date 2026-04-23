@@ -15,8 +15,8 @@
     @endif
     <div class="container mt-4">
         <div class="text-center mb-4">
-            {{-- path to point to public/courses/ --}}
-            <img src="{{ asset('storage/' . $course->courseImg) }}" alt="{{ $course->getTranslation('courseName') }}" class="course-banner-img img-fluid rounded shadow-sm"> 
+            {{-- check through config/filesystems.php, r2 --}}
+             <img src="{{ Storage::disk('r2')->url($course->courseImg) }}" alt="{{ $course->getTranslation('courseName') }}" class="course-banner-img img-fluid rounded shadow-sm"> 
         </div>
 
         <div class="row mb-4 align-items-end">

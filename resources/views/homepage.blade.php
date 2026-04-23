@@ -39,10 +39,9 @@
     {{-- featured courses --}}
     <div class="row">
         @forelse(\App\Models\Course::where('isAvailable', 1)->take(4)->get() as $course)
-
             <div class="col-md-3 mb-3">
                 <div class="course-card">
-                    <img src="{{ asset('storage/' . $course->courseImg) }}" alt="{{ $course->courseName }}">
+                   <img src="{{ Storage::disk('r2')->url($course->courseImg) }}" alt="{{ $course->courseName }}" class="img-fluid">
                     <h6 class="mt-2 fw-bold">{{ $course->getTranslation('courseName') }}</h6>
                 </div>
             </div>

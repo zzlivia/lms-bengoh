@@ -96,8 +96,8 @@
                     <div class="course-row shadow-sm mb-4">
                         <div class="row align-items-center">
                             <div class="col-md-4">
-                                {{-- path to point to public/courses/ --}}
-                                <img src="{{ asset('storage/' . $course->courseImg) }}" alt="{{ $course->getTranslation('courseName') }}" class="img-fluid rounded">
+                                {{-- check through config/filesystems.php, r2 --}}
+                                <img src="{{ Storage::disk('r2')->url($course->courseImg) }}" alt="{{ $course->getTranslation('courseName') }}" class="img-fluid rounded">
                             </div>
                             <div class="col-md-8 position-relative">  
                                 {{-- audio icon --}}

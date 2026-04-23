@@ -61,7 +61,7 @@
                                         <input class="form-check-input" type="radio"
                                             name="answers[{{ $question->moduleQs_ID }}]"
                                             value="{{ $key }}"
-                                            onchange="saveAnswer({{ $module->moduleID }}, {{ $question->moduleQs_ID }}, {{ $key }})"
+                                            {{ old('answers.' . $question->moduleQs_ID) == (string)$key ? 'checked' : '' }}>
                                             {{ old('answers.' . $question->moduleQs_ID) == $key ? 'checked' : '' }}>
                                         <label class="form-check-label">
                                             {{ $answer }}

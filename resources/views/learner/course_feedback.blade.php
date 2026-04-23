@@ -6,12 +6,10 @@
 @endsection
 
 @section('content')
-
 <div class="container-fluid">
     <div class="row">
-        <!-- sidebar -->
         @include('partials.course-sidebar', ['course' => $course])
-       <!-- main content -->
+
         <div class="col-md-9">
             <div class="text-center mb-4">
                 <h5 class="fw-semibold">{{ __('messages.courses.feedback.title') }}</h5>
@@ -19,13 +17,14 @@
             </div>
             @if ($errors->any())
                 <div class="alert alert-danger">
-                    <ul>
+                    <ul class="mb-0">
                         @foreach ($errors->all() as $error)
                             <li>{{ $error }}</li>
                         @endforeach
                     </ul>
                 </div>
             @endif
+
             <form action="{{ route('course.feedback.submit', $course->courseID) }}" method="POST">
                 @csrf
                 <div class="card shadow-sm border-0 p-4">
@@ -41,28 +40,24 @@
                     <div class="mb-4">
                         <label class="form-label fw-semibold">1. {{ __('messages.courses.feedback.q1_clarity') }}</label>
                         <div class="clarity-rating">
-                            <!-- Poor -->
                             <input type="radio" name="clarity" id="clarity1" value="Poor" required>
                             <label for="clarity1" class="poor">
                                 <div class="stars"><i class="fas fa-star"></i></div>
                                 <span>{{ __('messages.courses.feedback.poor') }}</span>
                             </label>
 
-                            <!-- Average -->
                             <input type="radio" name="clarity" id="clarity2" value="Average">
                             <label for="clarity2" class="average">
                                 <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
                                 <span>{{ __('messages.courses.feedback.average') }}</span>
                             </label>
 
-                            <!-- Good -->
                             <input type="radio" name="clarity" id="clarity3" value="Good">
                             <label for="clarity3" class="good">
                                 <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
                                 <span>{{ __('messages.courses.feedback.good') }}</span>
                             </label>
 
-                            <!-- Excellent -->
                             <input type="radio" name="clarity" id="clarity4" value="Excellent">
                             <label for="clarity4" class="excellent">
                                 <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
@@ -70,34 +65,31 @@
                             </label>
                         </div>
                     </div>
-                    {{-- second question --}}
                     <div class="mb-4">
                         <label class="form-label fw-semibold">2. {{ __('messages.courses.feedback.q2_importance') }}</label>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="understanding" value="Yes" required>
-                            <label class="form-check-label">{{ __('messages.courses.feedback.yes') }}</label>
+                            <input class="form-check-input" type="radio" name="understanding" id="und1" value="Yes" required>
+                            <label class="form-check-label" for="und1">{{ __('messages.courses.feedback.yes') }}</label>
                         </div>
-
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="understanding" value="Somewhat">
-                            <label class="form-check-label">{{ __('messages.courses.feedback.somewhat') }}</label>
+                            <input class="form-check-input" type="radio" name="understanding" id="und2" value="Somewhat">
+                            <label class="form-check-label" for="und2">{{ __('messages.courses.feedback.somewhat') }}</label>
                         </div>
-
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="understanding" value="Not really">
-                            <label class="form-check-label">{{ __('messages.courses.feedback.not_really') }}</label>
+                            <input class="form-check-input" type="radio" name="understanding" id="und3" value="Not really">
+                            <label class="form-check-label" for="und3">{{ __('messages.courses.feedback.not_really') }}</label>
                         </div>
                     </div>
-
                     <div class="mb-4">
                         <label class="form-label fw-semibold">3. {{ __('messages.courses.feedback.q3_module') }}</label>
                         <select name="favorite_module" class="form-select">
                             <option value="">{{ __('messages.courses.feedback.select_module') }}</option>
                             @foreach($course->modules as $module)
-                                <option value="{{ $module->moduleID }}">{{ __('messages.courses.feedback.module') }} {{ $loop->iteration }} - {{ $module->getTranslation('moduleName') }}</option>
+                                <option value="{{ $module->moduleID }}">Module {{ $loop->iteration }} - {{ $module->moduleName }}</option>
                             @endforeach
                         </select>
                     </div>
+
                     <div class="mb-4">
                         <label class="form-label fw-semibold">4. {{ __('messages.courses.feedback.q4_enjoy') }}</label>
                         <textarea name="enjoyed" class="form-control" rows="3"></textarea>
@@ -108,6 +100,7 @@
                         <textarea name="suggestions" class="form-control" rows="3"></textarea>
                     </div>
                 </div>
+
                 <div class="text-end mt-4">
                     <button type="submit" class="btn btn-success px-4">{{ __('messages.courses.feedback.feedback_submit') }}</button>
                 </div>
@@ -115,5 +108,4 @@
         </div>
     </div>
 </div>
-
 @endsection

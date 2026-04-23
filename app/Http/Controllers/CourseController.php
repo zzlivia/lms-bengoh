@@ -270,9 +270,24 @@ class CourseController extends Controller
 
     public function showMCQS($id)
     {
-        // We load the module and its associated MCQs
         $module = Module::with('mcqs.answers')->findOrFail($id);
         $course = $module->course;
+        $userID = auth()->id();
+
+        //check if user already reached 3 attempts
+        $assessment = DB::table('assessment_results')
+            ->where('userID', $userID)
+            ->where('moduleID', $id)
+            ->where('type', 'mcq')
+            ->first();
+
+        if ($assessment && $assessment->attempts >= 3) {
+            return redirect()->route('module.review', $id)
+                ->with('error', 'You have reached the maximum of 3 attempts for this module.');
+        }
+
+        //clear previous session answers so the form is "Empty"
+        session()->forget('last_submitted_answers');
 
         return view('learner.module_question', compact('module', 'course'));
     }

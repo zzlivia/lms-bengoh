@@ -55,7 +55,7 @@
             
             @if($course->courseImg)
                 <div class="mt-2">
-                    <img src="{{ asset($course->courseImg) }}" width="120">
+                    <img src="{{ asset('storage/' . $course->courseImg) }}" width="120">
                 </div>
             @endif
         </div>

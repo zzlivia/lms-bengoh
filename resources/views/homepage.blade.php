@@ -42,7 +42,7 @@
 
             <div class="col-md-3 mb-3">
                 <div class="course-card">
-                    <img src="{{ asset($course->courseImg) }}" alt="{{ $course->courseName }}">
+                    <img src="{{ asset('storage/' . $course->courseImg) }}" alt="{{ $course->courseName }}">
                     <h6 class="mt-2 fw-bold">{{ $course->getTranslation('courseName') }}</h6>
                 </div>
             </div>

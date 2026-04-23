@@ -185,8 +185,6 @@ Route::get('/module/{id}', [ModuleController::class, 'viewModule'])->name('modul
 Route::get('/module/{id}/quiz', [CourseController::class, 'showQuiz'])->name('module.quiz');
 
 Route::post('/admin/module/toggle/{id}', [CourseAssAdminController::class, 'toggleModule'])->name('admin.module.toggle');
-
-//Route::get('/module/{id}/questions', [CourseController::class, 'showModuleQuestions'])->name('module.questions');
     
 Route::post('/module/{id}/questions', [CourseController::class, 'submitModuleQuestions'])->name('module.questions.submit');
 

@@ -280,7 +280,7 @@ class CourseController extends Controller
     //display questions
     public function submitMCQS(Request $request, $id) 
     {
-        dd($request->all());
+        //load module with mcqsand answers
         $module = Module::with('mcqs.answers')->findOrFail($id);
         $userAnswers = $request->input('answers', []);
         $total = $module->mcqs->count();
@@ -288,45 +288,53 @@ class CourseController extends Controller
         foreach ($module->mcqs as $question) {
             $selectedIndex = $userAnswers[$question->moduleQs_ID] ?? null;
             if ($selectedIndex !== null) {
-                // find which answer key is actually correct in the DB
-                $answersList = [
-                    $question->answer1, 
-                    $question->answer2, 
-                    $question->answer3, 
-                    $question->answer4
-                ];
-                if (($question->correct_answer - 1) == $selectedIndex) {
-                    $score++;
+                // get all answers for this question as a simple list (0, 1, 2, 3)
+                $answersList = $question->answers->values(); 
+                //check if the user's selected index exists in our list
+                if (isset($answersList[$selectedIndex])) {
+                    //check if that specific answer is marked as correct (ansCorrect == 1)
+                    if ($answersList[$selectedIndex]->ansCorrect == 1) {
+                        $score++;
+                    }
                 }
             }
         }
         $percentage = $total > 0 ? ($score / $total) * 100 : 0;
+        //database updates
         if (Auth::check()) {
-            $existing = DB::table('assessment_results')
-                ->where('userID', Auth::id())
-                ->where('moduleID', $module->moduleID)
-                ->where('type', 'mcq')
-                ->first();
-            $attempts = $existing ? $existing->attempts + 1 : 1;
-            if ($attempts > 3) {
-                return redirect()->back()->with('error', 'Maximum attempts reached.');
+            try {
+                $existing = DB::table('assessment_results')
+                    ->where('userID', Auth::id())
+                    ->where('moduleID', $module->moduleID)
+                    ->where('type', 'mcq')
+                    ->first();
+                $attempts = $existing ? $existing->attempts + 1 : 1;
+                if ($attempts <= 3) {
+                    DB::table('assessment_results')->updateOrInsert(
+                        ['userID' => Auth::id(), 'moduleID' => $module->moduleID, 'type' => 'mcq'],
+                        [
+                            'courseID' => $module->courseID,
+                            'score' => $percentage,
+                            'status' => $percentage >= 80 ? 'pass' : 'fail',
+                            'attempts' => $attempts,
+                            'updated_at' => now(),
+                            'created_at' => $existing ? $existing->created_at : now(),
+                        ]
+                    );
+                    //ensure updateProgress exists and works
+                    if (method_exists($this, 'updateProgress')) {
+                        $this->updateProgress($module->courseID, 'MCQ' . $module->moduleID, $percentage);
+                    }
+                }
+            } catch (\Exception $e) {
+                // 
+                logger("MCQ Submit Error: " . $e->getMessage());
             }
-            DB::table('assessment_results')->updateOrInsert(
-                ['userID' => Auth::id(), 'moduleID' => $module->moduleID, 'type' => 'mcq'],
-                [
-                    'courseID' => $module->courseID,
-                    'score' => $percentage,
-                    'status' => $percentage >= 80 ? 'pass' : 'fail',
-                    'attempts' => $attempts,
-                    'updated_at' => now()
-                ]
-            );
-            $this->updateProgress($module->courseID, 'MCQ' . $module->moduleID, $percentage);
         }
         return redirect()->route('module.review', $module->moduleID)->with([
             'score' => $score,
             'total' => $total,
-            'last_submitted_answers' => $userAnswers, // Used for the Red/Green marks
+            'last_submitted_answers' => $userAnswers,
             'attempts' => $attempts ?? 1
         ]);
     }

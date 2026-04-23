@@ -316,9 +316,13 @@ class CourseController extends Controller
         //scoring logic
         foreach ($module->mcqs as $question) {
             $selectedIndex = $userAnswers[$question->moduleQs_ID] ?? null;
-            // Compare 0-based index from form to 1-based index from DB
-            if ($selectedIndex !== null && ((int)$selectedIndex + 1 === (int)$question->correct_answer)) {
-                $score++;
+
+            if ($selectedIndex !== null) {
+                //if User clicks first option (0), and DB says (1) is correct:
+                // (0 + 1) == 1 -> MATCH!
+                if (((int)$selectedIndex + 1) === (int)$question->correct_answer) {
+                    $score++;
+                }
             }
         }
 

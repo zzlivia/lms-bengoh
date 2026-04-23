@@ -8,7 +8,7 @@
             <div class="col-md-9 px-md-4">
                 <h4 class="mb-4">{{ __('messages.courses.review_answers') }}</h4>
 
-                {{-- Display Score from Session or Database --}}
+                {{-- Display Score --}}
                 @if(session('score') !== null)
                     <div class="alert alert-success shadow-sm">
                         <h5>Result: {{ session('score') }} / {{ session('total') }} Marks</h5>
@@ -28,21 +28,16 @@
                                 3 => $question->getTranslation('answer4'),
                             ];
 
+                            // Get user choice and DB answer once per question
                             $userSelection = session('last_submitted_answers')[$question->moduleQs_ID] ?? null;
-                            
-                            //convert DB (1-4) to Index (0-3)
                             $correctIndex = (int)$question->correct_answer - 1; 
-
-                            $isCorrect = ($key === $correctIndex);
-                            $isSelected = ($userSelection !== null && (int)$userSelection === $key);
-
                         @endphp
 
                         @foreach($options as $key => $option)
                             @if($option)
                                 @php
+                                    // NOW we can use $key because we are inside the loop
                                     $isCorrect = ($key === $correctIndex);
-                                    // Robust check for selection
                                     $isSelected = ($userSelection !== null && (string)$userSelection === (string)$key);
                                 @endphp
 
@@ -62,7 +57,6 @@
                     </div>
                 @endforeach
 
-                {{-- Fixed Button Row (Moved outside the loop but inside the col-md-9) --}}
                 <div class="mt-4 d-flex gap-3 mb-5">
                     <a href="{{ route('mcq.module', $module->moduleID) }}" class="btn btn-secondary px-4">
                         <i class="bi bi-arrow-left"></i> {{ __('messages.courses.back_to_mcq') }}
@@ -71,7 +65,7 @@
                         {{ __('messages.courses.proceed_to_feedback') }} <i class="bi bi-arrow-right"></i>
                     </a>
                 </div>
-            </div> {{-- End col-md-9 --}}
-        </div> {{-- End row --}}
-    </div> {{-- End container --}}
+            </div> 
+        </div> 
+    </div>
 @endsection

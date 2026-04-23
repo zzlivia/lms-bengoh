@@ -18,8 +18,17 @@ use App\Models\CommunityStory;
 use Illuminate\Support\Facades\Http;
 
 Route::get('/link-storage', function () {
-    Artisan::call('storage:link');
-    return 'The [public/storage] directory has been linked.';
+    //delete the existing link/folder if it exists
+    $linkPath = public_path('storage');
+    if (is_link($linkPath) || is_dir($linkPath)) {
+        //removes the "shortcut"
+        exec('rm -rf ' . escapeshellarg($linkPath));
+    }
+
+    //create a fresh link to the Volume
+    \Illuminate\Support\Facades\Artisan::call('storage:link');
+    
+    return 'Storage link has been hard-reset and recreated!';
 });
 
 Route::get('/run-migrate', function () {

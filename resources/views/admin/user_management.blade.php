@@ -19,35 +19,32 @@
         </div>
         <div class="col-md-4">
             <div class="card-box text-center">
-                <h6>{{ __('messages.admin.active_users') }}<</h6>
+                {{-- Fixed the typo: removed the trailing '<' --}}
+                <h6>{{ __('messages.admin.active_users') }}</h6>
                 <h2>{{ $activeUsers }}</h2>
                 <small>{{ __('messages.admin.active_week') }}</small>
             </div>
         </div>
     </div>
-    {{-- search, add, remove actions --}}
+
+    {{-- search actions --}}
     <form method="GET" action="{{ route('admin.user.management') }}" 
         class="d-flex justify-content-between align-items-center mb-3">
-        <input type="text" name="search" class="form-control w-50" placeholder="Search User">
+        <input type="text" name="search" class="form-control w-50" placeholder="Search User" value="{{ request('search') }}">
         <div>
-            <form action="{{ route('admin.user.delete', $user->userID) }}" method="POST" 
-                onsubmit="return confirm('Are you sure you want to delete {{ $user->name }}?');">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="btn btn-danger btn-sm">{{ __('messages.admin.delete') }}</button>
-            </form>
+            {{-- This button is just a label now. Real deletion happens in the table below. --}}
+            <button type="button" class="btn btn-outline-danger" disabled>{{ __('messages.admin.remove_user') }}</button>
         </div>
     </form>
 
-    {{-- display list of user --}}
     <div class="card-box">
-        {{-- display alert message --}}
         @if(session('success'))
             <div class="alert alert-success">{{ session('success') }}</div>
         @endif
         @if(session('error'))
             <div class="alert alert-danger">{{ session('error') }}</div>
         @endif
+
         <table id="userTable" class="table">
             <thead>
                 <tr>
@@ -77,7 +74,9 @@
                         </td>
                         <td>{{ $user->completedCourses }}</td>
                         <td>
-                            <form action="{{ route('admin.user.delete', $user->userID) }}" method="POST">
+                            {{-- The $user variable is ONLY available inside this @foreach loop --}}
+                            <form action="{{ route('admin.user.delete', $user->userID) }}" method="POST" 
+                                  onsubmit="return confirm('Are you sure you want to delete this user?');">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger btn-sm">{{ __('messages.admin.delete') }}</button>

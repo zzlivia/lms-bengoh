@@ -28,13 +28,62 @@
     </div>
 
     {{-- search actions --}}
-    <form method="GET" action="{{ route('admin.user.management') }}" 
-        class="d-flex justify-content-between align-items-center mb-3">
-        <input type="text" name="search" class="form-control w-50" placeholder="Search User" value="{{ request('search') }}">
-        <div>
-            {{-- This button is just a label now. Real deletion happens in the table below. --}}
-            <button type="button" class="btn btn-outline-danger" disabled>{{ __('messages.admin.remove_user') }}</button>
+    <form id="bulkDeleteForm" method="POST" action="{{ route('admin.user.bulkDelete') }}" onsubmit="return confirm('Are you sure you want to delete the selected users?');">
+        @csrf
+        @method('DELETE')
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            {{-- search --}}
+            <div class="w-50">
+                <input type="text" id="customSearch" class="form-control" placeholder="Search User...">
+            </div>
+            <div>
+                <button type="submit" class="btn btn-danger">
+                    <i class="bi bi-trash"></i> {{ __('messages.admin.remove_user') }}
+                </button>
+            </div>
         </div>
+        <div class="card-box">
+            <table id="userTable" class="table">
+                <thead>
+                    <tr>
+                        <th><input type="checkbox" id="selectAll"></th> {{-- Select All Checkbox --}}
+                        <th>{{ __('messages.admin_settings.name') }}</th>
+                        <th>{{ __('messages.admin_settings.email') }}</th>
+                        <th>{{ __('messages.admin.engagement') }}</th>
+                        <th>{{ __('messages.admin.rank') }}</th>
+                        <th>{{ __('messages.admin.action') }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($users as $user)
+                    <tr>
+                        <td><input type="checkbox" name="user_ids[]" value="{{ $user->userID }}" class="user-checkbox"></td>
+                        <td>{{ $user->name }}</td>
+                        <td>{{ $user->email }}</td>
+                        <td>{{ $user->engagement }}</td>
+                        <td>
+                            @if($user->completedCourses >= 10) {{ __('messages.admin.expert') }}
+                            @elseif($user->completedCourses >= 5) {{ __('messages.admin.intermediate') }}
+                            @else {{ __('messages.admin.beginner') }}
+                            @endif
+                        </td>
+                        <td>
+                            {{-- individual delete button if you want --}}
+                            <button type="button" class="btn btn-danger btn-sm" onclick="confirmSingleDelete('{{ $user->userID }}')">
+                                {{ __('messages.admin.delete') }}
+                            </button>
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </form>
+
+    {{-- hidden form for individual delete --}}
+    <form id="singleDeleteForm" method="POST" style="display:none;">
+        @csrf
+        @method('DELETE')
     </form>
 
     <div class="card-box">
@@ -74,7 +123,6 @@
                         </td>
                         <td>{{ $user->completedCourses }}</td>
                         <td>
-                            {{-- The $user variable is ONLY available inside this @foreach loop --}}
                             <form action="{{ route('admin.user.delete', $user->userID) }}" method="POST" 
                                   onsubmit="return confirm('Are you sure you want to delete this user?');">
                                 @csrf
@@ -96,4 +144,25 @@
     <div class="text-center mt-5">
         <a href="{{ route('admin.dashboard') }}" class="btn btn-primary">{{ __('messages.nav.home') }}</a>
     </div>
+
+    @push('scripts')
+    <script>
+        //select all
+        document.getElementById('selectAll').onclick = function() {
+            var checkboxes = document.getElementsByClassName('user-checkbox');
+            for (var checkbox of checkboxes) {
+                checkbox.checked = this.checked;
+            }
+        }
+
+        //individual delete
+        function confirmSingleDelete(userId) {
+            if (confirm('Are you sure you want to delete this user?')) {
+                var form = document.getElementById('singleDeleteForm');
+                form.action = '/admin/user/' + userId; // Match your route
+                form.submit();
+            }
+        }
+    </script>
+    @endpush
 @endsection

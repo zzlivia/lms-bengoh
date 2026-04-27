@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('enrolmentcoursemodules', function (Blueprint $table) {
             $table->id('enrollID');
             $table->foreignId('userID')->constrained('users', 'userID');
-            $table->foreignId('courseID')->constrained('course', 'courseID');
+            $table->foreignId('courseID')->constrained('course', 'courseID')->cascadeOnDelete();;
             $table->foreignId('moduleID')->constrained('module', 'moduleID');
             $table->boolean('isCompleted')->default(false);
             $table->boolean('inProgress')->default(true);

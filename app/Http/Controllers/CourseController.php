@@ -367,7 +367,7 @@ class CourseController extends Controller
             //find the first section within the next module
             $firstLecture = Lecture::where('moduleID', $nextModule->moduleID)->first();
             if ($firstLecture) {
-                $nextSectionID = DB::table('sections')
+                $nextSectionID = DB::table('lecture_sections') // Changed from 'sections'
                     ->where('lectID', $firstLecture->lectID)
                     ->orderBy('section_order', 'asc')
                     ->value('sectionID');

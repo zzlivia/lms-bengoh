@@ -142,6 +142,16 @@ class AdminController extends Controller
         return redirect()->back()->with('success', 'User deleted successfully.');
     }
 
+    public function bulkDelete(Request $request)
+    {
+        $ids = $request->input('user_ids');
+        if (!$ids || count($ids) === 0) {
+            return redirect()->back()->with('error', 'Please select at least one user to remove.');
+        }
+        \App\Models\Users::whereIn('userID', $ids)->delete();
+        return redirect()->back()->with('success', 'Selected users have been removed.');
+    }
+
     public function courseModuleManagement()
     {
         $courses = Course::with('modules.lectures.sections')->get();

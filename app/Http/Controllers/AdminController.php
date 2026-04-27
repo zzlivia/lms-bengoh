@@ -229,8 +229,19 @@ class AdminController extends Controller
     public function deleteCourse($id)
     {
         $course = Course::findOrFail($id);
+
+        // delete related records first
+        $course->enrolments()->delete();
+
+        // optionally delete other relations too
+        $course->modules()->delete();
+        $course->feedback()->delete();
+
+        // now delete course
         $course->delete();
-        return redirect()->route('admin.course.module')->with('success','Course deleted successfully');
+
+        return redirect()->route('admin.course.module')
+            ->with('success', 'Course deleted successfully');
     }
 
     private function mockAI($content, $count = 3)

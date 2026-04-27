@@ -254,6 +254,8 @@ Route::post('/admin/logout', [AuthenticationController::class, 'logout'])
 Route::post('/request-reset', [AuthenticationController::class, 'requestReset'])
     ->name('request.reset');
 
+Route::delete('/users/bulk-delete', [AdminController::class, 'bulkDelete'])->name('admin.user.bulkDelete');
+
 /* admin's management*/
 Route::prefix('admin')
     ->middleware('auth:admin')

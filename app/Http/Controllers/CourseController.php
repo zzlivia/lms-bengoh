@@ -137,13 +137,16 @@ class CourseController extends Controller
 
         // collect all sections
         $sections = collect();
-        foreach ($course->modules as $module) {
-            foreach ($module->lectures as $lecture) {
-                foreach ($lecture->sections as $section) {
-                    $sections->push($section);
+            foreach ($course->modules as $module) {
+                foreach ($module->lectures as $lecture) {
+                    foreach ($lecture->sections as $section) {
+                        // INSERT THIS LINE HERE:
+                        $section->moduleID = $module->moduleID; 
+                        
+                        $sections->push($section);
+                    }
                 }
             }
-        }
 
         // sort sections
         $sections = $sections->sortBy('section_order')->values();

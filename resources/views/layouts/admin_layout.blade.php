@@ -61,13 +61,13 @@
             <div class="topbar d-flex align-items-center p-3 px-4">
                 <div class="d-flex align-items-center ms-auto gap-4">
                     <div class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle"
-                        href="#"
-                        role="button"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="false">
-                            {{ __('messages.nav.language') }}
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-translate"></i> {{ __('messages.nav.language') }}
                         </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="{{ url('lang/en') }}">English</a></li>
+                            <li><a class="dropdown-item" href="{{ url('lang/ms') }}">Bahasa Melayu</a></li>
+                        </ul>
                     </div>
                     <div class="d-flex align-items-center">
                         <i class="bi bi-person-circle fs-4 me-2"></i>

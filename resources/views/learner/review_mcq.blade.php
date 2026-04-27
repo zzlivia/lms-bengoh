@@ -61,14 +61,24 @@
                         @endforeach
                     </div>
                 @endforeach
+                {{-- bottom --}}
+                <div class="d-flex justify-content-between mt-4">
+                    {{-- Always allow them to go back to the MCQ if they want to try again (if attempts remain) --}}
+                    <a href="{{ route('mcq.module', $module->moduleID) }}" class="btn btn-outline-secondary">
+                        ← {{ __('messages.courses.back_to_mcq') }}
+                    </a>
 
-                <div class="mt-4 d-flex gap-3 mb-5">
-                    <a href="{{ route('mcq.module', $module->moduleID) }}" class="btn btn-secondary px-4">
-                        <i class="bi bi-arrow-left"></i> {{ __('messages.courses.back_to_mcq') }}
-                    </a>
-                    <a href="{{ route('course.feedback', ['id' => $module->courseID]) }}" class="btn btn-primary px-4">
-                        {{ __('messages.courses.proceed_to_feedback') }} <i class="bi bi-arrow-right"></i>
-                    </a>
+                    @if($nextSectionID)
+                        {{-- 1 if there are more modules to learn --}}
+                        <a href="{{ route('learn', ['id' => $course->courseID, 'sectionId' => $nextSectionID]) }}" class="btn btn-primary">
+                            {{ __('messages.courses.continue_to_next_module') }} →
+                        </a>
+                    @else
+                        {{-- 2 for final module of the course --}}
+                        <a href="{{ route('course.feedback', $course->courseID) }}" class="btn btn-success">
+                            {{ __('messages.courses.proceed_to_feedback') }} →
+                        </a>
+                    @endif
                 </div>
             </div> 
         </div> 

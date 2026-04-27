@@ -389,14 +389,29 @@ class CourseController extends Controller
     public function reviewMCQ($id)
     {
         $module = Module::with('mcqs', 'course')->findOrFail($id);
-        //get answers from session (immediately after submission)
         $selectedAnswers = session('last_submitted_answers');
+        
+        // 1. Find the next module in this course
+        $nextModule = Module::where('courseID', $module->courseID)
+            ->where('moduleID', '>', $id)
+            ->orderBy('moduleID', 'asc')
+            ->first();
 
-        //if session is empty (user clicked 'Back' or refreshed)
+        $nextSectionID = null;
+        if ($nextModule) {
+            // 2. Get the first section of that next module
+            $nextSectionID = DB::table('lecture')
+                ->join('sections', 'lecture.lectID', '=', 'sections.lectID')
+                ->where('lecture.moduleID', $nextModule->moduleID)
+                ->orderBy('sections.section_order', 'asc')
+                ->value('sections.sectionID');
+        }
+
         return view('learner.review_mcq', [
             'module' => $module,
             'course' => $module->course,
-            'selectedAnswers' => $selectedAnswers ?? [] 
+            'selectedAnswers' => $selectedAnswers ?? [],
+            'nextSectionID' => $nextSectionID // Pass this to the view
         ]);
     }
 

@@ -29,15 +29,15 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse($stories as $story)
+                    @foreach($stories as $story)
                         <tr>
                             <td>
                                 @if($story->community_image)
                                     <img src="{{ asset('storage/' . $story->community_image) }}" 
-                                         alt="Story Image" class="rounded" width="50" height="50" style="object-fit: cover;">
+                                        alt="Story Image" class="rounded" width="50" height="50" style="object-fit: cover;">
                                 @else
                                     <div class="bg-secondary text-white rounded d-flex align-items-center justify-content-center" 
-                                         style="width: 50px; height: 50px; font-size: 10px;">No Image</div>
+                                        style="width: 50px; height: 50px; font-size: 10px;">No Image</div>
                                 @endif
                             </td>
                             <td>{{ $story->community_name }}</td>
@@ -49,7 +49,7 @@
                                         <i class="bi bi-pencil"></i>
                                     </a>
                                     <form action="{{ route('admin.stories.destroy', $story->id) }}" method="POST" 
-                                          onsubmit="return confirm('Are you sure you want to delete this story?')">
+                                        onsubmit="return confirm('Are you sure you want to delete this story?')">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-sm btn-outline-danger">
@@ -59,11 +59,7 @@
                                 </div>
                             </td>
                         </tr>
-                    @empty
-                        <tr>
-                            <td colspan="5" class="text-center text-muted py-4">No stories found. Start by adding one!</td>
-                        </tr>
-                    @endforelse
+                    @endforeach
                 </tbody>
             </table>
         </div>

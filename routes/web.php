@@ -298,8 +298,6 @@ Route::prefix('admin')
 
     /* lecture management */
 
-    Route::get('/admin/course-module', [ModuleController::class, 'courseModule'])->name('admin.courseModule');
-    
     Route::post('/lecture/store', [ModuleController::class, 'storeLecture'])
         ->name('lecture.store');
 

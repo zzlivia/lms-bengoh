@@ -106,7 +106,7 @@ class ModuleController extends Controller
             'lect_duration' => $request->lect_duration,
         ]);
 
-        return redirect('/admin/course-module/create?tab=lecture')->with('success', 'Lecture updated successfully!');
+        return redirect()->route('admin.course.module.create', ['tab' => 'lecture'])->with('success', 'Lecture updated successfully!');
     }
 
     public function deleteLecture($id) //delete lecture

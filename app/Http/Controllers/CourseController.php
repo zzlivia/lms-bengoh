@@ -270,9 +270,22 @@ class CourseController extends Controller
 
     public function showMCQS($id)
     {
-        $module = Module::with('mcqs.answers')->findOrFail($id);
+        //load lectures so we can check progress
+        $module = Module::with(['mcqs.answers', 'lectures'])->findOrFail($id);
         $course = $module->course;
         $userID = auth()->id();
+
+        //count how many lectures in module the user has completed
+        $completedInModule = DB::table('lectureprogress')
+            ->where('userID', $userID)
+            ->whereIn('lectID', $module->lectures->pluck('lectID'))
+            ->count();
+
+        $totalLectures = $module->lectures->count();
+
+        if ($completedInModule < $totalLectures) {
+            return redirect()->back()->with('error', 'Please complete all ' . $totalLectures . ' lectures in this module before taking the quiz.');
+        }
 
         //check if user already reached 3 attempts
         $assessment = DB::table('assessment_results')
@@ -286,7 +299,7 @@ class CourseController extends Controller
                 ->with('error', 'You have reached the maximum of 3 attempts for this module.');
         }
 
-        //clear previous session answers so the form is "Empty"
+        //clear previous session answers
         session()->forget('last_submitted_answers');
 
         return view('learner.module_question', compact('module', 'course'));
@@ -299,11 +312,13 @@ class CourseController extends Controller
         $userAnswers = $request->input('answers', []);
         $total = $module->mcqs->count();
         $score = 0;
+        $userID = Auth::id();
 
-        //check attempts first
+        //check attempts
         $existing = DB::table('assessment_results')
-            ->where('userID', Auth::id())
+            ->where('userID', $userID)
             ->where('moduleID', $id)
+            ->where('type', 'mcq')
             ->first();
 
         $attempts = $existing ? $existing->attempts + 1 : 1;
@@ -313,13 +328,10 @@ class CourseController extends Controller
                 ->with('error', 'Maximum attempts reached. You cannot submit again.');
         }
 
-        //scoring logic
+        //score logics
         foreach ($module->mcqs as $question) {
             $selectedIndex = $userAnswers[$question->moduleQs_ID] ?? null;
-
             if ($selectedIndex !== null) {
-                //if User clicks first option (0), and DB says (1) is correct:
-                // (0 + 1) == 1 -> MATCH!
                 if (((int)$selectedIndex + 1) === (int)$question->correct_answer) {
                     $score++;
                 }
@@ -327,24 +339,47 @@ class CourseController extends Controller
         }
 
         $percentage = ($total > 0) ? ($score / $total) * 100 : 0;
+        
+        //save results
         DB::table('assessment_results')->updateOrInsert(
-            ['userID' => Auth::id(), 'moduleID' => $id, 'type' => 'mcq'],
+            ['userID' => $userID, 'moduleID' => $id, 'type' => 'mcq'],
             [
                 'courseID' => $module->courseID,
                 'score' => $percentage,
                 'status' => $percentage >= 80 ? 'pass' : 'fail',
                 'attempts' => $attempts,
-                'updated_at' => now()
+                'updated_at' => now(),
+                'created_at' => now() // Added to ensure timestamp on first insert
             ]
         );
 
-        //redirect with the data needed for the review
+        //find the first section of the next module
+        $nextModule = Module::where('courseID', $module->courseID)
+            ->where('moduleID', '>', $id)
+            ->orderBy('moduleID', 'asc')
+            ->first();
+
+        $nextSectionID = null;
+        if ($nextModule) {
+            //find the first section within the next module
+            $firstLecture = Lecture::where('moduleID', $nextModule->moduleID)->first();
+            if ($firstLecture) {
+                $nextSectionID = DB::table('sections')
+                    ->where('lectID', $firstLecture->lectID)
+                    ->orderBy('section_order', 'asc')
+                    ->value('sectionID');
+            }
+        }
+
+        //redirect to review mcqs
         return redirect()->route('module.review', $id)->with([
             'success' => 'Assessment submitted!',
             'score' => $score,
             'total' => $total,
             'attempts' => $attempts,
-            'last_submitted_answers' => $userAnswers
+            'last_submitted_answers' => $userAnswers,
+            'nextSectionID' => $nextSectionID,
+            'nextModule' => $nextModule
         ]);
     }
 

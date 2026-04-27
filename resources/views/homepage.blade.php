@@ -66,8 +66,13 @@
                 <div class="story-card d-flex align-items-center">
                     {{-- image --}}
                     @if($story->community_image)
-                        <img src="{{ asset('storage/' . $story->community_image) }}" 
-                            class="profile-icon me-3 rounded" width="60" height="60" style="object-fit: cover;">
+                        {{-- Force Laravel to use the 'r2' disk to generate the URL --}}
+                        <img src="{{ Storage::disk('r2')->url($story->community_image) }}" 
+                            class="profile-icon me-3 rounded" 
+                            width="60" 
+                            height="60" 
+                            style="object-fit: cover;"
+                            alt="{{ $story->getTranslation('community_name') }}">
                     @else
                         <i class="fa-solid fa-user-tie profile-icon me-3"></i>
                     @endif

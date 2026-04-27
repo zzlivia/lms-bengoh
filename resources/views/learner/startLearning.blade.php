@@ -94,30 +94,48 @@
                     @php
                         $prev = $sections[$currentIndex - 1] ?? null;
                         $next = $sections[$currentIndex + 1] ?? null;
-                        $isLast = $currentIndex == count($sections) - 1;
+                        
+                        // 1. Check if we are at the end of the entire course
+                        $isLastInCourse = ($currentIndex == count($sections) - 1);
+                        
+                        // 2. Check if the NEXT section belongs to a different module
+                        // If it does, this is the "Module Boundary" where the MCQ should appear
+                        $isEndOfModule = !$next || ($next->moduleID != $current->moduleID);
                     @endphp
+
                     <div class="d-flex justify-content-between mt-5 pt-3 border-top">
+                        {{-- Previous Button --}}
                         <div>
                             @if($prev)
-                                <a href="{{ route('learn', ['id' => $course->courseID, 'sectionId' => $prev->sectionID]) }}" class="btn btn-outline-secondary">← {{ __('messages.courses.previous') }}</a>
+                                <a href="{{ route('learn', ['id' => $course->courseID, 'sectionId' => $prev->sectionID]) }}" class="btn btn-outline-secondary">
+                                    ← {{ __('messages.courses.previous') }}
+                                </a>
                             @endif
                         </div>
+
+                        {{-- Download Button --}}
                         <div>
                             @if(!empty($current->section_file))
-                                <button onclick="downloadLesson('{{ asset('storage/' . $current->section_file) }}', this)" 
-                                        class="btn btn-warning">
+                                <button onclick="downloadLesson('{{ asset('storage/' . $current->section_file) }}', this)" class="btn btn-warning">
                                     <i class="bi bi-download"></i>
                                 </button>
                             @endif
                         </div>
+
+                        {{-- Dynamic Next Button --}}
                         <div>
-                            @if(!$isLast)
-                                <a href="{{ route('learn', ['id' => $course->courseID, 'sectionId' => $next->sectionID]) }}" class="btn btn-primary">{{ __('messages.courses.next') }} →</a>
+                            @if(!$isEndOfModule)
+                                {{-- Case A: There is another section in the SAME module --}}
+                                <a href="{{ route('learn', ['id' => $course->courseID, 'sectionId' => $next->sectionID]) }}" class="btn btn-primary">
+                                    {{ __('messages.courses.next') }} →
+                                </a>
                             @else
-                                <a href="{{ route('mcq.module', $module->moduleID ?? 1) }}" class="btn btn-success text-white">{{ __('messages.courses.go_to_mcq') }} →</a>
+                                {{-- Case B: End of Module reached. Redirect to this module's MCQ --}}
+                                <a href="{{ route('mcq.module', $current->moduleID) }}" class="btn btn-success text-white">
+                                    {{ __('messages.courses.go_to_mcq') }} (Module {{ $module->moduleID ?? '' }}) →
+                                </a>
                             @endif
                         </div>
-
                     </div>
                 </div>
             </div>

@@ -40,7 +40,7 @@
 
                 <a href="{{ route('admin.stories.index') }}" 
                 class="{{ request()->routeIs('admin.stories.*') ? 'active' : '' }}">
-                <i class="bi bi-people me-2"></i> Community Stories</a>
+                </i> Community Stories</a>
 
                 <a href="{{ route('admin.reports') }}"
                 class="{{ request()->routeIs('admin.reports') ? 'active' : '' }}">{{ __('messages.admin.reports') }}</a>

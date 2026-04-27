@@ -92,10 +92,13 @@
                     @endif
                     {{-- ================= NAVIGATION ================= --}}
                     @php
+                        //define $prev so line 105 doesn't crash
+                        $prev = $sections[$currentIndex - 1] ?? null;
+                        
+                        //define $next to check for the module boundary
                         $next = $sections[$currentIndex + 1] ?? null;
-                        // check if we are moving from one module to another
-                        // case 1: there is no next section @ end of course
-                        //case 2: the next section's moduleID is different from the current one
+                        
+                        //check if moving to a different module
                         $isEndOfModule = !$next || ($next->moduleID != $current->moduleID);
                     @endphp
 

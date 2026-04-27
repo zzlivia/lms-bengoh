@@ -37,7 +37,7 @@ class ModuleController extends Controller
             'courseID' => $request->courseID
         ]);
         //redirect back
-        return redirect()->route('admin.course.module')->with('success', 'Module added successfully!');
+        return redirect()->back()->with('success', 'Module added successfully!');
     }
 
     public function courseModule() //show overall courses, modules, lectures
@@ -63,7 +63,7 @@ class ModuleController extends Controller
         \DB::table('enrolmentcoursemodules')->where('moduleID', $id)->delete();
         //delete the module
         Module::where('moduleID', $id)->delete();
-        return redirect()->back()->with('success', 'Module and related enrollments deleted successfully');
+        return redirect()->back()->with('success', 'Module deleted successfully');
     }
 
     // store main lecture information

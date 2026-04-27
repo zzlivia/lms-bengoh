@@ -137,16 +137,16 @@ class CourseController extends Controller
 
         // collect all sections
         $sections = collect();
-            foreach ($course->modules as $module) {
-                foreach ($module->lectures as $lecture) {
-                    foreach ($lecture->sections as $section) {
-                        // INSERT THIS LINE HERE:
-                        $section->moduleID = $module->moduleID; 
-                        
-                        $sections->push($section);
-                    }
+        foreach ($course->modules as $module) {
+            foreach ($module->lectures as $lecture) {
+                // Change $lecture->sections to $lecture->lecture_sections 
+                // depending on how your Eloquent relationship is named!
+                foreach ($lecture->sections as $section) {
+                    $section->moduleID = $module->moduleID; 
+                    $sections->push($section);
                 }
             }
+        }
 
         // sort sections
         $sections = $sections->sortBy('section_order')->values();
@@ -401,10 +401,10 @@ class CourseController extends Controller
         if ($nextModule) {
             //get the first section of that next module
             $nextSectionID = DB::table('lecture')
-                ->join('section', 'lecture.lectID', '=', 'section.lectID')
+                ->join('lecture_sections', 'lecture.lectID', '=', 'lecture_sections.lectID')
                 ->where('lecture.moduleID', $nextModule->moduleID)
-                ->orderBy('section.section_order', 'asc')
-                ->value('section.sectionID');
+                ->orderBy('lecture_sections.section_order', 'asc')
+                ->value('lecture_sections.sectionID');
         }
 
         return view('learner.review_mcq', [

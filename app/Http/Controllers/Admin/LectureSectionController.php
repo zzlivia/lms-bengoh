@@ -69,7 +69,7 @@ class LectureSectionController extends Controller
             ]);
         }
         //redirect back
-        return redirect()->back()->with('success','Section added successfully');
+        return redirect()->route('admin.course.module.create', ['tab' => 'section'])->with('success','Lecture section added successfully');
     }
 
     public function editSection($id)

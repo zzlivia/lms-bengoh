@@ -6,11 +6,12 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Pagination\Paginator; // 1. Import the Paginator
 
 class AppServiceProvider extends ServiceProvider
 {
     /**
-     * Register any application services.
+     * register any application services.
      */
     public function register(): void
     {
@@ -18,11 +19,14 @@ class AppServiceProvider extends ServiceProvider
     }
 
     /**
-     * Bootstrap any application services.
+     * bootstrap any application services.
      */
     public function boot(): void
     {
-        //force HTTPS if in production OR if on Railway
+        // add this line here to fix the giant arrows
+        Paginator::useBootstrapFive();
+
+        // force HTTPS if in production OR if on Railway
         if (app()->environment('production') || env('RAILWAY_ENVIRONMENT')) {
             URL::forceScheme('https');
         }

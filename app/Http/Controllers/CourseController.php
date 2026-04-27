@@ -391,7 +391,7 @@ class CourseController extends Controller
         $module = Module::with('mcqs', 'course')->findOrFail($id);
         $selectedAnswers = session('last_submitted_answers');
         
-        // 1. Find the next module in this course
+        //find the next module in this course
         $nextModule = Module::where('courseID', $module->courseID)
             ->where('moduleID', '>', $id)
             ->orderBy('moduleID', 'asc')
@@ -399,12 +399,12 @@ class CourseController extends Controller
 
         $nextSectionID = null;
         if ($nextModule) {
-            // 2. Get the first section of that next module
+            //get the first section of that next module
             $nextSectionID = DB::table('lecture')
-                ->join('sections', 'lecture.lectID', '=', 'sections.lectID')
+                ->join('section', 'lecture.lectID', '=', 'section.lectID')
                 ->where('lecture.moduleID', $nextModule->moduleID)
-                ->orderBy('sections.section_order', 'asc')
-                ->value('sections.sectionID');
+                ->orderBy('section.section_order', 'asc')
+                ->value('section.sectionID');
         }
 
         return view('learner.review_mcq', [

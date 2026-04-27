@@ -85,11 +85,8 @@
                     </div>
                     <ul class="navbar-nav">
                         <li class="nav-item dropdown">
-                            <a class="nav-link position-relative" href="#"
-                               id="notificationDropdown"
-                               role="button"
-                               data-bs-toggle="dropdown">
-                                <i class="bi bi-bell fs-5"></i>
+                            <a class="nav-link position-relative" href="#" id="notificationDropdown" role="button" data-bs-toggle="dropdown"></a>
+                            <i class="bi bi-bell fs-5"></i>
                                 @if($totalNotifications > 0)
                                     <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                                         {{ $totalNotifications }}

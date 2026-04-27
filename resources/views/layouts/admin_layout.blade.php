@@ -6,11 +6,11 @@
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#0d6efd">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
 </head>
 
@@ -21,7 +21,7 @@
                 <img src="{{ asset('images/bengohdam-logo.png') }}" width="30" class="me-2">
                 Bengoh Academy
             </a>
-            {{-- sidebar --}}
+            
             <div class="flex-grow-1">
                 <a href="{{ route('admin.dashboard') }}"
                 class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">{{ __('messages.admin.dashboard') }}</a>
@@ -38,8 +38,9 @@
                 <a href="{{ route('admin.announcements') }}"
                 class="{{ request()->routeIs('admin.announcements') ? 'active' : '' }}">{{ __('messages.admin.announcements') }}</a>
 
-                <a href="{{ route('admin.stories.index') }}" class="{{ request()->routeIs('admin.stories.*') ? 'active' : '' }}">
-                Community Stories</a>
+                <a href="{{ route('admin.stories.index') }}" 
+                class="{{ request()->routeIs('admin.stories.*') ? 'active' : '' }}">
+                <i class="bi bi-people me-2"></i> Community Stories</a>
 
                 <a href="{{ route('admin.reports') }}"
                 class="{{ request()->routeIs('admin.reports') ? 'active' : '' }}">{{ __('messages.admin.reports') }}</a>
@@ -61,8 +62,9 @@
         <div class="main-content flex-grow-1 d-flex flex-column">
             <div class="topbar d-flex align-items-center p-3 px-4">
                 <div class="d-flex align-items-center ms-auto gap-4">
+                    
                     <div class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
                             <i class="bi bi-translate"></i> {{ __('messages.nav.language') }}
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
@@ -70,55 +72,50 @@
                             <li><a class="dropdown-item" href="{{ url('lang/ms') }}">Bahasa Melayu</a></li>
                         </ul>
                     </div>
+
                     <div class="d-flex align-items-center">
                         <i class="bi bi-person-circle fs-4 me-2"></i>
                         <div class="lh-sm">
-                            <div class="fw-bold">
-                                @if(auth()->check())
-                                    {{ auth()->user()->name }}
-                                @else
-                                    Guest
-                                @endif
-                            </div>
+                            <div class="fw-bold">{{ auth()->check() ? auth()->user()->name : 'Guest' }}</div>
                             <small class="text-muted">{{ __('messages.admin.admin_role') }}</small>
                         </div>
                     </div>
-                    <ul class="navbar-nav">
-                        <li class="nav-item dropdown">
-                            <a class="nav-link position-relative" href="#" id="notificationDropdown" role="button" data-bs-toggle="dropdown"></a>
+
+                    <div class="nav-item dropdown">
+                        <a class="nav-link position-relative" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="bi bi-bell fs-5"></i>
-                                @if($totalNotifications > 0)
-                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                                        {{ $totalNotifications }}
-                                    </span>
-                                @endif
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-end shadow">
-                                <li><h6 class="dropdown-header">{{ __('messages.admin.alerts') }}</h6></li>
-                                <li>
-                                    <a class="dropdown-item d-flex justify-content-between"
-                                       href="{{ route('admin.password.requests') }}">
-                                        {{ __('messages.admin.reset_req') }}
-                                        <span class="badge bg-primary">{{ $forgotRequests }}</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item d-flex justify-content-between"
-                                       href="{{ route('admin.feedback') }}">
-                                        {{ __('messages.admin.pending_feedback') }}
-                                        <span class="badge bg-primary">{{ $pendingFeedbackCount ?? 0 }}</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item d-flex justify-content-between"
-                                       href="{{ route('admin.announcements') }}">
-                                        {{ __('messages.admin.announcement_review') }}
-                                        <span class="badge bg-primary">{{ $announcementReview }}</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
+                            @php
+                                $calcTotal = ($forgotRequests ?? 0) + ($pendingFeedbackCount ?? 0) + ($announcementReview ?? 0);
+                            @endphp
+                            @if($calcTotal > 0)
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.65rem;">
+                                    {{ $calcTotal }}
+                                </span>
+                            @endif
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end shadow border-0" style="min-width: 250px;">
+                            <li><h6 class="dropdown-header">{{ __('messages.admin.alerts') }}</h6></li>
+                            <li>
+                                <a class="dropdown-item d-flex justify-content-between align-items-center" href="{{ route('admin.password.requests') }}">
+                                    {{ __('messages.admin.reset_req') }}
+                                    <span class="badge bg-primary rounded-pill">{{ $forgotRequests ?? 0 }}</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item d-flex justify-content-between align-items-center" href="{{ route('admin.feedback') }}">
+                                    {{ __('messages.admin.pending_feedback') }}
+                                    <span class="badge bg-primary rounded-pill">{{ $pendingFeedbackCount ?? 0 }}</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item d-flex justify-content-between align-items-center" href="{{ route('admin.announcements') }}">
+                                    {{ __('messages.admin.announcement_review') }}
+                                    <span class="badge bg-primary rounded-pill">{{ $announcementReview ?? 0 }}</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
                 </div>
             </div>
 
@@ -128,34 +125,26 @@
         </div>
     </div>
 
-    @stack('scripts')
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-    <script>
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/service-worker.js')
-            .then(() => console.log("Service Worker Registered"));
-        }
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.7.0/tinymce.min.js"></script>
+
+    @stack('scripts')
+
     <script>
         $(document).ready(function() {
-
+            // DataTables Initialization
             if ($('#userTable').length) {
-
-                if ($.fn.DataTable.isDataTable('#userTable')) {
-                    $('#userTable').DataTable().destroy();
-                }
-
                 $('#userTable').DataTable();
             }
 
+            // Service Worker
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('/service-worker.js');
+            }
         });
     </script>
-
-    {{-- the rich editor 
-    <script src="https://cdn.tiny.cloud/1/v6ov6w4ysrw63gdffs61dqb69kgf7co61rpfrrc77u59ae9u/tinymce/6/tinymce.min.js"></script>--}}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.7.0/tinymce.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

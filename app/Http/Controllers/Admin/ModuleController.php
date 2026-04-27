@@ -80,7 +80,7 @@ class ModuleController extends Controller
             'lect_duration' => $request->lect_duration,
         ]);
         //redirect back
-        return redirect()->route('admin.course.module')->with('success','Lecture saved!');
+        return redirect()->back()->with('success','Lecture saved!');
     }
 
     public function editLecture($id)//edit lecture 

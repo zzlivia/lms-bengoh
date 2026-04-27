@@ -454,7 +454,6 @@ Route::prefix('admin')
     
     Route::get('/feedback', [AdminController::class, 'feedbackList'])->name('feedback');
 
-    /* community stories that controlled by admin*/
-    Route::get('/community-stories', [CommunityStoryController::class, 'index'])
-        ->name('admin.community.stories');
+    /* community stories CRUD*/
+    Route::resource('stories', CommunityStoryController::class);
 });

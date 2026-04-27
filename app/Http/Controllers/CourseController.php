@@ -333,7 +333,8 @@ class CourseController extends Controller
 
         //score logics
         foreach ($module->mcqs as $question) {
-            $selectedIndex = $userAnswers[$question->moduleQs_ID] ?? null;
+            $selectedIndex = $request->input("answers.{$question->moduleQs_ID}");
+
             if ($selectedIndex !== null) {
                 if (((int)$selectedIndex + 1) === (int)$question->correct_answer) {
                     $score++;

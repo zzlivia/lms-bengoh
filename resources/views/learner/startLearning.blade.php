@@ -92,14 +92,10 @@
                     @endif
                     {{-- ================= NAVIGATION ================= --}}
                     @php
-                        $prev = $sections[$currentIndex - 1] ?? null;
                         $next = $sections[$currentIndex + 1] ?? null;
-                        
-                        // 1. Check if we are at the end of the entire course
-                        $isLastInCourse = ($currentIndex == count($sections) - 1);
-                        
-                        // 2. Check if the NEXT section belongs to a different module
-                        // If it does, this is the "Module Boundary" where the MCQ should appear
+                        // check if we are moving from one module to another
+                        // case 1: there is no next section @ end of course
+                        //case 2: the next section's moduleID is different from the current one
                         $isEndOfModule = !$next || ($next->moduleID != $current->moduleID);
                     @endphp
 
@@ -125,14 +121,16 @@
                         {{-- Dynamic Next Button --}}
                         <div>
                             @if(!$isEndOfModule)
-                                {{-- Case A: There is another section in the SAME module --}}
-                                <a href="{{ route('learn', ['id' => $course->courseID, 'sectionId' => $next->sectionID]) }}" class="btn btn-primary">
+                                {{-- normal flow: the next section is in the same module --}}
+                                <a href="{{ route('learn', ['id' => $course->courseID, 'sectionId' => $next->sectionID]) }}" 
+                                class="btn btn-primary">
                                     {{ __('messages.courses.next') }} →
                                 </a>
                             @else
-                                {{-- Case B: End of Module reached. Redirect to this module's MCQ --}}
-                                <a href="{{ route('mcq.module', $current->moduleID) }}" class="btn btn-success text-white">
-                                    {{ __('messages.courses.go_to_mcq') }} (Module {{ $module->moduleID ?? '' }}) →
+                                {{-- the next section is in a new module, so go to MCQ first --}}
+                                <a href="{{ route('mcq.module', $current->moduleID) }}" 
+                                class="btn btn-success text-white">
+                                    {{ __('messages.courses.go_to_mcq') }} →
                                 </a>
                             @endif
                         </div>

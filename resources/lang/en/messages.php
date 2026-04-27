@@ -305,7 +305,7 @@ return [
         'best_match'           => 'Best Match',
         'latest_added'         => 'Latest Added',
         'short_learn'       => 'Short Learning',
-        'recently_update'     => 'Recently Updated',
+        'recent_update'     => 'Recently Updated',
         'refine_search'        => 'Refine your search:',
         'showing'              => 'Showing',
         'per_page'             => 'Courses Per Page',

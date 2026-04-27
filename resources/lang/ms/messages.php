@@ -305,7 +305,7 @@ return [
         'best_match'           => 'Padanan Terbaik',
         'latest_added'               => 'Terbaharu',
         'short_learn'       => 'Pembelajaran Singkat',
-        'recently_update'     => 'Baru Dikemas Kini',
+        'recent_update'     => 'Baru Dikemas Kini',
         'refine_search'        => 'Perincikan carian anda:',
         'showing'              => 'Memaparkan',
         'per_page'             => 'Kursus Per Halaman',

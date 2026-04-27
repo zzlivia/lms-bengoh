@@ -16,32 +16,34 @@
 
 <body>
     <div class="d-flex">
-        
         <div class="sidebar d-flex flex-column p-3">
-            <a class="navbar-brand fw-bold d-flex align-items-center mb-4"
-               href="{{ route('admin.dashboard') }}">
+            <a class="navbar-brand fw-bold d-flex align-items-center mb-4" href="{{ route('admin.dashboard') }}">
                 <img src="{{ asset('images/bengohdam-logo.png') }}" width="30" class="me-2">
                 Bengoh Academy
             </a>
-
+            {{-- sidebar --}}
             <div class="flex-grow-1">
                 <a href="{{ route('admin.dashboard') }}"
-                   class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">{{ __('messages.admin.dashboard') }}</a>
+                class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">{{ __('messages.admin.dashboard') }}</a>
 
                 <a href="{{ route('admin.user.management') }}"
-                   class="{{ request()->routeIs('admin.user.management') ? 'active' : '' }}">{{ __('messages.admin.user_mgmt') }}</a>
+                class="{{ request()->routeIs('admin.user.management') ? 'active' : '' }}">{{ __('messages.admin.user_mgmt') }}</a>
 
                 <a href="{{ route('admin.course.module') }}"
-                   class="{{ request()->routeIs('admin.course.module') ? 'active' : '' }}">{{ __('messages.admin.course_mgmt') }}</a>
+                class="{{ request()->routeIs('admin.course.module') ? 'active' : '' }}">{{ __('messages.admin.course_mgmt') }}</a>
 
                 <a href="{{ route('admin.progress') }}"
-                   class="{{ request()->routeIs('admin.progress') ? 'active' : '' }}">{{ __('messages.admin.progress') }}</a>
+                class="{{ request()->routeIs('admin.progress') ? 'active' : '' }}">{{ __('messages.admin.progress') }}</a>
 
                 <a href="{{ route('admin.announcements') }}"
-                   class="{{ request()->routeIs('admin.announcements') ? 'active' : '' }}">{{ __('messages.admin.announcements') }}</a>
+                class="{{ request()->routeIs('admin.announcements') ? 'active' : '' }}">{{ __('messages.admin.announcements') }}</a>
+
+                <a href="{{ route('admin.stories.index') }}" class="{{ request()->routeIs('admin.stories.*') ? 'active' : '' }}">
+                <i class="bi bi-people me-2"></i> Community Stories
+                </a>
 
                 <a href="{{ route('admin.reports') }}"
-                   class="{{ request()->routeIs('admin.reports') ? 'active' : '' }}">{{ __('messages.admin.reports') }}</a>
+                class="{{ request()->routeIs('admin.reports') ? 'active' : '' }}">{{ __('messages.admin.reports') }}</a>
             </div>
 
             <div>

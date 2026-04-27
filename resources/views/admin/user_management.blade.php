@@ -30,7 +30,11 @@
         class="d-flex justify-content-between align-items-center mb-3">
         <input type="text" name="search" class="form-control w-50" placeholder="Search User">
         <div>
-            <button type="button" class="btn btn-danger">{{ __('messages.admin.remove_user') }}</button>
+            <form action="{{ route('admin.user.delete', $user->userID) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this user?');">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="btn btn-danger btn-sm">{{ __('messages.admin.delete') }}</button>
+            </form>
         </div>
     </form>
 

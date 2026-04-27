@@ -253,7 +253,8 @@ return [
         'lang_en'          => 'Inggeris',
         'lang_ms'          => 'Melayu',
         'notifications'    => 'Pemberitahuan:',
-        
+        'name'             => 'Nama',
+        'email'             => 'Email',
         'user_access_title'=> 'Tetapan Pengguna & Akses',
         'registration'     => 'Pendaftaran Pengguna:',
         'guest_access'     => 'Akses Tetamu:',

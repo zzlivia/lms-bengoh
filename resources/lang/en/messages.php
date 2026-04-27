@@ -253,7 +253,8 @@ return [
         'lang_en'          => 'English',
         'lang_ms'          => 'Malay',
         'notifications'    => 'Notifications:',
-        
+        'name'             => 'Name',
+        'email'             => 'Email',
         'user_access_title'=> 'User & Access Settings',
         'registration'     => 'User Registration:',
         'guest_access'     => 'Guest Access:',

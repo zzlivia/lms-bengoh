@@ -46,8 +46,8 @@
         <table id="userTable" class="table">
             <thead>
                 <tr>
-                    <th>{{ __('messages.settings.name') }}</th>
-                    <th>{{ __('messages.settings.email') }}</th>
+                    <th>{{ __('messages.admin_settings.name') }}</th>
+                    <th>{{ __('messages.admin_settings.email') }}</th>
                     <th>{{ __('messages.admin.engagement') }}</th>
                     <th>{{ __('messages.admin.rank') }}</th>
                     <th>{{ __('messages.admin.completed_courses_col') }}</th>

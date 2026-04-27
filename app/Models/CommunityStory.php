@@ -11,12 +11,13 @@ class CommunityStory extends Model
     protected $table = 'community_stories';
     protected $primaryKey = 'id';
     protected $fillable = [
-        'adminID',
-        'community_name',
-        'title',
-        'community_story',
-        'community_image'
-    ];
+            'community_name',
+            'title',
+            'community_story',
+            'community_image',
+            'is_active',
+            'adminID',
+        ];
 
     public function admin()
     {

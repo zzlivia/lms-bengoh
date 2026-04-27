@@ -346,6 +346,7 @@ return [
         'not_answered'         => 'You did not answer this question',
         'listen'               => 'Listen',
         'submit_answers'       => 'Submit Answers',
+        'continue_to_next_nodule'  => 'Continue to Next Module',
 
         // MCQs & Review
         'review_answers'       => 'Review Answers',

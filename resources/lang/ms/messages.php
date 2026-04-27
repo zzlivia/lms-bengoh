@@ -346,7 +346,7 @@ return [
         'not_answered'         => 'Anda tidak menjawab soalan ini',
         'listen'               => 'Dengar',
         'submit_answers'       => 'Hantar Jawapan',
-        'continue_to_next_nodule'  => 'Module Seterusnya',
+        'continue_to_next_module'  => 'Module Seterusnya',
 
         // MCQs & Review
         'review_answers'       => 'Semakan Jawapan',

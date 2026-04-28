@@ -106,7 +106,7 @@
         </nav>
 
         {{-- to main content --}}
-        <main class="container mt-4">
+        <main class="container-fluid container-md mt-4">
             @yield('content')
         </main>
         {{-- bottom navigation bar --}}

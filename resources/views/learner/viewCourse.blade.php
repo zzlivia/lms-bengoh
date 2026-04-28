@@ -114,17 +114,24 @@
         </div>
 
         <div class="d-flex justify-content-between align-items-center mt-5 mb-5 p-4 bg-light rounded shadow-sm">
-            {{-- Keep this link if you still want a separate page, or change it to "Give Feedback" --}}
-            <a href="{{ route('course.feedback', $course->courseID) }}" class="btn btn-outline-primary"> 
-                <i class="fa fa-pen-nib me-1"></i> {{ __('Write a Review') }}
+            {{-- Review Link --}}
+            <a href="{{ route('course.feedback', $course->courseID) }}" class="btn btn-outline-primary">
+                <i class="fa fa-pen-to-square me-1"></i> {{ __('messages.courses.view_feedback') }}
             </a>
-            <a href="{{ route('learn', $course->courseID) }}" class="btn btn-primary btn-lg px-5 shadow"> 
-                {{ __('messages.courses.enrol_now') }}
-            </a>
+            
+            {{-- Conditional Enrolment Logic --}}
+            @if($hasModules)
+                <a href="{{ route('learn', $course->courseID) }}" class="btn btn-primary btn-lg px-5 shadow">
+                    {{ __('messages.courses.enrol_now') }}
+                </a>
+            @else
+                <button type="button" class="btn btn-secondary btn-lg px-5" disabled>
+                    <i class="fa fa-info-circle me-1"></i> {{ __('Enrollment Unavailable') }}
+                </button>
+            @endif
         </div>
     </div>
 @endsection
-
 @section('scripts')
     <script src="{{ asset('js/viewCourse.js') }}"></script>
 @endsection

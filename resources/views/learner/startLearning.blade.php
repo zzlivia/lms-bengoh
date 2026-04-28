@@ -9,14 +9,14 @@
     <div class="container-fluid mt-3">
         <div class="row">
             {{-- Sidebar: Hidden on small screens, shown in a column on medium+ --}}
-            <div class="col-md-3 d-none d-md-block" id="courseSidebarContainer">
+           <div class="col-md-3 d-none d-md-block" id="desktopSidebar">
                 @include('partials.course-sidebar', ['course' => $course, 'current' => $current])
             </div>
 
-            <div class="col-md-9 px-md-4">
+            <div class="col-12 col-md-9 px-md-4">
                 {{-- Mobile Menu Toggle & Breadcrumb --}}
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                    <button class="btn btn-sm btn-outline-primary d-md-none" type="button" onclick="toggleMobileMenu()">
+                    <button class="btn btn-sm btn-outline-primary d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileSidebar">
                         <i class="bi bi-list"></i> {{ __('messages.courses.course_modules') }}
                     </button>
                     
@@ -155,14 +155,13 @@
         </div>
     </div>
 
-    {{-- Mobile Menu Overlay --}}
-    <div id="mobileMenuOverlay" class="d-md-none position-fixed top-0 start-0 w-100 h-100 bg-dark opacity-50 d-none" style="z-index: 1040;" onclick="toggleMobileMenu()"></div>
-    <div id="mobileSidebar" class="d-md-none position-fixed top-0 start-0 h-100 bg-white shadow-lg transition-all" style="width: 280px; z-index: 1050; transform: translateX(-100%); transition: transform 0.3s ease;">
-        <div class="p-3 border-bottom d-flex justify-content-between align-items-center">
-            <span class="fw-bold">Course Menu</span>
-            <button class="btn-close" onclick="toggleMobileMenu()"></button>
+    <div class="offcanvas offcanvas-start d-md-none" tabindex="-1" id="mobileSidebar" aria-labelledby="mobileSidebarLabel">
+        <div class="offcanvas-header border-bottom">
+            <h5 class="offcanvas-title fw-bold" id="mobileSidebarLabel">Course Modules</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
-        <div class="p-2 overflow-auto h-100">
+        <div class="offcanvas-body p-0">
+            {{-- We reuse your existing partial here --}}
             @include('partials.course-sidebar', ['course' => $course, 'current' => $current])
         </div>
     </div>

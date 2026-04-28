@@ -2,7 +2,7 @@
     <link rel="stylesheet" href="{{ asset('css/course-sidebar.css') }}">
 @endsection
 
-<div class="col-md-3 sidebar p-3" id="courseSidebar">
+<div class="course-sidebar-wrapper p-3" id="courseSidebar">
     @php 
         // Fetch completed lectures for the authenticated user
         $completedLectures = DB::table('lectureprogress')

@@ -86,7 +86,7 @@ class CourseController extends Controller
         return view('learner.view_allCourse', compact('courses','categories','levels','durations'));
     }
 
-    // show single course details
+    //show single course details
     public function showCourse($id)
     {
         $course = Course::with([
@@ -98,8 +98,7 @@ class CourseController extends Controller
             'modules.lectures.mcqs.answers'
         ])->findOrFail($id);
 
-        // Fetch public feedback for this course
-        // We use the userID to join with the users table to show the name
+        //fetch public feedback for this course
         $feedbacks = DB::table('coursefeedback')
             ->join('users', 'coursefeedback.userID', '=', 'users.userID')
             ->where('coursefeedback.courseID', $id)
@@ -110,7 +109,10 @@ class CourseController extends Controller
             ->orderBy('coursefeedback.created_at', 'desc')
             ->get();
 
-        return view('learner.viewCourse', compact('course', 'feedbacks'));
+        //check if the course has any modules
+        $hasModules = $course->modules->isNotEmpty();
+
+        return view('learner.viewCourse', compact('course', 'feedbacks', 'hasModules'));
     }
     
     //redirect user to start learning interface

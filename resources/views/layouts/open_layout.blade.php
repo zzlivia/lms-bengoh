@@ -26,11 +26,11 @@
             <a class="navbar-brand fw-bold d-flex align-items-center" href="/"> {{-- logo --}}
                 <img src="{{ asset('images/bengohdam-logo.png') }}" width="30" class="me-2"> Bengoh Academy
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse justify-content-end">
-                <ul class="navbar-nav"> {{-- navigation menu --}}
+            <div class="collapse navbar-collapse" id="mainNavbar">
+               <ul class="navbar-nav ms-auto">
                     <li class="nav-item mx-2">
                         <a class="nav-link {{ request()->routeIs('homepage') ? 'active' : '' }}" href="{{ route('homepage') }}">
                             {{ __('messages.nav.home') }} {{-- highlights the page --}}

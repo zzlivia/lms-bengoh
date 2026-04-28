@@ -113,15 +113,6 @@
             </div>
         </div>
 
-        <div class="d-flex justify-content-between align-items-center mt-4 mb-5 p-4 bg-light rounded">
-            <a href="{{ route('course.feedback', $course->courseID) }}" class="btn btn-link text-decoration-none">
-                <i class="fa fa-pen-to-square me-1"></i> {{ __('messages.courses.view_feedback') }}
-            </a>
-            <a href="{{ route('learn', $course->courseID) }}" class="btn btn-primary btn-lg px-5 shadow">
-                {{ __('messages.courses.enrol_now') }}
-            </a>
-        </div>
-
         <div class="d-flex justify-content-between align-items-center mt-5 mb-5 p-4 bg-light rounded shadow-sm">
             {{-- Keep this link if you still want a separate page, or change it to "Give Feedback" --}}
             <a href="{{ route('course.feedback', $course->courseID) }}" class="btn btn-outline-primary"> 

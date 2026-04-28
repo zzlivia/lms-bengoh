@@ -10,8 +10,7 @@
                         {{-- image: increased size slightly for the wider layout --}}
                         <div class="flex-shrink-0">
                             @if($story->community_image)
-                                <img src="{{ asset('storage/' . $story->community_image) }}" 
-                                    class="me-4 rounded shadow-sm" width="120" height="120" style="object-fit: cover;">
+                                <img src="{{ Storage::url($story->community_image) }}"  class="me-4 rounded shadow-sm" width="120" height="120" style="object-fit: cover;">
                             @else
                                 <div class="me-4 bg-secondary text-white rounded d-flex align-items-center justify-content-center" style="width: 120px; height: 120px;">
                                     <i class="fa-solid fa-user-tie fs-1"></i>

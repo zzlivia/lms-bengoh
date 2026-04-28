@@ -170,14 +170,14 @@
     <script>
         // 1. GLOBAL CONFIGURATION
         const CONFIG = {
-            courseId: {{ $course->courseID }},
-            allSections: @json($sections->pluck('sectionID')),
+            courseId: {{ $course->courseID ?? 0 }},
+            allSections: @json($sections->pluck('sectionID') ?? []),
             labels: {
                 confirmMsg: "{{ __('messages.courses.quiz_confirm') }}",
                 timeLeft: "{{ __('messages.courses.time_left') }}",
                 completed: "{{ __('messages.courses.completed') }}"
             },
-            userId: {{ auth()->id() }},
+            userId: {{ auth()->id() ?? 0 }},
             csrfToken: '{{ csrf_token() }}'
         };
 

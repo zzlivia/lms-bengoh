@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-    //Existing Alert Logic
+    // --- Alert Logic ---
     setTimeout(function () {
         let alert = document.getElementById('alertBox');
         if (alert) {
@@ -9,12 +9,12 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }, 3000);
 
-    //Progress Tracking Logic
-    //"To MCQ Questions" button or the timer itself
-    const mcqButton = document.getElementById('toMcqBtn'); // Add this ID to your HTML button
-    const lectID = document.body.dataset.lectureId; // Best way: put id in <body data-lecture-id="{{$current->lectID}}">
+    // --- Progress Tracking Logic ---
+    const mcqButton = document.getElementById('toMcqBtn');
+    // Use a fallback to get the Lecture ID if dataset isn't set
+    const lectID = document.body.dataset.lectureId || document.getElementById('currentLectID')?.value;
 
-    function saveProgress() {
+    function saveAndRedirect(targetUrl) {
         fetch(`/mark-complete/${lectID}`, {
             method: 'POST',
             headers: {
@@ -25,19 +25,32 @@ document.addEventListener("DOMContentLoaded", function () {
         })
         .then(response => response.json())
         .then(data => {
-            if (data.status === 'saved') {
-                console.log("Lecture progress saved to database.");
-                // Now that it's saved, the popup won't appear when they click
-            }
+            console.log("Progress saved.");
+            // NOW redirect because we know the DB is ready
+            window.location.href = targetUrl;
         })
-        .catch(error => console.error('Error:', error));
-    }
-
-    // Trigger saveProgress when the timer hits 0:00 (Hook this into your existing timer)
-    // For now, let's also trigger it when they click the MCQ button just in case
-    if (mcqButton) {
-        mcqButton.addEventListener('click', function() {
-             saveProgress(); 
+        .catch(error => {
+            console.error('Error saving progress:', error);
+            // Redirect anyway so the user isn't stuck, 
+            // though the PHP check might still fail if DB didn't update
+            window.location.href = targetUrl;
         });
     }
+
+    if (mcqButton) {
+        mcqButton.addEventListener('click', function(event) {
+            // 1. Stop the browser from following the link immediately
+            event.preventDefault();
+            
+            // 2. Get the URL from the button's href attribute
+            const targetUrl = this.getAttribute('href');
+            
+            // 3. Save to DB first, then move to next page
+            saveAndRedirect(targetUrl);
+        });
+    }
+
+    // --- Hook for your Timer ---
+    // If you have a timer function elsewhere, call saveAndRedirect(null) 
+    // when it reaches 0:00 just to sync the DB in the background.
 });

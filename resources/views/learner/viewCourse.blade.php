@@ -4,15 +4,20 @@
 
 @section('styles')
     <link rel="stylesheet" href="{{ asset('css/viewCourse.css') }}">
+    <style>
+        .feedback-scroll { max-height: 400px; overflow-y: auto; }
+        .star-rating { color: #ffc107; }
+    </style>
 @endsection
 
 @section('content')
-    {{-- alert message when a module has no content, it will redirect user back--}}
+    {{-- alert message --}}
     @if(session('error'))
         <div class="alert alert-warning alert-dismissible fade show" role="alert">{{ session('error') }}
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
     @endif
+
     <div class="container mt-4">
         {{-- back to previous page --}}
         <div class="mb-3">
@@ -20,8 +25,8 @@
                 <i class="fa fa-arrow-left me-1"></i> {{ __('Back to Courses') }}
             </a>
         </div>
+
         <div class="text-center mb-4 course-banner-container">
-            {{-- check through config/filesystems.php, r2 --}}
              <img src="{{ Storage::disk('r2')->url($course->courseImg) }}" alt="{{ $course->getTranslation('courseName') }}" class="course-banner-img rounded shadow-sm">
         </div>
 
@@ -63,11 +68,42 @@
             @endforeach
         </div>
 
-        <div class="d-flex justify-content-between align-items-center mt-5 mb-5 p-4 bg-light rounded">
-            <a href="{{ route('course.feedback', $course->courseID) }}" class="btn btn-link text-decoration-none"> {{--{{ route('course.feedback', $course->courseID) }}--}}
-                <i class="fa fa-comment-dots me-1"></i> {{ __('messages.courses.view_feedback') }}
+        {{-- NEW: Public Feedback Section --}}
+        <div class="mt-5">
+            <h4 class="fw-bold mb-4"><i class="fa fa-star me-2 text-warning"></i>{{ __('Learner Reviews') }}</h4>
+            <div class="feedback-scroll pe-2">
+                @forelse($feedbacks as $feedback)
+                    <div class="card mb-3 border-0 shadow-sm">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <span class="star-rating">
+                                        @for($i=1; $i<=5; $i++)
+                                            <i class="fa{{ $i <= $feedback->rating ? 's' : 'r' }} fa-star"></i>
+                                        @endfor
+                                    </span>
+                                    <span class="ms-2 text-muted small">| {{ $feedback->created_at }}</span>
+                                </div>
+                                <span class="badge badge-outline-info text-info small">Fav: {{ $feedback->favorite_module }}</span>
+                            </div>
+                            <p class="mt-2 mb-1"><strong>"{{ $feedback->enjoyed }}"</strong></p>
+                            @if($feedback->suggestions)
+                                <p class="text-muted small mb-0"><em>Suggestion: {{ $feedback->suggestions }}</em></p>
+                            @endif
+                        </div>
+                    </div>
+                @empty
+                    <p class="text-muted">No reviews yet. Be the first to provide feedback!</p>
+                @endforelse
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center mt-5 mb-5 p-4 bg-light rounded shadow-sm">
+            {{-- Keep this link if you still want a separate page, or change it to "Give Feedback" --}}
+            <a href="{{ route('course.feedback', $course->courseID) }}" class="btn btn-outline-primary"> 
+                <i class="fa fa-pen-nib me-1"></i> {{ __('Write a Review') }}
             </a>
-            <a href="{{ route('learn', $course->courseID) }}" class="btn btn-primary btn-lg px-5 shadow"> {{--{{ route('courses.learn', $course->courseID) }}--}}
+            <a href="{{ route('learn', $course->courseID) }}" class="btn btn-primary btn-lg px-5 shadow"> 
                 {{ __('messages.courses.enrol_now') }}
             </a>
         </div>

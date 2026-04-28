@@ -98,7 +98,19 @@ class CourseController extends Controller
             'modules.lectures.mcqs.answers'
         ])->findOrFail($id);
 
-        return view('learner.viewCourse', compact('course'));
+        // Fetch public feedback for this course
+        // We use the userID to join with the users table to show the name
+        $feedbacks = DB::table('coursefeedback')
+            ->join('users', 'coursefeedback.userID', '=', 'users.userID')
+            ->where('coursefeedback.courseID', $id)
+            ->select(
+                'coursefeedback.*', 
+                'users.userName'
+            )
+            ->orderBy('coursefeedback.created_at', 'desc')
+            ->get();
+
+        return view('learner.viewCourse', compact('course', 'feedbacks'));
     }
     
     //redirect user to start learning interface

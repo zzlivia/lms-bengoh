@@ -7,28 +7,40 @@
     </div>
 
     {{-- feature boxes --}}
-    <div class="row text-center mb-5 g-3">
+    <div class="row mb-5 g-3">
         <div class="col-md-4">
-            <div class="feature-box">
-                <i class="fa-solid fa-handshake fs-3 mb-2"></i>
-                <h6>{{ __('messages.home.feature_1_title') }}</h6>
-                <p>{{ __('messages.home.feature_1_desc') }}</p>
+            <div class="feature-box d-flex align-items-center align-items-md-center flex-row flex-md-column text-start text-md-center">
+                <div class="feature-icon-wrapper me-3 me-md-0 mb-0 mb-md-2">
+                    <i class="fa-solid fa-handshake fs-3"></i>
+                </div>
+                <div>
+                    <h6 class="mb-1">{{ __('messages.home.feature_1_title') }}</h6>
+                    <p class="small mb-0">{{ __('messages.home.feature_1_desc') }}</p>
+                </div>
             </div>
         </div>
 
         <div class="col-md-4">
-            <div class="feature-box">
-                <i class="fa-solid fa-graduation-cap fs-3 mb-2"></i>
-                <h6>{{ __('messages.home.feature_2_title') }}</h6>
-                <p>{{ __('messages.home.feature_2_desc') }}</p>
+            <div class="feature-box d-flex align-items-center align-items-md-center flex-row flex-md-column text-start text-md-center">
+                <div class="feature-icon-wrapper me-3 me-md-0 mb-0 mb-md-2">
+                    <i class="fa-solid fa-graduation-cap fs-3"></i>
+                </div>
+                <div>
+                    <h6 class="mb-1">{{ __('messages.home.feature_2_title') }}</h6>
+                    <p class="small mb-0">{{ __('messages.home.feature_2_desc') }}</p>
+                </div>
             </div>
         </div>
 
         <div class="col-md-4">
-            <div class="feature-box">
-                <i class="fa-solid fa-gear fs-3 mb-2"></i>
-                <h6>{{ __('messages.home.feature_3_title') }}</h6>
-                <p>{{ __('messages.home.feature_3_desc') }}</p>
+            <div class="feature-box d-flex align-items-center align-items-md-center flex-row flex-md-column text-start text-md-center">
+                <div class="feature-icon-wrapper me-3 me-md-0 mb-0 mb-md-2">
+                    <i class="fa-solid fa-gear fs-3"></i>
+                </div>
+                <div>
+                    <h6 class="mb-1">{{ __('messages.home.feature_3_title') }}</h6>
+                    <p class="small mb-0">{{ __('messages.home.feature_3_desc') }}</p>
+                </div>
             </div>
         </div>
     </div>

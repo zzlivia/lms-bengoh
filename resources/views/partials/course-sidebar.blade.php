@@ -12,7 +12,7 @@
     <h6 class="fw-bold mb-3">{{ __('messages.courses.course_modules') }}</h6>
     @foreach($course->modules as $module)
     <div class="mb-3">
-        <div class="text-uppercase small text-muted fw-bold">{{ __('messages.courses.module') }} {{ $loop->iteration }}</div>
+        <div class="text-uppercase small text-muted fw-bold">Module {{ $loop->iteration }}</div>
         {{-- retrieve modules --}}
         @php
             $moduleLectureIds = $module->lectures->pluck('lectID')->toArray();
@@ -29,30 +29,29 @@
         </a>
         {{-- retrieve lectures --}}
         @foreach($module->lectures as $lecture)
-            <div class="ms-2 mb-1">
-                <div class="ms-2 mb-1">
-                    @if(in_array($lecture->lectID, $completedLectures))
-                        <i class="fa fa-circle text-success me-1"></i>
-                    @else
-                        <i class="fa fa-circle text-muted me-1"></i>
-                    @endif
+                {{-- lecture Name --}}
+                <div class="ms-2 mb-1 text-muted small fw-bold">
                     {{ $lecture->getTranslation('lectName') }}
                 </div>
-            </div>
-            {{-- display sections --}}
-            @foreach($lecture->sections as $section)
-                <a href="{{ route('learn', ['id' => $course->courseID, 'sectionId' => $section->sectionID]) }}"
-                class="ms-4 small d-block sidebar-section 
-                {{ isset($current) && $current->sectionID == $section->sectionID ? 'active-section' : '' }}">
-                    • {{ $section->getTranslation('section_title') }}
-                </a>
+
+                @foreach($lecture->sections as $section)
+                    @php
+                        $isCurrent = isset($current) && $current->sectionID == $section->sectionID;
+                        $isCompleted = in_array($lecture->lectID, $completedLectures);
+                    @endphp
+                    <a href="{{ route('learn', ['id' => $course->courseID, 'sectionId' => $section->sectionID]) }}"
+                    class="ms-4 small d-block sidebar-section {{ $isCurrent ? 'active-section fw-bold' : 'text-muted' }}">
+                        <i class="fa {{ $isCompleted ? 'fa-check-circle text-success' : ($isCurrent ? 'fa-play-circle text-primary' : 'fa-circle-o') }} me-1"></i>
+                        {{ $section->getTranslation('section_title') }}
+                    </a>
+                @endforeach
             @endforeach
-        @endforeach
         {{-- display mcqs --}}
-        @if($module->mcqs && $module->mcqs->count() > 0)
-            <div class="ms-2 mt-1">
-                <a href="{{ route('mcq.module', $module->moduleID) }}" class="text-decoration-none">
-                    ○ {{ __('messages.courses.mcqs') }} {{ $loop->iteration }}
+        @if($module->mcqs->count() > 0)
+            <div class="ms-4 mt-1">
+                <a href="{{ route('mcq.module', $module->moduleID) }}" 
+                class="small {{ Request::is('*/mcq/*') ? 'fw-bold text-primary' : 'text-muted' }}">
+                    <i class="fa fa-question-circle me-1"></i> {{ __('messages.courses.mcqs') }}
                 </a>
             </div>
         @endif

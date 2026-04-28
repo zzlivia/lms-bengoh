@@ -74,24 +74,33 @@
     <h5 class="text-center mb-4 fw-bold">{{ __('messages.home.community_title') }}</h5>
     <div class="row mb-3 justify-content-center">
         @forelse($stories->take(2) as $story)
-            <div class="col-md-5 mb-3">
-                <div class="story-card d-flex align-items-center">
-                    {{-- image --}}
-                    @if($story->community_image)
-                        {{-- Force Laravel to use the 'r2' disk to generate the URL --}}
-                        <img src="{{ Storage::disk('r2')->url($story->community_image) }}" 
-                            class="profile-icon me-3 rounded" 
-                            width="60" 
-                            height="60" 
-                            style="object-fit: cover;"
-                            alt="{{ $story->getTranslation('community_name') }}">
-                    @else
-                        <i class="fa-solid fa-user-tie profile-icon me-3"></i>
-                    @endif
-                    {{-- content --}}
-                    <div>
-                        <h6 class="fw-bold mb-1">{{ $story->getTranslation('community_name') }}</h6>
-                        <p class="small mb-0">"{{ $story->getTranslation('community_story') }}"</p>
+            <div class="col-md-6 mb-3"> {{-- Changed to col-6 for better desktop width --}}
+                <div class="story-card p-3">
+                    {{-- Header with Image and Name --}}
+                    <div class="d-flex align-items-center mb-2">
+                        @if($story->community_image)
+                            <img src="{{ Storage::disk('r2')->url($story->community_image) }}" 
+                                class="rounded-circle me-3 shadow-sm" 
+                                width="50" 
+                                height="50" 
+                                style="object-fit: cover;"
+                                alt="{{ $story->getTranslation('community_name') }}">
+                        @else
+                            <div class="bg-light rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px;">
+                                <i class="fa-solid fa-user text-secondary"></i>
+                            </div>
+                        @endif
+                        <div>
+                            <h6 class="fw-bold mb-0">{{ $story->getTranslation('community_name') }}</h6>
+                            <small class="text-muted">Community Story</small>
+                        </div>
+                    </div>
+
+                    {{-- The Story Excerpt --}}
+                    <div class="story-content">
+                        <p class="story-text mb-0">
+                            "{{ $story->getTranslation('community_story') }}"
+                        </p>
                     </div>
                 </div>
             </div>

@@ -1,3 +1,4 @@
+/* ================= GLOBAL STYLES ================= */
 html, body {
     height: 100%;
 }
@@ -5,30 +6,54 @@ html, body {
 body {
     background-color: #ffffff;
     font-family: Arial, sans-serif;
-
-    /* Sticky footer layout */
     display: flex;
     flex-direction: column;
 }
 
-/* allow page content to expand and push footer down */
 main {
     flex: 1;
 }
 
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* ================= COMPONENT STYLES ================= */
+
+/* Hero Image */
 .hero-img {
-    position: relative;
     width: 100%;
     height: auto;
 }
 
+/* Feature Boxes (Top Section) */
 .feature-box {
     background: #a9d3ea;
-    padding: 20px;
-    border-radius: 10px;
-    text-align: center;
+    padding: 15px 20px;
+    border-radius: 12px;
     height: 100%;
+    transition: background 0.3s ease;
 }
+
+.feature-box h6 {
+    font-weight: bold;
+    color: #003366;
+}
+
+.feature-box p {
+    line-height: 1.3;
+    font-size: 14px;
+}
+
+.feature-icon-wrapper {
+    min-width: 45px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Course Cards */
 .course-card {
     border: 1px solid #ccc;
     border-radius: 10px;
@@ -53,6 +78,7 @@ main {
     border-color: #00aaff;
 }
 
+/* Community Stories & History Cards */
 .story-card,
 .history-card {
     background: linear-gradient(135deg, #ffffff, #f5fbff);
@@ -60,24 +86,32 @@ main {
     border-radius: 18px;
     padding: 20px;
     height: 100%;
-
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
 }
 
-/* subtle top accent line */
+/* Multi-line Truncation for Stories */
+.story-text {
+    font-size: 14px;
+    line-height: 1.5;
+    color: #555;
+    display: -webkit-box;
+    -webkit-line-clamp: 4; 
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* History Card Specifics */
 .history-card::before {
     content: "";
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 4px;
+    top: 0; left: 0;
+    width: 100%; height: 4px;
     background: #00aaff;
 }
 
-/* hover effect */
 .history-card:hover {
     transform: translateY(-8px) scale(1.02);
     box-shadow: 0 10px 25px rgba(0, 170, 255, 0.15);
@@ -95,43 +129,12 @@ main {
     line-height: 1.6;
 }
 
-.profile-icon {
-    font-size: 80px;
-    color: #000;
-}
-
-footer {
-    margin-top: 50px;
-    padding: 20px;
-    text-align: center;
-    background: #fff;
-    border-top: 2px solid #00aaff;
-}
-
-a {
-    text-decoration: none;
-    color: inherit;
-}
-
-/* ===== START LEARNING PAGE ===== */
-
+/* ================= LEARNING PAGE ================= */
 .sidebar {
     background: #fff;
     height: 100vh;
     overflow-y: auto;
     border-right: 1px solid #ddd;
-}
-
-.module-title {
-    font-size: 12px;
-    font-weight: bold;
-    color: #666;
-    margin-top: 20px;
-}
-
-.lecture-item {
-    font-size: 13px;
-    padding: 4px 0;
 }
 
 .video-box {
@@ -146,115 +149,64 @@ a {
     border-radius: 6px;
 }
 
-.btn-nav {
-    min-width: 120px;
+/* ================= FOOTER ================= */
+footer {
+    margin-top: 50px;
+    padding: 20px;
+    text-align: center;
+    background: #fff;
+    border-top: 2px solid #00aaff;
 }
 
-h5 + .row {
-    position: relative;
-    z-index: 10;
-}
+/* ================= RESPONSIVE QUERIES ================= */
 
-.offer-card {
-    transition: all 0.3s ease;
-}
-
-.offer-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 12px 30px rgba(0,0,0,0.2);
-}
-
-/* ================= MOBILE RESPONSIVE UPDATES ================= */
 @media (max-width: 768px) {
-    
-    /* reset heights for stacking */
-    .feature-box,
-    .course-card,
-    .story-card,
-    .history-card {
-        height: auto; /* allow cards to grow with text */
-        margin-bottom: 20px;
+    /* Stacked Layout Overrides */
+    .feature-box, .course-card, .story-card, .history-card {
+        height: auto;
+        margin-bottom: 15px;
     }
 
-    /* adjust Course Card Images */
+    .feature-box {
+        padding: 12px 15px;
+    }
+
+    .story-text {
+        -webkit-line-clamp: 3;
+    }
+
     .course-card img {
-        height: 200px; /* give it more height on mobile since width is now full-screen */
+        height: 200px;
     }
 
-    /* disable hover transforms for touch */
-    /* On mobile, 'hover' triggers on first tap and stays stuck. */
-    .course-card:hover,
-    .history-card:hover,
-    .offer-card:hover {
+    /* Disable animations on mobile for better performance */
+    .course-card:hover, .history-card:hover {
         transform: none;
     }
 
-    /* start Learning Page Sidebar */
     .sidebar {
         height: auto;
-        position: relative; /* Change from sticky/fixed to normal flow */
         border-right: none;
         border-bottom: 1px solid #ddd;
         padding-bottom: 15px;
     }
 
-    /* video Box - Adjust height for mobile aspect ratio */
     .video-box {
-        height: 200px; /* 16:9 ratio usually looks better on mobile */
+        height: 200px;
     }
 
-    /* footer - Reduce top margin */
     footer {
         margin-top: 30px;
     }
-
-    /* general Spacing */
-    .content-section {
-        padding: 15px;
-    }
 }
 
-/* extra small devices (Phones) */
 @media (max-width: 576px) {
     .btn-nav {
-        width: 100%; /* make buttons full-width for easier tapping */
+        width: 100%;
         margin-bottom: 10px;
     }
 
     .profile-icon {
-        font-size: 50px; /* scale down large icons */
-    }
-}
-
-/* Improved Feature Box */
-.feature-box {
-    background: #a9d3ea;
-    padding: 15px 20px; /* Reduced vertical padding */
-    border-radius: 12px;
-    height: 100%;
-    transition: background 0.3s ease;
-}
-
-/* Icon sizing for mobile horizontal layout */
-.feature-icon-wrapper {
-    min-width: 45px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.feature-box h6 {
-    font-weight: bold;
-    color: #003366; /* Darker blue for better contrast */
-}
-
-.feature-box p {
-    line-height: 1.3;
-}
-
-@media (max-width: 768px) {
-    .feature-box {
-        margin-bottom: 10px; /* Tighter spacing between cards */
-        padding: 12px 15px;
+        font-size: 50px;
     }
 }

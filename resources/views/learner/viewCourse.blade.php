@@ -14,6 +14,12 @@
         </div>
     @endif
     <div class="container mt-4">
+        {{-- back to previous page --}}
+        <div class="mb-3">
+            <a href="{{ url()->previous() == url()->current() ? route('courses.index') : url()->previous() }}" class="btn btn-outline-secondary btn-sm">
+                <i class="fa fa-arrow-left me-1"></i> {{ __('Back to Courses') }}
+            </a>
+        </div>
         <div class="text-center mb-4 course-banner-container">
             {{-- check through config/filesystems.php, r2 --}}
              <img src="{{ Storage::disk('r2')->url($course->courseImg) }}" alt="{{ $course->getTranslation('courseName') }}" class="course-banner-img rounded shadow-sm">

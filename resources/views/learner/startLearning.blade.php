@@ -40,10 +40,19 @@
 
                     {{-- Title and Progress Indicator --}}
                     <div class="mb-4">
-                        <h3 class="fw-bold h4 mb-1">{{ $course->courseTitle }}</h3>
-                        <div class="text-muted small">
+                        <h3 class="fw-bold h4 mb-1">{{ $course->getTranslation('courseName') }}</h3>
+                        <div class="text-muted small d-flex align-items-center gap-2">
                             @if($current)
-                                {{ __('messages.courses.module') }} {{ $current->module->moduleID ?? '' }} • Step {{ $currentIndex + 1 }} of {{ $sections->count() }}
+                                {{-- Module Name --}}
+                                <span class="fw-bold text-uppercase" style="letter-spacing: 0.5px;">
+                                    {{ __('messages.courses.module') }} {{ $current->lecture->module->moduleID ?? '' }}: 
+                                    {{ $current->lecture->module->getTranslation('moduleName') }}
+                                </span>
+                                <span class="text-secondary">•</span>
+                                {{-- Current Lecture Name --}}
+                                <span class="text-secondary">
+                                    {{ $current->lecture->getTranslation('lectName') }}
+                                </span>
                             @endif
                         </div>
                     </div>

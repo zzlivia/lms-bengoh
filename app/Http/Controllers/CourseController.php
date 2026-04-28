@@ -220,6 +220,10 @@ class CourseController extends Controller
                 ->where('courseID', $id)
                 ->where('progressName', 'like', 'SECTION_%')
                 ->count();
+
+            if (Auth::check() && isset($current->lectID)) {
+                $this->markComplete($current->lectID);
+            }
         }
 
         $isCompletedAll = $completedSections >= $totalSections;

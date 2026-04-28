@@ -68,34 +68,58 @@
             @endforeach
         </div>
 
-        {{-- NEW: Public Feedback Section --}}
-        <div class="mt-5">
-            <h4 class="fw-bold mb-4"><i class="fa fa-star me-2 text-warning"></i>{{ __('Learner Reviews') }}</h4>
-            <div class="feedback-scroll pe-2">
-                @forelse($feedbacks as $feedback)
-                    <div class="card mb-3 border-0 shadow-sm">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between">
-                                <div>
-                                    <span class="star-rating">
-                                        @for($i=1; $i<=5; $i++)
-                                            <i class="fa{{ $i <= $feedback->rating ? 's' : 'r' }} fa-star"></i>
-                                        @endfor
-                                    </span>
-                                    <span class="ms-2 text-muted small">| {{ $feedback->created_at }}</span>
+        <div class="mt-5 p-4 bg-white rounded shadow-sm">
+            <h4 class="fw-bold mb-4">
+                <i class="fa fa-comments me-2 text-primary"></i>{{ __('Learner Reviews') }}
+            </h4>
+            
+            <div class="feedback-list" style="max-height: 500px; overflow-y: auto;">
+                @forelse($feedbacks as $f)
+                    <div class="card mb-3 border-0 border-bottom">
+                        <div class="card-body px-0">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <h6 class="fw-bold mb-0">{{ $f->userName }}</h6>
+                                <div class="text-warning">
+                                    @for($i = 1; $i <= 5; $i++)
+                                        <i class="fa{{ $i <= $f->rating ? 's' : 'r' }} fa-star small"></i>
+                                    @endfor
                                 </div>
-                                <span class="badge badge-outline-info text-info small">Fav: {{ $feedback->favorite_module }}</span>
                             </div>
-                            <p class="mt-2 mb-1"><strong>"{{ $feedback->enjoyed }}"</strong></p>
-                            @if($feedback->suggestions)
-                                <p class="text-muted small mb-0"><em>Suggestion: {{ $feedback->suggestions }}</em></p>
+                            
+                            <p class="mb-1 text-dark">"{{ $f->enjoyed }}"</p>
+                            
+                            @if($f->suggestions)
+                                <p class="small text-muted mb-0">
+                                    <strong>Suggestions:</strong> {{ $f->suggestions }}
+                                </p>
                             @endif
+                            
+                            <div class="mt-2">
+                                <span class="badge bg-light text-secondary border fw-normal">
+                                    {{ __('Clarity') }}: {{ $f->clarity }}
+                                </span>
+                                <span class="badge bg-light text-secondary border fw-normal">
+                                    {{ __('Module') }}: {{ $f->favorite_module }}
+                                </span>
+                            </div>
+                            <small class="text-muted d-block mt-2">{{ \Carbon\Carbon::parse($f->created_at)->diffForHumans() }}</small>
                         </div>
                     </div>
                 @empty
-                    <p class="text-muted">No reviews yet. Be the first to provide feedback!</p>
+                    <div class="text-center py-4">
+                        <p class="text-muted">{{ __('No reviews yet. Be the first to share your experience!') }}</p>
+                    </div>
                 @endforelse
             </div>
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center mt-4 mb-5 p-4 bg-light rounded">
+            <a href="{{ route('course.feedback', $course->courseID) }}" class="btn btn-link text-decoration-none">
+                <i class="fa fa-pen-to-square me-1"></i> {{ __('messages.courses.view_feedback') }}
+            </a>
+            <a href="{{ route('learn', $course->courseID) }}" class="btn btn-primary btn-lg px-5 shadow">
+                {{ __('messages.courses.enrol_now') }}
+            </a>
         </div>
 
         <div class="d-flex justify-content-between align-items-center mt-5 mb-5 p-4 bg-light rounded shadow-sm">

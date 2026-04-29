@@ -57,7 +57,7 @@
 
                 <div class="text-end">
                     <button type="submit" class="btn btn-primary px-4">
-                        <i class="bi bi-check-lg"></i> Save Story
+                        <i class="bi bi-check-lg"></i> Save
                     </button>
                 </div>
             </form>

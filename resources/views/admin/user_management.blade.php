@@ -112,30 +112,38 @@
     @push('scripts')
     <script>
         $(document).ready(function() {
-            // Initialize DataTable
-            var table = $('#userTable').DataTable({
-                "dom": 'lrtip' // Hides the default search box so we can use our custom one
-            });
+            //check if the table is already initialized to prevent the error
+            if ( ! $.fn.DataTable.isDataTable( '#userTable' ) ) {
+                //initialize with your custom settings
+                var table = $('#userTable').DataTable({
+                    "dom": 'lrtip',
+                    "retrieve": true,
+                    "pagingType": "full_numbers",
+                    "language": {
+                        "paginate": {
+                            "previous": "«",
+                            "next": "»"
+                        }
+                    }
+                });
+                //connect custom search input
+                $('#customSearch').on('keyup', function() {
+                    table.search(this.value).draw();
+                });
+            }
 
-            // Connect custom search input to DataTable
-            $('#customSearch').on('keyup', function() {
-                table.search(this.value).draw();
-            });
-
-            // Select All logic
+            //select All logic
             $('#selectAll').on('click', function() {
                 $('.user-checkbox').prop('checked', this.checked);
             });
         });
 
-        // Individual delete function
+        //individual delete function (keep this outside document.ready)
         function confirmSingleDelete(userId) {
             if (confirm('Are you sure you want to delete this user?')) {
                 var form = $('#singleDeleteForm');
-                // Dynamically set the action URL using the route name
                 var url = "{{ route('admin.user.delete', ':id') }}";
                 url = url.replace(':id', userId);
-                
                 form.attr('action', url);
                 form.submit();
             }

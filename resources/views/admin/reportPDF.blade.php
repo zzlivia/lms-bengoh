@@ -151,7 +151,7 @@
                 <td>{{ $row->moduleName }}</td>
                 <td>{{ $row->totalAssessment }}</td>
                 <td>{{ $row->completed ?? 0 }}</td>
-                <td>{{ $row->in_progress }}</td>
+                <td>{{ $row->in_progress ?? 0 }}</td>
             </tr>
             @endforeach
             @else

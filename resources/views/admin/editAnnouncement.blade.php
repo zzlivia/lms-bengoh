@@ -3,7 +3,7 @@
 @section('content')
 
 <h4 class="fw-bold mb-4">Edit Announcement</h4>
-    <form method="POST" action="{{ route('announcements.update', $announcement->announcementID) }}">
+    <form method="POST" action="{{ route('admin.announcements.update', $announcement->announcementID) }}">
         @csrf
         @method('PUT')
         <div class="mb-3">

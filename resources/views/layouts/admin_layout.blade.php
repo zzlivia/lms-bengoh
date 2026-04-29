@@ -123,14 +123,5 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.7.0/tinymce.min.js"></script>
 
     @stack('scripts')
-
-    <script>
-        $(document).ready(function() {
-            // Service Worker
-            if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('/service-worker.js');
-            }
-        });
-    </script>
 </body>
 </html>

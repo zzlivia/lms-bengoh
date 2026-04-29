@@ -150,7 +150,7 @@
             <tr>
                 <td>{{ $row->moduleName }}</td>
                 <td>{{ $row->totalAssessment }}</td>
-                <td>{{ $row->completed }}</td>
+                <td>{{ $row->completed ?? 0 }}</td>
                 <td>{{ $row->in_progress }}</td>
             </tr>
             @endforeach

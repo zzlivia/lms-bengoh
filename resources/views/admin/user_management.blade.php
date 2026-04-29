@@ -112,9 +112,9 @@
     @push('scripts')
     <script>
         $(document).ready(function() {
-            //check if the table is already initialized to prevent the error
+            //check prevents the "Cannot reinitialise" error
             if ( ! $.fn.DataTable.isDataTable( '#userTable' ) ) {
-                //initialize with your custom settings
+                
                 var table = $('#userTable').DataTable({
                     "dom": 'lrtip',
                     "retrieve": true,
@@ -126,7 +126,8 @@
                         }
                     }
                 });
-                //connect custom search input
+
+                //connect search input
                 $('#customSearch').on('keyup', function() {
                     table.search(this.value).draw();
                 });
@@ -138,45 +139,7 @@
             });
         });
 
-        //individual delete function (keep this outside document.ready)
-        function confirmSingleDelete(userId) {
-            if (confirm('Are you sure you want to delete this user?')) {
-                var form = $('#singleDeleteForm');
-                var url = "{{ route('admin.user.delete', ':id') }}";
-                url = url.replace(':id', userId);
-                form.attr('action', url);
-                form.submit();
-            }
-        }
-    </script>
-    @endpush
-
-    @push('scripts')
-    <script>
-        $(document).ready(function() {
-            // Initialize DataTable with Bootstrap 5 styling compatibility
-            var table = $('#userTable').DataTable({
-                "dom": 'lrtip', // Keeps your custom search setup
-                "pagingType": "full_numbers", // Optional: provides more navigation options
-                "language": {
-                    "paginate": {
-                        "previous": "«",
-                        "next": "»"
-                    }
-                }
-            });
-
-            // Connect custom search input
-            $('#customSearch').on('keyup', function() {
-                table.search(this.value).draw();
-            });
-
-            // Select All logic
-            $('#selectAll').on('click', function() {
-                $('.user-checkbox').prop('checked', this.checked);
-            });
-        });
-
+        //individual delete function
         function confirmSingleDelete(userId) {
             if (confirm('Are you sure you want to delete this user?')) {
                 var form = $('#singleDeleteForm');

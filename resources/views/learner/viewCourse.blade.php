@@ -21,7 +21,7 @@
     <div class="container mt-4">
         {{-- back to previous page --}}
         <div class="mb-3">
-            <a href="{{ url()->previous() == url()->current() ? route('courses.index') : url()->previous() }}" class="btn btn-outline-secondary btn-sm">
+            <a href="{{ url()->previous() == url()->current() ? route('courses.allCourses') : url()->previous() }}" class="btn btn-outline-secondary btn-sm">
                 <i class="fa fa-arrow-left me-1"></i> {{ __('Back to Courses') }}
             </a>
         </div>

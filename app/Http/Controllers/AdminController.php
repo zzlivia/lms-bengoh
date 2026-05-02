@@ -377,6 +377,22 @@ class AdminController extends Controller
 
         return view('admin.assessment_results', compact('results'));
     }
+
+    public function courseResults($id)
+    {
+        // 1. Get the course details
+        $course = Course::findOrFail($id);
+        
+        // 2. Query AssessmentResult for this specific course
+        // We use with('user') so we can show the learner's name
+        $results = AssessmentResult::where('courseID', $id)
+            ->with(['user']) 
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        // 3. Return the view with the data
+        return view('admin.course_results', compact('course', 'results'));
+    }
     
     public function storeMaterials(Request $request, $id)
     {

@@ -399,23 +399,22 @@ class AdminController extends Controller
         //fetch the main result record
         $result = AssessmentResult::with(['user', 'course'])->findOrFail($id);
 
-        //fetch the detailed questions and answers
-        $details = DB::table('mcqs')
+        //fetch the detailed responses using aliases to match your Blade file
+        $details = DB::table('moduleans')
+            ->join('mcqs', 'moduleans.moduleQs_ID', '=', 'mcqs.moduleQs_ID')
+            //filter by module and check  if moduleans doesn't have userID
             ->where('mcqs.moduleID', $result->moduleID)
-            ->leftJoin('moduleans', 'mcqs.moduleQs_ID', '=', 'moduleans.moduleQs_ID')
-            //filter by userID to ensure we see THIS specific learner's answers
-            ->where('moduleans.userID', $result->userID) 
             ->select(
-                'mcqs.question',
-                'mcqs.answer1',
-                'mcqs.answer2',
-                'mcqs.answer3',
+                'mcqs.question', 
+                'mcqs.answer1', 
+                'mcqs.answer2', 
+                'mcqs.answer3', 
                 'mcqs.answer4',
-                'mcqs.correct_answer',
+                'mcqs.correct_answer', 
                 'moduleans.ansID_text as learner_answer',
                 'moduleans.ansCorrect as is_correct'
             )
-            ->where('moduleans.userID', $result->userID);
+            ->get();
 
         return view('admin.mcq_result_details', compact('result', 'details'));
     }

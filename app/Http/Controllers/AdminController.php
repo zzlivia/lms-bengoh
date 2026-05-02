@@ -380,11 +380,8 @@ class AdminController extends Controller
 
     public function courseResults($id)
     {
-        // 1. Get the course details
+        //get the course details
         $course = Course::findOrFail($id);
-        
-        // 2. Query AssessmentResult for this specific course
-        // We use with('user') so we can show the learner's name
         $results = AssessmentResult::where('courseID', $id)
             ->with(['user']) 
             ->orderBy('created_at', 'desc')
@@ -394,24 +391,39 @@ class AdminController extends Controller
         return view('admin.course_results', compact('course', 'results'));
     }
 
+    public function mcqReportsList()
+    {
+        $results = AssessmentResult::with(['user', 'course', 'module'])
+            ->where('type', 'mcq')
+            ->orderBy('created_at', 'desc')
+            ->paginate(15);
+
+        return view('admin.reports.mcq_list', compact('results'));
+    }
+
     public function mcqResultDetails($id)
     {
-        //fetch the main result record to get context
-        $result = AssessmentResult::with(['user', 'course'])->findOrFail($id);
+        //fetch the main result record with relationships
+        $result = AssessmentResult::with(['user', 'course', 'module'])->findOrFail($id);
 
-        //join the MCQ questions with the user's specific answers
-        $details = DB::table('moduleans')
-            ->join('mcqs', 'moduleans.moduleQs_ID', '=', 'mcqs.moduleQs_ID')
-            ->where('moduleans.userID', $result->userID)
+        //fetch the questions and join with the learner's specific answers
+        $details = DB::table('mcqs')
+            ->leftJoin('moduleans', function($join) use ($result) {
+                $join->on('mcqs.moduleQs_ID', '=', 'moduleans.moduleQs_ID')
+                     ->where('moduleans.userID', '=', $result->userID);
+            })
             ->where('mcqs.moduleID', $result->moduleID)
+            ->where('mcqs.is_active', 1)
             ->select(
+                'mcqs.moduleQs_ID',
                 'mcqs.question', 
                 'mcqs.answer1', 
                 'mcqs.answer2', 
                 'mcqs.answer3', 
                 'mcqs.answer4',
                 'mcqs.correct_answer', 
-                'moduleans.ansID_text as learner_answer',
+                'moduleans.ansID_text as learner_answer_text',
+                'moduleans.ansID as learner_answer_index',
                 'moduleans.ansCorrect as is_correct'
             )
             ->get();

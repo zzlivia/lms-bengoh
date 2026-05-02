@@ -12,4 +12,9 @@ class AssessmentResult extends Model
     protected $fillable = ['userID','moduleID','score','status'];
     public $incrementing = true;
     protected $keyType = 'int';
+
+    public function user()
+    {
+        return $this->belongsTo(Users::class, 'userID', 'userID');
+    }
 }

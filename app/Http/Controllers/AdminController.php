@@ -396,13 +396,13 @@ class AdminController extends Controller
 
     public function mcqResultDetails($id)
     {
-        //fetch the main result record
+        //fetch the main result record to get context
         $result = AssessmentResult::with(['user', 'course'])->findOrFail($id);
 
-        //fetch the detailed responses using aliases to match your Blade file
+        //join the MCQ questions with the user's specific answers
         $details = DB::table('moduleans')
             ->join('mcqs', 'moduleans.moduleQs_ID', '=', 'mcqs.moduleQs_ID')
-            //filter by module and check  if moduleans doesn't have userID
+            ->where('moduleans.userID', $result->userID)
             ->where('mcqs.moduleID', $result->moduleID)
             ->select(
                 'mcqs.question', 

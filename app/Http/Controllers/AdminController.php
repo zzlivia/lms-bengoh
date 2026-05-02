@@ -415,7 +415,7 @@ class AdminController extends Controller
                 'moduleans.ansID_text as learner_answer',
                 'moduleans.ansCorrect as is_correct'
             )
-            ->get();
+            ->where('moduleans.userID', $result->userID);
 
         return view('admin.mcq_result_details', compact('result', 'details'));
     }

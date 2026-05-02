@@ -393,6 +393,32 @@ class AdminController extends Controller
         // 3. Return the view with the data
         return view('admin.course_results', compact('course', 'results'));
     }
+
+    public function mcqResultDetails($id)
+    {
+        //fetch the main result record
+        $result = AssessmentResult::with(['user', 'course'])->findOrFail($id);
+
+        //fetch the detailed questions and answers
+        $details = DB::table('mcqs')
+            ->where('mcqs.moduleID', $result->moduleID)
+            ->leftJoin('moduleans', 'mcqs.moduleQs_ID', '=', 'moduleans.moduleQs_ID')
+            //filter by userID to ensure we see THIS specific learner's answers
+            ->where('moduleans.userID', $result->userID) 
+            ->select(
+                'mcqs.question',
+                'mcqs.answer1',
+                'mcqs.answer2',
+                'mcqs.answer3',
+                'mcqs.answer4',
+                'mcqs.correct_answer',
+                'moduleans.ansID_text as learner_answer',
+                'moduleans.ansCorrect as is_correct'
+            )
+            ->get();
+
+        return view('admin.mcq_result_details', compact('result', 'details'));
+    }
     
     public function storeMaterials(Request $request, $id)
     {

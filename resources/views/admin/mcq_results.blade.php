@@ -29,9 +29,9 @@
                     <td>{{ $result->course->courseName ?? 'N/A' }}</td>
                     <td><strong class="text-primary">{{ $result->score }}%</strong></td>
                     <td>
-                        <span class="badge {{ $result->status == 'passed' ? 'bg-success' : 'bg-danger' }}">
-                            {{ strtoupper($result->status) }}
-                        </span>
+                        <a href="{{ route('admin.reports.mcq.details', $result->id) }}" class="text-primary fw-bold">
+                            {{ $result->user->userName ?? 'Unknown User' }}
+                        </a>
                     </td>
                     <td>{{ $result->created_at->format('d M Y, h:i A') }}</td>
                 </tr>

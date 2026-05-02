@@ -172,11 +172,6 @@
                     <a href="{{ route('admin.reports.assessments') }}" class="btn btn-outline-danger">
                         <i class="fas fa-file-invoice me-1"></i> View Assessment Results
                     </a>
-
-                    {{-- Link to general Performance Tab --}}
-                    <a href="{{ route('admin.performance') }}" class="btn btn-dark">
-                        <i class="fas fa-external-link-alt me-1"></i> Full Analytics Dashboard
-                    </a>
                 </div>
             </div>
         </div>

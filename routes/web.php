@@ -406,6 +406,8 @@ Route::prefix('admin')
 
     Route::get('/reports/assessments', [AdminController::class, 'assessmentResults'])->name('reports.assessments');
     
+    Route::get('/admin/reports/mcq/{id}', [AdminController::class, 'mcqResultDetails'])->name('admin.reports.mcq.details');
+
     /* others */
 
     Route::get('/progress', [AdminController::class, 'progress'])

@@ -17,4 +17,9 @@ class AssessmentResult extends Model
     {
         return $this->belongsTo(Users::class, 'userID', 'userID');
     }
+
+    public function course()
+    {
+        return $this->belongsTo(Course::class, 'courseID', 'courseID');
+    }
 }

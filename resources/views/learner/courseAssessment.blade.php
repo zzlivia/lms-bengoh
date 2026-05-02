@@ -1,103 +1,126 @@
 @extends('layouts.open_layout')
 
 @section('styles')
-<link rel="stylesheet" href="{{ asset('css/course-sidebar.css') }}">
+    {{-- Use startLearning.css if it contains the "learning-content-card" styles from your previous code --}}
+    <link rel="stylesheet" href="{{ asset('css/startLearning.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/course-sidebar.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
 @endsection
 
 @section('content')
-<div class="container-fluid">
-    <div class="row">
-        <!-- Sidebar -->
-        <div class="col-md-3 d-none d-md-block" id="desktopSidebar">
-            @include('partials.course-sidebar', ['course' => $course])
-        </div>
-        <!-- Main Content -->
-        <div class="col-md-9 p-4">
-            @if(session('error'))
-                <div class="alert alert-danger">
-                    {{ session('error') }}
-                </div>
-            @endif
-            @if(session('info'))
-                <div class="alert alert-info">
-                    {{ session('info') }}
-                </div>
-            @endif
-            <h6 class="text-center mb-4">
-                {{ __('messages.courses.assessment_title', [
-                    'id' => $assessment->courseAssID,
-                    'name' => $assessment->getTranslation('courseAssTitle', app()->getLocale())
-                ]) }}
-            </h6>
-            @auth
-            <div class="card p-4 shadow-sm">
-                <p>
-                    <b>{{ __('messages.courses.assessment_purpose_label') }}</b><br>
-                    {{ $assessment->getTranslation('courseAssDesc') }}
-                </p>
-                <div class="text-center mb-3">
-                    <h5>Time Left: <span id="timer">10:00</span></h5>
-                </div>
-                <hr>
-                <div class="learning-content-card p-4 shadow-sm bg-white rounded border-0">
-                    <form id="assessmentForm" method="POST" action="{{ route('final.assessment.submit', $course->courseID) }}">
-                        @csrf
-                        <input type="hidden" name="courseAssID" value="{{ $assessment->courseAssID }}">
-                        <input type="hidden" name="courseID" value="{{ $course->courseID }}">
-                        @foreach($questions as $index => $q)
-                            <p><b>{{ __('messages.courses.question') }} {{ $index+1 }}</b><br>
-                            {{ $q->getTranslation('courseAssQs') }}</p>
-                            @if($q->courseAssType == 'MCQ')
-                                @foreach($q->options as $opt)
-                                    <input type="radio" name="answers[{{ $q->assQsID }}]"value="{{ $opt->id }}">
-                                    {{ $opt->getTranslation('optionText') }} <br>
-                                @endforeach
-                            @else
-                                <textarea name="answers[{{ $q->assQsID }}]" class="form-control mb-3"></textarea>
-                            @endif
-                        @endforeach
-                        <!-- button that trigger modal -->
-                        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#confirmSubmitModal">
-                            {{ __('messages.courses.submit') }}
-                        </button>
-                        <!-- modal inside form -->
-                        <div class="modal fade" id="confirmSubmitModal" tabindex="-1">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title">{{ __('messages.courses.confirm_submission') }}</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                    </div>
+    <div class="container-fluid mt-3">
+        <div class="row">
+            <!-- Sidebar: Hidden on mobile, visible on medium+ -->
+            <div class="col-md-3 d-none d-md-block" id="desktopSidebar">
+                @include('partials.course-sidebar', ['course' => $course])
+            </div>
 
-                                    <div class="modal-body">
-                                        {{ __('messages.courses.confirm_prompt') }}<br>
-                                        {{ __('messages.courses.check_answers_prompt') }}
-                                        <div id="warningText" class="text-danger mt-2"></div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ __('messages.courses.cancel') }}</button>
-                                        <!-- submit -->
-                                        <button type="button" class="btn btn-success" id="confirmSubmitBtn">{{ __('messages.courses.yes_submit') }}</button>
+            <!-- Main Content -->
+            <div class="col-12 col-md-9 px-md-4">
+                {{-- Mobile Sidebar Toggle (Visible only on small screens) --}}
+                <div class="d-md-none mb-3">
+                    <button class="btn btn-sm btn-outline-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileSidebar">
+                        <i class="bi bi-list"></i> {{ __('messages.courses.course_modules') }}
+                    </button>
+                </div>
+
+                <div class="learning-content-card p-4 shadow-sm bg-white rounded border-0">
+                    {{-- Header Section --}}
+                    <div class="mb-4 border-bottom pb-2 d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-2">
+                        <div>
+                            <h3 class="fw-bold h4 mb-0">{{ $course->getTranslation('courseName') }}</h3>
+                            <p class="text-muted small mb-0">{{ __('messages.courses.assessment_title', ['id' => $assessment->courseAssID, 'name' => $assessment->getTranslation('courseAssTitle')]) }}</p>
+                        </div>
+                        <div class="badge bg-light text-danger border p-2 h-fit">
+                            Time Left: <span id="timer">10:00</span>
+                        </div>
+                    </div>
+
+                    @auth
+                        <div class="assessment-purpose mb-4">
+                            <p class="mb-1"><b>{{ __('messages.courses.assessment_purpose_label') }}</b></p>
+                            <p class="text-secondary small">{{ $assessment->getTranslation('courseAssDesc') }}</p>
+                        </div>
+
+                        <form id="assessmentForm" method="POST" action="{{ route('final.assessment.submit', $course->courseID) }}">
+                            @csrf
+                            <input type="hidden" name="courseAssID" value="{{ $assessment->courseAssID }}">
+                            <input type="hidden" name="courseID" value="{{ $course->courseID }}">
+
+                            @foreach($questions as $index => $q)
+                                <div class="question-block mb-4">
+                                    <p class="fw-bold mb-2">{{ $index+1 }}. {{ $q->getTranslation('courseAssQs') }}</p>
+                                    
+                                    @if($q->courseAssType == 'MCQ')
+                                        <div class="options-group ps-2">
+                                            @foreach($q->options as $opt)
+                                                <div class="form-check mb-2">
+                                                    <input class="form-check-input" type="radio" name="answers[{{ $q->assQsID }}]" value="{{ $opt->id }}" id="opt{{ $opt->id }}">
+                                                    <label class="form-check-label pointer ps-1" for="opt{{ $opt->id }}">
+                                                        {{ $opt->getTranslation('optionText') }}
+                                                    </label>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    @else
+                                        <textarea name="answers[{{ $q->assQsID }}]" class="form-control mb-3" rows="3" placeholder="Type your answer here..."></textarea>
+                                    @endif
+                                </div>
+                            @endforeach
+
+                            <div class="mt-4 pt-3 border-top">
+                                <button type="button" class="btn btn-success px-5 shadow-sm" data-bs-toggle="modal" data-bs-target="#confirmSubmitModal">
+                                    {{ __('messages.courses.submit') }}
+                                </button>
+                            </div>
+
+                            {{-- Modal code remains the same as your previous version --}}
+                            <div class="modal fade" id="confirmSubmitModal" tabindex="-1">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">{{ __('messages.courses.confirm_submission') }}</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            {{ __('messages.courses.confirm_prompt') }}<br>
+                                            {{ __('messages.courses.check_answers_prompt') }}
+                                            <div id="warningText" class="text-danger mt-2 fw-bold"></div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ __('messages.courses.cancel') }}</button>
+                                            <button type="button" class="btn btn-success" id="confirmSubmitBtn">{{ __('messages.courses.yes_submit') }}</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+                        </form>
+                    @endauth
+
+                    @guest
+                        <div class="text-center p-5">
+                            <div class="display-4 mb-3">🔒</div>
+                            <p>{{ __('messages.courses.login_required') }}</p>
+                            <div class="d-grid gap-2 col-mx-auto">
+                                <a href="{{ route('login') }}" class="btn btn-primary">{{ __('messages.courses.login') }}</a>
+                            </div>
                         </div>
-                    </form>
+                    @endguest
                 </div>
             </div>
-            @endauth
-
-            @guest
-            <div class="card p-5 shadow-sm text-center">
-                <div style="font-size:40px;">🔒</div>
-                <p class="mt-3">{{ __('messages.courses.login_required') }}</p>
-                <a href="{{ route('login') }}" class="btn btn-primary mt-2">{{ __('messages.courses.login') }}</a>
-                <a href="{{ route('register') }}" class="btn btn-outline-secondary mt-2">{{ __('messages.courses.register') }}</a>
-            </div>
-            @endguest
         </div>
     </div>
-</div>
+
+    {{-- Offcanvas Mobile Sidebar --}}
+    <div class="offcanvas offcanvas-start d-md-none" tabindex="-1" id="mobileSidebar">
+        <div class="offcanvas-header border-bottom">
+            <h5 class="offcanvas-title fw-bold">Course Modules</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+        </div>
+        <div class="offcanvas-body p-0">
+            @include('partials.course-sidebar', ['course' => $course])
+        </div>
+    </div>
 
     <!-- SCRIPT -->
     <script>

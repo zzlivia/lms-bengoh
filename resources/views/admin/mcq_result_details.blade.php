@@ -8,9 +8,9 @@
     </div>
 
     <div class="row">
-        {{-- Summary Sidebar (Matches left side of image_a4073a.png) --}}
+        {{-- Summary Sidebar: Fixed on the left --}}
         <div class="col-md-4">
-            <div class="card shadow-sm border-0 p-4">
+            <div class="card shadow-sm border-0 p-4 sticky-top" style="top: 20px; z-index: 10;">
                 <h5 class="fw-bold mb-3">Attempt Summary</h5>
                 <p class="mb-2"><strong>Course:</strong> {{ $result->course->courseName }}</p>
                 <p class="mb-2"><strong>Score:</strong> <span class="badge bg-primary px-3">{{ $result->score }}%</span></p>
@@ -23,61 +23,60 @@
             </div>
         </div>
 
-        {{-- Question Breakdown (Matches right side of image_a4073a.png) --}}
+        {{-- Question Breakdown: Scrollable section --}}
         <div class="col-md-8">
             <div class="card shadow-sm border-0 p-4">
                 <h5 class="fw-bold mb-4">Question Breakdown</h5>
                 
-                @foreach($details as $index => $item)
-                    <div class="card p-3 mb-4 border shadow-sm">
-                        <p class="fw-bold mb-3">{{ $index + 1 }}. {{ $item->question }}</p>
-                        
-                        @php
-                            // Mapping the 4 potential options from your $item object
-                            $options = [
-                                0 => $item->answer1,
-                                1 => $item->answer2,
-                                2 => $item->answer3,
-                                3 => $item->answer4,
-                            ];
+                {{-- Scroll Container --}}
+                <div style="max-height: 70vh; overflow-y: auto; padding-right: 10px;">
+                    @foreach($details as $index => $item)
+                        <div class="card p-3 mb-4 border shadow-sm">
+                            <p class="fw-bold mb-3">{{ $index + 1 }}. {{ $item->question }}</p>
                             
-                            // Determine indexes (Assuming correct_answer is 1-4 and learner_answer_index is 0-3)
-                            $correctIndex = (int)$item->correct_answer - 1;
-                            $learnerSelection = $item->learner_answer_index; 
-                        @endphp
+                            @php
+                                $options = [
+                                    0 => $item->answer1,
+                                    1 => $item->answer2,
+                                    2 => $item->answer3,
+                                    3 => $item->answer4,
+                                ];
+                                $correctIndex = (int)$item->correct_answer - 1;
+                                $learnerSelection = $item->learner_answer_index; 
+                            @endphp
 
-                        @foreach($options as $key => $option)
-                            @if($option)
-                                @php
-                                    $isCorrect = ($key === $correctIndex);
-                                    $isSelected = ($learnerSelection !== null && (string)$learnerSelection === (string)$key);
-                                    
-                                    // Set colors based on correctness or selection
-                                    $bgColor = $isCorrect ? '#d4edda' : ($isSelected ? '#f8d7da' : 'white');
-                                    $borderColor = $isCorrect ? '#c3e6cb' : ($isSelected ? '#f5c6cb' : '#dee2e6');
-                                @endphp
+                            @foreach($options as $key => $option)
+                                @if($option)
+                                    @php
+                                        $isCorrect = ($key === $correctIndex);
+                                        $isSelected = ($learnerSelection !== null && (string)$learnerSelection === (string)$key);
+                                        
+                                        $bgColor = $isCorrect ? '#d4edda' : ($isSelected ? '#f8d7da' : 'white');
+                                        $borderColor = $isCorrect ? '#c3e6cb' : ($isSelected ? '#f5c6cb' : '#dee2e6');
+                                    @endphp
 
-                                <div class="mt-2 p-2 px-3 rounded border d-flex justify-content-between align-items-center" 
-                                     style="background-color: {{ $bgColor }}; border-color: {{ $borderColor }} !important;">
-                                    
-                                    <span>
-                                        <strong>{{ chr(65 + $key) }}.</strong> {{ $option }}
-                                    </span>
-
-                                    @if($isCorrect)
-                                        <span class="badge bg-success text-white small">
-                                            <i class="fas fa-check-circle"></i> Correct
+                                    <div class="mt-2 p-2 px-3 rounded border d-flex justify-content-between align-items-center" 
+                                         style="background-color: {{ $bgColor }}; border-color: {{ $borderColor }} !important;">
+                                        
+                                        <span>
+                                            <strong>{{ chr(65 + $key) }}.</strong> {{ $option }}
                                         </span>
-                                    @elseif($isSelected)
-                                        <span class="badge bg-danger text-white small">
-                                            <i class="fas fa-times-circle"></i> Learner's Choice
-                                        </span>
-                                    @endif
-                                </div>
-                            @endif
-                        @endforeach
-                    </div>
-                @endforeach
+
+                                        @if($isCorrect)
+                                            <span class="badge bg-success text-white small">
+                                                <i class="fas fa-check-circle"></i> Correct
+                                            </span>
+                                        @elseif($isSelected)
+                                            <span class="badge bg-danger text-white small">
+                                                <i class="fas fa-times-circle"></i> Learner's Choice
+                                            </span>
+                                        @endif
+                                    </div>
+                                @endif
+                            @endforeach
+                        </div>
+                    @endforeach
+                </div> {{-- End Scroll Container --}}
             </div>
         </div>
     </div>

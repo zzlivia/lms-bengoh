@@ -354,6 +354,29 @@ class AdminController extends Controller
 
         return back()->with('success', 'AI question is now active');
     }
+
+    public function mcqResults()
+    {
+        // Fetching results where type is 'mcq'
+        // Assuming AssessmentResult model relates to Users and Course/Module
+        $results = AssessmentResult::where('type', 'mcq')
+            ->with(['user']) // Eager load the user details
+            ->orderBy('created_at', 'desc')
+            ->paginate(15);
+
+        return view('admin.mcq_results', compact('results'));
+    }
+
+    public function assessmentResults()
+    {
+        // Fetching results where type is 'final'
+        $results = AssessmentResult::where('type', 'final')
+            ->with(['user'])
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('admin.assessment_results', compact('results'));
+    }
     
     public function storeMaterials(Request $request, $id)
     {

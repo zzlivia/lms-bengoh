@@ -22,4 +22,9 @@ class AssessmentResult extends Model
     {
         return $this->belongsTo(Course::class, 'courseID', 'courseID');
     }
+
+    public function module()
+    {
+        return $this->belongsTo(Module::class, 'moduleID');
+    }
 }

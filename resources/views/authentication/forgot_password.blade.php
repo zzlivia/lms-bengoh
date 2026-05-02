@@ -31,6 +31,9 @@
         <form method="POST" action="{{ route('password.sendTemp') }}">
             @csrf
 
+            <input type="hidden" name="token" value="{{ request()->route('token') }}">
+            <input type="hidden" name="email" value="{{ request()->email }}">
+            
             <div class="mb-3 text-start input-group-custom">
                 <label class="form-label small fw-semibold">Email or Phone Number</label>
                 <input type="text"

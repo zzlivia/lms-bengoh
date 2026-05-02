@@ -154,10 +154,31 @@
             </div>
         </div>
         @endforeach
+    </div>
+    {{-- results section --}}
+    <div class="row mt-5">
+        <div class="col-12">
+            <div class="card-box">
+                <h5 class="fw-bold mb-3"><i class="fas fa-user-graduates me-2"></i>Learner Performance Reports</h5>
+                <p class="text-muted small">Access detailed breakdowns of how learners are performing in assessments and quizzes.</p>
+                <hr>
+                <div class="d-flex gap-3">
+                    {{-- Button for MCQ Results --}}
+                    <a href="{{ route('admin.reports.mcq') }}" class="btn btn-outline-primary">
+                        <i class="fas fa-list-ol me-1"></i> View MCQ Results
+                    </a>
 
-        
-        {{--<div class="text-center mt-3">
-            <button class="btn btn-dark">Save Changes</button>
-        </div>--}}
+                    {{-- Button for Assessment Results --}}
+                    <a href="{{ route('admin.reports.assessments') }}" class="btn btn-outline-danger">
+                        <i class="fas fa-file-invoice me-1"></i> View Assessment Results
+                    </a>
+
+                    {{-- Link to general Performance Tab --}}
+                    <a href="{{ route('admin.performance') }}" class="btn btn-dark">
+                        <i class="fas fa-external-link-alt me-1"></i> Full Analytics Dashboard
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
 @endsection

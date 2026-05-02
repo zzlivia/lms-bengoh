@@ -39,53 +39,51 @@
                     <h5>Time Left: <span id="timer">10:00</span></h5>
                 </div>
                 <hr>
-                <form id="assessmentForm" method="POST" action="{{ route('final.assessment.submit', $course->courseID) }}">
-                    @csrf
-                    <input type="hidden" name="courseAssID" value="{{ $assessment->courseAssID }}">
-                    <input type="hidden" name="courseID" value="{{ $course->courseID }}">
-                    <input type="hidden" name="score" value="80">
-                    @foreach($questions as $index => $q)
-                        <p><b>{{ __('messages.courses.question') }} {{ $index+1 }}</b><br>
-                        {{ $q->getTranslation('courseAssQs') }}</p>
-                        @if($q->courseAssType == 'MCQ')
-                            @foreach($q->options as $opt)
-                                <input type="radio"
-                                    name="answers[{{ $q->assQsID }}]"
-                                    value="{{ $opt->id }}">
-                                {{ $opt->getTranslation('optionText') }} <br>
-                            @endforeach
-                        @else
-                            <textarea name="answers[{{ $q->assQsID }}]" class="form-control mb-3"></textarea>
-                        @endif
-                    @endforeach
-                    <!-- button that trigger modal -->
-                    <button type="button" class="btn btn-success"
-                        data-bs-toggle="modal"
-                        data-bs-target="#confirmSubmitModal">
-                        {{ __('messages.courses.submit') }}
-                    </button>
-                    <!-- modal inside form -->
-                    <div class="modal fade" id="confirmSubmitModal" tabindex="-1">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title">{{ __('messages.courses.confirm_submission') }}</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                </div>
-                                <div class="modal-body">
-                                    {{ __('messages.courses.confirm_prompt') }}<br>
-                                    {{ __('messages.courses.check_answers_prompt') }}
-                                    <div id="warningText" class="text-danger mt-2"></div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ __('messages.courses.cancel') }}</button>
-                                    <!-- submit -->
-                                    <button type="button" class="btn btn-success" id="confirmSubmitBtn">{{ __('messages.courses.yes_submit') }}</button>
+                <div class="learning-content-card p-4 shadow-sm bg-white rounded border-0">
+                    <form id="assessmentForm" method="POST" action="{{ route('final.assessment.submit', $course->courseID) }}">
+                        @csrf
+                        <input type="hidden" name="courseAssID" value="{{ $assessment->courseAssID }}">
+                        <input type="hidden" name="courseID" value="{{ $course->courseID }}">
+                        @foreach($questions as $index => $q)
+                            <p><b>{{ __('messages.courses.question') }} {{ $index+1 }}</b><br>
+                            {{ $q->getTranslation('courseAssQs') }}</p>
+                            @if($q->courseAssType == 'MCQ')
+                                @foreach($q->options as $opt)
+                                    <input type="radio" name="answers[{{ $q->assQsID }}]"value="{{ $opt->id }}">
+                                    {{ $opt->getTranslation('optionText') }} <br>
+                                @endforeach
+                            @else
+                                <textarea name="answers[{{ $q->assQsID }}]" class="form-control mb-3"></textarea>
+                            @endif
+                        @endforeach
+                        <!-- button that trigger modal -->
+                        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#confirmSubmitModal">
+                            {{ __('messages.courses.submit') }}
+                        </button>
+                        <!-- modal inside form -->
+                        <div class="modal fade" id="confirmSubmitModal" tabindex="-1">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">{{ __('messages.courses.confirm_submission') }}</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    </div>
+
+                                    <div class="modal-body">
+                                        {{ __('messages.courses.confirm_prompt') }}<br>
+                                        {{ __('messages.courses.check_answers_prompt') }}
+                                        <div id="warningText" class="text-danger mt-2"></div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ __('messages.courses.cancel') }}</button>
+                                        <!-- submit -->
+                                        <button type="button" class="btn btn-success" id="confirmSubmitBtn">{{ __('messages.courses.yes_submit') }}</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
             @endauth
 

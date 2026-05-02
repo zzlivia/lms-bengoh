@@ -8,7 +8,9 @@
 <div class="container-fluid">
     <div class="row">
         <!-- Sidebar -->
-        @include('partials.course-sidebar', ['course' => $course])
+        <div class="col-md-3 d-none d-md-block" id="desktopSidebar">
+            @include('partials.course-sidebar', ['course' => $course])
+        </div>
         <!-- Main Content -->
         <div class="col-md-9 p-4">
             @if(session('error'))

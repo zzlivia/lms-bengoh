@@ -109,11 +109,6 @@
                 </td>
                 <td>
                     <button class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#viewCourseModal{{ $course->courseID }}"> {{ __('messages.admin.view') }} </button>
-                    
-                    <!-- New Results Button -->
-                    <a href="{{ route('admin.reports.course', $course->courseID) }}" class="btn btn-sm btn-success">
-                        <i class="fas fa-chart-bar"></i> {{ __('Results') }}
-                    </a>
 
                     <a href="{{ route('admin.course.edit', $course->courseID) }}" class="btn btn-sm btn-warning"> {{ __('messages.admin.edit') }} </a>
                     

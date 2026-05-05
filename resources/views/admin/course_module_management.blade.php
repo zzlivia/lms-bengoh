@@ -215,7 +215,6 @@
             </div>
         @endforeach
     </div>
-    {{-- results section --}}
     <div class="row mt-5">
         <div class="col-12">
             <div class="card-box">
@@ -223,12 +222,9 @@
                 <p class="text-muted small">Access detailed breakdowns of how learners are performing in assessments and quizzes.</p>
                 <hr>
                 <div class="d-flex gap-3">
-                    {{-- Button for MCQ Results --}}
-                    <a href="{{ route('admin.reports.mcq') }}" class="btn btn-outline-primary">
+                    <a href="{{ route('admin.reports.mcq_list') }}" class="btn btn-outline-primary">
                         <i class="fas fa-list-ol me-1"></i> View MCQ Results
                     </a>
-
-                    {{-- Button for Assessment Results --}}
                     <a href="{{ route('admin.reports.assessments') }}" class="btn btn-outline-danger">
                         <i class="fas fa-file-invoice me-1"></i> View Assessment Results
                     </a>

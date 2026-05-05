@@ -422,8 +422,9 @@ class AdminController extends Controller
 
     public function assessmentResults()
     {
+        //filter by type 'final' to exclude 'mcq' entries
         $results = AssessmentResult::with(['user', 'course', 'module'])
-                    ->where('type', 'final')
+                    ->where('type', 'final') 
                     ->orderBy('created_at', 'desc')
                     ->get();
 

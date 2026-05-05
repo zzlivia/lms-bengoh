@@ -427,7 +427,7 @@ class AdminController extends Controller
                     ->orderBy('created_at', 'desc')
                     ->get();
 
-        return view('admin.reports.assessment_results', compact('results'));
+        return view('admin.assessment_results', compact('results'));
     }
     
     

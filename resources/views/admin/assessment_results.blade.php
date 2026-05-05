@@ -28,7 +28,7 @@
                 <tr>
                     <td>{{ $result->id }}</td>
                     <td>
-                        <span class="fw-bold">{{ $result->user->name ?? 'User #'.$result->userID }}</span>
+                        <span class="fw-bold">{{ $result->user->userName ?? 'User #'.$result->userID }}</span>
                     </td>
                     <td>
                         <small class="d-block text-muted">{{ $result->course->courseName ?? 'N/A' }}</small>

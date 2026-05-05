@@ -117,6 +117,10 @@
                         @method('DELETE')
                         <button class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')"> {{ __('messages.admin.delete') }} </button>
                     </form>
+                    
+                    <button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#feedbackModal{{ $course->courseID }}">
+                        <i class="fas fa-comments"></i> Feedback
+                    </button>
                 </td>
             </tr>
             @endforeach
@@ -124,30 +128,91 @@
         </table>
         {{-- when user click on View Action, it display pop up modal tab --}}
         @foreach($courses as $course)
-        <div class="modal fade" id="viewCourseModal{{ $course->courseID }}" tabindex="-1">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Course Details</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="card p-3 border-0">
-                            <h4 class="fw-bold text-primary">{{ $course->courseName }}</h4>
-                            <p><strong>{{ __('messages.admin.course_code') }}:</strong> {{ $course->courseCode }}</p>
-                            <p><strong>{{ __('messages.admin.author') }}:</strong> {{ $course->courseAuthor }}</p>
-                            <p><strong>{{ __('messages.admin.category') }}:</strong> {{ $course->courseCategory }}</p>
-                            <p><strong>{{ __('messages.admin.level') }}:</strong> {{ $course->courseLevel }}</p>
-                            <p><strong>{{ __('messages.admin.duration') }}:</strong> {{ $course->courseDuration }} {{ __('messages.admin.hours') }}</p>
-                            <p><strong>{{ __('messages.admin.desc') }}:</strong> {{ $course->courseDesc }}</p>
-                            @if($course->courseImg)
-                                <img src="{{ asset('storage/'.$course->courseImg) }}" class="img-fluid rounded mt-2" style="width:250px; height:200px; object-fit:cover;">
-                            @endif
+            <div class="modal fade" id="viewCourseModal{{ $course->courseID }}" tabindex="-1">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Course Details</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="card p-3 border-0">
+                                <h4 class="fw-bold text-primary">{{ $course->courseName }}</h4>
+                                <p><strong>{{ __('messages.admin.course_code') }}:</strong> {{ $course->courseCode }}</p>
+                                <p><strong>{{ __('messages.admin.author') }}:</strong> {{ $course->courseAuthor }}</p>
+                                <p><strong>{{ __('messages.admin.category') }}:</strong> {{ $course->courseCategory }}</p>
+                                <p><strong>{{ __('messages.admin.level') }}:</strong> {{ $course->courseLevel }}</p>
+                                <p><strong>{{ __('messages.admin.duration') }}:</strong> {{ $course->courseDuration }} {{ __('messages.admin.hours') }}</p>
+                                <p><strong>{{ __('messages.admin.desc') }}:</strong> {{ $course->courseDesc }}</p>
+                                @if($course->courseImg)
+                                    <img src="{{ asset('storage/'.$course->courseImg) }}" class="img-fluid rounded mt-2" style="width:250px; height:200px; object-fit:cover;">
+                                @endif
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+
+            <div class="modal fade" id="feedbackModal{{ $course->courseID }}" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-xl">
+                    <div class="modal-content">
+                        <div class="modal-header bg-success text-white">
+                            <h5 class="modal-title">Course Feedback: {{ $course->courseName }}</h5>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Rating</th>
+                                            <th>Clarity</th>
+                                            <th>Understanding</th>
+                                            <th>Favorite Module</th>
+                                            <th>Enjoyed</th>
+                                            <th>Suggestions</th>
+                                            <th>Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @forelse($course->feedback as $item)
+                                        <tr>
+                                            <td>
+                                                <span class="badge bg-primary">
+                                                    {{ $item->rating }} <i class="fas fa-star small"></i>
+                                                </span>
+                                            </td>
+                                            <td>{{ $item->clarity }}</td>
+                                            <td>{{ $item->understanding }}</td>
+                                            <td>{{ $item->favorite_module }}</td>
+                                            <td>
+                                                @if($item->enjoyed)
+                                                    <span class="text-success"><i class="fas fa-check-circle"></i> Yes</span>
+                                                @else
+                                                    <span class="text-muted"><i class="fas fa-times-circle"></i> No</span>
+                                                @endif
+                                            </td>
+                                            <td><small class="text-wrap">{{ $item->suggestions }}</small></td>
+                                            <td class="text-nowrap">{{ $item->created_at->format('d M Y') }}</td>
+                                        </tr>
+                                        @empty
+                                        <tr>
+                                            <td colspan="7" class="text-center py-4 text-muted">
+                                                <i class="fas fa-comment-slash d-block mb-2 fa-2x"></i>
+                                                No feedback recorded for this course yet.
+                                            </td>
+                                        </tr>
+                                        @endforelse
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         @endforeach
     </div>
     {{-- results section --}}

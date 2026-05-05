@@ -160,7 +160,7 @@ class AdminController extends Controller
         $totalModules = Module::count();
         $totalLectures = Lecture::count();
         $totalFeedback = Feedback::count();
-        $totalAssessmentsPassed = AssessmentResult::where('status', 'passed')->count();
+        $totalAssessmentsPassed = AssessmentResult::where('status', 'pass')->count();
         $totalCompleted = Progress::where('progressStatus', 'completed')->count();
 
         $topUser = Users::withSum('assessmentResults', 'score')->orderByDesc('assessment_results_sum_score')->first();
@@ -367,17 +367,6 @@ class AdminController extends Controller
         return view('admin.mcq_results', compact('results'));
     }
 
-    public function assessmentResults()
-    {
-        // Fetching results where type is 'final'
-        $results = AssessmentResult::where('type', 'final')
-            ->with(['user'])
-            ->orderBy('created_at', 'desc')
-            ->get();
-
-        return view('admin.assessment_results', compact('results'));
-    }
-
     public function courseResults($id)
     {
         //get the course details
@@ -430,6 +419,17 @@ class AdminController extends Controller
 
         return view('admin.mcq_result_details', compact('result', 'details'));
     }
+
+    public function assessmentResults()
+    {
+        $results = AssessmentResult::with(['user', 'course', 'module'])
+                    ->where('type', 'final')
+                    ->orderBy('created_at', 'desc')
+                    ->get();
+
+        return view('admin.reports.assessment_results', compact('results'));
+    }
+    
     
     public function storeMaterials(Request $request, $id)
     {
@@ -644,10 +644,10 @@ class AdminController extends Controller
 
     public function feedbackList()
     {
-        //mark all unread feedback as reviewed
-        Feedback::where('is_reviewed', false)->update(['is_reviewed' => true]);
-        //fetch data
-        $feedbacks = Feedback::with(['user', 'course'])->get();
+        $feedbacks = Feedback::with(['user', 'course'])
+                    ->orderBy('created_at', 'desc')
+                    ->get();
+                    
         return view('admin.feedback', compact('feedbacks'));
     }
 

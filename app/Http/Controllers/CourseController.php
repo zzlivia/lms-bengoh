@@ -522,35 +522,34 @@ class CourseController extends Controller
         if (!Auth::check()) {
             return redirect()->route('login');
         }
-
-        $score = $request->score;
-
+        // validate that the score is present, numeric, and within expected bounds
+        $validated = $request->validate([
+            'score' => 'required|numeric|min:0|max:100',
+        ]);
+        //retrieve the score safely from the validated data array
+        $score = $validated['score'];
         //get module safely
         $module = Module::where('courseID', $courseID)->first();
 
         if (!$module) {
             return back()->with('error', 'No module found for this course.');
         }
-
         $moduleID = $module->moduleID;
-
         DB::table('assessment_results')->updateOrInsert(
             [
-                'userID' => Auth::id(),
+                'userID'   => Auth::id(),
                 'courseID' => $courseID,
-                'type' => 'final'
+                'type'     => 'final'
             ],
             [
-                'moduleID' => $moduleID,
-                'score' => $score,
-                'status' => $score >= 80 ? 'pass' : 'fail',
+                'moduleID'   => $moduleID,
+                'score'      => $score,
+                'status'     => $score >= 80 ? 'pass' : 'fail',
                 'updated_at' => now(),
                 'created_at' => now(),
             ]
         );
-
         $this->updateProgress($courseID, 'FINAL_ASSESSMENT', $score);
-
         return redirect()->route('course.progress', $courseID);
     }
     

@@ -47,6 +47,7 @@
                             <input type="hidden" name="courseAssID" value="{{ $assessment->courseAssID }}">
                             <input type="hidden" name="courseID" value="{{ $course->courseID }}">
 
+                            <input type="hidden" name="score" id="finalScoreInput" value="">
                             @foreach($questions as $index => $q)
                                 <div class="question-block mb-4">
                                     <p class="fw-bold mb-2">{{ $index+1 }}. {{ $q->getTranslation('courseAssQs') }}</p>
@@ -132,33 +133,76 @@
     <script>
     document.addEventListener('DOMContentLoaded', function () {
         const triggerBtn = document.querySelector('[data-bs-target="#confirmSubmitModal"]');
-        const warningLabel = "{{ __('messages.courses.unanswered_warning') }}";
+        const confirmSubmitBtn = document.getElementById('confirmSubmitBtn');
+        const assessmentForm = document.getElementById('assessmentForm');
+        const warningLabel = document.getElementById('warningText');
+
+        // Object map of correct answers passed safely from backend to JS
+        // This assumes your Option model or dataset contains an indicator like 'is_correct' or similar
+        const correctAnswers = {
+            @foreach($questions as $q)
+                @foreach($q->options as $opt)
+                    @if(isset($opt->is_correct) && $opt->is_correct)
+                        "{{ $q->assQsID }}": "{{ $opt->id }}",
+                    @endif
+                @endforeach
+            @endforeach
+        };
+
+        // 1. Handle validation warning inside the modal confirmation box
         triggerBtn.addEventListener('click', function () {
             let unanswered = 0;
+            
             document.querySelectorAll('textarea').forEach(el => {
                 if (el.value.trim() === '') unanswered++;
             });
+
             let grouped = {};
             document.querySelectorAll('input[type=radio]').forEach(el => {
                 if (!grouped[el.name]) grouped[el.name] = false;
                 if (el.checked) grouped[el.name] = true;
             });
+
             for (let key in grouped) {
                 if (!grouped[key]) unanswered++;
             }
-            let warning = document.getElementById('warningText');
+
             if (unanswered > 0) {
-                warning.innerHTML = `⚠️ You have ${unanswered} unanswered question(s).`;
+                warningLabel.innerHTML = `⚠️ You have ${unanswered} unanswered question(s).`;
             } else {
-                warning.innerHTML = '';
+                warningLabel.innerHTML = '';
             }
         });
 
-        //force submit form
-        document.getElementById('confirmSubmitBtn').addEventListener('click', function () {
-            document.getElementById('assessmentForm').submit();
-        });
+        // 2. Handle Automated Grading & Form Submission
+        confirmSubmitBtn.addEventListener('click', function () {
+            let totalQuestions = Object.keys(correctAnswers).length;
+            
+            // Fallback catch: If your database doesn't mark correct options yet, 
+            // fallback to counting total generated questions to avoid dividing by 0.
+            if (totalQuestions === 0) {
+                totalQuestions = document.querySelectorAll('.question-block').length;
+            }
 
+            let correctCount = 0;
+
+            // Grade the radio (MCQ) fields dynamically
+            for (let questionID in correctAnswers) {
+                const selectedRadio = document.querySelector(`input[name="answers[${questionID}]"]:checked`);
+                if (selectedRadio && selectedRadio.value === correctAnswers[questionID]) {
+                    correctCount++;
+                }
+            }
+
+            // Calculate score out of 100 percentage points
+            let finalPercentageScore = totalQuestions > 0 ? Math.round((correctCount / totalQuestions) * 100) : 0;
+
+            // Assign calculated score directly into our new hidden input field
+            document.getElementById('finalScoreInput').value = finalPercentageScore;
+
+            // Submit form cleanly to the backend controller
+            assessmentForm.submit();
+        });
     });
     </script>
 

@@ -65,9 +65,10 @@
 
                     {{-- notification --}}
                     <li class="nav-item mx-2 position-relative" x-data="{ open: false }">
-                        {{-- trigger icon bell --}}
+                        {{-- bell icon trigger --}}
                         <div @click="open = !open" style="cursor:pointer;" class="nav-link position-relative d-inline-block">
                             <i class="bi bi-bell fs-5"></i>
+                            
                             @if(isset($activeAnnouncementsCount) && $activeAnnouncementsCount > 0)
                                 <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle">
                                     <span class="visually-hidden">New alerts</span>
@@ -76,19 +77,26 @@
                         </div>
 
                         {{-- notification dropdown --}}
-                        <div x-show="open" x-transition x-cloak @click.outside="open = false" class="dropdown-menu dropdown-menu-end position-absolute p-0 shadow border-0 mt-2" style="min-width: 320px; right: 0; max-height: 400px; overflow-y: auto; z-index: 1050;">
+                        <div x-show="open" 
+                            x-transition 
+                            @click.outside="open = false" 
+                            class="bg-white rounded shadow p-0 mt-2 border position-absolute" 
+                            style="min-width: 320px; right: 0; max-height: 400px; overflow-y: auto; z-index: 1050; display: none;"
+                            :style="open ? 'display: block !important;' : 'display: none !important;'">
+                            
                             <div class="px-3 py-2 bg-light border-bottom rounded-top d-flex justify-content-between align-items-center">
                                 <span class="fw-bold text-dark small">Recent Updates</span>
-                                @if($activeAnnouncementsCount > 0)
+                                @if(isset($activeAnnouncementsCount) && $activeAnnouncementsCount > 0)
                                     <span class="badge bg-danger rounded-pill small" style="font-size: 0.75rem;">{{ $activeAnnouncementsCount }} New</span>
                                 @endif
                             </div>
+
                             @if(isset($recentAnnouncements) && $recentAnnouncements->count() > 0)
                                 @foreach($recentAnnouncements as $alert)
-                                    <a class="dropdown-item px-3 py-2 border-bottom d-flex align-items-start gap-2 bg-white text-wrap" 
+                                    <a class="d-flex align-items-start gap-2 bg-white text-wrap px-3 py-2 border-bottom text-decoration-none transition-hover" 
                                     href="{{ route('learner.announcements.index') }}" 
                                     style="white-space: normal;">
-                                        <div class="bg-primary bg-opacity-10 p-2 rounded-circle text-primary mt-1">
+                                        <div class="bg-primary bg-opacity-10 p-2 rounded-circle text-primary mt-1 flex-shrink-0">
                                             <i class="bi bi-megaphone-fill" style="font-size: 0.9rem;"></i>
                                         </div>
                                         <div class="w-100">
@@ -105,9 +113,8 @@
                                     </a>
                                 @endforeach
                                 
-                                {{-- view all action page link layout --}}
                                 <div class="text-center bg-light rounded-bottom">
-                                    <a href="{{ route('learner.announcements.index') }}" class="d-block w-100 text-decoration-none small fw-bold text-primary py-2 hover-bg-dark">
+                                    <a href="{{ route('learner.announcements.index') }}" class="d-block w-100 text-decoration-none small fw-bold text-primary py-2">
                                         See All Announcements <i class="bi bi-arrow-right ms-1"></i>
                                     </a>
                                 </div>
@@ -119,7 +126,6 @@
                             @endif
                         </div>
                     </li>
-
                     {{-- authentication --}}
                     <li class="nav-item mx-2 d-flex align-items-center">
                     @auth

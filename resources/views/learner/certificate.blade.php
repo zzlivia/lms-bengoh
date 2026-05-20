@@ -26,7 +26,7 @@
             overflow: hidden;
         }
 
-        /* Fixed Background Corner Geometry - Sent to back via z-index */
+        /* Background Design Shapes */
         .top-left-accent {
             position: absolute;
             top: -50px;
@@ -89,7 +89,6 @@
             padding: 100px 80px 40px 80px;
         }
 
-        /* Logo Layout Styling Container */
         .logo-container {
             margin-bottom: 25px;
             text-align: center;
@@ -166,12 +165,12 @@
             letter-spacing: 4px;
         }
 
-        /* Safe Footer Container positioning safely clear of the rotating geometric elements */
+        /* Footer Alignment Settings */
         .footer {
             position: absolute;
             bottom: 110px;
             left: 90px;
-            right: 90px;
+            right: 70px; /* Brought in slightly from the right edge */
             z-index: 10;
         }
 
@@ -183,29 +182,45 @@
 
         .footer-table td {
             vertical-align: bottom;
-            font-size: 13px;
-            color: #444;
         }
 
         .signature-section {
             text-align: center;
             width: 220px;
+            font-size: 13px;
+            color: #444;
         }
 
+        /* Right Side Overlap Fix: Text changes color to white to contrast against the green container */
         .date-section {
             text-align: center;
             width: 220px;
+            font-size: 13px;
+            color: #ffffff; /* Changed text color to white */
         }
 
         .signature-line {
-            border-top: 1px solid #444;
             margin-bottom: 8px;
             width: 100%;
         }
+
+        .left-line {
+            border-top: 1px solid #444; /* Dark line for the white background */
+        }
+
+        .right-line {
+            border-top: 1px solid #ffffff; /* White line for the dark green background */
+        }
         
-        .value-text {
+        .value-text-left {
             font-weight: bold;
             color: #1b5e20;
+            font-size: 14px;
+        }
+
+        .value-text-right {
+            font-weight: bold;
+            color: #ffffff; /* Changed inner value text to white */
             font-size: 14px;
         }
     </style>
@@ -221,9 +236,7 @@
     <div class="border-frame"></div>
 
     <div class="content">
-        {{-- Logo Integration Section --}}
         <div class="logo-container">
-            {{-- CRITICAL: public_path() ensures the image path is read locally by the backend PDF generator --}}
             <img src="{{ public_path('images/bengohdam-logo.png') }}" alt="Bengoh Academy Logo">
         </div>
 
@@ -249,14 +262,13 @@
         </div>
     </div>
 
-    {{-- Re-engineered Secure Structural Footer Layout Grid --}}
     <div class="footer">
         <table class="footer-table">
             <tr>
                 <td align="left">
                     <div class="signature-section">
-                        <div class="signature-line"></div>
-                        <span class="value-text">{{ $course->courseAuthor }}</span><br>
+                        <div class="signature-line left-line"></div>
+                        <span class="value-text-left">{{ $course->courseAuthor }}</span><br>
                         <span style="color: #666; font-size: 12px;">{{ Lang::has('messages.cert.instructor') ? __('messages.cert.instructor') : 'Instructor' }}</span>
                     </div>
                 </td>
@@ -265,9 +277,9 @@
                 
                 <td align="right">
                     <div class="date-section">
-                        <div class="signature-line"></div>
-                        <span class="value-text">{{ now()->format('d F Y') }}</span><br>
-                        <span style="color: #666; font-size: 12px;">{{ Lang::has('messages.cert.date') ? __('messages.cert.date') : 'Date Issued' }}</span>
+                        <div class="signature-line right-line"></div>
+                        <span class="value-text-right">{{ now()->format('d F Y') }}</span><br>
+                        <span style="color: #e0e0e0; font-size: 12px;">{{ Lang::has('messages.cert.date') ? __('messages.cert.date') : 'Date Issued' }}</span>
                     </div>
                 </td>
             </tr>

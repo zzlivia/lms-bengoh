@@ -63,10 +63,37 @@
                         </ul>
                     </li>
 
-                    <li class="nav-item mx-2" x-data="{ open: false }">
-                        <i class="bi bi-bell nav-link" @click="open = !open" style="cursor:pointer;"></i>
-                        <div x-show="open" x-transition x-cloak @click.outside="open = false" class="dropdown-menu position-absolute">
-                            <p class="px-3 mb-0">No new notifications</p>
+                    {{-- notification --}}
+                    <li class="nav-item mx-2 position-relative" x-data="{ open: false }">
+                        {{-- click trigger --}}
+                        <div @click="open = !open" style="cursor:pointer;" class="nav-link position-relative d-inline-block">
+                            <i class="bi bi-bell fs-5"></i>
+                            {{-- display a real-timeif a new announcement is published --}}
+                            @if(isset($activeAnnouncementsCount) && $activeAnnouncementsCount > 0)
+                                <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle">
+                                    <span class="visually-hidden">New alerts</span>
+                                </span>
+                            @endif
+                        </div>
+
+                        {{-- dropdown container content --}}
+                        <div x-show="open" x-transition x-cloak @click.outside="open = false" class="dropdown-menu dropdown-menu-end position-absolute p-2 shadow" style="min-width: 260px; right: 0;">
+                            @if(isset($activeAnnouncementsCount) && $activeAnnouncementsCount > 0)
+                                <div class="px-3 py-1 border-bottom">
+                                    <span class="fw-bold text-dark small">Notifications</span>
+                                </div>
+                                <a class="dropdown-item py-2 d-flex align-items-center gap-2" href="{{ route('learner.announcements.index') }}">
+                                    <i class="bi bi-megaphone-fill text-primary"></i>
+                                    <div>
+                                        <span class="d-block small fw-bold">New Announcement Live</span>
+                                        <span class="text-muted extra-small" style="font-size: 0.75rem;">Click to read the update</span>
+                                    </div>
+                                </a>
+                            @else
+                                <p class="px-3 py-2 mb-0 text-muted small text-center">
+                                    <i class="bi bi-bell-slash me-1"></i> No new notifications
+                                </p>
+                            @endif
                         </div>
                     </li>
 

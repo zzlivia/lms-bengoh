@@ -434,6 +434,9 @@ Route::prefix('admin')
     Route::put('/announcements/{id}/update', [AdminController::class, 'updateAnnouncement'])
         ->name('announcements.update');
 
+    Route::post('/announcements/{id}/toggle-status', [AdminController::class, 'toggleStatus'])
+        ->name('announcements.toggleStatus');
+
     Route::get('/reports', [AdminController::class, 'reports'])
         ->name('reports');
 

@@ -3,7 +3,8 @@
 @section('content')
 
 <h4 class="fw-bold mb-4">Report Overview</h4>
-    {{-- user and enrolment --}}
+
+    {{-- 1. User Management & Enrolment Card Box --}}
     <div class="card-box mb-4">
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h6 class="fw-bold mb-0">{{ __('messages.admin.user_mgmt') }} & {{ __('messages.admin.students_enrolled') }}</h6>
@@ -26,83 +27,89 @@
         </div>
         <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#userReportModal">{{ __('messages.admin.view') }} {{ __('messages.admin.advanced') }}</button>
     </div>
-    {{-- course and module --}}
+
+    {{-- 2. Course Management & Progress Card Box --}}
     <div class="card-box mb-4">
         <h6 class="fw-bold mb-3">{{ __('messages.admin.course_mgmt') }} {{ __('messages.admin.progress') }}</h6>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>{{ __('messages.admin.course_name') }}</th>
-                    <th>{{ __('messages.admin.module_name') }}</th>
-                    <th>{{ __('messages.admin.students_enrolled') }}</th>
-                    <th>{{ __('messages.courses.completed') }}</th>
-                    <th>{{ __('messages.admin.progress') }}</th>
-                </tr>
-            </thead>
-            <tbody>
-            @if($courseModules->count() > 0)
-                @foreach($courseModules as $row)
-                <tr>
-                    <td>{{ $row->courseName }}</td>
-                    <td>{{ $row->moduleName }}</td>
-                    <td>{{ $row->enrolled }}</td>
-                    <td>{{ $row->completed }}</td>
-                    <td>{{ $row->in_progress }}</td>
-                </tr>
-                @endforeach
-            @else
-            <tr>
-                <td colspan="5" class="text-center text-muted">{{ __('messages.admin.no_data') }}</td>
-            </tr>
-            @endif
-            </tbody>
-        </table>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>{{ __('messages.admin.course_name') }}</th>
+                        <th>{{ __('messages.admin.module_name') }}</th>
+                        <th>{{ __('messages.admin.students_enrolled') }}</th>
+                        <th>{{ __('messages.courses.completed') }}</th>
+                        <th>{{ __('messages.admin.progress') }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @if($courseModules->count() > 0)
+                    @foreach($courseModules as $row)
+                    <tr>
+                        <td>{{ $row->courseName }}</td>
+                        <td>{{ $row->moduleName }}</td>
+                        <td>{{ $row->enrolled }}</td>
+                        <td>{{ $row->completed }}</td>
+                        <td>{{ $row->in_progress }}</td>
+                    </tr>
+                    @endforeach
+                @else
+                    <tr>
+                        <td colspan="5" class="text-center text-muted">{{ __('messages.admin.no_data') }}</td>
+                    </tr>
+                @endif
+                </tbody>
+            </table>
+        </div>
         <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#courseReportModal">{{ __('messages.admin.view') }} {{ __('messages.admin.advanced') }}</button>
     </div>
-    {{-- assessment and mcq --}}
+
+    {{-- 3. Dynamic Assessment & MCQ Card Box --}}
     <div class="card-box mb-4">
         <h6 class="fw-bold mb-3">Assessment & MCQ Performance</h6>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>{{ __('messages.admin.course_name') }}</th>
-                    <th>{{ __('messages.admin.module_name') }}</th>
-                    <th>{{ __('messages.admin.students_enrolled') }}</th>
-                    <th>{{ __('messages.courses.completed') }}</th>
-                    <th>{{ __('messages.admin.progress') }}</th>
-                </tr>
-            </thead>
-            <tbody>
-            @if($assessmentModules->count() > 0)
-                @foreach($assessmentModules as $assessment)
-                <tr>
-                    <td>{{ $assessment->courseName }}</td>
-                    <td>{{ $assessment->moduleName }}</td>
-                    <td>{{ $assessment->enrolled }}</td>
-                    <td>{{ $assessment->completed }}</td>
-                    <td>{{ $assessment->in_progress }}</td>
-                </tr>
-                @endforeach
-            @else
-                <tr>
-                    <td colspan="5" class="text-center text-muted">{{ __('messages.admin.no_data') }}</td>
-                </tr>
-            @endif
-            </tbody>
-        </table>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>{{ __('messages.admin.course_name') }}</th>
+                        <th>{{ __('messages.admin.module_name') }}</th>
+                        <th>{{ __('messages.admin.students_enrolled') }}</th>
+                        <th>{{ __('messages.courses.completed') }}</th>
+                        <th>{{ __('messages.admin.progress') }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @if($assessmentModules->count() > 0)
+                    @foreach($assessmentModules as $assessment)
+                    <tr>
+                        <td>{{ $assessment->courseName }}</td>
+                        <td>{{ $assessment->moduleName }}</td>
+                        <td>{{ $assessment->enrolled }}</td>
+                        <td>{{ $assessment->completed }}</td>
+                        <td>{{ $assessment->in_progress }}</td>
+                    </tr>
+                    @endforeach
+                @else
+                    <tr>
+                        <td colspan="5" class="text-center text-muted">{{ __('messages.admin.no_data') }}</td>
+                    </tr>
+                @endif
+                </tbody>
+            </table>
+        </div>
         <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#assessmentReportModal">{{ __('messages.admin.view') }} {{ __('messages.admin.advanced') }}</button>
     </div>
 
+    {{-- Bottom Summary Actions Row --}}
+    <div class="text-center mt-4">
+        <button class="btn btn-outline-dark me-2" data-bs-toggle="modal" data-bs-target="#generateReportModal">{{ __('messages.admin.reports') }}</button>
+        <a href="{{ route('admin.downloadReport') }}" class="btn btn-outline-dark">{{ __('messages.admin.reports') }} (PDF)</a>
+    </div>
 
-{{-- bottom buttons --}}
-<div class="text-center mt-4">
-    <button class="btn btn-outline-dark me-2" data-bs-toggle="modal" data-bs-target="#generateReportModal">{{ __('messages.admin.reports') }}</button>
-   <a href="{{ route('admin.downloadReport') }}" class="btn btn-outline-dark">{{ __('messages.admin.reports') }} (PDF)</a>
-</div>
+    {{-- ==================== BOOTSTRAP MODAL DIALOGS ==================== --}}
 
-{{-- bootstrap modal pop up --}}
-    {{-- user and enrolment --}}
-    <div class="modal fade" id="userReportModal" tabindex="-1">
+    {{-- User & Enrolment Details Modal --}}
+    <div class="modal fade" id="userReportModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -110,7 +117,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <table class="table">
+                    <table class="table table-striped">
                         <tr>
                             <th>{{ __('messages.admin.total_users') }}</th>
                             <td>{{ $totalUsers }}</td>
@@ -136,8 +143,9 @@
             </div>
         </div>
     </div>
-    {{-- course and module --}}
-    <div class="modal fade" id="courseReportModal" tabindex="-1">
+
+    {{-- Course & Module Advanced Modal --}}
+    <div class="modal fade" id="courseReportModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
@@ -145,8 +153,8 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <table class="table table-bordered">
-                        <thead>
+                    <table class="table table-bordered table-striped">
+                        <thead class="table-light">
                             <tr>
                                 <th>{{ __('messages.admin.course_name') }}</th>
                                 <th>{{ __('messages.admin.module_name') }}</th>
@@ -171,23 +179,49 @@
             </div>
         </div>
     </div>
-    {{-- assessment and mcq --}}
-    <div class="modal fade" id="assessmentReportModal" tabindex="-1">
-        <div class="modal-dialog modal-lg">
+
+    {{-- Corrected Assessment & MCQ Advanced Modal --}}
+    <div class="modal fade" id="assessmentReportModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">{{ __('messages.admin.course_assessments') }}</h5>
+                    <h5 class="modal-title">Assessment & MCQ Advanced Progress Data</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <p class="text-muted">{{ __('messages.admin.no_data') }}</p>
+                    <table class="table table-bordered table-striped">
+                        <thead class="table-light">
+                            <tr>
+                                <th>{{ __('messages.admin.course_name') }}</th>
+                                <th>{{ __('messages.admin.module_name') }}</th>
+                                <th>{{ __('messages.admin.students_enrolled') }}</th>
+                                <th>{{ __('messages.courses.completed') }}</th>
+                                <th>{{ __('messages.admin.progress') }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        @forelse($assessmentModules as $assessment)
+                            <tr>
+                                <td>{{ $assessment->courseName }}</td>
+                                <td>{{ $assessment->moduleName }}</td>
+                                <td>{{ $assessment->enrolled }}</td>
+                                <td>{{ $assessment->completed }}</td>
+                                <td>{{ $assessment->in_progress }}</td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="5" class="text-center text-muted">{{ __('messages.admin.no_data') }}</td>
+                            </tr>
+                        @endforelse
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
 
-    {{-- report modal --}}
-    <div class="modal fade" id="generateReportModal" tabindex="-1">
+    {{-- Global Reports Summary Selection Modal --}}
+    <div class="modal fade" id="generateReportModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -196,15 +230,16 @@
                 </div>
                 <div class="modal-body">
                     <h6>{{ __('messages.admin.user_mgmt') }} {{ __('messages.admin.summary') }}</h6>
-                        <ul>
-                            <li>{{ __('messages.admin.total_users') }}: {{ $totalUsers }}</li>
-                            <li>{{ __('messages.admin.new_users') }}: {{ $newUsers }}</li>
-                            <li>{{ __('messages.admin.active_users') }}: {{ $activeUsers }}</li>
-                            <li>{{ __('messages.admin.not_available') }}: {{ $inactiveUsers }}</li>
-                        </ul>
-                    <h6 class="mt-3">Courses</h6>
-                    <table class="table">
-                        <thead>
+                    <ul>
+                        <li>{{ __('messages.admin.total_users') }}: {{ $totalUsers }}</li>
+                        <li>{{ __('messages.admin.new_users') }}: {{ $newUsers }}</li>
+                        <li>{{ __('messages.admin.active_users') }}: {{ $activeUsers }}</li>
+                        <li>{{ __('messages.admin.not_available') }}: {{ $inactiveUsers }}</li>
+                    </ul>
+                    
+                    <h6 class="mt-4">Courses & Metrics Metrics Summary</h6>
+                    <table class="table table-striped border">
+                        <thead class="table-light">
                             <tr>
                                 <th>{{ __('messages.admin.course_name') }}</th>
                                 <th>{{ __('messages.admin.module_name') }}</th>

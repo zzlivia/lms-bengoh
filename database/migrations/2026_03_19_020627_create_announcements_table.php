@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id('announcementID');
             $table->string('announcementTitle');
             $table->text('announcementDetails');
-            // Foreign key to admins
+            $table->string('status')->default('Pending'); 
             $table->foreignId('adminID')->constrained('admin', 'adminID')->onDelete('cascade');
             $table->timestamps();
         });

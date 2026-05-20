@@ -21,23 +21,34 @@
         @yield('styles')
 
         <style>
-            /* default behavior for mobile and tablets */
+            /* default behavior for mobile and smaller tablet devices */
             @media (max-width: 575.98px) {
                 .custom-notification-dropdown {
-                    width: 90vw;             /* screen width */
+                    width: 90vw;
                     right: -50px !important;
                     position: fixed !important; 
-                    top: 60px;               
+                    top: 65px;
                     left: 5%;
+                    z-index: 1100 !important;
                 }
             }
 
-            /* behavior for standard screens (Landscape mobile, Tablets and larger) */
+            /* behavior for landscape mobile, tablets, and large laptop monitors */
             @media (min-width: 576px) {
                 .custom-notification-dropdown {
-                    width: 320px;
+                    width: 340px;
                     right: 0;
+                    left: auto;
+                    position: absolute !important;
+                    top: 100%;
+                    z-index: 1100 !important;
                 }
+            }
+            
+            /* global layout safety tweak */
+            .navbar {
+                position: relative;
+                z-index: 1060;
             }
         </style>
 

@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <style>
         @page {
-            size: A4 portrait;
+            size: a4 portrait;
             margin: 0;
         }
 
@@ -12,6 +13,7 @@
             margin: 0;
             padding: 0;
             background: #f4f4f4;
+            -webkit-print-color-adjust: exact;
         }
 
         .certificate {
@@ -24,103 +26,177 @@
             overflow: hidden;
         }
 
-        /* Decorative background shapes */
-        .top-design {
+        /* Fixed Elegant Geometric Corner Designs to avoid covering text layers */
+        .top-left-design {
             position: absolute;
-            top: 0;
-            right: 0;
-            width: 100%;
-            height: 200px;
-            background: linear-gradient(135deg, #2e7d32, #1b5e20);
-            border-bottom-left-radius: 200px;
+            top: -50px;
+            left: -50px;
+            width: 250px;
+            height: 250px;
+            background: #1b5e20;
+            transform: rotate(45deg);
+            z-index: 1;
         }
 
-        .bottom-design {
+        .top-left-accent {
             position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 200px;
-            background: linear-gradient(135deg, #1b5e20, #2e7d32);
-            border-top-right-radius: 200px;
+            top: -40px;
+            left: -40px;
+            width: 250px;
+            height: 250px;
+            background: #81c784;
+            transform: rotate(45deg);
+            z-index: 0;
+        }
+
+        .bottom-right-design {
+            position: absolute;
+            bottom: -50px;
+            right: -50px;
+            width: 250px;
+            height: 250px;
+            background: #1b5e20;
+            transform: rotate(45deg);
+            z-index: 1;
+        }
+
+        .bottom-right-accent {
+            position: absolute;
+            bottom: -40px;
+            right: -40px;
+            width: 250px;
+            height: 250px;
+            background: #81c784;
+            transform: rotate(45deg);
+            z-index: 0;
+        }
+
+        /* Inner Content Border Frame */
+        .border-frame {
+            position: absolute;
+            top: 40px;
+            left: 40px;
+            right: 40px;
+            bottom: 40px;
+            border: 2px solid #2e7d32;
+            z-index: 5;
+            pointer-events: none;
         }
 
         .content {
             position: relative;
-            z-index: 2;
+            z-index: 10;
             text-align: center;
-            padding: 120px 80px;
+            padding: 160px 80px 60px 80px;
         }
 
         .title {
-            font-size: 40px;
+            font-size: 46px;
             font-weight: bold;
-            color: #2e7d32;
-            letter-spacing: 2px;
+            color: #1b5e20;
+            letter-spacing: 5px;
         }
 
         .subtitle {
-            font-size: 18px;
-            margin-top: 10px;
-            color: #555;
+            font-size: 20px;
+            margin-top: 5px;
+            color: #444;
+            letter-spacing: 3px;
+        }
+
+        .divider {
+            width: 150px;
+            height: 3px;
+            background: #2e7d32;
+            margin: 25px auto;
+        }
+
+        .certifies-text {
+            font-size: 16px;
+            font-style: italic;
+            color: #666;
+            margin-top: 40px;
         }
 
         .name {
-            font-size: 32px;
+            font-size: 38px;
             font-weight: bold;
-            margin: 30px 0;
+            margin: 25px 0;
             color: #1b5e20;
-        }
-
-        .line {
-            width: 80px;
-            height: 2px;
-            background: #aaa;
-            margin: 15px auto;
-        }
-
-        .course {
-            font-size: 22px;
-            font-weight: bold;
-            margin-top: 20px;
+            border-bottom: 1px dashed #ced4da;
+            padding-bottom: 10px;
+            display: inline-block;
+            min-width: 400px;
         }
 
         .description {
-            font-size: 14px;
-            color: #666;
-            margin-top: 20px;
-            line-height: 1.6;
+            font-size: 15px;
+            color: #555;
+            margin-top: 15px;
         }
 
-        .badge {
-            margin-top: 40px;
-            font-size: 40px;
+        .course {
+            font-size: 26px;
+            font-weight: bold;
+            color: #2e7d32;
+            margin-top: 15px;
+            letter-spacing: 1px;
+        }
+
+        /* Safe Vector Ribbon Design replacing broken emoji font files */
+        .badge-box {
+            margin-top: 50px;
+            position: relative;
+            display: block;
+        }
+
+        .star-icon {
+            color: #gold;
+            font-size: 28px;
+            color: #fbc02d;
         }
 
         .footer {
             position: absolute;
-            bottom: 80px;
+            bottom: 100px;
             width: 100%;
-            padding: 0 80px;
+            padding: 0 100px;
             box-sizing: border-box;
+            z-index: 10;
         }
 
-        .footer table {
+        .footer-table {
             width: 100%;
+            border-collapse: collapse;
         }
 
-        .left {
-            text-align: left;
+        .footer-table td {
+            width: 50%;
+            vertical-align: bottom;
+            font-size: 13px;
+            color: #444;
         }
 
-        .right {
-            text-align: right;
+        .signature-section {
+            width: 220px;
+            text-align: center;
+        }
+
+        .date-section {
+            width: 220px;
+            text-align: center;
+            float: right;
         }
 
         .signature-line {
-            margin-top: 40px;
-            border-top: 1px solid #333;
-            width: 200px;
+            border-top: 1px solid #444;
+            margin-bottom: 8px;
+            width: 100%;
+        }
+        
+        .value-text {
+            font-weight: bold;
+            color: #1b5e20;
         }
     </style>
 </head>
@@ -128,40 +204,52 @@
 <body>
 <div class="certificate">
 
-    <div class="top-design"></div>
-    <div class="bottom-design"></div>
+    <div class="top-left-accent"></div>
+    <div class="top-left-design"></div>
+    <div class="bottom-right-accent"></div>
+    <div class="bottom-right-design"></div>
+    
+    <div class="border-frame"></div>
 
     <div class="content">
         <div class="title">CERTIFICATE</div>
         <div class="subtitle">OF ACHIEVEMENT</div>
 
-        <div class="line"></div>
+        <div class="divider"></div>
 
-        <div class="subtitle">{{ __('messages.cert.certifies_that') }}</div>
+        <div class="certifies-text">
+            {{ Lang::has('messages.cert.certifies_that') ? __('messages.cert.certifies_that') : 'This is to certify that' }}
+        </div>
 
         <div class="name">{{ $user->userName }}</div>
 
         <div class="description">
-            {{ __('messages.cert.completed_msg') }}
+            {{ Lang::has('messages.cert.completed_msg') ? __('messages.cert.completed_msg') : 'has successfully completed the course' }}
         </div>
 
         <div class="course">{{ $course->courseName }}</div>
 
-        <div class="badge">🏅</div>
+        <div class="badge-box">
+            <span class="star-icon">★ ★ ★ ★ ★</span>
+        </div>
     </div>
 
     <div class="footer">
-        <table>
+        <table class="footer-table">
             <tr>
-                <td class="left">
-                    <div class="signature-line"></div>
-                    {{ $course->courseAuthor }}<br>
-                    {{ __('messages.cert.instructor') }}
+                <td>
+                    <div class="signature-section">
+                        <div class="signature-line"></div>
+                        <span class="value-text">{{ $course->courseAuthor }}</span><br>
+                        <span style="color: #777;">{{ Lang::has('messages.cert.instructor') ? __('messages.cert.instructor') : 'Instructor' }}</span>
+                    </div>
                 </td>
-                <td class="right">
-                    <div class="signature-line" style="float:right;"></div>
-                    {{ __('messages.cert.date') }}:<br>
-                    {{ now()->format('d/m/Y') }}
+                <td>
+                    <div class="date-section">
+                        <div class="signature-line"></div>
+                        <span class="value-text">{{ now()->format('d F Y') }}</span><br>
+                        <span style="color: #777;">{{ Lang::has('messages.cert.date') ? __('messages.cert.date') : 'Date Issued' }}</span>
+                    </div>
                 </td>
             </tr>
         </table>

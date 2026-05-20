@@ -19,6 +19,28 @@
         <link rel="stylesheet" href="{{ asset('css/settings.css') }}">
         <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
         @yield('styles')
+
+        <style>
+            /* default behavior for mobile and tablets */
+            @media (max-width: 575.98px) {
+                .custom-notification-dropdown {
+                    width: 90vw;             /* screen width */
+                    right: -50px !important;
+                    position: fixed !important; 
+                    top: 60px;               
+                    left: 5%;
+                }
+            }
+
+            /* behavior for standard screens (Landscape mobile, Tablets and larger) */
+            @media (min-width: 576px) {
+                .custom-notification-dropdown {
+                    width: 320px;
+                    right: 0;
+                }
+            }
+        </style>
+
     </head>
 
     <body>

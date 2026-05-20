@@ -240,8 +240,8 @@ Route::get('/community-stories', [CommunityController::class, 'index'])
     ->name('community.stories');
 
 /* user's announcements */
-Route::get('/user/announcements', [AdminController::class, 'userAnnouncements'])
-    ->name('user.announcements.index');
+Route::get('/learner/announcements', [AdminController::class, 'userAnnouncements'])
+    ->name('learner.announcements.index');
 
 /* admin authentication*/
 

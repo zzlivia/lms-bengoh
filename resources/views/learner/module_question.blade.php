@@ -3,13 +3,17 @@
 @section('content')
     <div class="container-fluid mt-3">
         <div class="row">
-            {{-- include sidebar of courses --}}
-            @include('partials.course-sidebar', ['course' => $course])
+            {{-- sidebar after users start learning --}}
+            <div class="col-12 col-md-3 mb-4 mb-md-0">
+                @include('partials.course-sidebar', ['course' => $course])
+            </div>
+            
             {{-- main content --}}
-            <div class="col-md-9 px-md-4">
+            <div class="col-12 col-md-9 px-md-4">
                 <h5 class="mb-4">
                     {{ __('messages.courses.mcq_title', ['id' => $module->moduleID, 'name' => $module->getTranslation('moduleName')]) }}
                 </h5>
+                
                 <form id="quizForm" method="POST" action="{{ route('module.submit', $module->moduleID) }}">
                     @csrf
                     @if(session('warning'))
@@ -25,6 +29,7 @@
                             </div>
                         </div>
                     @endif
+
                     @foreach($module->mcqs as $index => $question)
                         @php
                             $selected = old('answers.' . $question->moduleQs_ID);
@@ -46,6 +51,7 @@
                                     <i class="fas fa-volume-up"></i> {{ __('messages.courses.listen') }}
                                 </button>
                             </div>
+                            
                             @php
                                 $answers = [
                                     0 => $question->getTranslation('answer1'),
@@ -75,10 +81,9 @@
                 </form>
 
                 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-                    @if(session()->has('score'))
+                @if(session()->has('score'))
                     <script>
                     document.addEventListener("DOMContentLoaded", function () {
-                        // Localized labels for Swal
                         const swalTitle = "{{ __('messages.courses.mcq_complete_title') }}";
                         const swalScore = "{{ __('messages.courses.score_label') }}";
                         const swalAttempt = "{{ __('messages.courses.attempt_label') }}";
@@ -110,16 +115,14 @@
                                 timerInterval = setInterval(() => {
                                     timeLeft--;
                                     if (countdownEl) countdownEl.textContent = timeLeft;
-                                }, 1000);
+                                tracking}, 1000);
                             },
                             willClose: () => { clearInterval(timerInterval); }
                         }).then((result) => {
                             if (result.isConfirmed) { 
-                                //redirect to Feedback
                                 window.location.href = "{{ route('course.feedback', ['id' => $module->courseID]) }}"; 
                             } 
                             else if (result.dismiss === Swal.DismissReason.cancel) { 
-                                //redirect to Review
                                 window.location.href = "{{ route('module.review', ['id' => $module->moduleID]) }}"; 
                             } 
                             else { 
@@ -130,22 +133,21 @@
                     </script>
                 @endif
             </div>
+            
         </div>
     </div>
-
-    {{-- installed alert --}}
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const form = document.getElementById("quizForm");
             let allowSubmit = false;
             form.addEventListener("submit", function(e) {
-                if (allowSubmit) {
-                    return; //skip validation second time
-                }
+                if (allowSubmit) return;
+                
                 let totalQuestions = {{ count($module->mcqs) }};
                 let answered = document.querySelectorAll('input[type="radio"]:checked').length;
                 let unanswered = totalQuestions - answered;
+                
                 if (answered < totalQuestions) {
                     e.preventDefault();
                     Swal.fire({
@@ -154,10 +156,10 @@
                         icon: 'warning',
                         showCancelButton: true,
                         customClass: {
-                        confirmButton: 'btn btn-primary btn-lg mx-2', 
-                        cancelButton: 'btn btn-secondary btn-lg mx-2'
+                            confirmButton: 'btn btn-primary btn-lg mx-2', 
+                            cancelButton: 'btn btn-secondary btn-lg mx-2'
                         },
-                    buttonsStyling: false, 
+                        buttonsStyling: false, 
                     }).then((result) => {
                         if (result.isConfirmed) {
                             allowSubmit = true;
@@ -173,39 +175,4 @@
             });
         });
     </script>
-
-{{--
-    <script>
-        save answer function where it checks if the question was already answered and updates it
-        function saveAnswer(moduleId, questionId, selectedOption) {
-            // get existing data or an empty object
-            let allAttempts = JSON.parse(localStorage.getItem("mcq_attempts")) || {};
-            //ensure we have an object for this specific module
-            if (!allAttempts[moduleId]) {
-                allAttempts[moduleId] = {};
-            }
-            //save the answer for this specific question (overwrites if already exists)
-            allAttempts[moduleId][questionId] = selectedOption;
-            //save back to localStorage
-            localStorage.setItem("mcq_attempts", JSON.stringify(allAttempts));
-        }
-
-
-        //load saved answers - will look for specific moduleID and checks the correct button
-        function loadSavedAnswers(moduleId) {
-            let allAttempts = JSON.parse(localStorage.getItem("mcq_attempts")) || {};
-            let moduleAnswers = allAttempts[moduleId];
-
-            if (!moduleAnswers) return;
-
-            // Loop through the saved questions for this module
-            Object.keys(moduleAnswers).forEach(questionId => {
-                let selectedValue = moduleAnswers[questionId];
-                const input = document.querySelector(
-                    `input[name="answers[${questionId}]"][value="${selectedValue}"]`
-                );
-                if (input) input.checked = true;
-            });
-        }
-    </script>--}}
 @endsection

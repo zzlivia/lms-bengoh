@@ -165,12 +165,12 @@
             letter-spacing: 4px;
         }
 
-        /* Footer Alignment Settings */
+        /* FIXED FOOTER POSITIONING: Shifted leftwards so everything fits in the white canvas area */
         .footer {
             position: absolute;
             bottom: 110px;
-            left: 90px;
-            right: 70px; /* Brought in slightly from the right edge */
+            left: 95px;   /* Kept proportional to padding */
+            right: 95px;  /* Pulled inward from 70px to escape the corner overlay completely */
             z-index: 10;
         }
 
@@ -186,41 +186,28 @@
 
         .signature-section {
             text-align: center;
-            width: 220px;
+            width: 200px;
             font-size: 13px;
             color: #444;
         }
 
-        /* Right Side Overlap Fix: Text changes color to white to contrast against the green container */
+        /* Restored to dark text since it sits on the clean white background now */
         .date-section {
             text-align: center;
-            width: 220px;
+            width: 200px;
             font-size: 13px;
-            color: #ffffff; /* Changed text color to white */
+            color: #444; 
         }
 
         .signature-line {
             margin-bottom: 8px;
             width: 100%;
-        }
-
-        .left-line {
-            border-top: 1px solid #444; /* Dark line for the white background */
-        }
-
-        .right-line {
-            border-top: 1px solid #ffffff; /* White line for the dark green background */
+            border-top: 1px solid #444; /* Clean uniform dark lines */
         }
         
-        .value-text-left {
+        .value-text {
             font-weight: bold;
             color: #1b5e20;
-            font-size: 14px;
-        }
-
-        .value-text-right {
-            font-weight: bold;
-            color: #ffffff; /* Changed inner value text to white */
             font-size: 14px;
         }
     </style>
@@ -267,8 +254,8 @@
             <tr>
                 <td align="left">
                     <div class="signature-section">
-                        <div class="signature-line left-line"></div>
-                        <span class="value-text-left">{{ $course->courseAuthor }}</span><br>
+                        <div class="signature-line"></div>
+                        <span class="value-text">{{ $course->courseAuthor }}</span><br>
                         <span style="color: #666; font-size: 12px;">{{ Lang::has('messages.cert.instructor') ? __('messages.cert.instructor') : 'Instructor' }}</span>
                     </div>
                 </td>
@@ -277,9 +264,9 @@
                 
                 <td align="right">
                     <div class="date-section">
-                        <div class="signature-line right-line"></div>
-                        <span class="value-text-right">{{ now()->format('d F Y') }}</span><br>
-                        <span style="color: #e0e0e0; font-size: 12px;">{{ Lang::has('messages.cert.date') ? __('messages.cert.date') : 'Date Issued' }}</span>
+                        <div class="signature-line"></div>
+                        <span class="value-text">{{ now()->format('d F Y') }}</span><br>
+                        <span style="color: #666; font-size: 12px;">{{ Lang::has('messages.cert.date') ? __('messages.cert.date') : 'Date Issued' }}</span>
                     </div>
                 </td>
             </tr>

@@ -6,7 +6,8 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\URL;
-use Illuminate\Pagination\Paginator; // 1. Import the Paginator
+use Illuminate\Support\Facades\Schema; // Import Schema facade to safely check table existence
+use Illuminate\Pagination\Paginator;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,7 +24,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // add this line here to fix the giant arrows
+        // Fix for giant pagination arrows
         Paginator::useBootstrapFive();
 
         // force HTTPS if in production OR if on Railway
@@ -31,6 +32,7 @@ class AppServiceProvider extends ServiceProvider
             URL::forceScheme('https');
         }
 
+        //existing admin layout notifications
         View::composer('layouts.admin_layout', function ($view) {
             $forgot = DB::table('users')->where('must_change_password', 1)->count();
 
@@ -47,6 +49,22 @@ class AppServiceProvider extends ServiceProvider
                 'feedbackCount' => $feedback,
                 'announcementReview' => $announcements,
                 'totalNotifications' => $forgot + $feedback + $announcements
+            ]);
+        });
+
+        //learner layout notifications
+        View::composer('layouts.open_layout', function ($view) {
+            $activeAnnouncementsCount = 0;
+
+            // Only run query if the table exists to avoid migration errors
+            if (Schema::hasTable('announcements')) {
+                $activeAnnouncementsCount = DB::table('announcements')
+                    ->where('status', 'Available')
+                    ->count();
+            }
+
+            $view->with([
+                'activeAnnouncementsCount' => $activeAnnouncementsCount
             ]);
         });
     }

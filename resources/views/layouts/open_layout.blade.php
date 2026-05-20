@@ -65,10 +65,9 @@
 
                     {{-- notification --}}
                     <li class="nav-item mx-2 position-relative" x-data="{ open: false }">
-                        {{-- click trigger --}}
+                        {{-- trigger icon bell --}}
                         <div @click="open = !open" style="cursor:pointer;" class="nav-link position-relative d-inline-block">
                             <i class="bi bi-bell fs-5"></i>
-                            {{-- display a real-timeif a new announcement is published --}}
                             @if(isset($activeAnnouncementsCount) && $activeAnnouncementsCount > 0)
                                 <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle">
                                     <span class="visually-hidden">New alerts</span>
@@ -76,23 +75,47 @@
                             @endif
                         </div>
 
-                        {{-- dropdown container content --}}
-                        <div x-show="open" x-transition x-cloak @click.outside="open = false" class="dropdown-menu dropdown-menu-end position-absolute p-2 shadow" style="min-width: 260px; right: 0;">
-                            @if(isset($activeAnnouncementsCount) && $activeAnnouncementsCount > 0)
-                                <div class="px-3 py-1 border-bottom">
-                                    <span class="fw-bold text-dark small">Notifications</span>
+                        {{-- notification dropdown --}}
+                        <div x-show="open" x-transition x-cloak @click.outside="open = false" class="dropdown-menu dropdown-menu-end position-absolute p-0 shadow border-0 mt-2" style="min-width: 320px; right: 0; max-height: 400px; overflow-y: auto; z-index: 1050;">
+                            <div class="px-3 py-2 bg-light border-bottom rounded-top d-flex justify-content-between align-items-center">
+                                <span class="fw-bold text-dark small">Recent Updates</span>
+                                @if($activeAnnouncementsCount > 0)
+                                    <span class="badge bg-danger rounded-pill small" style="font-size: 0.75rem;">{{ $activeAnnouncementsCount }} New</span>
+                                @endif
+                            </div>
+                            @if(isset($recentAnnouncements) && $recentAnnouncements->count() > 0)
+                                @foreach($recentAnnouncements as $alert)
+                                    <a class="dropdown-item px-3 py-2 border-bottom d-flex align-items-start gap-2 bg-white text-wrap" 
+                                    href="{{ route('learner.announcements.index') }}" 
+                                    style="white-space: normal;">
+                                        <div class="bg-primary bg-opacity-10 p-2 rounded-circle text-primary mt-1">
+                                            <i class="bi bi-megaphone-fill" style="font-size: 0.9rem;"></i>
+                                        </div>
+                                        <div class="w-100">
+                                            <span class="d-block small fw-bold text-dark text-truncate" style="max-width: 220px;">
+                                                {{ $alert->announcementTitle }}
+                                            </span>
+                                            <span class="text-muted d-block text-truncate small" style="font-size: 0.8rem; max-width: 220px;">
+                                                {{ $alert->announcementDetails }}
+                                            </span>
+                                            <span class="text-muted extra-small d-block mt-1 text-end" style="font-size: 0.7rem;">
+                                                {{ \Carbon\Carbon::parse($alert->created_at)->diffForHumans() }}
+                                            </span>
+                                        </div>
+                                    </a>
+                                @endforeach
+                                
+                                {{-- view all action page link layout --}}
+                                <div class="text-center bg-light rounded-bottom">
+                                    <a href="{{ route('learner.announcements.index') }}" class="d-block w-100 text-decoration-none small fw-bold text-primary py-2 hover-bg-dark">
+                                        See All Announcements <i class="bi bi-arrow-right ms-1"></i>
+                                    </a>
                                 </div>
-                                <a class="dropdown-item py-2 d-flex align-items-center gap-2" href="{{ route('learner.announcements.index') }}">
-                                    <i class="bi bi-megaphone-fill text-primary"></i>
-                                    <div>
-                                        <span class="d-block small fw-bold">New Announcement Live</span>
-                                        <span class="text-muted extra-small" style="font-size: 0.75rem;">Click to read the update</span>
-                                    </div>
-                                </a>
                             @else
-                                <p class="px-3 py-2 mb-0 text-muted small text-center">
-                                    <i class="bi bi-bell-slash me-1"></i> No new notifications
-                                </p>
+                                <div class="py-4 text-center text-muted rounded-bottom">
+                                    <i class="bi bi-bell-slash display-6 d-block mb-2 text-secondary"></i>
+                                    <span class="small">No new notifications available</span>
+                                </div>
                             @endif
                         </div>
                     </li>

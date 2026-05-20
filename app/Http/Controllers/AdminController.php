@@ -544,6 +544,31 @@ class AdminController extends Controller
 
         return redirect()->route('announcements')->with('success', 'Announcement updated successfully.');
     }
+
+    public function toggleStatus($id)
+    {
+        //find the record
+        $announcement = Announcements::where('announcementID', $id)->firstOrFail();
+        
+        //switch states based on present database data
+        if ($announcement->status === 'Available') {
+            $announcement->status = 'pending';
+        } else {
+            $announcement->status = 'Available';
+        }
+        $announcement->save();
+        return redirect()->back()->with('success', 'Announcement visibility updated successfully!');
+    }
+
+    //fetches public rows for the student layout view
+    public function userAnnouncements()
+    {
+        //restrict list so users ONLY pull records actively set to 'Available'
+        $announcements = Announcements::where('status', 'Available')
+                                        ->orderByDesc('created_at')
+                                        ->get();
+        return view('user.announcements', compact('announcements'));
+    }
     
     public function reports()
     {

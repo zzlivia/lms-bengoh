@@ -567,7 +567,7 @@ class AdminController extends Controller
         $announcements = Announcements::where('status', 'Available')
                                         ->orderByDesc('created_at')
                                         ->get();
-        return view('user.announcements', compact('announcements'));
+        return view('learner.announcements', compact('announcements'));
     }
     
     public function reports()

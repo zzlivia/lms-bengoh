@@ -3,17 +3,32 @@
 @section('content')
     <div class="container-fluid mt-3">
         <div class="row">
-            {{-- sidebar after users start learning --}}
-            <div class="col-12 col-md-3 mb-4 mb-md-0">
+            {{-- Desktop Sidebar Column: Matches Feedback structure --}}
+            <div class="col-md-3 d-none d-md-block" id="desktopSidebar">
                 @include('partials.course-sidebar', ['course' => $course])
             </div>
-            
-            {{-- main content --}}
+
+            {{-- Main Content Column --}}
             <div class="col-12 col-md-9 px-md-4">
+                {{-- Mobile Menu Toggle & Breadcrumb Layout --}}
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <button class="btn btn-sm btn-outline-primary d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileSidebar">
+                        <i class="fas fa-bars"></i> {{ __('messages.courses.course_modules') }}
+                    </button>
+                    
+                    <nav aria-label="breadcrumb" class="d-none d-sm-block">
+                        <ol class="breadcrumb mb-0 small">
+                            <li class="breadcrumb-item"><a href="{{ route('courses.allCourses') }}">{{ __('messages.courses.courses_breadcrumb') }}</a></li>
+                            <li class="breadcrumb-item active text-truncate" style="max-width: 200px;">{{ $course->getTranslation('courseName') }}</li>
+                            <li class="breadcrumb-item active">{{ __('messages.courses.mcq_title', ['id' => $module->moduleID, 'name' => $module->getTranslation('moduleName')]) }}</li>
+                        </ol>
+                    </nav>
+                </div>
+
                 <h5 class="mb-4">
                     {{ __('messages.courses.mcq_title', ['id' => $module->moduleID, 'name' => $module->getTranslation('moduleName')]) }}
                 </h5>
-                
+
                 <form id="quizForm" method="POST" action="{{ route('module.submit', $module->moduleID) }}">
                     @csrf
                     @if(session('warning'))
@@ -89,9 +104,6 @@
                         const swalAttempt = "{{ __('messages.courses.attempt_label') }}";
                         const swalRedirect = "{{ __('messages.courses.redirect_label') }}";
 
-                        let feedbackUrl = "{{ session('goFeedback') }}";
-                        let reviewUrl = "{{ session('reviewUrl') }}";
-                        let assessmentUrl = "{{ route('course.assessment', ['id' => session('courseID')]) }}";
                         let timerInterval;
 
                         Swal.fire({
@@ -115,7 +127,7 @@
                                 timerInterval = setInterval(() => {
                                     timeLeft--;
                                     if (countdownEl) countdownEl.textContent = timeLeft;
-                                tracking}, 1000);
+                                }, 1000);
                             },
                             willClose: () => { clearInterval(timerInterval); }
                         }).then((result) => {
@@ -133,7 +145,17 @@
                     </script>
                 @endif
             </div>
-            
+        </div>
+    </div>
+
+    {{-- Mobile Sidebar Drawer --}}
+    <div class="offcanvas offcanvas-start d-md-none" tabindex="-1" id="mobileSidebar" aria-labelledby="mobileSidebarLabel">
+        <div class="offcanvas-header border-bottom">
+            <h5 class="offcanvas-title fw-bold" id="mobileSidebarLabel">Course Modules</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body p-0">
+            @include('partials.course-sidebar', ['course' => $course])
         </div>
     </div>
 

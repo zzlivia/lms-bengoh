@@ -61,11 +61,11 @@
     </div>
     {{-- assessment and mcq --}}
     <div class="card-box mb-4">
-        <h6 class="fw-bold mb-3">Assessment & MCQ</h6>
+        <h6 class="fw-bold mb-3">Assessment & MCQ Performance</h6>
         <table class="table">
             <thead>
                 <tr>
-                    <th>{{ __('messages.admin.total_courses') }}</th>
+                    <th>{{ __('messages.admin.course_name') }}</th>
                     <th>{{ __('messages.admin.module_name') }}</th>
                     <th>{{ __('messages.admin.students_enrolled') }}</th>
                     <th>{{ __('messages.courses.completed') }}</th>
@@ -73,9 +73,21 @@
                 </tr>
             </thead>
             <tbody>
+            @if($assessmentModules->count() > 0)
+                @foreach($assessmentModules as $assessment)
+                <tr>
+                    <td>{{ $assessment->courseName }}</td>
+                    <td>{{ $assessment->moduleName }}</td>
+                    <td>{{ $assessment->enrolled }}</td>
+                    <td>{{ $assessment->completed }}</td>
+                    <td>{{ $assessment->in_progress }}</td>
+                </tr>
+                @endforeach
+            @else
                 <tr>
                     <td colspan="5" class="text-center text-muted">{{ __('messages.admin.no_data') }}</td>
                 </tr>
+            @endif
             </tbody>
         </table>
         <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#assessmentReportModal">{{ __('messages.admin.view') }} {{ __('messages.admin.advanced') }}</button>

@@ -26,49 +26,49 @@
             overflow: hidden;
         }
 
-        /* Fixed Elegant Geometric Corner Designs to avoid covering text layers */
-        .top-left-design {
+        /* Fixed Background Corner Geometry - Sent to back via z-index */
+        .top-left-accent {
             position: absolute;
             top: -50px;
             left: -50px;
             width: 250px;
             height: 250px;
-            background: #1b5e20;
+            background: #81c784;
             transform: rotate(45deg);
             z-index: 1;
         }
 
-        .top-left-accent {
+        .top-left-design {
             position: absolute;
-            top: -40px;
-            left: -40px;
+            top: -60px;
+            left: -60px;
             width: 250px;
             height: 250px;
-            background: #81c784;
+            background: #1b5e20;
             transform: rotate(45deg);
-            z-index: 0;
+            z-index: 2;
         }
 
-        .bottom-right-design {
+        .bottom-right-accent {
             position: absolute;
             bottom: -50px;
             right: -50px;
             width: 250px;
             height: 250px;
-            background: #1b5e20;
+            background: #81c784;
             transform: rotate(45deg);
             z-index: 1;
         }
 
-        .bottom-right-accent {
+        .bottom-right-design {
             position: absolute;
-            bottom: -40px;
-            right: -40px;
+            bottom: -60px;
+            right: -60px;
             width: 250px;
             height: 250px;
-            background: #81c784;
+            background: #1b5e20;
             transform: rotate(45deg);
-            z-index: 0;
+            z-index: 2;
         }
 
         /* Inner Content Border Frame */
@@ -80,25 +80,36 @@
             bottom: 40px;
             border: 2px solid #2e7d32;
             z-index: 5;
-            pointer-events: none;
         }
 
         .content {
             position: relative;
             z-index: 10;
             text-align: center;
-            padding: 160px 80px 60px 80px;
+            padding: 100px 80px 40px 80px;
+        }
+
+        /* Logo Layout Styling Container */
+        .logo-container {
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .logo-container img {
+            height: 60px;
+            width: auto;
         }
 
         .title {
-            font-size: 46px;
+            font-size: 42px;
             font-weight: bold;
             color: #1b5e20;
             letter-spacing: 5px;
+            margin-top: 10px;
         }
 
         .subtitle {
-            font-size: 20px;
+            font-size: 18px;
             margin-top: 5px;
             color: #444;
             letter-spacing: 3px;
@@ -108,84 +119,82 @@
             width: 150px;
             height: 3px;
             background: #2e7d32;
-            margin: 25px auto;
+            margin: 20px auto;
         }
 
         .certifies-text {
-            font-size: 16px;
+            font-size: 15px;
             font-style: italic;
             color: #666;
-            margin-top: 40px;
+            margin-top: 35px;
         }
 
         .name {
-            font-size: 38px;
+            font-size: 36px;
             font-weight: bold;
-            margin: 25px 0;
+            margin: 20px 0;
             color: #1b5e20;
             border-bottom: 1px dashed #ced4da;
             padding-bottom: 10px;
             display: inline-block;
-            min-width: 400px;
+            min-width: 440px;
         }
 
         .description {
-            font-size: 15px;
+            font-size: 14px;
             color: #555;
-            margin-top: 15px;
+            margin-top: 10px;
         }
 
         .course {
-            font-size: 26px;
+            font-size: 24px;
             font-weight: bold;
             color: #2e7d32;
             margin-top: 15px;
             letter-spacing: 1px;
         }
 
-        /* Safe Vector Ribbon Design replacing broken emoji font files */
         .badge-box {
-            margin-top: 50px;
+            margin-top: 40px;
             position: relative;
             display: block;
         }
 
         .star-icon {
-            color: #gold;
-            font-size: 28px;
+            font-size: 26px;
             color: #fbc02d;
+            letter-spacing: 4px;
         }
 
+        /* Safe Footer Container positioning safely clear of the rotating geometric elements */
         .footer {
             position: absolute;
-            bottom: 100px;
-            width: 100%;
-            padding: 0 100px;
-            box-sizing: border-box;
+            bottom: 110px;
+            left: 90px;
+            right: 90px;
             z-index: 10;
         }
 
         .footer-table {
             width: 100%;
             border-collapse: collapse;
+            table-layout: fixed;
         }
 
         .footer-table td {
-            width: 50%;
             vertical-align: bottom;
             font-size: 13px;
             color: #444;
         }
 
         .signature-section {
-            width: 220px;
             text-align: center;
+            width: 220px;
         }
 
         .date-section {
-            width: 220px;
             text-align: center;
-            float: right;
+            width: 220px;
         }
 
         .signature-line {
@@ -197,6 +206,7 @@
         .value-text {
             font-weight: bold;
             color: #1b5e20;
+            font-size: 14px;
         }
     </style>
 </head>
@@ -208,10 +218,15 @@
     <div class="top-left-design"></div>
     <div class="bottom-right-accent"></div>
     <div class="bottom-right-design"></div>
-    
     <div class="border-frame"></div>
 
     <div class="content">
+        {{-- Logo Integration Section --}}
+        <div class="logo-container">
+            {{-- CRITICAL: public_path() ensures the image path is read locally by the backend PDF generator --}}
+            <img src="{{ public_path('images/bengohdam-logo.png') }}" alt="Bengoh Academy Logo">
+        </div>
+
         <div class="title">CERTIFICATE</div>
         <div class="subtitle">OF ACHIEVEMENT</div>
 
@@ -234,21 +249,25 @@
         </div>
     </div>
 
+    {{-- Re-engineered Secure Structural Footer Layout Grid --}}
     <div class="footer">
         <table class="footer-table">
             <tr>
-                <td>
+                <td align="left">
                     <div class="signature-section">
                         <div class="signature-line"></div>
                         <span class="value-text">{{ $course->courseAuthor }}</span><br>
-                        <span style="color: #777;">{{ Lang::has('messages.cert.instructor') ? __('messages.cert.instructor') : 'Instructor' }}</span>
+                        <span style="color: #666; font-size: 12px;">{{ Lang::has('messages.cert.instructor') ? __('messages.cert.instructor') : 'Instructor' }}</span>
                     </div>
                 </td>
-                <td>
+                
+                <td>&nbsp;</td>
+                
+                <td align="right">
                     <div class="date-section">
                         <div class="signature-line"></div>
                         <span class="value-text">{{ now()->format('d F Y') }}</span><br>
-                        <span style="color: #777;">{{ Lang::has('messages.cert.date') ? __('messages.cert.date') : 'Date Issued' }}</span>
+                        <span style="color: #666; font-size: 12px;">{{ Lang::has('messages.cert.date') ? __('messages.cert.date') : 'Date Issued' }}</span>
                     </div>
                 </td>
             </tr>

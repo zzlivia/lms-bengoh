@@ -55,16 +55,25 @@ class AppServiceProvider extends ServiceProvider
         //learner layout notifications
         View::composer('layouts.open_layout', function ($view) {
             $activeAnnouncementsCount = 0;
+            $recentAnnouncements = collect(); // Empty collection fallback
 
-            // Only run query if the table exists to avoid migration errors
             if (Schema::hasTable('announcements')) {
+                //get the total count of live updates
                 $activeAnnouncementsCount = DB::table('announcements')
                     ->where('status', 'Available')
                     ->count();
+
+                //fetch the 3 most recent live announcements to show in the dropdown list
+                $recentAnnouncements = DB::table('announcements')
+                    ->where('status', 'Available')
+                    ->orderByDesc('created_at')
+                    ->limit(3)
+                    ->get();
             }
 
             $view->with([
-                'activeAnnouncementsCount' => $activeAnnouncementsCount
+                'activeAnnouncementsCount' => $activeAnnouncementsCount,
+                'recentAnnouncements'      => $recentAnnouncements
             ]);
         });
     }

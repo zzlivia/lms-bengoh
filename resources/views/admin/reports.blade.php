@@ -192,18 +192,24 @@
                         </ul>
                     <h6 class="mt-3">Courses</h6>
                     <table class="table">
-                    <tr>
-                        <th>{{ __('messages.admin.course_name') }}</th>
-                        <th>{{ __('messages.admin.module_name') }}</th>
-                        <th>{{ __('messages.courses.completed') }}</th>
-                    </tr>
-                    @foreach($courseModules as $row)
-                    <tr>
-                        <td>{{ $row->courseName }}</td>
-                        <td>{{ $row->moduleName }}</td>
-                        <td>{{ $row->completed }}</td>
-                    </tr>
-                    @endforeach
+                        <thead>
+                            <tr>
+                                <th>{{ __('messages.admin.course_name') }}</th>
+                                <th>{{ __('messages.admin.module_name') }}</th>
+                                <th>{{ __('messages.courses.completed') }}</th>
+                                <th>{{ __('messages.admin.progress') }}</th> 
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($courseModules as $row)
+                            <tr>
+                                <td>{{ $row->courseName }}</td>
+                                <td>{{ $row->moduleName }}</td>
+                                <td>{{ $row->completed }}</td>
+                                <td>{{ $row->in_progress }}</td>
+                            </tr>
+                            @endforeach
+                        </tbody>
                     </table>
                 </div>
             </div>

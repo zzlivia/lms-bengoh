@@ -76,12 +76,12 @@
                             @endif
                         </div>
 
-                        {{-- notification dropdown --}}
+                        {{-- dropdown --}}
                         <div x-show="open" 
                             x-transition 
                             @click.outside="open = false" 
-                            class="bg-white rounded shadow p-0 mt-2 border position-absolute" 
-                            style="min-width: 320px; right: 0; max-height: 400px; overflow-y: auto; z-index: 1050; display: none;"
+                            class="bg-white rounded shadow p-0 mt-2 border position-absolute custom-notification-dropdown" 
+                            style="max-height: 400px; overflow-y: auto; z-index: 1050; display: none;"
                             :style="open ? 'display: block !important;' : 'display: none !important;'">
                             
                             <div class="px-3 py-2 bg-light border-bottom rounded-top d-flex justify-content-between align-items-center">
@@ -99,11 +99,11 @@
                                         <div class="bg-primary bg-opacity-10 p-2 rounded-circle text-primary mt-1 flex-shrink-0">
                                             <i class="bi bi-megaphone-fill" style="font-size: 0.9rem;"></i>
                                         </div>
-                                        <div class="w-100">
-                                            <span class="d-block small fw-bold text-dark text-truncate" style="max-width: 220px;">
+                                        <div class="w-100 min-w-0">
+                                            <span class="d-block small fw-bold text-dark text-truncate">
                                                 {{ $alert->announcementTitle }}
                                             </span>
-                                            <span class="text-muted d-block text-truncate small" style="font-size: 0.8rem; max-width: 220px;">
+                                            <span class="text-muted d-block text-truncate small" style="font-size: 0.8rem;">
                                                 {{ $alert->announcementDetails }}
                                             </span>
                                             <span class="text-muted extra-small d-block mt-1 text-end" style="font-size: 0.7rem;">
@@ -119,13 +119,14 @@
                                     </a>
                                 </div>
                             @else
-                                <div class="py-4 text-center text-muted rounded-bottom">
+                                <div class="py-4 text-center text-muted rounded-bottom" style="width: 280px;">
                                     <i class="bi bi-bell-slash display-6 d-block mb-2 text-secondary"></i>
                                     <span class="small">No new notifications available</span>
                                 </div>
                             @endif
                         </div>
                     </li>
+
                     {{-- authentication --}}
                     <li class="nav-item mx-2 d-flex align-items-center">
                     @auth

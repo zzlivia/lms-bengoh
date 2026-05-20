@@ -95,18 +95,27 @@
                                 </thead>
                                 <tbody>
                                     @foreach($grades as $grade)
+                                        @php
+                                            // Strip out any accidental percentage signs from the backend to ensure a clean number
+                                            $numericScore = (int) str_replace('%', '', $grade['score']);
+                                        @endphp
                                         <tr>
                                             <td class="text-start ps-4">{{ $grade['name'] }}</td>
                                             <td class="text-muted">80%</td>
-                                            <td class="fw-bold {{ $grade['score'] >= 80 ? 'text-success' : 'text-danger' }}">
-                                                {{ $grade['score'] }}%
+                                            
+                                            {{-- Compares the clean integer score securely --}}
+                                            <td class="fw-bold {{ $numericScore >= 80 ? 'text-success' : 'text-danger' }}">
+                                                {{ $numericScore }}%
                                             </td>
                                         </tr>
                                     @endforeach
+                                    
                                     <tr class="table-light fw-bold">
                                         <td class="text-start ps-4">{{ __('messages.courses.total_grade') }}</td>
                                         <td></td>
-                                        <td class="text-primary fs-5">{{ $totalProgress ?? 0 }}%</td>
+                                        <td class="text-primary fs-5">
+                                            {{ (int) str_replace('%', '', $totalProgress ?? 0) }}%
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>

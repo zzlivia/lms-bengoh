@@ -572,20 +572,16 @@ class AdminController extends Controller
     
     public function reports()
     {
-
-        // total registered users
+        //user management statistics
         $totalUsers = DB::table('users')->count();
-        // new users per month
         $newUsers = DB::table('users')->whereMonth('created_at', now()->month)->count();
-        // active users (authenticated = 1)
         $activeUsers = DB::table('users')->where('authenticated', 1)->count();
-        // inactive users
         $inactiveUsers = DB::table('users')->where('authenticated', 0)->count();
-        // guest users by session
         $guestUsers = 0;
 
-        // course & module
-        $courseModules = DB::table('course')->join('module', 'course.courseID', '=', 'module.courseID')
+        //course & module progression
+        $courseModules = DB::table('course')
+            ->join('module', 'course.courseID', '=', 'module.courseID')
             ->select(
                 'course.courseName',
                 'module.moduleName',
@@ -594,10 +590,31 @@ class AdminController extends Controller
                 DB::raw('SUM(enrolmentcoursemodules.inProgress) as in_progress')
             )
             ->leftJoin('enrolmentcoursemodules', 'module.moduleID', '=', 'enrolmentcoursemodules.moduleID')
-            ->groupBy('course.courseName','module.moduleName')
+            ->groupBy('course.courseName', 'module.moduleName')
             ->get();
 
-        return view('admin.reports', compact('totalUsers','newUsers','activeUsers','inactiveUsers','guestUsers','courseModules'
+        //assessment & MCQ progression metrics
+        $assessmentModules = DB::table('course')
+            ->join('module', 'course.courseID', '=', 'module.courseID')
+            ->select(
+                'course.courseName',
+                'module.moduleName',
+                DB::raw('COUNT(enrolmentcoursemodules.userID) as enrolled'),
+                DB::raw('SUM(enrolmentcoursemodules.isCompleted) as completed'),
+                DB::raw('SUM(enrolmentcoursemodules.inProgress) as in_progress')
+            )
+            ->leftJoin('enrolmentcoursemodules', 'module.moduleID', '=', 'enrolmentcoursemodules.moduleID')
+            ->groupBy('course.courseName', 'module.moduleName')
+            ->get();
+
+        return view('admin.reports', compact(
+            'totalUsers',
+            'newUsers',
+            'activeUsers',
+            'inactiveUsers',
+            'guestUsers',
+            'courseModules',
+            'assessmentModules'
         ));
     }
 

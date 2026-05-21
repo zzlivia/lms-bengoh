@@ -449,14 +449,16 @@ Route::prefix('admin')
     Route::get('/download-report', [AdminController::class, 'downloadReport'])
         ->name('downloadReport');
 
-    /*Route::get('/settings', [AdminController::class, 'settings'])
-        ->name('settings');*/
-
     Route::get('/settings', [AdminSettingsController::class,'index'])
         ->name('settings');
 
     Route::post('/settings/save', [AdminSettingsController::class,'save'])
         ->name('settings.save');
+
+    /* setting on top bar */
+    Route::get('/settings', [AdminController::class, 'settings'])->name('settings');
+   
+    Route::post('/settings/update', [AdminController::class, 'updateProfile'])->name('profile.update');
 
     Route::get('/help-support', [AdminController::class, 'helpSupport'])
         ->name('help');

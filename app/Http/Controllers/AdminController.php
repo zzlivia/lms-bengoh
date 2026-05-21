@@ -688,7 +688,27 @@ class AdminController extends Controller
         return view('admin.passwordRequests', compact('requests'));
     }
 
-    public function settings(){return view('admin.admin_settings');}
+    public function settings()
+    {
+        $admin = auth()->user();
+        return view('admin.settings', compact('admin'));
+    }
+    public function updateProfile(Request $request)
+    {
+        $admin = auth()->user();
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($admin->id)],
+            'password' => ['nullable', 'string', 'min:8', 'confirmed'],
+        ]);
+        $admin->name = $request->name;
+        $admin->email = $request->email;
+        if ($request->filled('password')) {
+            $admin->password = Hash::make($request->password);
+        }
+        $admin->save();
+        return redirect()->back()->with('success', 'Profile updated successfully!');
+    }
 
     public function feedbackList()
     {

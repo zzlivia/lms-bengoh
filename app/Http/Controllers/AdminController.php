@@ -606,7 +606,7 @@ class AdminController extends Controller
                 DB::raw('SUM(CASE WHEN assessment_results.status = "passed" THEN 1 ELSE 0 END) as completed'),
                 
                 //total students who attempted it but are still failing/re-attempting (status is 'failed')
-                DB::raw('SUM(CASE WHEN assessment_results.status = "failed" THEN 1 ELSE 0 END) as in_progress')
+                DB::raw('SUM(CASE WHEN LOWER(assessment_results.status) = "failed" THEN 1 ELSE 0 END) as in_progress')
             )
             ->leftJoin('assessment_results', 'module.moduleID', '=', 'assessment_results.moduleID')
             ->groupBy('course.courseName', 'module.moduleName')

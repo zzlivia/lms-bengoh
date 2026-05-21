@@ -60,12 +60,33 @@
                         </ul>
                     </div>
 
-                    <div class="d-flex align-items-center">
-                        <i class="bi bi-person-circle fs-4 me-2"></i>
-                        <div class="lh-sm">
-                            <div class="fw-bold">{{ auth()->check() ? auth()->user()->name : 'Guest' }}</div>
-                            <small class="text-muted">{{ __('messages.admin.admin_role') }}</small>
-                        </div>
+                    <div class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle d-flex align-items-center text-dark" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="text-decoration: none;">
+                            <i class="bi bi-person-circle fs-4 me-2"></i>
+                            <div class="lh-sm text-start me-1">
+                                <div class="fw-bold">{{ auth()->check() ? auth()->user()->name : 'Guest' }}</div>
+                                <small class="text-muted">{{ __('messages.admin.admin_role') }}</small>
+                            </div>
+                        </a>
+                        
+                        <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2" style="min-width: 200px;">
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center py-2" href="{{ route('admin.settings') }}">
+                                    <i class="bi bi-person me-2 fs-5 text-muted"></i>
+                                    Profile / Settings
+                                </a>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <form method="POST" action="{{ route('admin.logout') }}" class="m-0">
+                                    @csrf
+                                    <button type="submit" class="dropdown-item d-flex align-items-center py-2 text-danger">
+                                        <i class="bi bi-box-arrow-right me-2 fs-5"></i>
+                                        {{ __('messages.nav.logout') }}
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
                     </div>
 
                     <div class="nav-item dropdown">

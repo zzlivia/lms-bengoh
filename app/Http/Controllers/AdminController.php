@@ -579,7 +579,7 @@ class AdminController extends Controller
         $inactiveUsers = DB::table('users')->where('authenticated', 0)->count();
         $guestUsers = 0;
 
-        //course & module progression
+        //course & module progression metrics
         $courseModules = DB::table('course')
             ->join('module', 'course.courseID', '=', 'module.courseID')
             ->select(
@@ -599,11 +599,16 @@ class AdminController extends Controller
             ->select(
                 'course.courseName',
                 'module.moduleName',
-                DB::raw('COUNT(enrolmentcoursemodules.userID) as enrolled'),
-                DB::raw('SUM(enrolmentcoursemodules.isCompleted) as completed'),
-                DB::raw('SUM(enrolmentcoursemodules.inProgress) as in_progress')
+                //total unique students who attempted this module quiz/assessment
+                DB::raw('COUNT(DISTINCT assessment_results.userID) as enrolled'),
+                
+                //total students who passed (status is 'passed')
+                DB::raw('SUM(CASE WHEN assessment_results.status = "passed" THEN 1 ELSE 0 END) as completed'),
+                
+                //total students who attempted it but are still failing/re-attempting (status is 'failed')
+                DB::raw('SUM(CASE WHEN assessment_results.status = "failed" THEN 1 ELSE 0 END) as in_progress')
             )
-            ->leftJoin('enrolmentcoursemodules', 'module.moduleID', '=', 'enrolmentcoursemodules.moduleID')
+            ->leftJoin('assessment_results', 'module.moduleID', '=', 'assessment_results.moduleID')
             ->groupBy('course.courseName', 'module.moduleName')
             ->get();
 

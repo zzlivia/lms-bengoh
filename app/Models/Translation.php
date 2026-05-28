@@ -1,23 +1,23 @@
 <?php
-    namespace App\Models;
 
-    use Illuminate\Database\Eloquent\Model;
+namespace App\Models;
 
-    class Translation extends Model
+use Illuminate\Database\Eloquent\Model;
+
+class Translation extends Model
+{
+    //tells Laravel it is allowed to insert data into these columns
+    protected $fillable = [
+        'translatable_type',
+        'translatable_id',
+        'locale',
+        'key',
+        'value'
+    ];
+
+    public function translatable()
     {
-        protected $table = 'translations'; // Points to your first image table
-
-        protected $fillable = [
-            'translatable_type',
-            'translatable_id',
-            'locale',
-            'key',
-            'value'
-        ];
-
-        public function translatable()
-        {
-            return $this->morphTo();
-        }
+        return $this->morphTo();
     }
+}
 ?>

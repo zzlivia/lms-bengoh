@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Storage;
 class LectureSectionController extends Controller
 {
 
-    // store lecture section with file uploaded which is optional
+    // store new lecture section with file uploaded which is optional
     public function storeSection(Request $request)
     {
         $request->validate([ //validate incoming request
@@ -72,20 +72,18 @@ class LectureSectionController extends Controller
         return redirect()->route('admin.course.module.create', ['tab' => 'section'])->with('success','Lecture section added successfully');
     }
 
+    //edit section form
     public function editSection($id)
     {
-        // Find the main section
+        //find the main section
         $section = LectureSection::findOrFail($id);
+        //fetch the translation for the current language (e.g., 'ms' or 'en')
+        $sectionTranslation = $section->translations()->where('locale', app()->getLocale())->first();
 
-        // Fetch the translation for the current language (e.g., 'ms' or 'en')
-        $sectionTranslation = $section->translations()
-            ->where('locale', app()->getLocale())
-            ->first();
-
-        // Use the view name shown in your folder structure: admin/edit_section.blade.php
         return view('admin.edit_section', compact('section', 'sectionTranslation'));
     }
 
+    //update details of the section
     public function updateSection(Request $request, $id)
     {
         $request->validate([
@@ -98,9 +96,8 @@ class LectureSectionController extends Controller
         $section = LectureSection::findOrFail($id);
         $oldFile = $section->section_file;
 
-        // 1. UPDATE BASE FIELDS (Non-translatable logic)
+        //update
         $section->section_type = $request->section_type;
-        // We keep these as defaults in the main table in case a translation doesn't exist
         $section->section_title = $request->section_title;
         $section->section_content = $request->section_content;
 
@@ -117,20 +114,19 @@ class LectureSectionController extends Controller
         
         $section->save();
 
-        // 2. SYNC TRANSLATION (The Localization Logic)
-        // This saves the title and content into the translations table based on current locale
+        //sync
         $section->translations()->updateOrCreate(
             [
                 'locale' => app()->getLocale(),
                 'sectionID' => $section->sectionID 
             ],
             [
-                'title' => $request->section_title,   // column name from your DB screenshot
-                'content' => $request->section_content // column name from your DB screenshot
+                'title' => $request->section_title,
+                'content' => $request->section_content
             ]
         );
 
-        // 3. SYNC RESOURCES (Video logic)
+        //sync resources
         if ($section->section_type === 'video' && $filePath) {
             $material = LearningMaterials::updateOrCreate(
                 [
@@ -143,7 +139,6 @@ class LectureSectionController extends Controller
                     'storagePath' => $filePath
                 ]
             );
-
             VideoLearning::updateOrCreate(
                 ['learningMaterialID' => $material->learningMaterialID],
                 [
@@ -153,30 +148,23 @@ class LectureSectionController extends Controller
                 ]
             );
         } else {
-            // Cleanup if type changed
-            $material = LearningMaterials::where('lectID', $section->lectID)
-                ->where('learningMaterialTitle', $section->section_title)
-                ->first();
-
+            $material = LearningMaterials::where('lectID', $section->lectID)->where('learningMaterialTitle', $section->section_title)->first();
             if ($material) {
                 VideoLearning::where('learningMaterialID', $material->learningMaterialID)->delete();
                 $material->delete();
             }
         }
-
-        // Use localization for the success message too!
         return back()->with('success', __('messages.admin.save_changes'));
     }
 
+    //remove section and delete its file
     public function deleteSection($id)
     {
         $section = LectureSection::findOrFail($id);
         if ($section->section_file) {
             Storage::disk('public')->delete($section->section_file);
         }
-
         $section->delete();
-
         return back()->with('success','Section deleted successfully');
     }
 }

@@ -79,7 +79,7 @@ class AuthenticationController extends Controller
 
     public function logout(Request $request)
     {
-        // Logout both guards safely
+        //logout both guards safely
         Auth::guard('admin')->logout();
         Auth::logout();
         $request->session()->invalidate();

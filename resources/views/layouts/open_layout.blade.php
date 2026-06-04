@@ -83,7 +83,7 @@
                     <li class="nav-item mx-2">
                         <a class="nav-link" href="{{ route('about') }}">{{ __('messages.nav.about') }}</a>
                     </li>
-                    {{-- language switches --}}
+                    {{-- language switches 
                     <li class="nav-item dropdown mx-2">
                         <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">{{ __('messages.nav.language') }}</a>
                         <ul class="dropdown-menu">
@@ -94,7 +94,7 @@
                                 <a class="dropdown-item" href="{{ route('lang.switch', 'ms') }}">Bahasa Melayu</a>
                             </li>
                         </ul>
-                    </li>
+                    </li>--}}
 
                     {{-- notification --}}
                     <li class="nav-item mx-2 position-relative" x-data="{ open: false }">

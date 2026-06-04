@@ -663,7 +663,7 @@ class AdminController extends Controller
 
     public function passwordRequests()
     {
-        $requests = Users::where('password_change_requested', true)->get();
+        $requests = Users::where('reset_request', true)->get(); 
         return view('admin.passwordRequests', compact('requests'));
     }
 

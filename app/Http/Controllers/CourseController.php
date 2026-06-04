@@ -371,7 +371,7 @@ class CourseController extends Controller
                 'status' => $percentage >= 80 ? 'pass' : 'fail',
                 'attempts' => $attempts,
                 'updated_at' => now(),
-                'created_at' => now() // Added to ensure timestamp on first insert
+                'created_at' => now()
             ]
         );
 

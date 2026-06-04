@@ -65,7 +65,7 @@ class AssessmentController extends Controller
         $score = 0;
         $total = 0;
 
-        // ✅ CREATE attempt ONCE
+        //create attempt once
         $attemptID = DB::table('courseassattempts')->insertGetId([
             'userID' => Auth::user()->userID,
             'courseAssID' => $request->courseAssID,
@@ -73,30 +73,19 @@ class AssessmentController extends Controller
             'created_at' => now(),
             'updated_at' => now()
         ]);
-
-        // ✅ SINGLE LOOP ONLY
         foreach ($questions as $q) {
-
             $answer = $answers[$q->assQsID] ?? null;
-
             // skip empty answers
             if (!$answer || trim($answer) === '') {
                 continue;
             }
-
             if ($q->courseAssType == 'MCQ') {
-
-                $option = DB::table('assessment_mcq_options')
-                    ->where('id', $answer)
-                    ->first();
-
+                $option = DB::table('assessment_mcq_options')->where('id', $answer)->first();
                 if ($option) {
                     $total++;
-
                     if ($option->is_correct) {
                         $score++;
                     }
-
                     DB::table('courseassanswers')->insert([
                         'attemptID' => $attemptID,
                         'assQsID' => $q->assQsID,
@@ -106,9 +95,7 @@ class AssessmentController extends Controller
                         'updated_at' => now()
                     ]);
                 }
-
             } else {
-
                 DB::table('courseassanswers')->insert([
                     'attemptID' => $attemptID,
                     'assQsID' => $q->assQsID,
@@ -118,14 +105,8 @@ class AssessmentController extends Controller
                 ]);
             }
         }
-
         // save score
-        DB::table('courseassattempts')
-            ->where('attemptID', $attemptID)
-            ->update([
-                'score' => $score
-            ]);
-
+        DB::table('courseassattempts')->where('attemptID', $attemptID)->update(['score' => $score]);
         // save result
         DB::table('assessment_results')->updateOrInsert(
             [
@@ -139,8 +120,6 @@ class AssessmentController extends Controller
                 'created_at' => now()
             ]
         );
-
-        // ✅ REDIRECT WORKS HERE
         return redirect()->route('course.progress', [
             'id' => $request->courseID
         ])->with([
@@ -158,13 +137,11 @@ class AssessmentController extends Controller
             ->where('course_ass_attempts.courseAssID', $id)
             ->select('course_ass_attempts.*', 'users.userName')
             ->get();
-
         foreach ($attempts as $attempt) {
             $attempt->answers = DB::table('courseassanswers')
                 ->where('attemptID', $attempt->attemptID)
                 ->get();
         }
-
         return view('admin.assessment_results', compact('attempts'));
     }
 }

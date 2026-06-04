@@ -17,7 +17,8 @@ use Illuminate\Support\Facades\DB;
 
 class ModuleController extends Controller
 {
-    public function createModule() //create module page
+    //create new module form with list of available courses
+    public function createModule()
     {
         //get all courses from db to be used for dropdown selection
         $courses = Course::all(); 
@@ -91,6 +92,7 @@ class ModuleController extends Controller
         return view('admin.editLecture', compact('lecture','modules')); //send back data
     }
 
+    //validate and update the existing lecture
     public function updateLecture(Request $request, $id)
     {
         $request->validate([
@@ -105,7 +107,6 @@ class ModuleController extends Controller
             'lectName' => $request->lectName,
             'lect_duration' => $request->lect_duration,
         ]);
-
         return redirect()->route('admin.course.module.create', ['tab' => 'lecture'])->with('success', 'Lecture updated successfully!');
     }
 
@@ -115,7 +116,7 @@ class ModuleController extends Controller
         return redirect()->back()->with('success','Lecture deleted successfully'); //redirect back
     }
 
-    //for admin's view
+    //display the course management dashboard including courses, modules, lectures, and lecture sections
     public function showAddCourse()
     {
         $courses = Course::all();
@@ -129,42 +130,40 @@ class ModuleController extends Controller
     //handling courses
     public function lectureStore(Request $request)
     {
-        // 1. Validation
+        //validation
         $request->validate([
             'lectID' => 'required|unique:lectures,lectID',
             'moduleID' => 'required|exists:modules,moduleID',
             'lectName' => 'required|string|max:255',
             'lect_duration' => 'required|integer',
         ]);
-
-        // 2. Creation
+        //create lecture
         Lecture::create([
             'lectID'        => $request->lectID,
             'moduleID'      => $request->moduleID,
             'lectName'      => $request->lectName,
             'lect_duration' => $request->lect_duration,
         ]);
-
         return redirect()->back()->with('success', 'Lecture added successfully!');
     }
 
+    //fetch module
     public function viewModule($id)
     {
         $module = Module::with('mcqs.answers')->where('moduleID', $id)->firstOrFail();
         return view('learner.module_questions', compact('module'));
     }
 
+    //store generated MCQs
     public function storeMCQ(Request $request)
     {
         //basic validation to ensure data exist
         if (!$request->has('questions')) {
             return back()->with('error', 'No questions provided.');
         }
-
         foreach ($request->questions as $q) {
             //generate a unique group_id so the Edit/Preview links work
             $groupId = time() . rand(100, 999);
-
             //insert the Question using your specific column names: 'moduleQs' and 'group_id'
             $questionID = \DB::table('mcqs')->insertGetId([
                 'moduleID'   => $request->moduleID,
@@ -175,7 +174,6 @@ class ModuleController extends Controller
                 'created_at' => now(),
                 'updated_at' => now()
             ]);
-
             //insert the Answers into 'moduleans' table
             if (isset($q['answers']) && is_array($q['answers'])) {
                 foreach ($q['answers'] as $index => $answer) {
@@ -194,33 +192,21 @@ class ModuleController extends Controller
 
     public function preview($group_id)
     {
-        $questions = Mcqs::where('group_id', $group_id)
-            ->where('is_active', 1)
-            ->get();
-
+        $questions = Mcqs::where('group_id', $group_id)->where('is_active', 1)->get();
         return view('admin.preview', compact('questions'));
     }
 
     public function editMCQ($group_id)
     {
-        $mcq = Mcqs::where('group_id', $group_id)
-                ->where('is_active', 1)
-                ->firstOrFail();
-
+        $mcq = Mcqs::where('group_id', $group_id)->where('is_active', 1)->firstOrFail();
         return view('admin.edit_mcq', compact('mcq'));
     }
 
     public function updateMCQ(Request $request, $group_id)
     {
-        $mcq = Mcqs::where('group_id', $group_id)
-                ->where('is_active', 1)
-                ->firstOrFail();
-
+        $mcq = Mcqs::where('group_id', $group_id)->where('is_active', 1)->firstOrFail();
         // deactivate current
-        Mcqs::where('group_id', $group_id)
-            ->where('is_active', 1)
-            ->update(['is_active' => 0]);
-
+        Mcqs::where('group_id', $group_id)->where('is_active', 1)->update(['is_active' => 0]);
         // create new version (history-safe)
         Mcqs::create([
             'moduleID' => $mcq->moduleID,
@@ -234,18 +220,15 @@ class ModuleController extends Controller
             'source' => 'manual',
             'is_active' => 1
         ]);
-
         return redirect()->back()->with('success', 'MCQ updated successfully');
     }
 
     public function toggleMCQ($moduleID)
     {
         $module = Module::where('moduleID', $moduleID)->firstOrFail();
-
         // toggle (1 → 0, 0 → 1)
         $module->mcq_enabled = $module->mcq_enabled ? 0 : 1;
         $module->save();
-
         return back()->with('success', 'MCQ status updated!');
     }
 }

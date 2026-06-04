@@ -50,7 +50,7 @@
             {{-- Topbar Code remains the same... --}}
             <div class="topbar d-flex align-items-center p-3 px-4">
                 <div class="d-flex align-items-center ms-auto gap-4">
-                    <div class="nav-item dropdown">
+                    {{-- <div class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
                             <i class="bi bi-translate"></i> {{ __('messages.nav.language') }}
                         </a>
@@ -58,7 +58,7 @@
                             <li><a class="dropdown-item" href="{{ url('lang/en') }}">English</a></li>
                             <li><a class="dropdown-item" href="{{ url('lang/ms') }}">Bahasa Melayu</a></li>
                         </ul>
-                    </div>
+                    </div>--}}
 
                     <div class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle d-flex align-items-center text-dark" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="text-decoration: none;">

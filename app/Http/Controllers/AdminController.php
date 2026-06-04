@@ -19,7 +19,6 @@ use App\Models\Mcqs;
 //laravel utilities
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
 
@@ -98,7 +97,6 @@ class AdminController extends Controller
     public function userManagement(Request $request)
     {
         $search = $request->search;
-
         // summary cards
         $totalUsers = DB::table('users')->count();
         $newUsers = DB::table('users')->whereDate('created_at', '>=', now()->subDays(7))->count();
@@ -198,12 +196,11 @@ class AdminController extends Controller
         $course->isAvailable = $request->input('isAvailable', 0); //available is 1, not available is 0
         //handle image upload
         if ($request->hasFile('courseImg')) {
-            // Force Laravel to use the 'r2' disk specifically
+            //force Laravel to use the 'r2' disk specifically
             $path = $request->file('courseImg')->store('courses-assets', 'r2');
             $course->courseImg = $path;
         }
         $course->save();
-        
         return redirect()->route('admin.course.module')->with('success', 'Course added successfully!');
     }
 
@@ -220,12 +217,11 @@ class AdminController extends Controller
         $course->isAvailable = $request->isAvailable;
         //update image
         if ($request->hasFile('courseImg')) {
-            // Force Laravel to use the 'r2' disk specifically
+            //force Laravel to use the 'r2' disk specifically
             $path = $request->file('courseImg')->store('courses-assets', 'r2');
             $course->courseImg = $path;
         }
         $course->save();
-
         return redirect()->route('admin.course.module')
             ->with('success','Course updated successfully');
     } 
@@ -239,19 +235,14 @@ class AdminController extends Controller
     public function deleteCourse($id)
     {
         $course = Course::findOrFail($id);
-
         // delete related records first
         $course->enrolments()->delete();
-
         // optionally delete other relations too
         $course->modules()->delete();
         $course->feedback()->delete();
-
         // now delete course
         $course->delete();
-
-        return redirect()->route('admin.course.module')
-            ->with('success', 'Course deleted successfully');
+        return redirect()->route('admin.course.module')->with('success', 'Course deleted successfully');
     }
 
     private function mockAI($content, $count = 3)
@@ -264,6 +255,7 @@ class AdminController extends Controller
         return $questions;
     }
 
+    //request MCQ from OpenAI external API 
     private function generateWithAI($content, $count = 3)
     {
         $response = Http::withHeaders(['Authorization' => 'Bearer ' . env('OPENAI_API_KEY'),'Content-Type' => 'application/json',])
@@ -289,6 +281,7 @@ class AdminController extends Controller
         return $questions;
     }
 
+    //call OpenAI and link 
     public function generateAI(Request $request, $moduleID)
     {
         $count = min((int) $request->input('count', 3), 20); //min 3, max 20
@@ -314,7 +307,7 @@ class AdminController extends Controller
                         'answer3' => $q['answers'][2],
                         'answer4' => $q['answers'][3],
                         'correct_answer' => $q['correct'],
-                        'group_id' => $mcq->group_id, // SAME group
+                        'group_id' => $mcq->group_id,
                         'source' => 'ai',
                         'is_active' => 0
                     ]);
@@ -339,6 +332,7 @@ class AdminController extends Controller
         }
     }
 
+    //set the generated question to active questions
     public function useAiQuestion($id)
     {
         $selected = Mcqs::findOrFail($id);
@@ -354,16 +348,13 @@ class AdminController extends Controller
 
         return back()->with('success', 'AI question is now active');
     }
-
+    
+    //retrieve results tracked
     public function mcqResults()
     {
-        // Fetching results where type is 'mcq'
-        // Assuming AssessmentResult model relates to Users and Course/Module
+        //fetching results where type is 'mcq'
         $results = AssessmentResult::where('type', 'mcq')
-            ->with(['user']) // Eager load the user details
-            ->orderBy('created_at', 'desc')
-            ->paginate(15);
-
+            ->with(['user'])->orderBy('created_at', 'desc')->paginate(15);
         return view('admin.mcq_results', compact('results'));
     }
 
@@ -372,21 +363,14 @@ class AdminController extends Controller
         //get the course details
         $course = Course::findOrFail($id);
         $results = AssessmentResult::where('courseID', $id)
-            ->with(['user']) 
-            ->orderBy('created_at', 'desc')
-            ->get();
-
-        // 3. Return the view with the data
+            ->with(['user'])->orderBy('created_at', 'desc')->get();
         return view('admin.course_results', compact('course', 'results'));
     }
 
     public function mcqReportsList()
     {
         $results = AssessmentResult::with(['user', 'course', 'module'])
-            ->where('type', 'mcq')
-            ->orderBy('created_at', 'desc')
-            ->paginate(15);
-
+            ->where('type', 'mcq')->orderBy('created_at', 'desc')->paginate(15);
         return view('admin.reports.mcq_list', compact('results'));
     }
 
@@ -394,7 +378,6 @@ class AdminController extends Controller
     {
         //fetch the main result record with relationships
         $result = AssessmentResult::with(['user', 'course', 'module'])->findOrFail($id);
-
         //fetch the questions and join with the learner's specific answers
         $details = DB::table('mcqs')
             ->leftJoin('moduleans', function($join) use ($result) {
@@ -424,10 +407,7 @@ class AdminController extends Controller
     {
         //filter by type 'final' to exclude 'mcq' entries
         $results = AssessmentResult::with(['user', 'course', 'module'])
-                    ->where('type', 'final') 
-                    ->orderBy('created_at', 'desc')
-                    ->get();
-
+                    ->where('type', 'final')->orderBy('created_at', 'desc')->get();
         return view('admin.assessment_results', compact('results'));
     }
     
@@ -565,8 +545,7 @@ class AdminController extends Controller
     {
         //restrict list so users ONLY pull records actively set to 'Available'
         $announcements = Announcements::where('status', 'Available')
-                                        ->orderByDesc('created_at')
-                                        ->get();
+                                        ->orderByDesc('created_at')->get();
         return view('learner.announcements', compact('announcements'));
     }
     

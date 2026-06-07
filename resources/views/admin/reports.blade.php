@@ -3,8 +3,6 @@
 @section('content')
 
 <h4 class="fw-bold mb-4">Report Overview</h4>
-
-    {{-- 1. User Management & Enrolment Card Box --}}
     <div class="card-box mb-4">
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h6 class="fw-bold mb-0">{{ __('messages.admin.user_mgmt') }} & {{ __('messages.admin.students_enrolled') }}</h6>
@@ -28,7 +26,6 @@
         <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#userReportModal">{{ __('messages.admin.view') }} {{ __('messages.admin.advanced') }}</button>
     </div>
 
-    {{-- 2. Course Management & Progress Card Box --}}
     <div class="card-box mb-4">
         <h6 class="fw-bold mb-3">{{ __('messages.admin.course_mgmt') }} {{ __('messages.admin.progress') }}</h6>
         <div class="table-responsive">
@@ -64,7 +61,6 @@
         <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#courseReportModal">{{ __('messages.admin.view') }} {{ __('messages.admin.advanced') }}</button>
     </div>
 
-    {{-- 3. Dynamic Assessment & MCQ Card Box --}}
     <div class="card-box mb-4">
         <h6 class="fw-bold mb-3">Assessment & MCQ Performance</h6>
         <div class="table-responsive">
@@ -100,15 +96,11 @@
         <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#assessmentReportModal">{{ __('messages.admin.view') }} {{ __('messages.admin.advanced') }}</button>
     </div>
 
-    {{-- Bottom Summary Actions Row --}}
     <div class="text-center mt-4">
         <button class="btn btn-outline-dark me-2" data-bs-toggle="modal" data-bs-target="#generateReportModal">{{ __('messages.admin.reports') }}</button>
         <a href="{{ route('admin.downloadReport') }}" class="btn btn-outline-dark">{{ __('messages.admin.reports') }} (PDF)</a>
     </div>
 
-    {{-- ==================== BOOTSTRAP MODAL DIALOGS ==================== --}}
-
-    {{-- User & Enrolment Details Modal --}}
     <div class="modal fade" id="userReportModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -144,7 +136,6 @@
         </div>
     </div>
 
-    {{-- Course & Module Advanced Modal --}}
     <div class="modal fade" id="courseReportModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
@@ -180,7 +171,6 @@
         </div>
     </div>
 
-    {{-- Corrected Assessment & MCQ Advanced Modal --}}
     <div class="modal fade" id="assessmentReportModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
@@ -220,7 +210,6 @@
         </div>
     </div>
 
-    {{-- Global Reports Summary Selection Modal --}}
     <div class="modal fade" id="generateReportModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">

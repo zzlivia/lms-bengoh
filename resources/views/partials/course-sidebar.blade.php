@@ -4,7 +4,6 @@
 
 <div class="course-sidebar-wrapper p-3" id="courseSidebar">
     @php 
-        // Fetch completed lectures for the authenticated user
         $completedLectures = DB::table('lectureprogress')
             ->where('userID', auth()->id())
             ->pluck('lectID')
@@ -15,7 +14,6 @@
 
     @foreach($course->modules as $module)
     <div class="mb-3">
-        {{-- Module Header --}}
         <div class="text-uppercase small text-muted fw-bold mb-1">
             {{ __('messages.courses.module') }} {{ $loop->iteration }}
         </div>
@@ -25,13 +23,11 @@
             $isModuleCompleted = count(array_diff($moduleLectureIds, $completedLectures)) === 0;
         @endphp
 
-        {{-- Module Title (Visual Indicator) --}}
         <div class="mb-2 {{ $isModuleCompleted ? 'text-success fw-bold' : '' }}">
             <i class="fa {{ $isModuleCompleted ? 'fa-check-circle' : 'fa-circle-o' }} me-1"></i>
             {{ $module->getTranslation('moduleName') }}
         </div>
 
-        {{-- Lectures and Sections --}}
         @foreach($module->lectures as $lecture)
             <div class="ms-2 mb-1 text-muted small fw-bold">
                 {{ $lecture->getTranslation('lectName') }}
@@ -51,7 +47,6 @@
             @endforeach
         @endforeach
 
-        {{-- MCQ Step --}}
         @if($module->mcqs->count() > 0)
             <div class="ms-4 mt-1">
                 <a href="{{ route('mcq.module', $module->moduleID) }}" 
@@ -65,7 +60,6 @@
 
     <hr>
 
-    {{-- Footer Links --}}
     <div class="mt-3">
         <a class="sidebar-link d-block small mb-2 text-decoration-none text-dark" href="{{ route('course.feedback', $course->courseID) }}">
             <i class="bi bi-chat-left-text me-2"></i> {{ __('messages.courses.view_feedback') }}

@@ -1,7 +1,6 @@
 @extends('layouts.open_layout')
 
 @section('styles')
-    {{-- Reusing the same CSS from the learning page for consistency --}}
     <link rel="stylesheet" href="{{ asset('css/startLearning.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
 @endsection
@@ -9,13 +8,11 @@
 @section('content')
     <div class="container-fluid mt-3">
         <div class="row">
-            {{-- Sidebar: Hidden on small screens, shown in a column on medium+ --}}
             <div class="col-md-3 d-none d-md-block" id="desktopSidebar">
                 @include('partials.course-sidebar', ['course' => $course])
             </div>
 
             <div class="col-12 col-md-9 px-md-4">
-                {{-- Mobile Menu Toggle & Breadcrumb --}}
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <button class="btn btn-sm btn-outline-primary d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileSidebarReview">
                         <i class="bi bi-list"></i> {{ __('messages.courses.course_modules') }}
@@ -29,12 +26,8 @@
                     </nav>
                 </div>
 
-                {{-- The main card wrapper (Matching first image) --}}
                 <div class="learning-content-card p-4 shadow-sm bg-white rounded border-0">
-                    
                     <h4 class="fw-bold mb-4">{{ __('messages.courses.review_answers') }}</h4>
-
-                    {{-- Display Score --}}
                     @if(session('score') !== null)
                         <div class="alert alert-success shadow-sm border-0 bg-light-success">
                             <h5 class="fw-bold">Result: {{ session('score') }} / {{ session('total') }} Marks</h5>
@@ -90,8 +83,6 @@
                             </div>
                         @endforeach
                     </div>
-
-                    {{-- Navigation Buttons (Matching first image style) --}}
                     <div class="d-flex justify-content-between align-items-center mt-5 pt-4 border-top">
                         <a href="{{ route('mcq.module', $module->moduleID) }}" class="btn btn-outline-secondary px-4">
                             <i class="bi bi-chevron-left"></i> {{ __('messages.courses.back_to_mcq') }}
@@ -112,7 +103,6 @@
         </div> 
     </div>
 
-    {{-- Mobile Offcanvas Sidebar --}}
     <div class="offcanvas offcanvas-start d-md-none" tabindex="-1" id="mobileSidebarReview" aria-labelledby="mobileSidebarLabel">
         <div class="offcanvas-header border-bottom">
             <h5 class="offcanvas-title fw-bold" id="mobileSidebarLabel">Course Modules</h5>

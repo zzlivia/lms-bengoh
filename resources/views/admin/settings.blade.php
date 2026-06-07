@@ -4,8 +4,6 @@
 <div class="container-fluid">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            
-            {{-- Success Message Alert --}}
             @if(session('success'))
                 <div class="alert alert-success alert-dismissible fade show border-0 shadow-sm mb-4" role="alert">
                     <i class="bi bi-check-circle-fill me-2"></i>

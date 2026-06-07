@@ -1,7 +1,6 @@
 @extends('layouts.open_layout')
 
 @section('styles')
-    {{-- Use startLearning.css if it contains the "learning-content-card" styles from your previous code --}}
     <link rel="stylesheet" href="{{ asset('css/startLearning.css') }}">
     <link rel="stylesheet" href="{{ asset('css/course-sidebar.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
@@ -10,14 +9,12 @@
 @section('content')
     <div class="container-fluid mt-3">
         <div class="row">
-            <!-- Sidebar: Hidden on mobile, visible on medium+ -->
             <div class="col-md-3 d-none d-md-block" id="desktopSidebar">
                 @include('partials.course-sidebar', ['course' => $course])
             </div>
 
             <!-- Main Content -->
             <div class="col-12 col-md-9 px-md-4">
-                {{-- Mobile Sidebar Toggle (Visible only on small screens) --}}
                 <div class="d-md-none mb-3">
                     <button class="btn btn-sm btn-outline-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileSidebar">
                         <i class="bi bi-list"></i> {{ __('messages.courses.course_modules') }}
@@ -25,7 +22,6 @@
                 </div>
 
                 <div class="learning-content-card p-4 shadow-sm bg-white rounded border-0">
-                    {{-- Header Section --}}
                     <div class="mb-4 border-bottom pb-2 d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-2">
                         <div>
                             <h3 class="fw-bold h4 mb-0">{{ $course->getTranslation('courseName') }}</h3>
@@ -75,7 +71,6 @@
                                 </button>
                             </div>
 
-                            {{-- Modal code remains the same as your previous version --}}
                             <div class="modal fade" id="confirmSubmitModal" tabindex="-1">
                                 <div class="modal-dialog modal-dialog-centered">
                                     <div class="modal-content">
@@ -112,7 +107,6 @@
         </div>
     </div>
 
-    {{-- Offcanvas Mobile Sidebar --}}
     <div class="offcanvas offcanvas-start d-md-none" tabindex="-1" id="mobileSidebar">
         <div class="offcanvas-header border-bottom">
             <h5 class="offcanvas-title fw-bold">Course Modules</h5>
@@ -136,9 +130,6 @@
         const confirmSubmitBtn = document.getElementById('confirmSubmitBtn');
         const assessmentForm = document.getElementById('assessmentForm');
         const warningLabel = document.getElementById('warningText');
-
-        // Object map of correct answers passed safely from backend to JS
-        // This assumes your Option model or dataset contains an indicator like 'is_correct' or similar
         const correctAnswers = {
             @foreach($questions as $q)
                 @foreach($q->options as $opt)
@@ -149,7 +140,7 @@
             @endforeach
         };
 
-        // 1. Handle validation warning inside the modal confirmation box
+        //handle validation warning inside the modal confirmation box
         triggerBtn.addEventListener('click', function () {
             let unanswered = 0;
             
@@ -174,19 +165,14 @@
             }
         });
 
-        // 2. Handle Automated Grading & Form Submission
+        //handle automated grading
         confirmSubmitBtn.addEventListener('click', function () {
             let totalQuestions = Object.keys(correctAnswers).length;
-            
-            // Fallback catch: If your database doesn't mark correct options yet, 
-            // fallback to counting total generated questions to avoid dividing by 0.
+            //fallback catch
             if (totalQuestions === 0) {
                 totalQuestions = document.querySelectorAll('.question-block').length;
             }
-
             let correctCount = 0;
-
-            // Grade the radio (MCQ) fields dynamically
             for (let questionID in correctAnswers) {
                 const selectedRadio = document.querySelector(`input[name="answers[${questionID}]"]:checked`);
                 if (selectedRadio && selectedRadio.value === correctAnswers[questionID]) {
@@ -194,13 +180,13 @@
                 }
             }
 
-            // Calculate score out of 100 percentage points
+            //calculate score out of 100 percentage points
             let finalPercentageScore = totalQuestions > 0 ? Math.round((correctCount / totalQuestions) * 100) : 0;
 
-            // Assign calculated score directly into our new hidden input field
+            //assign calculated score directly into our new hidden input field
             document.getElementById('finalScoreInput').value = finalPercentageScore;
 
-            // Submit form cleanly to the backend controller
+            //submit form cleanly to the backend controller
             assessmentForm.submit();
         });
     });

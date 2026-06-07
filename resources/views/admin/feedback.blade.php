@@ -56,7 +56,7 @@
     $(document).ready(function() {
         if ($('#feedbackTable').length) {
             let table = $('#feedbackTable').DataTable({
-                // Add localization for DataTable itself if needed
+                //add localization if needed
                 "language": {
                     "search": "{{ __('messages.admin.search_placeholder') }}",
                     "zeroRecords": "{{ __('messages.admin.no_data') }}"

@@ -2,7 +2,6 @@
 
 @section('styles')
     <link rel="stylesheet" href="{{ asset('css/courseFeedback.css') }}">
-    {{-- We include startLearning.css to reuse the clean 'learning-content-card' style --}}
     <link rel="stylesheet" href="{{ asset('css/startLearning.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
@@ -11,14 +10,10 @@
 @section('content')
     <div class="container-fluid mt-3">
         <div class="row">
-            {{-- Desktop Sidebar: Matches Progress page --}}
             <div class="col-md-3 d-none d-md-block" id="desktopSidebar">
                 @include('partials.course-sidebar', ['course' => $course])
             </div>
-
-            {{-- Main Content Column --}}
             <div class="col-12 col-md-9 px-md-4">
-                {{-- Mobile Menu Toggle & Breadcrumb: Consistent across all learning pages --}}
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <button class="btn btn-sm btn-outline-primary d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileSidebar">
                         <i class="bi bi-list"></i> {{ __('messages.courses.course_modules') }}
@@ -32,8 +27,6 @@
                         </ol>
                     </nav>
                 </div>
-
-                {{-- Main Learning Card: Replaces the standard card for consistency --}}
                 <div class="learning-content-card p-4 shadow-sm bg-white rounded border-0">
                     <div class="mb-4">
                         <h4 class="fw-bold mb-1">{{ __('messages.courses.feedback.title') }}</h4>
@@ -52,8 +45,6 @@
 
                     <form action="{{ route('course.feedback.submit', $course->courseID) }}" method="POST">
                         @csrf
-                        
-                        {{-- Overall Rating Section --}}
                         <div class="mb-5 text-center p-4 bg-light rounded-4 border">
                             <label class="form-label fw-bold d-block mb-3 fs-5">{{ __('messages.courses.feedback.overall_rating') }}</label>
                             <div class="star-rating fs-1">
@@ -64,7 +55,7 @@
                             </div>
                         </div>
 
-                        {{-- Question 1: Clarity (Star Grid) --}}
+                        {{-- Question 1 --}}
                         <div class="mb-5">
                             <h6 class="fw-bold mb-3">1. {{ __('messages.courses.feedback.q1_clarity') }}</h6>
                             <div class="clarity-rating d-flex justify-content-between flex-wrap gap-2">
@@ -81,7 +72,7 @@
                             </div>
                         </div>
 
-                        {{-- Question 2: Importance (Button Group) --}}
+                        {{-- Question 2 --}}
                         <div class="mb-5">
                             <h6 class="fw-bold mb-3">2. {{ __('messages.courses.feedback.q2_importance') }}</h6>
                             <div class="d-flex flex-column flex-sm-row gap-3">
@@ -96,7 +87,7 @@
                             </div>
                         </div>
 
-                        {{-- Question 3: Favorite Module (Dropdown) --}}
+                        {{-- Question 3 --}}
                         <div class="mb-4">
                             <h6 class="fw-bold mb-2">3. {{ __('messages.courses.feedback.q3_module') }}</h6>
                             <select name="favorite_module" class="form-select rounded-3 p-2 shadow-sm">
@@ -109,19 +100,18 @@
                             </select>
                         </div>
 
-                        {{-- Question 4: Enjoyed (Textarea) --}}
+                        {{-- Question 4 --}}
                         <div class="mb-4">
                             <h6 class="fw-bold mb-2">4. {{ __('messages.courses.feedback.q4_enjoy') }}</h6>
                             <textarea name="enjoyed" class="form-control rounded-3 shadow-sm" rows="3" placeholder="What did you like most?"></textarea>
                         </div>
 
-                        {{-- Question 5: Suggestions (Textarea) --}}
+                        {{-- Question 5 --}}
                         <div class="mb-4">
                             <h6 class="fw-bold mb-2">5. {{ __('messages.courses.feedback.q5_improve') }}</h6>
                             <textarea name="suggestions" class="form-control rounded-3 shadow-sm" rows="3" placeholder="How can we improve?"></textarea>
                         </div>
 
-                        {{-- Submit Button: Styled to match 'Download Certificate' button --}}
                         <div class="text-center mt-5">
                             <button type="submit" class="btn btn-success px-5 py-3 fw-bold shadow rounded-pill w-100 w-sm-auto">
                                 <i class="bi bi-send-check me-2"></i> {{ __('messages.courses.feedback.feedback_submit') }}
@@ -132,8 +122,7 @@
             </div>
         </div>
     </div>
-
-    {{-- Mobile Sidebar Drawer --}}
+    
     <div class="offcanvas offcanvas-start d-md-none" tabindex="-1" id="mobileSidebar" aria-labelledby="mobileSidebarLabel">
         <div class="offcanvas-header border-bottom">
             <h5 class="offcanvas-title fw-bold" id="mobileSidebarLabel">Course Modules</h5>

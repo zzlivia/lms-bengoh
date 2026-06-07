@@ -8,7 +8,6 @@
     </div>
 
     <div class="row">
-        {{-- Summary Sidebar: Fixed on the left --}}
         <div class="col-md-4">
             <div class="card shadow-sm border-0 p-4 sticky-top" style="top: 20px; z-index: 10;">
                 <h5 class="fw-bold mb-3">Attempt Summary</h5>
@@ -23,17 +22,13 @@
             </div>
         </div>
 
-        {{-- Question Breakdown: Scrollable section --}}
         <div class="col-md-8">
             <div class="card shadow-sm border-0 p-4">
                 <h5 class="fw-bold mb-4">Question Breakdown</h5>
-                
-                {{-- Scroll Container --}}
                 <div style="max-height: 70vh; overflow-y: auto; padding-right: 10px;">
                     @foreach($details as $index => $item)
                         <div class="card p-3 mb-4 border shadow-sm">
                             <p class="fw-bold mb-3">{{ $index + 1 }}. {{ $item->question }}</p>
-                            
                             @php
                                 $options = [
                                     0 => $item->answer1,
@@ -47,32 +42,29 @@
                             @foreach($options as $key => $option)
                                 @if($option)
                                     @php
-                                        // 1. Check if this specific option is the correct one
+                                        //check if this specific option is the correct one
                                         $isCorrect = ($key === $correctIndex);
                                         
-                                        // 2. Check if this specific option is what the learner clicked
+                                        //check if this specific option is what the learner clicked
                                         $isSelected = ($learnerSelection !== null && (string)$learnerSelection === (string)$key);
                                         
-                                        // 3. Determine background and border colors
-                                        // Priority: Green if correct, Red if selected but wrong, White otherwise
+                                        // green is correct, red is wrong, white is otherwise
                                         $bgColor = $isCorrect ? '#d4edda' : ($isSelected ? '#f8d7da' : 'white');
                                         $borderColor = $isCorrect ? '#c3e6cb' : ($isSelected ? '#f5c6cb' : '#dee2e6');
                                     @endphp
 
-                                    <div class="mt-2 p-2 px-3 rounded border d-flex justify-content-between align-items-center" 
-                                        style="background-color: {{ $bgColor }}; border-color: {{ $borderColor }} !important;">
-                                        
+                                    <div class="mt-2 p-2 px-3 rounded border d-flex justify-content-between align-items-center" style="background-color: {{ $bgColor }}; border-color: {{ $borderColor }} !important;">
                                         <span>
                                             <strong>{{ chr(65 + $key) }}.</strong> {{ $option }}
                                         </span>
 
                                         @if($isCorrect)
-                                            {{-- Show Green Badge for the right answer --}}
+                                            {{-- show green badge for the right answer --}}
                                             <span class="badge bg-success text-white small">
                                                 <i class="fas fa-check-circle"></i> Correct Answer
                                             </span>
                                         @elseif($isSelected)
-                                            {{-- Show Red Badge only for the learner's wrong choice --}}
+                                            {{-- show red badge only for the learner's wrong choice --}}
                                             <span class="badge bg-danger text-white small">
                                                 <i class="fas fa-times-circle"></i> Your Choice
                                             </span>
@@ -82,7 +74,7 @@
                             @endforeach
                         </div>
                     @endforeach
-                </div> {{-- End Scroll Container --}}
+                </div>
             </div>
         </div>
     </div>

@@ -3,14 +3,11 @@
 @section('content')
     <div class="container-fluid mt-3">
         <div class="row">
-            {{-- Desktop Sidebar Column: Matches Feedback structure --}}
             <div class="col-md-3 d-none d-md-block" id="desktopSidebar">
                 @include('partials.course-sidebar', ['course' => $course])
             </div>
 
-            {{-- Main Content Column --}}
             <div class="col-12 col-md-9 px-md-4">
-                {{-- Mobile Menu Toggle & Breadcrumb Layout --}}
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <button class="btn btn-sm btn-outline-primary d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileSidebar">
                         <i class="fas fa-bars"></i> {{ __('messages.courses.course_modules') }}
@@ -148,7 +145,6 @@
         </div>
     </div>
 
-    {{-- Mobile Sidebar Drawer --}}
     <div class="offcanvas offcanvas-start d-md-none" tabindex="-1" id="mobileSidebar" aria-labelledby="mobileSidebarLabel">
         <div class="offcanvas-header border-bottom">
             <h5 class="offcanvas-title fw-bold" id="mobileSidebarLabel">Course Modules</h5>

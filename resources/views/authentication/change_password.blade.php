@@ -15,12 +15,10 @@
             Enter your new password below
         </p>
 
-        {{-- Success Message --}}
         @if(session('success'))
             <div class="alert alert-success small">{{ session('success') }}</div>
         @endif
 
-        {{-- Errors --}}
         @if($errors->any())
             <div class="alert alert-danger small">
                 <ul class="mb-0">
@@ -33,7 +31,6 @@
 
         <form method="POST" action="{{ route('password.update') }}">
             @csrf
-            {{-- New Password --}}
             <div class="mb-3 text-start input-group-custom position-relative">
                 <label class="form-label small fw-semibold">New Password</label>
                 
@@ -48,7 +45,6 @@
                     toggle="#password"></i>
             </div>
 
-            {{-- Confirm Password --}}
             <div class="mb-3 text-start input-group-custom position-relative">
                 <label class="form-label small fw-semibold">Confirm Password</label>
                 
@@ -68,7 +64,6 @@
             </button>
         </form>
 
-        {{-- Back --}}
         <div class="mt-4 small">
             <a href="{{ route('login') }}" class="back-link">← Back to Sign In</a>
         </div>

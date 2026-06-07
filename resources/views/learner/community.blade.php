@@ -5,7 +5,7 @@
         <h2 class="text-center mb-5 fw-bold">{{ __('messages.home.community_title') }}</h2>
         <div class="row g-4 justify-content-center">
             @forelse($stories as $story)
-                <div class="col-lg-10 col-xl-8"> {{-- Makes the card wider but keeps it centered --}}
+                <div class="col-lg-10 col-xl-8">
                     <div class="p-4 p-md-5 border rounded bg-light h-100 d-flex align-items-start shadow-sm">
                         {{-- image: increased size slightly for the wider layout --}}
                         <div class="flex-shrink-0">

@@ -26,7 +26,6 @@
             overflow: hidden;
         }
 
-        /* Background Design Shapes */
         .top-left-accent {
             position: absolute;
             top: -50px;
@@ -165,12 +164,11 @@
             letter-spacing: 4px;
         }
 
-        /* FIXED FOOTER POSITIONING: Shifted leftwards so everything fits in the white canvas area */
         .footer {
             position: absolute;
             bottom: 110px;
-            left: 95px;   /* Kept proportional to padding */
-            right: 95px;  /* Pulled inward from 70px to escape the corner overlay completely */
+            left: 95px;
+            right: 95px;
             z-index: 10;
         }
 
@@ -191,7 +189,6 @@
             color: #444;
         }
 
-        /* Restored to dark text since it sits on the clean white background now */
         .date-section {
             text-align: center;
             width: 200px;
@@ -202,7 +199,7 @@
         .signature-line {
             margin-bottom: 8px;
             width: 100%;
-            border-top: 1px solid #444; /* Clean uniform dark lines */
+            border-top: 1px solid #444;
         }
         
         .value-text {

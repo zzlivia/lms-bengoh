@@ -7,7 +7,7 @@
 
     <form action="{{ route('admin.lecture.update', $lecture->lectID) }}" method="POST">
         @csrf
-        @method('PUT') {{-- Crucial for update routes --}}
+        @method('PUT')
 
         <div class="mb-3">
             <label for="moduleID" class="form-label">Select Module</label>

@@ -2,8 +2,6 @@
 
 @section('content')
     <h4 class="fw-bold mb-4">{{ __('messages.admin.summary') }}</h4>
-    
-    {{-- Summary Cards --}}
     <div class="row mb-4 justify-content-center">
         <div class="col-md-4">
             <div class="card-box text-center">
@@ -27,8 +25,6 @@
             </div>
         </div>
     </div>
-
-    {{-- Alert Messages --}}
     @if(session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             {{ session('success') }}
@@ -41,15 +37,12 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     @endif
-
-    {{-- Bulk Delete Form Wraps the Actions and the Table --}}
     <form id="bulkDeleteForm" method="POST" action="{{ route('admin.user.bulkDelete') }}" onsubmit="return confirm('Are you sure you want to delete the selected users?');">
         @csrf
         @method('DELETE')
 
         <div class="d-flex justify-content-between align-items-center mb-3">
             <div class="w-50">
-                {{-- This input works with DataTables automatically if you use the built-in search --}}
                 <input type="text" id="customSearch" class="form-control" placeholder="Search User...">
             </div>
             <div>
@@ -87,7 +80,6 @@
                         </td>
                         <td>{{ $user->completedCourses }}</td>
                         <td>
-                            {{-- Triggers the JS function below --}}
                             <button type="button" class="btn btn-danger btn-sm" onclick="confirmSingleDelete('{{ $user->userID }}')">
                                 {{ __('messages.admin.delete') }}
                             </button>
@@ -98,8 +90,6 @@
             </table>
         </div>
     </form>
-
-    {{-- Hidden form for individual delete requests --}}
     <form id="singleDeleteForm" method="POST" style="display:none;">
         @csrf
         @method('DELETE')

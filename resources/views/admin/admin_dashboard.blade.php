@@ -1,6 +1,6 @@
-@extends('layouts.admin_layout'){{-- layout template of admin from admin.blade.php --}}
+@extends('layouts.admin_layout')
 
-@section('content') {{-- content section --}}
+@section('content')
 
 <!-- status cards -->
 <div class="row mb-4">
@@ -155,9 +155,9 @@ let chartColors;
 // if all values are 0
 if (completed === 0 && pdf === 0 && video === 0) {
 
-    chartData = [1]; // dummy value so chart renders
+    chartData = [1];
     chartLabels = ['No Data Available'];
-    chartColors = ['#d3d3d3']; // grey
+    chartColors = ['#d3d3d3'];
 
 } else {
 

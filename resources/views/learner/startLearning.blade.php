@@ -8,13 +8,11 @@
 @section('content')
     <div class="container-fluid mt-3">
         <div class="row">
-            {{-- Sidebar: Hidden on small screens, shown in a column on medium+ --}}
            <div class="col-md-3 d-none d-md-block" id="desktopSidebar">
                 @include('partials.course-sidebar', ['course' => $course, 'current' => $current])
             </div>
 
             <div class="col-12 col-md-9 px-md-4">
-                {{-- Mobile Menu Toggle & Breadcrumb --}}
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <button class="btn btn-sm btn-outline-primary d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileSidebar">
                         <i class="bi bi-list"></i> {{ __('messages.courses.course_modules') }}
@@ -37,19 +35,15 @@
                             </div>
                         </div>
                     @endif
-
-                    {{-- Title and Progress Indicator --}}
                     <div class="mb-4">
                         <h3 class="fw-bold h4 mb-1">{{ $course->getTranslation('courseName') }}</h3>
                         <div class="text-muted small d-flex align-items-center gap-2">
                             @if($current)
-                                {{-- Module Name --}}
                                 <span class="fw-bold text-uppercase" style="letter-spacing: 0.5px;">
                                     {{ __('messages.courses.module') }} {{ $current->lecture->module->moduleID ?? '' }}: 
                                     {{ $current->lecture->module->getTranslation('moduleName') }}
                                 </span>
                                 <span class="text-secondary">•</span>
-                                {{-- Current Lecture Name --}}
                                 <span class="text-secondary">
                                     {{ $current->lecture->getTranslation('lectName') }}
                                 </span>
@@ -67,7 +61,6 @@
                                 <div id="timer" class="badge bg-light text-danger border p-2"></div>
                             </div>
 
-                            {{-- Video Player --}}
                             @if($current->section_type == 'video' && $current->section_file)
                                 <div class="video-container mb-4 shadow-sm rounded overflow-hidden">
                                     <div class="ratio ratio-16x9">
@@ -79,21 +72,18 @@
                                 </div>
                             @endif
 
-                            {{-- Text Content --}}
                             @if($current->section_type == 'text')
                                 <div class="text-content mb-4 lead-custom p-2">
                                     {!! $current->getTranslation('section_content') !!}
                                 </div>
                             @endif
 
-                            {{-- PDF Viewer --}}
                             @if($current->section_type == 'pdf')
                                 <div class="pdf-container mb-4 rounded border overflow-hidden">
                                     <iframe id="lessonPdf" src="{{ url('/pdf/' . basename($current->section_file)) }}#toolbar=0" width="100%" height="600px"></iframe>
                                 </div>
                             @endif
 
-                        {{-- MCQ Step --}}
                         @elseif($module && $module->mcqs->count())
                             <div class="quiz-container p-3 bg-light rounded border">
                                 <h5 class="fw-bold mb-4 text-dark"><i class="bi bi-pencil-square me-2"></i>{{ __('messages.courses.module_quiz') }}: {{ $module->moduleName }}</h5>
@@ -170,14 +160,12 @@
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <div class="offcanvas-body p-0">
-            {{-- We reuse your existing partial here --}}
             @include('partials.course-sidebar', ['course' => $course, 'current' => $current])
         </div>
     </div>
 
     {{-- ================= SCRIPTS ================= --}}
     <script>
-        // 1. GLOBAL CONFIGURATION
         const CONFIG = {
             courseId: {{ $course->courseID ?? 0 }},
             allSections: @json($sections->pluck('sectionID') ?? []),
@@ -190,7 +178,6 @@
             csrfToken: '{{ csrf_token() }}'
         };
 
-        // 2. MOBILE SIDEBAR TOGGLE
         function toggleMobileMenu() {
             const sidebar = document.getElementById('mobileSidebar');
             const overlay = document.getElementById('mobileMenuOverlay');
@@ -201,7 +188,6 @@
             overlay.classList.toggle('d-none', !isHidden);
         }
 
-        // 3. QUIZ SUBMISSION LOGIC
         document.getElementById('quizForm')?.addEventListener('submit', function(e) {
             const questions = document.querySelectorAll('[name^="answers["]');
             const uniqueNames = new Set(Array.from(questions).map(q => q.name));
@@ -217,7 +203,6 @@
             }
         });
 
-        // 4. LECTURE TIMER & AUTO-COMPLETE
         @if($current && $current->lecture && $current->lecture->lect_duration)
         (function() {
             const lectID = {{ $current->lectID }};
@@ -237,7 +222,6 @@
                     timerDisplay.innerHTML = `${CONFIG.labels.completed} <i class="bi bi-check-circle-fill text-success"></i>`;
                     localStorage.removeItem(storageKey);
                     
-                    // Mark as complete in DB
                     fetch(`/lecture/complete/${lectID}`, {
                         method: 'POST',
                         headers: {
@@ -253,11 +237,10 @@
             };
 
             const timerInterval = setInterval(updateTimer, 1000);
-            updateTimer(); // Run immediately
+            updateTimer();
         })();
         @endif
 
-        // 5. RESUME PROGRESS LOGIC
         (function() {
             const sectionKey = `last_section_${CONFIG.userId}_${CONFIG.courseId}`;
             @if($current)
@@ -271,7 +254,6 @@
             }
         })();
 
-        // 6. MODAL UTILITY
         document.addEventListener("DOMContentLoaded", function () {
             const modal = document.getElementById('accessModal');
             if (modal) {
@@ -286,7 +268,6 @@
 
     @push('scripts')
     <script>
-        // 7. OFFLINE PRE-FETCHING (Service Worker Lite)
         if (navigator.onLine) {
             const CACHE_NAME = "bengoh-academy-cache-v2";
             const lessonUrls = CONFIG.allSections.map(sid => `/courses/${CONFIG.courseId}/startLearn?sectionId=${sid}`);
